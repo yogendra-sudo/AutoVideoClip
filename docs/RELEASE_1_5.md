@@ -4,21 +4,21 @@
 
 ## 正式 tag 与交付入口
 
-[PR #250](https://github.com/zhouxiaoka/autoclip/pull/250) 已合并，tag `v1.5.0` 固定在 main `e940f5aef485409b13950c405fab6a9344376c88`。PR 和 [main 全量 CI](https://github.com/zhouxiaoka/autoclip/actions/runs/36872311072) 全绿，Windows 异步连接清理专项也通过。
+[PR #250](https://github.com/yogendra-sudo/AutoVideoClip/pull/250) 已合并，tag `v1.5.0` 固定在 main `e940f5aef485409b13950c405fab6a9344376c88`。PR 和 [main 全量 CI](https://github.com/yogendra-sudo/AutoVideoClip/actions/runs/36872311072) 全绿，Windows 异步连接清理专项也通过。
 
-最终包由 [tag 双平台构建](https://github.com/zhouxiaoka/autoclip/actions/runs/36873288668) 生成；[1.5.0 Release](https://github.com/zhouxiaoka/autoclip/releases/tag/v1.5.0) 已正式发布为 latest。9 项公开资产的 SHA256 已核对，macOS / Windows 更新包签名均验证通过，公开 `releases/latest/download/latest.json` 已确认返回 1.5.0。下方候选包名称是历史验收记录，`ee73e594` 包尚未包含最后的 YouTube 长视频修复。同版本候选更新必须强制重装，不能只检查 `--version`。
+最终包由 [tag 双平台构建](https://github.com/yogendra-sudo/AutoVideoClip/actions/runs/36873288668) 生成；[1.5.0 Release](https://github.com/yogendra-sudo/AutoVideoClip/releases/tag/v1.5.0) 已正式发布为 latest。9 项公开资产的 SHA256 已核对，macOS / Windows 更新包签名均验证通过，公开 `releases/latest/download/latest.json` 已确认返回 1.5.0。下方候选包名称是历史验收记录，`ee73e594` 包尚未包含最后的 YouTube 长视频修复。同版本候选更新必须强制重装，不能只检查 `--version`。
 
-正式 Windows 安装包的 [CI 冒烟](https://github.com/zhouxiaoka/autoclip/actions/runs/36876463485) 通过：1.4→1.5 覆盖升级、桌面窗口与内置后端、provider 配置、本地视频 + SRT 处理及正式 wheel 人物检测/字体。模型端为本机协议 fixture，无新增付费调用。macOS 正式包的内置后端、六种文字模板，以及中文播客 / 英文播客 / 英文访谈的实际取景、字体和片尾均通过；公开 wheel 已在 checkout 外冷安装验收。
+正式 Windows 安装包的 [CI 冒烟](https://github.com/yogendra-sudo/AutoVideoClip/actions/runs/36876463485) 通过：1.4→1.5 覆盖升级、桌面窗口与内置后端、provider 配置、本地视频 + SRT 处理及正式 wheel 人物检测/字体。模型端为本机协议 fixture，无新增付费调用。macOS 正式包的内置后端、六种文字模板，以及中文播客 / 英文播客 / 英文访谈的实际取景、字体和片尾均通过；公开 wheel 已在 checkout 外冷安装验收。
 
 本次按负责人尽快正式发布的要求推进。Windows 没有人工真机界面验收，完整观察期尚未完成；这两项限制已在正式 Release 中明确，官网由负责人另行更新。分支 `worktree-project-diagnosis`，接手基线 `723eefbd`；该基线与下方候选包状态均为历史记录。
 
 ### 社区 issue 收口
 
-按负责人要求，25 条相关发布 / 验收 / 复现说明已回复，补齐此前“已合入但未发布”的正式下载入口。[置顶 #96](https://github.com/zhouxiaoka/autoclip/issues/96) 已更新为 1.5.0；[说话人裁切与封面 #115](https://github.com/zhouxiaoka/autoclip/issues/115) 已按 completed 关闭并标记 shipped，其他已结案修复保留原关闭状态。新的 Whisper 反馈 [#247](https://github.com/zhouxiaoka/autoclip/issues/247) / [#249](https://github.com/zhouxiaoka/autoclip/issues/249) 已说明升级与补日志步骤，保持开放并标记 needs-info；#116 质量对照、#124 人工看片、#119 系统签名和 #122 Intel Mac 包仍保持开放，不将本次发版冒充这些事项完成。
+按负责人要求，25 条相关发布 / 验收 / 复现说明已回复，补齐此前“已合入但未发布”的正式下载入口。[置顶 #96](https://github.com/yogendra-sudo/AutoVideoClip/issues/96) 已更新为 1.5.0；[说话人裁切与封面 #115](https://github.com/yogendra-sudo/AutoVideoClip/issues/115) 已按 completed 关闭并标记 shipped，其他已结案修复保留原关闭状态。新的 Whisper 反馈 [#247](https://github.com/yogendra-sudo/AutoVideoClip/issues/247) / [#249](https://github.com/yogendra-sudo/AutoVideoClip/issues/249) 已说明升级与补日志步骤，保持开放并标记 needs-info；#116 质量对照、#124 人工看片、#119 系统签名和 #122 Intel Mac 包仍保持开放，不将本次发版冒充这些事项完成。
 
 ## 这轮完成的验收修复
 
-- 成片卡片只保留「复制发布文案」，实际复制不附 AutoClip 署名。原来的增长文案是「用 AutoClip 剪的 · GitHub 地址」；视频片尾仍是独立的品牌功能。
+- 成片卡片只保留「复制发布文案」，实际复制不附 AutoVideoClip 署名。原来的增长文案是「用 AutoVideoClip 剪的 · GitHub 地址」；视频片尾仍是独立的品牌功能。
 - 设置 → 应用增加自动品牌片尾开关，默认开启。影响后续自动制作、备选片段和自动草稿的编辑导出；已生成的视频不改写。记录实际追加结果，片尾失败时保留正文视频。
 - 导入页提供竖版版式：按平台默认 / 访谈式（人物窗口）/ 播客式（满屏）。平台继续决定语言、画幅和时长限制；追加平台及备选片段继承本项目选择。
 - 中文播客版按两行分页；英文访谈版会过滤中文标题、字幕、点评和名牌。模板缓存同时区分场景、版式和受众语言。
@@ -78,8 +78,8 @@ MCP 成片时长约 45.8 / 17.7 / 87.8 秒（各两种语言），两边实际�
 桌面候选构建 `36860101368` 的 macOS / Windows 打包已通过；Windows 1.4→1.5 覆盖升级也已成功。
 其安装后视频检查因测试脚本把文本连接测试的 `success` 字段错写为 `ok` 而中断，已修脚本，仍须重跑整个安装冒烟，不能计为通过。
 
-复测已完成：代码提交 `ee73e594` 的 [全量 CI](https://github.com/zhouxiaoka/autoclip/actions/runs/36865434865) 全绿，Linux 安装 wheel 后的检测与中文字体检查通过。
-[Windows 完整补测](https://github.com/zhouxiaoka/autoclip/actions/runs/36865502695) 也通过：1.4→1.5 覆盖升级、桌面启动、本地真实视频制作，以及从新 wheel 检测人物和匹配中文字体；模型调用为本机协议 fixture，无付费调用。
+复测已完成：代码提交 `ee73e594` 的 [全量 CI](https://github.com/yogendra-sudo/AutoVideoClip/actions/runs/36865434865) 全绿，Linux 安装 wheel 后的检测与中文字体检查通过。
+[Windows 完整补测](https://github.com/yogendra-sudo/AutoVideoClip/actions/runs/36865502695) 也通过：1.4→1.5 覆盖升级、桌面启动、本地真实视频制作，以及从新 wheel 检测人物和匹配中文字体；模型调用为本机协议 fixture，无付费调用。
 macOS 本机新 wheel 检查通过；三条约 46 秒的实际取景 / 字体 / 片尾样片在 `dist/autoclip-1.5.0-portrait-demo-e3e57236.zip`。
 测试入口验证不能代替下节的完整界面、链接和无字幕验收；正式 tag 构建仍需使用最终源码。
 

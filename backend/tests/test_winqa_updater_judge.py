@@ -16,8 +16,8 @@ def probe():
 
 
 LIVE_156 = {'version': '1.5.6', 'pub_date': '2026-10-09T00:00:00Z', 'platforms': {
-    'windows-x86_64': {'url': 'https://github.com/zhouxiaoka/autoclip/releases/download/v1.5.6/a.nsis.zip', 'signature': 'sig'},
-    'darwin-aarch64': {'url': 'https://github.com/zhouxiaoka/autoclip/releases/download/v1.5.6/a.app.tar.gz', 'signature': 'sig'}}}
+    'windows-x86_64': {'url': 'https://github.com/yogendra-sudo/AutoVideoClip/releases/download/v1.5.6/a.nsis.zip', 'signature': 'sig'},
+    'darwin-aarch64': {'url': 'https://github.com/yogendra-sudo/AutoVideoClip/releases/download/v1.5.6/a.app.tar.gz', 'signature': 'sig'}}}
 
 
 def test_older_live_manifest_is_readable(probe):

@@ -1,4 +1,4 @@
-# AutoClip 命令行、MCP 与本地模型
+# AutoVideoClip 命令行、MCP 与本地模型
 
 面向开发者的三种用法，全部复用桌面应用同一条流水线、同一个数据目录：
 
@@ -74,7 +74,7 @@ MCP 不再接收 `api_key` 参数。模型密钥用环境变量 `AUTOCLIP_API_KE
 
 ```bash
 uvx autoclip-mcp
-npx skills add zhouxiaoka/autoclip
+npx skills add yogendra-sudo/AutoVideoClip
 ```
 
 PyPI 发行名是 `autoclip-mcp`。`uvx autoclip-mcp` 会安装这个包并运行 MCP 入口，包里的 CLI 命令仍是 `autoclip`。wheel 文件名是 `autoclip_mcp-<version>-py3-none-any.whl`。已发布的 ZIP 里用 `autoclip_mcp-*-py3-none-any.whl`。
@@ -82,7 +82,7 @@ PyPI 发行名是 `autoclip-mcp`。`uvx autoclip-mcp` 会安装这个包并运�
 从源码安装仍可用。在已克隆的仓库根目录执行：
 
 ```bash
-git clone https://github.com/zhouxiaoka/autoclip.git && cd autoclip
+git clone https://github.com/yogendra-sudo/AutoVideoClip.git && cd autoclip
 python3 -m venv venv && source venv/bin/activate
 python -m pip install -r requirements.txt
 python -m pip install --no-deps .
@@ -98,7 +98,7 @@ autoclip --version
 
 ```bash
 autoclip doctor
-# 数据目录 ~/Library/Application Support/AutoClip · Python 3.11.9
+# 数据目录 ~/Library/Application Support/AutoVideoClip · Python 3.11.9
 # ✓ ffmpeg   /opt/homebrew/bin/ffmpeg
 # ✓ whisper  faster-whisper 已安装
 # ✓ 模型     ollama · qwen2.5:7b · http://localhost:11434/v1
@@ -135,7 +135,7 @@ autoclip publish --list-profiles                        # 已配置的 Upload-Po
 - `--provider` 等模型参数不改用户的正式设置，只在数据目录写一份 `cli-settings.json`。
 - 视频默认**硬链接**进项目目录（不占双份空间），跨盘时自动复制；`--copy` 强制复制。
 - `--no-db` 不写 SQLite（桌面应用里就看不到这个项目）。
-- 数据目录：默认与桌面应用一致（mac `~/Library/Application Support/AutoClip`、Windows `%APPDATA%\AutoClip`、Linux `~/.local/share/AutoClip`），
+- 数据目录：默认与桌面应用一致（mac `~/Library/Application Support/AutoVideoClip`、Windows `%APPDATA%\AutoVideoClip`、Linux `~/.local/share/AutoVideoClip`），
   `--data-dir` 或 `AUTOCLIP_DATA_DIR` 可换。日志在 `<数据目录>/logs/cli.log`，`-v` 同时打到终端。
 - `--min-score` 覆盖 step3 的阈值（0–1，默认 0.7）；**切片为 0 先试 0.5**。
 
@@ -232,7 +232,7 @@ claude mcp add autoclip -- /path/to/autoclip/venv/bin/autoclip mcp
 }
 ```
 
-也可以让 AutoClip 自己写：`autoclip mcp install opencode`（`--scope project --dir .` 写项目配置、`--print` 只打印片段、
+也可以让 AutoVideoClip 自己写：`autoclip mcp install opencode`（`--scope project --dir .` 写项目配置、`--print` 只打印片段、
 `--force` 在现有配置带注释时先备份再重写）。重装会保留同名条目里的 `environment` / `timeout` 等自定义字段；存在
 `opencode.jsonc` 时优先写它，两份配置冲突会在写入前直接拒绝。接入后在 opencode 里给一个视频路径即可出片，详见 `docs/OPENCODE.md`。
 
@@ -261,7 +261,7 @@ claude mcp add autoclip -- /path/to/autoclip/venv/bin/autoclip mcp
 
 ### MCPB（Smithery 本地 stdio）
 
-MCPB（MCP Bundle）是带 `manifest.json` 的 ZIP，扩展名 `.mcpb`。Official MCP Registry 上的 `io.github.zhouxiaoka/autoclip-mcp` 仍走 PyPI 和 `uvx autoclip-mcp`。Smithery 的本地 stdio 列表要另外上传一个 `.mcpb`。
+MCPB（MCP Bundle）是带 `manifest.json` 的 ZIP，扩展名 `.mcpb`。Official MCP Registry 上的 `io.github.yogendra-sudo/AutoVideoClip-mcp` 仍走 PyPI 和 `uvx autoclip-mcp`。Smithery 的本地 stdio 列表要另外上传一个 `.mcpb`。
 
 `mcpb/` 是薄封装，不把 `backend/` 打进包。`mcpb/pyproject.toml` 依赖已发布的 `autoclip-mcp`（当前 pin 与仓库根 `pyproject.toml` 的版本一致），`mcpb/src/server.py` 只转调 `backend.mcp_server:main`。宿主用 UV 安装这个 PyPI 包。安装后的 server 需要 PATH 里有 `uv`、`ffmpeg`、`ffprobe`。Python 3.10+ 由 UV 准备。
 
@@ -291,7 +291,7 @@ npx --yes @anthropic-ai/mcpb@2.1.2 pack mcpb dist/autoclip-mcp.mcpb
 发布到 Smithery 要维护者自己的登录。仓库脚本不会执行这一步，也不保存 API key。`-n` 用 Smithery 上实际的 namespace/server；与 Official MCP Registry 同名时是：
 
 ```bash
-smithery mcp publish ./dist/autoclip-mcp.mcpb -n io.github.zhouxiaoka/autoclip-mcp
+smithery mcp publish ./dist/autoclip-mcp.mcpb -n io.github.yogendra-sudo/AutoVideoClip-mcp
 ```
 
 Smithery 日后若接受 `server.type: uv`，只改清单里的类型即可，启动命令和 PyPI 依赖不用改。不要为此去抬 PyPI 版本。

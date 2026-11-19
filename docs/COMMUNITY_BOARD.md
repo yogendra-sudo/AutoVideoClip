@@ -1,4 +1,4 @@
-# AutoClip 社区看板
+# AutoVideoClip 社区看板
 
 公开想法进 GitHub Discussions，已经决定要跟的事进 GitHub Issues，公开路线图用 GitHub Projects。
 这三样都在公开仓库的免费额度里。第二阶段再考虑自建 Quackback，现在不建。
@@ -8,7 +8,7 @@
 
 ## 为什么现在就定这套
 
-AutoClip 的用户已经在 GitHub 上。v1.2.1 的下载以 Windows 安装包为主，仓库里同时有桌面、Docker 和 CLI 用户。
+AutoVideoClip 的用户已经在 GitHub 上。v1.2.1 的下载以 Windows 安装包为主，仓库里同时有桌面、Docker 和 CLI 用户。
 再引入一套账号、投票和看板，等于让同一个人维护两个产品。
 
 现在的反馈是散的：应用内一句、GitHub Issue 一堆，Discussions 开着但还是默认分类，没有公开路线图。飞书表格不再收反馈：界面有八种语言，一张中文表跟着走不了。
@@ -42,7 +42,7 @@ Issue 区曾经被「用不了」和「我觉得应该」混在一起。入口�
             GitHub Issue
                  │
                  ▼
-         AutoClip Roadmap
+         AutoVideoClip Roadmap
      Exploring → Researching → Planned → Building → Testing → Shipped
                  │
                  ▼
@@ -57,7 +57,7 @@ Discussions 里的帖子不是承诺。Issue 才是进入 backlog 的需求。Pr
 
 | 分类 | 谁来写 | 写什么 |
 | --- | --- | --- |
-| Ideas | 任何人 | 希望 AutoClip 支持什么。先写场景 |
+| Ideas | 任何人 | 希望 AutoVideoClip 支持什么。先写场景 |
 | Use Cases | 任何人 | 拿它做游戏切片、播客、课程、短剧 |
 | AI Models | 任何人 | 希望支持哪个模型，现在缺在名单里还是效果不行 |
 | Q&A | 任何人 | 怎么用。能复现的故障仍开 Issue |
@@ -69,7 +69,7 @@ Polls 留给维护者发起投票，不作为日常入口。
 
 ## 路线图六列
 
-Project 名称是 **AutoClip Roadmap**，设为公开。Status 只有这六列：
+Project 名称是 **AutoVideoClip Roadmap**，设为公开。Status 只有这六列：
 
 | 列 | 含义 | 谁能放进去 |
 | --- | --- | --- |
@@ -101,7 +101,7 @@ Agent 读完后写出本周信号：哪几条是同一件事、哪几条已经�
 1. 按 [issue-body.md](community/issue-body.md) 建 Issue，标题 `[Feature] …`
 2. 打上 `feature` 和对应的 `status:*`
 3. 正文链到相关 Discussions
-4. 把 Issue 加进 AutoClip Roadmap，Status 设成你说的那一列
+4. 把 Issue 加进 AutoVideoClip Roadmap，Status 设成你说的那一列
 5. 回讨论帖，链到 Issue
 
 你说「最近 30 天呼声最高、还没进路线图的需求」时，Agent 只分析，不开 Issue。
@@ -143,13 +143,13 @@ Building 和 Testing 现在是空的：更新日志里没有「已写完、还�
 
 下一次发行看 Building 里已经攒了什么，不按单个 PR 决定。社区新想法默认停在 Exploring，不插进已经排好的顺序，除非它就是其中一件的复现。
 
-1. **看板是排期本身。** 六列装在公开 Project「AutoClip Roadmap」上。种子 Issue 按 `docs/community/roadmap-seed.json` 放进对应列。
+1. **看板是排期本身。** 六列装在公开 Project「AutoVideoClip Roadmap」上。种子 Issue 按 `docs/community/roadmap-seed.json` 放进对应列。
 2. **v1.3.1 之后按这个顺序做产品，社区新想法默认停在 Exploring：**
    - Windows 真机验证。安装包已经是下载主力，交接记录里仍没有干净机器跑通的结论。
    - Apple 公证和 Windows 代码签名。应用内更新和崩溃上报已经在 v1.3.1，未签名仍会拦住安装。
    - 首页和项目卡按设计系统重做。八语界面已经上线，这两处还是 Ant Design 默认件。
    - CLI 真视频，以及竖屏三条预设的人工看片。
-3. **通用识别和评分插件接口继续评估。** #67 已按维护者 2026-09-30 的接入要求实现可选本地 SenseVoiceSmall，见 [PR #244](https://github.com/zhouxiaoka/autoclip/pull/244) 和 [模型配置](AI_MODEL_CONFIGURATION.md#本地-sensevoice67)；现有转写入口负责统一路由，词级时间戳必须完整、单调且不超出音频。此交付不代表全部 FunASR 模型或通用插件框架已完成。账号仍等公证和代码签名完成，不因为界面语言已经上线就提前开。
+3. **通用识别和评分插件接口继续评估。** #67 已按维护者 2026-09-30 的接入要求实现可选本地 SenseVoiceSmall，见 [PR #244](https://github.com/yogendra-sudo/AutoVideoClip/pull/244) 和 [模型配置](AI_MODEL_CONFIGURATION.md#本地-sensevoice67)；现有转写入口负责统一路由，词级时间戳必须完整、单调且不超出音频。此交付不代表全部 FunASR 模型或通用插件框架已完成。账号仍等公证和代码签名完成，不因为界面语言已经上线就提前开。
 4. **新的社区需求不插到上面这几件前面**，除非它就是其中一件的复现，例如切片结果为空。
 
 Quackback 同时满足下面三条再立项，缺一条就继续用 GitHub：

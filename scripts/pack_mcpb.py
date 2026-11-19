@@ -13,7 +13,7 @@ BUNDLE = ROOT / "mcpb"
 DEFAULT_OUT = ROOT / "dist" / "autoclip-mcp.mcpb"
 MCPB_PACKAGE = "@anthropic-ai/mcpb@2.1.2"
 PUBLISH_COMMAND = (
-    "smithery mcp publish ./dist/autoclip-mcp.mcpb -n io.github.zhouxiaoka/autoclip-mcp"
+    "smithery mcp publish ./dist/autoclip-mcp.mcpb -n io.github.yogendra-sudo/AutoVideoClip-mcp"
 )
 
 

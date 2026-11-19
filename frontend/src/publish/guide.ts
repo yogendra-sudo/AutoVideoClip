@@ -1,5 +1,5 @@
 /** PublishHow-toGet it from thewebsite，ApplicationOnly provide access within，For future convenienceChangeSteps without release。 */
-export const PUBLISH_GUIDE_ORIGIN = 'https://zhouxiaoka.github.io/autoclip_intro'
+export const PUBLISH_GUIDE_ORIGIN = 'https://yogendra-sudo.github.io/autoclip_intro'
 export const PUBLISH_GUIDE_PATH = '/guides/publish/'
 
 const LANGS = ['zh', 'en', 'ja', 'ko', 'es', 'pt', 'ru', 'fr'] as const

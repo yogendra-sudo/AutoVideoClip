@@ -1,4 +1,4 @@
-# AutoClip 埋点规范（Tracking Plan）
+# AutoVideoClip 埋点规范（Tracking Plan）
 
 给 Kris 审的规范文档。1.5.7 起按本文件体系统一埋点：先登记，再发送。字段和枚举只引用第 0 步契约（#354，merge `8f49726`，已在 main）：`backend.core.upstream_errors`、`backend.core.llm_telemetry`、`frontend/src/analytics/successRateContract.ts`。禁止再复制一套分类或脱敏；后续代码直接 import 这三处。
 
@@ -436,7 +436,7 @@ person_id NOT IN COHORT {internal_cohort_id}
 
 ## 7. PostHog 成功率看板配置
 
-新建看板，名称建议：**AutoClip｜1.5.7 出片成功率**。不要改 2026-09-30 Studio V2 看板的历史口径。项目：`450605`。
+新建看板，名称建议：**AutoVideoClip｜1.5.7 出片成功率**。不要改 2026-09-30 Studio V2 看板的历史口径。项目：`450605`。
 
 公共过滤（每张 insight 都加，v4）：
 

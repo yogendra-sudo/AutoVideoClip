@@ -13,7 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
-REPO_DEFAULT = "zhouxiaoka/autoclip"
+REPO_DEFAULT = "yogendra-sudo/AutoVideoClip"
 
 
 def github_asset_url(repo: str, tag: str, filename: str) -> str:

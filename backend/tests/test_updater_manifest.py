@@ -12,7 +12,7 @@ _SPEC.loader.exec_module(_mod)
 
 
 def test_github_asset_url_replaces_spaces():
-    url = _mod.github_asset_url("zhouxiaoka/autoclip", "v1.2.2", "AutoClip Desktop_1.2.2_x64-setup.exe")
+    url = _mod.github_asset_url("yogendra-sudo/AutoVideoClip", "v1.2.2", "AutoClip Desktop_1.2.2_x64-setup.exe")
     assert url.endswith("/AutoClip.Desktop_1.2.2_x64-setup.exe")
     assert " " not in url
 
@@ -21,7 +21,7 @@ def test_collect_platforms_skips_unsigned(tmp_path: Path):
     artifact = tmp_path / "AutoClip.Desktop_1.2.2_aarch64.app.tar.gz"
     artifact.write_bytes(b"app")
     platforms = _mod.collect_platforms(
-        repo="zhouxiaoka/autoclip",
+        repo="yogendra-sudo/AutoVideoClip",
         tag="v1.2.2",
         artifacts={"darwin-aarch64": artifact, "windows-x86_64": None},
     )
@@ -33,7 +33,7 @@ def test_collect_platforms_includes_signed(tmp_path: Path):
     artifact.write_bytes(b"app")
     Path(str(artifact) + ".sig").write_text("minisign-signature\n", encoding="utf-8")
     platforms = _mod.collect_platforms(
-        repo="zhouxiaoka/autoclip",
+        repo="yogendra-sudo/AutoVideoClip",
         tag="v1.2.2",
         artifacts={"darwin-aarch64": artifact},
     )

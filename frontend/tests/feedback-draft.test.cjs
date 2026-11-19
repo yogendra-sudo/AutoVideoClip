@@ -37,7 +37,7 @@ test('capture keeps the email and github links do not', () => {
   assert.equal(props.llm_base_url, undefined)
   assert.ok(!props.text.includes('sk-test-abc1234567890'))
   const url = githubFallbackUrl(draft)
-  assert.ok(url.startsWith('https://github.com/zhouxiaoka/autoclip/issues/new?'))
+  assert.ok(url.startsWith('https://github.com/yogendra-sudo/AutoVideoClip/issues/new?'))
   assert.ok(!url.includes('person@example.com'))
   assert.ok(!url.includes('sk-test-abc1234567890'))
   assert.ok(url.includes('bug_report.yml'))

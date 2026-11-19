@@ -1,4 +1,4 @@
-# AutoClip
+# AutoVideoClip
 
 ## Design System
 做任何视觉/UI 决策前，先读 `DESIGN.md`。所有配色、字体、间距、圆角、状态表达、按钮样式都以它为准。

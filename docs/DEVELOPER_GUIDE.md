@@ -1,13 +1,13 @@
 # Developer Guide
 
-Project repository: [zhouxiaoka/autoclip](https://github.com/zhouxiaoka/autoclip). See [Repository Layout](REPOSITORY_LAYOUT.md) for directory structure, maintenance entry points, and handling of legacy files.
+Project repository: [yogendra-sudo/AutoVideoClip](https://github.com/yogendra-sudo/AutoVideoClip). See [Repository Layout](REPOSITORY_LAYOUT.md) for directory structure, maintenance entry points, and handling of legacy files.
 
 ## Environment and Validation
 
 For source-based web mode, prepare Python 3.11, Node.js 20, and Redis according to [STARTUP_GUIDE.md](../STARTUP_GUIDE.md). Desktop mode uses Tauri and a separate backend entry point. Use [BUILD_GUIDE.md](../BUILD_GUIDE.md) and [scripts/README.md](../scripts/README.md) for packaging; do not reuse the web-mode Redis/Celery startup commands.
 
 ```bash
-git clone https://github.com/zhouxiaoka/autoclip.git
+git clone https://github.com/yogendra-sudo/AutoVideoClip.git
 cd autoclip
 python3 -m venv venv
 source venv/bin/activate

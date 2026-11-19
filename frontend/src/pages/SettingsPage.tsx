@@ -108,7 +108,7 @@ const SettingsPage: React.FC = () => {
                   <Btn size="sm" onClick={() => openExternalLink(FEEDBACK_DISCUSSIONS_URL)}>{t("Discuss")}<Icon.External size={12} /></Btn>
                 </Row>
                 <Row label={t("Status and known issues")} hint={t("Release plans, known bugs and workarounds are in the pinned issue.")}>
-                  <Btn variant="text" size="sm" onClick={() => openExternalLink('https://github.com/zhouxiaoka/autoclip/issues/96')}>#96 <Icon.External size={12} /></Btn>
+                  <Btn variant="text" size="sm" onClick={() => openExternalLink('https://github.com/yogendra-sudo/AutoVideoClip/issues/96')}>#96 <Icon.External size={12} /></Btn>
                 </Row>
               </div>
             </Section>

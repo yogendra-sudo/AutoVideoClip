@@ -4,7 +4,7 @@
 
 ## 为什么是 1.5.5
 
-1.5.4（`90edc851`）通过 Internal Acceptance [37429155325](https://github.com/zhouxiaoka/autoclip/actions/runs/37429155325) 后打了 `v1.5.4` 标签，但 tag 构建 [37429280728](https://github.com/zhouxiaoka/autoclip/actions/runs/37429280728) 在 candidate-gate 被拦：`actions/checkout` 在 tag 事件下用 `+SHA:refs/tags/$TAG` 把带注解标签改写成轻量标签，`tag-run` 读不到 `Internal-Acceptance-Run`。这个门禁加入后从未在真实 tag 上运行过，任何版本都会被拦。`v1.5.4` 标签保留、没有 Release；按不重打同名标签的规则，修复后以 1.5.5 发布。
+1.5.4（`90edc851`）通过 Internal Acceptance [37429155325](https://github.com/yogendra-sudo/AutoVideoClip/actions/runs/37429155325) 后打了 `v1.5.4` 标签，但 tag 构建 [37429280728](https://github.com/yogendra-sudo/AutoVideoClip/actions/runs/37429280728) 在 candidate-gate 被拦：`actions/checkout` 在 tag 事件下用 `+SHA:refs/tags/$TAG` 把带注解标签改写成轻量标签，`tag-run` 读不到 `Internal-Acceptance-Run`。这个门禁加入后从未在真实 tag 上运行过，任何版本都会被拦。`v1.5.4` 标签保留、没有 Release；按不重打同名标签的规则，修复后以 1.5.5 发布。
 
 1.5.5 = `90edc851` + workflow 先强制取回带注解标签 + 版本号。产品代码与 1.5.4 完全相同。
 

@@ -26,7 +26,7 @@ class PublishGuideInstallerTests(unittest.TestCase):
             "    </div>\n"
             "  </div>\n"
             "</section>\n\n</main>\n"
-            '      <a href="https://github.com/zhouxiaoka/autoclip" target="_blank" rel="noopener">GitHub</a>\n'
+            '      <a href="https://github.com/yogendra-sudo/AutoVideoClip" target="_blank" rel="noopener">GitHub</a>\n'
             + "\n".join(anchors)
         )
 

@@ -1,4 +1,4 @@
-# AutoClip 发版流程
+# AutoVideoClip 发版流程
 
 > 2026-09-29 起所有发版都按这份执行。背景：9-22 到 9-27 六天发了 5 个版本，每版都没经过真机验收就直接推给全部用户，
 > 热修又带出新问题。原则变成：**攒批、验收、先小范围、再推给所有人**。
@@ -63,7 +63,7 @@
 Windows 验收分三层，前两层必须过，第三层补上界面和真实网络：
 
 1. **CI 自动冒烟（必须，tag 构建自动跑，不过就不会出 Release）**：`desktop-build.yml` 的 `smoke-windows-x64` 在干净的 windows-latest 上
-   装上一个正式版 → 在旧版 `resources\backend` 放一个过时文件、在 `%APPDATA%\AutoClip` 放一个用户数据哨兵 → 模拟残留后端占住 `_asyncio.pyd` → 静默覆盖安装本次构建
+   装上一个正式版 → 在旧版 `resources\backend` 放一个过时文件、在 `%APPDATA%\AutoVideoClip` 放一个用户数据哨兵 → 模拟残留后端占住 `_asyncio.pyd` → 静默覆盖安装本次构建
    （过时文件必须被清掉、用户数据哨兵必须还在）→ 用安装目录自带的 Python 跑 `scripts/verify_windows_install.py`
    （内置 ffmpeg 出片、中文文件名、yt-dlp 拿到 ffmpeg、桌面后端启动、来源守卫）。覆盖了近两周 Windows 反馈里的主要故障点，
    但**看不到界面**，也不下载真实链接。
@@ -99,7 +99,7 @@ Windows 验收分三层，前两层必须过，第三层补上界面和真实网
 - [ ] Actions → **Release Acceptance** → tag、该 tag 的 build run ID、已提交的脱敏验收 manifest 路径；等待成功
 - [ ] Actions → **Promote / Halt Release** → `tag=vX.Y.Z`，`action=promote`，`acceptance_run_id=上一步成功 run ID`
   → 该版本变成 latest，应用内更新开始推送，官网同步
-- [ ] 成功率发布时间：执行本步 Promote 的人，打开该版本的 GitHub Release，复制 `published_at`（UTC，形如 `YYYY-MM-DDTHH:MM:SSZ`）。到 PostHog 项目 `450605`、看板「AutoClip｜1.5.7 出片成功率」，把每条 insight 里的 `docs/analytics/success_rate.sql` 参数 `{release_1_5_7}` 换成 `'YYYY-MM-DD HH:MM:SS'`：去掉 `T` 和 `Z`，日期与时间之间改成空格，保留 UTC，外面加单引号（`version_releases` 中 1.5.7 那一行的 `released_at_text`）。还没拿到发布时间就填空字符串 `''`，这一版的事件先全部不计入。不要猜日期，也不要把这个时间写回仓库。1.5.6 及更早不在这张表里，不用填
+- [ ] 成功率发布时间：执行本步 Promote 的人，打开该版本的 GitHub Release，复制 `published_at`（UTC，形如 `YYYY-MM-DDTHH:MM:SSZ`）。到 PostHog 项目 `450605`、看板「AutoVideoClip｜1.5.7 出片成功率」，把每条 insight 里的 `docs/analytics/success_rate.sql` 参数 `{release_1_5_7}` 换成 `'YYYY-MM-DD HH:MM:SS'`：去掉 `T` 和 `Z`，日期与时间之间改成空格，保留 UTC，外面加单引号（`version_releases` 中 1.5.7 那一行的 `released_at_text`）。还没拿到发布时间就填空字符串 `''`，这一版的事件先全部不计入。不要猜日期，也不要把这个时间写回仓库。1.5.6 及更早不在这张表里，不用填
 - [ ] 更新置顶帖 #96 的版本号和「这版修了什么」
 - [ ] 本版修复的 issue：回复「已在 vX.Y.Z 修复，请升级」后关闭；重复的 issue 合并到一个跟踪 issue 再一起关
 - [ ] `HANDOFF.md` 头部状态同步
@@ -138,7 +138,7 @@ Windows 验收分三层，前两层必须过，第三层补上界面和真实网
 
 要发布 autoclip-mcp，推送 `mcp-v<version>`。该标签走 `pypi` environment，只允许从 `mcp-v*` 部署。Desktop Build 与发版工作流的 tag 过滤是 `v*`，只匹配以 `v` 开头的标签，不匹配 `mcp-v*`，因此桌面 `v*` 标签不会发到 PyPI，也不必在那些工作流里再排除 `mcp-v*`。
 
-PyPI 版本可以是产品版本的 post 发行（产品 `1.5.7`、包 `1.5.7.post1`），桌面端版本号不用跟着改。`README.md` 里要有 `<!-- mcp-name: io.github.zhouxiaoka/autoclip-mcp -->`，并与根目录 `server.json` 的 `name` 一致。上传到 PyPI 之后，维护者再在本机执行 `mcp-publisher login github`（GitHub 设备登录）和 `mcp-publisher publish`。CI 不跑 `mcp-publisher`。
+PyPI 版本可以是产品版本的 post 发行（产品 `1.5.7`、包 `1.5.7.post1`），桌面端版本号不用跟着改。`README.md` 里要有 `<!-- mcp-name: io.github.yogendra-sudo/AutoVideoClip-mcp -->`，并与根目录 `server.json` 的 `name` 一致。上传到 PyPI 之后，维护者再在本机执行 `mcp-publisher login github`（GitHub 设备登录）和 `mcp-publisher publish`。CI 不跑 `mcp-publisher`。
 
 ## 相关文件
 

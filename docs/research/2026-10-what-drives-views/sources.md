@@ -1,4 +1,4 @@
-# Sources · AutoClip Research Note #1 (2026-10-09)
+# Sources · AutoVideoClip Research Note #1 (2026-10-09)
 
 All metrics are **snapshots at fetch time** (UTC+8, 2026-10-09). They are copied from our working files and have not been re-fetched. X metrics are `impression_count` / `like_count` / `bookmark_count` / `media.view_count` as returned by X's read-only API. `view_count` merges views when a video is reused. YouTube metrics come from public pages read with `yt-dlp` (no cookies, proxy or login).
 
@@ -6,7 +6,7 @@ All metrics are **snapshots at fetch time** (UTC+8, 2026-10-09). They are copied
 
 **Figures.** Case figures C1–C23 (`figures/case-*.jpg`) contain stills from third-party public posts, used for commentary and research with attribution (credits table at the end of this file). Charts (`figures/fig1–5,7-*-dark.png`; light variants without `-dark`) are generated from the numbers below by `src/charts.py`. Thumbnail overviews (`figures/fig11-r3-ab-pairs.jpg`, `figures/figA-*.jpg`) are stills from **our own renders** of three segments of a public interview: Dwarkesh Podcast, "Jensen Huang – Will Nvidia's moat persist?", 2026-04-15, 1080p taken from the publisher's public Substack post.
 
-## Internal source files (AutoClip research workspace)
+## Internal source files (AutoVideoClip research workspace)
 
 | File | What it contains |
 |---|---|

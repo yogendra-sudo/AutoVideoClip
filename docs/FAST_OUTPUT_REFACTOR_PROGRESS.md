@@ -131,7 +131,7 @@ Studio v2 数据契约与自动编排：导入选择平台后，自动完成理�
 - 首页导入改为选择具体发布平台后直接发送 `auto_start=true`，成功后跳到项目结果页，不再默认进入方案确认页。
 - 新增 `PlatformPicker`，从 `/studio/platform-strategies` 读取策略；后端暂时不可用时使用受控 fallback，入口不会消失。
 - 默认选择抖音，用户可以多选平台；请求会重复提交 `platforms` form field，后端复用同一次内容理解。
-- 快速入口提供默认开启的 `Made with AutoClip` 片尾开关；该开关目前已持久化，实际渲染片尾将在后续 branding 包实现。
+- 快速入口提供默认开启的 `Made with AutoVideoClip` 片尾开关；该开关目前已持久化，实际渲染片尾将在后续 branding 包实现。
 - 新增 `OutputVariantCard`，自动版本直接显示生成状态、下载入口和 Studio 编辑入口；自动项目不再显示“继续确认方案”。
 - workspace 类型与 API 扩展为 generation、output variants 和平台策略摘要。
 - 新增平台选择和自动跳转的前端静态行为测试；八个语言目录补齐快速出片静态文案键。
@@ -148,7 +148,7 @@ backend: 731 passed, 1 skipped
 
 ### 下一包
 
-品牌片尾与统一 finalization：在 Studio 和 legacy/publish 导出的最终合成阶段各追加一次 1 秒、可关闭的 `Made with AutoClip` 片尾，并为带/不带片尾的输出建立独立缓存与回归验证。
+品牌片尾与统一 finalization：在 Studio 和 legacy/publish 导出的最终合成阶段各追加一次 1 秒、可关闭的 `Made with AutoVideoClip` 片尾，并为带/不带片尾的输出建立独立缓存与回归验证。
 
 ### 主要风险
 
@@ -162,7 +162,7 @@ backend: 731 passed, 1 skipped
 
 ### 完成内容
 
-- 新增 `backend/services/output_branding.py`，在内容视频最终完成后追加一次 1 秒 `Made with AutoClip` 片尾；不叠常驻水印，不在每个镜头重复覆盖。
+- 新增 `backend/services/output_branding.py`，在内容视频最终完成后追加一次 1 秒 `Made with AutoVideoClip` 片尾；不叠常驻水印，不在每个镜头重复覆盖。
 - 自动平台 variant 的 `branding.outro_enabled` 已传入 Studio render job；旧手动 Studio 导出默认保持不带片尾，避免改变历史行为。
 - `ExportRequest.brand_outro` 让 legacy/publish 导出也使用相同 finalization；输出缓存文件名包含 `autoclip-outro-v1`，带/不带片尾不会错误复用。
 - 输出合成使用独立 `.branding.part.mp4` 临时文件和原子替换，避免覆盖 Studio 内容渲染的 `.part.mp4`。
@@ -340,7 +340,7 @@ frontend: typecheck / lint / build / test（163 passed）
 
 - 片尾：Studio 成片视频时间基为 1/16000，旧片尾按 ffmpeg 默认参数编码，stream copy 拼接后 30 帧挤进约 2 ms，播放器只剩 1 秒静音。现在片尾读取正片的时间基、帧率和音频参数后编码；新增测试断言片尾帧跨度约 1 秒，并用真实成片复验。
 - 平台时长（负责人决定：内容完整优先，只有平台硬限制才截断）：registry 拆分 `recommended_max_duration_sec`（建议值，不截断）与 `max_duration_sec`（平台硬上限）。抖音、TikTok、Reels、小红书无硬上限；YouTube Shorts 硬上限由过时的 60 秒改为 180 秒，超出时在最后一个字幕句末截断，结果卡说明原因。旧发布导出不再把抖音/小红书截到 90 秒。
-- 原片自带字幕：新增本地检测 `studio/burned_subtitles.py`（不调用 OCR、不上传画面），抽 12 帧画面下部，识别“亮字 + 暗描边且随时间变化”的区域，固定台标不会误判。检测到时，自动版本不再叠加 AutoClip 字幕，竖版裁切布局改为完整画面 + 模糊背景，避免切掉原字幕。结果按项目缓存，追加平台复用。
+- 原片自带字幕：新增本地检测 `studio/burned_subtitles.py`（不调用 OCR、不上传画面），抽 12 帧画面下部，识别“亮字 + 暗描边且随时间变化”的区域，固定台标不会误判。检测到时，自动版本不再叠加 AutoVideoClip 字幕，竖版裁切布局改为完整画面 + 模糊背景，避免切掉原字幕。结果按项目缓存，追加平台复用。
 - 真实素材校准：WIRED 小岛秀夫原片 12 帧文字占比 0.6%–1.0%、相邻帧重合≈0 → 判定有字幕；YC Sam Altman 原片 ≤0.16%、右下角台标未误判 → 判定无字幕。阈值 0.4%。
 
 ### 已验证

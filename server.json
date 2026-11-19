@@ -1,12 +1,12 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.zhouxiaoka/autoclip-mcp",
+  "name": "io.github.yogendra-sudo/AutoVideoClip-mcp",
   "title": "AutoClip",
   "description": "Clip long videos into short clips with covers and captions. Local CLI and MCP.",
   "version": "1.5.8",
-  "websiteUrl": "https://zhouxiaoka.github.io/autoclip_intro/",
+  "websiteUrl": "https://yogendra-sudo.github.io/autoclip_intro/",
   "repository": {
-    "url": "https://github.com/zhouxiaoka/autoclip",
+    "url": "https://github.com/yogendra-sudo/AutoVideoClip",
     "source": "github",
     "id": "1015815983"
   },

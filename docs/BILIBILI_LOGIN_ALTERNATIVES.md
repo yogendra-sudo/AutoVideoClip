@@ -29,7 +29,7 @@
 3. 切换到Network标签页
 4. 刷新页面，找到任意请求
 5. 在请求头中复制Cookie字段的值
-6. 粘贴到AutoClip的Cookie输入框中
+6. 粘贴到AutoVideoClip的Cookie输入框中
 
 ### 2. 账号密码登录 ⭐⭐⭐
 

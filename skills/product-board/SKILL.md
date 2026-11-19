@@ -1,12 +1,12 @@
 ---
 name: product-board
 description: >-
-  维护 AutoClip 的公开社区看板。当用户要看社区反馈、整理功能呼声、把一条讨论放进路线图、
+  维护 AutoVideoClip 的公开社区看板。当用户要看社区反馈、整理功能呼声、把一条讨论放进路线图、
   或问 GitHub Discussions、Projects、Quackback、Featurebase 该怎么接时使用。
   想法留在 Discussions，只有人确认后才开 Issue。
 ---
 
-# AutoClip 产品看板
+# AutoVideoClip 产品看板
 
 规则的正文在 `docs/COMMUNITY_BOARD.md`。商业化阶段仍以 `ROADMAP.md` 为准，当前工程状态以 `HANDOFF.md` 为准。
 
@@ -25,7 +25,7 @@ description: >-
 - Planned、Building、Testing、Shipped 必须使用人说出的那一列，不能自己升级。
 - 合并 PR 不算 Shipped。发版说明里写了才把卡移到 Shipped。
 
-晋升时按 `docs/community/issue-body.md` 写正文，打 `feature` 和对应 `status:*`，加入名为 **AutoClip Roadmap** 的 Project，并回原讨论帖。
+晋升时按 `docs/community/issue-body.md` 写正文，打 `feature` 和对应 `status:*`，加入名为 **AutoVideoClip Roadmap** 的 Project，并回原讨论帖。
 
 ## 不要做的事
 

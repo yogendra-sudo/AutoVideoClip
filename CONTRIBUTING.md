@@ -1,12 +1,12 @@
 # 贡献指南
 
-AutoClip 接受故障修复、文档与翻译改进，以及已经确认范围的功能贡献。首次参与可先看 [README](README.md)、[仓库目录说明](docs/REPOSITORY_LAYOUT.md) 和 [当前状态](HANDOFF.md)。个人业余维护，回复时间不固定。
+AutoVideoClip 接受故障修复、文档与翻译改进，以及已经确认范围的功能贡献。首次参与可先看 [README](README.md)、[仓库目录说明](docs/REPOSITORY_LAYOUT.md) 和 [当前状态](HANDOFF.md)。个人业余维护，回复时间不固定。
 
 ## 先选择反馈入口
 
-- 可复现故障：[Bug 报告](https://github.com/zhouxiaoka/autoclip/issues/new/choose)。提供实际版本或源码提交、平台、相关模型、复现步骤、预期与实际结果，以及脱敏日志。
-- 使用提问：[Q&A](https://github.com/zhouxiaoka/autoclip/discussions/categories/q-a)。先查 [FAQ](docs/FAQ.md) 与 [已知问题](https://github.com/zhouxiaoka/autoclip/issues/96)。
-- 新想法与功能建议：[Ideas](https://github.com/zhouxiaoka/autoclip/discussions/categories/ideas)。说明场景与遇到的问题；较大的功能先讨论范围，再开始实现。
+- 可复现故障：[Bug 报告](https://github.com/yogendra-sudo/AutoVideoClip/issues/new/choose)。提供实际版本或源码提交、平台、相关模型、复现步骤、预期与实际结果，以及脱敏日志。
+- 使用提问：[Q&A](https://github.com/yogendra-sudo/AutoVideoClip/discussions/categories/q-a)。先查 [FAQ](docs/FAQ.md) 与 [已知问题](https://github.com/yogendra-sudo/AutoVideoClip/issues/96)。
+- 新想法与功能建议：[Ideas](https://github.com/yogendra-sudo/AutoVideoClip/discussions/categories/ideas)。说明场景与遇到的问题；较大的功能先讨论范围，再开始实现。
 - 安全问题：按 [SECURITY.md](SECURITY.md) 私下联系，不在公开帖子中披露漏洞细节或凭据。
 
 Discussions 中的想法不代表开发承诺，确认后的工作才进入 Issue 与路线图，见 [社区看板](docs/COMMUNITY_BOARD.md)。
@@ -17,7 +17,7 @@ Fork 本仓库并克隆你的 Fork，添加上游：
 
 ```bash
 cd autoclip
-git remote add upstream https://github.com/zhouxiaoka/autoclip.git
+git remote add upstream https://github.com/yogendra-sudo/AutoVideoClip.git
 git fetch upstream
 git switch -c fix/your-change upstream/main
 ```
@@ -83,7 +83,7 @@ git push -u origin fix/your-change
 
 按 [PR 模板](.github/PULL_REQUEST_TEMPLATE.md) 说明问题、最终行为和验证结果；有相关 Issue 时附链接。验证未覆盖的平台或步骤应明确写出，避免把未运行的检查标为通过。不要提交 `.env`、API Key、Cookie、私人素材、运行数据库、模型缓存或构建产物；文件归档规则见 [归档规范](docs/REPOSITORY_ARCHIVE_POLICY.md)。
 
-收到审查反馈后在同一 PR 更新。较大的方案调整先在对应讨论中说明，避免把无关改动混在一起。合入源码与正式安装包发布是不同步骤；发布信息以 [Releases](https://github.com/zhouxiaoka/autoclip/releases) 为准。
+收到审查反馈后在同一 PR 更新。较大的方案调整先在对应讨论中说明，避免把无关改动混在一起。合入源码与正式安装包发布是不同步骤；发布信息以 [Releases](https://github.com/yogendra-sudo/AutoVideoClip/releases) 为准。
 
 ## 社区与联系
 

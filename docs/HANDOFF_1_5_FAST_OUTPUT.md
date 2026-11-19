@@ -10,7 +10,7 @@
 - **完成度**：后端链路、前端结果页 / 发布包卡片 / 设置页都已实现并有测试；17 条真实素材回归集跑过；demo 成品在 `/private/tmp/autoclip-e2e/demos`（本机临时目录，含测试 key，测完要删）。
 - **效果**（详见 [成本与时间](COST_PER_VIDEO.md)）：2 小时访谈从链接到成片 65 分钟 → 有作者字幕 7–8 分钟、云端语音识别 5–18 分钟；模型费用 ¥0.64 → ¥0.02–0.2。
 - **测试**：本轮全量与真实 CLI / MCP 结果见 [1.5 验收记录](RELEASE_1_5.md)。前端 198 passed，typecheck / lint / build 通过；Rust 下载回归 5 passed。
-- **发布入口**：PR #250 已合入 main，tag `v1.5.0` 固定为 `e940f5ae`，最终 PR / main CI 全绿，后端 1106 passed、2 skipped。双平台构建、签名、安装升级和 CLI/MCP 同源资产已核对，Release 已转为 latest，应用内更新返回 1.5.0。证据见 [验收记录](RELEASE_1_5.md#正式-tag-与交付入口) 与 [Release](https://github.com/zhouxiaoka/autoclip/releases/tag/v1.5.0)。Windows 缺人工界面验收及未完成观察期已在 Release 中明确；官网由负责人更新。
+- **发布入口**：PR #250 已合入 main，tag `v1.5.0` 固定为 `e940f5ae`，最终 PR / main CI 全绿，后端 1106 passed、2 skipped。双平台构建、签名、安装升级和 CLI/MCP 同源资产已核对，Release 已转为 latest，应用内更新返回 1.5.0。证据见 [验收记录](RELEASE_1_5.md#正式-tag-与交付入口) 与 [Release](https://github.com/yogendra-sudo/AutoVideoClip/releases/tag/v1.5.0)。Windows 缺人工界面验收及未完成观察期已在 Release 中明确；官网由负责人更新。
 
 ## 负责人已拍板的产品决定（不要擅自改）
 
@@ -23,7 +23,7 @@
 | 模型推荐 | 选模型的自由交还给用户。内部测试 GPT Image 效果最好，但产品里不推荐具体模型；**产品里不推荐 fal**（推荐位只给赞助商，如 88API、Infistar） |
 | 配色 | 产品 UI 按 `DESIGN.md`；成片包装的内容配色按情绪变化，不受 DESIGN.md 限制（负责人确认） |
 | 片尾 | 用负责人提供的 1.8 秒动画（源文件在 `design/outro-v5/`）；设置 → 应用有开关，默认开启，编辑自动草稿后导出也继承 |
-| 复制文案 | 只留「复制发布文案」，不附 AutoClip 署名；片尾独立保留 |
+| 复制文案 | 只留「复制发布文案」，不附 AutoVideoClip 署名；片尾独立保留 |
 | 竖版布局 | 默认仍按平台；本版增加「访谈式（人物窗口）/ 播客式（满屏）」选择，平台继续决定语言与规格，CLI / MCP 同步支持 |
 | CLI / MCP | 本版接入 1.5 完整一键出片、平台包装及发布包，不仅更新版本号 |
 | 发布包 | 1.5.0 随版发布 |

@@ -7,7 +7,7 @@ Use Docker for Linux, Intel Mac, servers, or a web interface. Install Docker and
 ## First startup
 
 ```bash
-git clone https://github.com/zhouxiaoka/autoclip.git
+git clone https://github.com/yogendra-sudo/AutoVideoClip.git
 cd autoclip
 cp env.example .env
 ```
@@ -122,4 +122,4 @@ docker compose -f docker-compose.dev.yml up -d --build
 docker compose -f docker-compose.dev.yml logs -f
 ```
 
-See the [FAQ](FAQ.en.md) for more troubleshooting and [Releases](https://github.com/zhouxiaoka/autoclip/releases) for version changes.
+See the [FAQ](FAQ.en.md) for more troubleshooting and [Releases](https://github.com/yogendra-sudo/AutoVideoClip/releases) for version changes.

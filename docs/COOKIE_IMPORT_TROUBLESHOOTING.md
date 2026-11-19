@@ -139,7 +139,7 @@ export SKIP_COOKIE_VALIDATION=false
 
 ### 2. 导入Cookie
 
-1. 打开AutoClip的账号管理界面
+1. 打开AutoVideoClip的账号管理界面
 2. 选择"Cookie导入"标签页
 3. 粘贴Cookie字符串
 4. 设置昵称

@@ -1,4 +1,4 @@
-# AutoClip quality and release requirements
+# AutoVideoClip quality and release requirements
 
 Read [docs/TESTING_ACCEPTANCE.md](docs/TESTING_ACCEPTANCE.md) before changing code or preparing a release. Use [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) for release operations.
 

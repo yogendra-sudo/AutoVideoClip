@@ -5,7 +5,7 @@
 
 - **视频处理仍然全部在本地**：字幕、分析、剪辑、渲成片都不变，只有最终的 mp4 会上传到 Upload-Post。
 - Upload-Post 是第三方托管服务（免费档每月有额度，更多用量按套餐付费），需要自己注册、连接社交账号、生成 API Key。
-- 一次请求发多个平台；每个平台的结果（链接 / 错误）异步返回，AutoClip 负责轮询汇总。
+- 一次请求发多个平台；每个平台的结果（链接 / 错误）异步返回，AutoVideoClip 负责轮询汇总。
 
 入口：API（`/api/v1/publish/upload-post/...` 与 `/api/v1/publish/bilibili/...`）、CLI（`autoclip publish`，目前只发海外平台）、MCP（`publish_clip`）。
 桌面 / Docker / 脚本模式都可用。应用里在「设置 → 发布」填写 Upload-Post 密钥和 B 站 Cookie，在切片上点「发布」后直接勾选。
@@ -17,7 +17,7 @@
 1. 注册 [app.upload-post.com](https://app.upload-post.com)，在 **Manage Users** 里创建一个 profile（例如 `main`），
    把要发的社交账号连接到这个 profile 上。
 2. 在 **API Keys** 生成一个 key。
-3. 告诉 AutoClip（三选一，环境变量优先级最高）：
+3. 告诉 AutoVideoClip（三选一，环境变量优先级最高）：
 
 | 方式 | 做法 |
 |---|---|

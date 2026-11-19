@@ -1,4 +1,4 @@
-# AutoClip 产品路线图
+# AutoVideoClip 产品路线图
 
 > **2026-09-21 更新：近期执行入口为 [未来六周产品规划](docs/PRODUCT_PLAN_2026_Q4.md)。** 按最新方向，立即优先接入 Seed 多模态理解，以超休闲游戏买量素材为首个场景，交付覆盖创意编排和视听制作，并研究 Jev 对候选筛选与排序的收益；详见 [接入与评测计划](docs/MULTIMODAL_HIGHLIGHTS_PLAN.md)。效果对标与入库门槛见 [Golden Case 库](docs/GAME_AD_GOLDEN_CASES.md)。下文保留为历史长期方案；账号与 credits 商业化在重复需求验证后重新评估，旧阶段状态和工期不代表当前进度。
 
@@ -94,7 +94,7 @@
 
 ## 6. 社区入口
 
-公开需求不另建系统。第一阶段用 GitHub Discussions 收想法，用 GitHub Projects「AutoClip Roadmap」公开已经决定要跟的事，费用为零。操作规则见 `docs/COMMUNITY_BOARD.md`。
+公开需求不另建系统。第一阶段用 GitHub Discussions 收想法，用 GitHub Projects「AutoVideoClip Roadmap」公开已经决定要跟的事，费用为零。操作规则见 `docs/COMMUNITY_BOARD.md`。
 
 Quackback 是第二阶段：非开发者的反馈连续多到 Discussions 不够用，并且需要独立的反馈、路线图和更新日志页面时再装。装上之后，确认要做的需求仍写回 GitHub Issue。Featurebase 免费档没有 Agent 能调用的接口，Linear 不适合公众提需求，这两条不走。
 

@@ -24,7 +24,7 @@ interface State {
   errorId: string
 }
 
-const ISSUE_URL = 'https://github.com/zhouxiaoka/autoclip/issues/new/choose'
+const ISSUE_URL = 'https://github.com/yogendra-sudo/AutoVideoClip/issues/new/choose'
 
 const preStyle: React.CSSProperties = {
   margin: 0,

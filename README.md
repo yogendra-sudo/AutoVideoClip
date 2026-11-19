@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="src-tauri/icons/128x128.png" alt="AutoClip" width="72" height="72">
+<img src="src-tauri/icons/128x128.png" alt="AutoVideoClip" width="72" height="72">
 
-# AutoClip
+# AutoVideoClip
 
 ### One link. One click.
 
@@ -11,21 +11,21 @@ for Douyin, Xiaohongshu, TikTok, Reels, YouTube Shorts, Bilibili, or YouTube.<br
 The app is free; cloud models charge by usage. Open the editor whenever you want to adjust.
 
 <p>
-  <a href="https://github.com/zhouxiaoka/autoclip/releases/latest"><img src="https://img.shields.io/github/v/release/zhouxiaoka/autoclip?style=flat-square" alt="GitHub release"></a>
-  <a href="https://github.com/zhouxiaoka/autoclip/stargazers"><img src="https://img.shields.io/github/stars/zhouxiaoka/autoclip?style=flat-square" alt="GitHub stars"></a>
-  <a href="https://github.com/zhouxiaoka/autoclip/releases"><img src="https://img.shields.io/github/downloads/zhouxiaoka/autoclip/total?style=flat-square" alt="Downloads"></a>
+  <a href="https://github.com/yogendra-sudo/AutoVideoClip/releases/latest"><img src="https://img.shields.io/github/v/release/yogendra-sudo/AutoVideoClip?style=flat-square" alt="GitHub release"></a>
+  <a href="https://github.com/yogendra-sudo/AutoVideoClip/stargazers"><img src="https://img.shields.io/github/stars/yogendra-sudo/AutoVideoClip?style=flat-square" alt="GitHub stars"></a>
+  <a href="https://github.com/yogendra-sudo/AutoVideoClip/releases"><img src="https://img.shields.io/github/downloads/yogendra-sudo/AutoVideoClip/total?style=flat-square" alt="Downloads"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License: MIT"></a>
 </p>
 
-<a href="https://trendshift.io/repositories/25801"><img src="https://trendshift.io/api/badge/repositories/25801" alt="AutoClip — GitHub Trending" width="250" height="55"></a>
+<a href="https://trendshift.io/repositories/25801"><img src="https://trendshift.io/api/badge/repositories/25801" alt="AutoVideoClip — GitHub Trending" width="250" height="55"></a>
 
-**[Website](https://zhouxiaoka.github.io/autoclip_intro/)** · **[Download desktop](https://github.com/zhouxiaoka/autoclip/releases/latest)** · [Case library](https://zhouxiaoka.github.io/autoclip_intro/cases/) · [Research](docs/research/2026-10-what-drives-views/article-en.md) · [Quick start](#quick-start) · [Docs](#documentation) · [Report an issue](https://github.com/zhouxiaoka/autoclip/issues/new/choose)
+**[Website](https://yogendra-sudo.github.io/autoclip_intro/)** · **[Download desktop](https://github.com/yogendra-sudo/AutoVideoClip/releases/latest)** · [Case library](https://yogendra-sudo.github.io/autoclip_intro/cases/) · [Research](docs/research/2026-10-what-drives-views/article-en.md) · [Quick start](#quick-start) · [Docs](#documentation) · [Report an issue](https://github.com/yogendra-sudo/AutoVideoClip/issues/new/choose)
 
 [English](README.md) · **English** · [English](README-EN.md) · [English](README-JA.md) · [English](README-KO.md) · [English](README-ES.md) · [English](README-PT.md) · [English](README-RU.md) · [English](README-FR.md)
 
 </div>
 
-**[The latest release](https://github.com/zhouxiaoka/autoclip/releases/latest)** is what `autoclip --version` reports, with desktop, CLI, and MCP updated together. See the [changelog](CHANGELOG.md) for quick output, caption pagination, speaker framing, and long-video queue fixes. Please upgrade older installations.
+**[The latest release](https://github.com/yogendra-sudo/AutoVideoClip/releases/latest)** is what `autoclip --version` reports, with desktop, CLI, and MCP updated together. See the [changelog](CHANGELOG.md) for quick output, caption pagination, speaker framing, and long-video queue fixes. Please upgrade older installations.
 
 ## Real clips
 
@@ -157,7 +157,7 @@ Full-screen podcast · TikTok · English<br>
 
 </details>
 
-Find videos, covers and post text in the **[case library →](https://zhouxiaoka.github.io/autoclip_intro/cases/?lang=en)**, and [share your clips](https://github.com/zhouxiaoka/autoclip/discussions/new?category=show-and-tell). Source videos belong to their creators; these clips are shown for demonstration only.
+Find videos, covers and post text in the **[case library →](https://yogendra-sudo.github.io/autoclip_intro/cases/?lang=en)**, and [share your clips](https://github.com/yogendra-sudo/AutoVideoClip/discussions/new?category=show-and-tell). Source videos belong to their creators; these clips are shown for demonstration only.
 
 ## What it does
 
@@ -167,7 +167,7 @@ Pick a platform to generate within its frame and duration rules. Each platform a
 
 ### Packaging is built in
 
-Douyin / Xiaohongshu default to interview style; TikTok / Reels / Shorts default to full-screen podcast style. You can choose either vertical layout without changing the platform’s caption/copy language. Bilibili / YouTube use landscape. Framing follows the speaker and preserves full frames when no person is found. The brand outro is on by default and can be disabled in Settings; copied post text has no AutoClip credit.
+Douyin / Xiaohongshu default to interview style; TikTok / Reels / Shorts default to full-screen podcast style. You can choose either vertical layout without changing the platform’s caption/copy language. Bilibili / YouTube use landscape. Framing follows the speaker and preserves full frames when no person is found. The brand outro is on by default and can be disabled in Settings; copied post text has no AutoVideoClip credit.
 
 ### It stays on your computer
 
@@ -208,19 +208,19 @@ Cutting and rendering run on your computer. Cloud analysis sends relevant captio
 
 ### Desktop
 
-1. **Install.** Download from [Releases](https://github.com/zhouxiaoka/autoclip/releases/latest). macOS Apple Silicon: `.dmg`. Windows 10 / 11 x64: `-setup.exe`. Python and FFmpeg are bundled. On macOS 15 and later, double-click once; if blocked, open System Settings → Privacy & Security → Open Anyway ([Apple’s note](https://developer.apple.com/news/?id=saqachfa)). On older macOS, right-click the app and choose Open. If Windows SmartScreen appears, choose More info → Run anyway.
+1. **Install.** Download from [Releases](https://github.com/yogendra-sudo/AutoVideoClip/releases/latest). macOS Apple Silicon: `.dmg`. Windows 10 / 11 x64: `-setup.exe`. Python and FFmpeg are bundled. On macOS 15 and later, double-click once; if blocked, open System Settings → Privacy & Security → Open Anyway ([Apple’s note](https://developer.apple.com/news/?id=saqachfa)). On older macOS, right-click the app and choose Open. If Windows SmartScreen appears, choose More info → Run anyway.
 2. **Configure a model.** Choose a provider and enter its API key, select an available analysis model, test the connection, and save. For local models, start Ollama / LM Studio and load a model first.
 3. **See the example, then use your own video.** When the home screen has no projects, click “See an example project.” It needs no API key; the example is inside the installer. Then use your own interview or podcast and choose a vertical layout. When the source has no subtitles, or local Whisper will not install or is too slow, open Settings → Default models → “Speech to subtitles” and switch to Bailian cloud transcription (`qwen-audio-3.1-asr-flash`, about 0.1 yuan per hour of audio; the Alibaba Cloud bill is the actual charge). The audio is uploaded to the cloud. If import is blocked, click “Use cloud transcription instead”. A first local install downloads about 220 MB, about 15 minutes on a slow network.
 4. **Review and download.** Check captions, framing, and content completeness, then save the publish kit or connect an account to publish. Generate on-demand alternatives when you need more clips.
 
-There is no Intel Mac desktop build. Intel Macs and Linux use Docker or the CLI. See the [installation guide](docs/USER_INSTALLATION_GUIDE.en.md) and the [latest Release](https://github.com/zhouxiaoka/autoclip/releases/latest).
+There is no Intel Mac desktop build. Intel Macs and Linux use Docker or the CLI. See the [installation guide](docs/USER_INSTALLATION_GUIDE.en.md) and the [latest Release](https://github.com/yogendra-sudo/AutoVideoClip/releases/latest).
 
 [Full installation guide](docs/USER_INSTALLATION_GUIDE.en.md) · [Troubleshooting](docs/FAQ.en.md)
 
 **Docker / Web**
 
 ```bash
-git clone https://github.com/zhouxiaoka/autoclip.git
+git clone https://github.com/yogendra-sudo/AutoVideoClip.git
 cd autoclip
 cp env.example .env
 mkdir -p data logs uploads
@@ -240,7 +240,7 @@ For a LAN IP or custom domain, add the frontend address to `AUTOCLIP_ALLOWED_ORI
 
 **CLI / MCP**
 
-Requires Python 3.10+ (3.11 recommended), with FFmpeg and FFprobe on PATH; local CLI needs no Redis. Download the [official CLI / MCP ZIP](https://github.com/zhouxiaoka/autoclip/releases/latest), extract it, and run in that directory:
+Requires Python 3.10+ (3.11 recommended), with FFmpeg and FFprobe on PATH; local CLI needs no Redis. Download the [official CLI / MCP ZIP](https://github.com/yogendra-sudo/AutoVideoClip/releases/latest), extract it, and run in that directory:
 
 ```bash
 python3 -m venv venv
@@ -254,7 +254,7 @@ Without the ZIP, install with one command. Installing from a cloned source check
 ```bash
 # One-line installation
 uvx autoclip-mcp
-npx skills add zhouxiaoka/autoclip
+npx skills add yogendra-sudo/AutoVideoClip
 ```
 
 ```bash
@@ -280,7 +280,7 @@ The MCP client starts the server. For standalone debugging, run `autoclip mcp` i
 
 Replace `PROJECT_ID` with the project ID returned by production. MCP uses `start_quick_output` / `get_quick_output_status`; set the client’s `command` to the virtualenv’s absolute `autoclip` path and `args` to `["mcp"]`. Legacy `run` / `export` and clipping tools remain available. See [CLI / MCP](docs/CLI_AND_MCP.md) (Chinese), [OpenCode](docs/OPENCODE.en.md), and [Agent skill](skills/autoclip/SKILL.md) (Chinese).
 
-Smithery’s local stdio listing uses an MCPB bundle. From the repo root, run `python scripts/pack_mcpb.py`. The artifact is `dist/autoclip-mcp.mcpb` and is not committed. Publish with `smithery mcp publish ./dist/autoclip-mcp.mcpb -n io.github.zhouxiaoka/autoclip-mcp` using the maintainer’s own login. The repository does not store an API key. Steps are in [CLI / MCP](docs/CLI_AND_MCP.md) (Chinese).
+Smithery’s local stdio listing uses an MCPB bundle. From the repo root, run `python scripts/pack_mcpb.py`. The artifact is `dist/autoclip-mcp.mcpb` and is not committed. Publish with `smithery mcp publish ./dist/autoclip-mcp.mcpb -n io.github.yogendra-sudo/AutoVideoClip-mcp` using the maintainer’s own login. The repository does not store an API key. Steps are in [CLI / MCP](docs/CLI_AND_MCP.md) (Chinese).
 
 ## Model setup
 
@@ -303,8 +303,8 @@ Inside Docker, `localhost` is the container. Point at a host address the contain
       <a href="https://88api.ai/sign-up?aff=2PIc"><strong>88API</strong></a>
     </td>
     <td>
-      Thank you to <strong>88API Token Platform</strong> for sponsoring AutoClip! It brings together GPT, Claude, Gemini, Grok, DeepSeek, Kimi and GLM for transcript analysis, highlight selection and title generation.<br>
-      🎨 <strong>Media capabilities</strong>: The platform offers image, video and audio models, including GPT-Image, Seedance, Veo, MiniMax Hailuo H3, Kling, Whisper and TTS. AutoClip uses compatible analysis, cover-image and transcription APIs.<br>
+      Thank you to <strong>88API Token Platform</strong> for sponsoring AutoVideoClip! It brings together GPT, Claude, Gemini, Grok, DeepSeek, Kimi and GLM for transcript analysis, highlight selection and title generation.<br>
+      🎨 <strong>Media capabilities</strong>: The platform offers image, video and audio models, including GPT-Image, Seedance, Veo, MiniMax Hailuo H3, Kling, Whisper and TTS. AutoVideoClip uses compatible analysis, cover-image and transcription APIs.<br>
       🏷️ <strong>Service and billing</strong>: The partner reports overseas corporate operation, live support, invoices and a 1:1 top-up ratio; platform terms apply.<br>
       🎁 <strong>New-user offer</strong>: Receive trial credit to test models through our <a href="https://88api.ai/sign-up?aff=2PIc">referral registration link</a>, subject to promotion terms. <a href="docs/88API_SETUP.en.md">Setup guide</a>
     </td>
@@ -315,11 +315,11 @@ Inside Docker, `localhost` is the container. Point at a host address the contain
       <a href="https://www.infistar.cc/register?aff=XLK3BCM6&amp;ref_source=link"><strong>Infistar.cc</strong></a>
     </td>
     <td>
-      Thank you to <strong>Infistar.cc</strong> for sponsoring AutoClip! Its multi-model API service can support long-video transcript analysis, highlight selection, and title generation.<br>
-      ⚙️ <strong>Compatible setup</strong>: Choose the OpenAI-compatible provider in AutoClip and enter the Base URL, your API key, and an available model.<br>
+      Thank you to <strong>Infistar.cc</strong> for sponsoring AutoVideoClip! Its multi-model API service can support long-video transcript analysis, highlight selection, and title generation.<br>
+      ⚙️ <strong>Compatible setup</strong>: Choose the OpenAI-compatible provider in AutoVideoClip and enter the Base URL, your API key, and an available model.<br>
       🧩 <strong>Model choice</strong>: The partner offers Claude, GPT, Gemini, DeepSeek, and other model families. Choose models that support the compatible endpoint to compare transcript analysis and highlight selection.<br>
       🏷️ <strong>Pricing and services</strong>: According to the partner, selected models cost as little as <strong>1% of official list prices</strong>, with RMB billing, invoices, and model authenticity verification. Check the platform for eligible models, current prices, and service terms.<br>
-      🎁 <strong>AutoClip offer</strong>: New users can receive <strong>$5 in trial credit</strong> through our <a href="https://www.infistar.cc/register?aff=XLK3BCM6&amp;ref_source=link">referral registration link</a>, subject to the promotion terms. <a href="docs/INFISTAR_SETUP.en.md">Setup guide</a>
+      🎁 <strong>AutoVideoClip offer</strong>: New users can receive <strong>$5 in trial credit</strong> through our <a href="https://www.infistar.cc/register?aff=XLK3BCM6&amp;ref_source=link">referral registration link</a>, subject to the promotion terms. <a href="docs/INFISTAR_SETUP.en.md">Setup guide</a>
     </td>
   </tr>
   <tr>
@@ -337,7 +337,7 @@ Inside Docker, `localhost` is the container. Point at a host address the contain
 
 This is the author’s recommendation link. It is separate from the sponsors above.
 
-Use it to register on Alibaba Cloud or claim the offer, then create an API key in the Bailian console. In AutoClip, open Settings → Default models → “Speech to subtitles” to use Bailian cloud transcription. The audio is uploaded to the cloud.
+Use it to register on Alibaba Cloud or claim the offer, then create an API key in the Bailian console. In AutoVideoClip, open Settings → Default models → “Speech to subtitles” to use Bailian cloud transcription. The audio is uploaded to the cloud.
 
 1. [Author’s recommendation link](https://www.aliyun.com/benefit?userCode=qmyj6jch): register or claim the offer.
 2. [Bailian console](https://bailian.console.aliyun.com/): create an API key.
@@ -368,11 +368,11 @@ Interviews, podcasts, courses, and talking-head footage are the main validated u
 <details>
 <summary>Why were no clips generated?</summary>
 
-Check the failed stage: captions/transcription, model connection, FFmpeg, disk space, and platform eligibility. YouTube long-form requires complete clips of at least 180 seconds; use Shorts or Bilibili for shorter footage. If it still fails, include the version from `autoclip --version`, OS, source duration, model, and sanitized logs in [known issues](https://github.com/zhouxiaoka/autoclip/issues/96).
+Check the failed stage: captions/transcription, model connection, FFmpeg, disk space, and platform eligibility. YouTube long-form requires complete clips of at least 180 seconds; use Shorts or Bilibili for shorter footage. If it still fails, include the version from `autoclip --version`, OS, source duration, model, and sanitized logs in [known issues](https://github.com/yogendra-sudo/AutoVideoClip/issues/96).
 
 </details>
 
-[Full troubleshooting](docs/FAQ.en.md) · [Known issues](https://github.com/zhouxiaoka/autoclip/issues/96)
+[Full troubleshooting](docs/FAQ.en.md) · [Known issues](https://github.com/yogendra-sudo/AutoVideoClip/issues/96)
 
 <a id="documentation"></a>
 
@@ -389,15 +389,15 @@ Check the failed stage: captions/transcription, model connection, FFmpeg, disk s
 
 ## Contribute
 
-Fixes, clip samples, feedback, and translation improvements are welcome. If AutoClip helps you, a star is appreciated.
+Fixes, clip samples, feedback, and translation improvements are welcome. If AutoVideoClip helps you, a star is appreciated.
 
-- **Talk:** [GitHub Discussions](https://github.com/zhouxiaoka/autoclip/discussions) · [First-clip Q&A](https://github.com/zhouxiaoka/autoclip/discussions/128) · [Ideas](https://github.com/zhouxiaoka/autoclip/discussions/129)
-- **Bugs:** use the [issue form](https://github.com/zhouxiaoka/autoclip/issues/new/choose) with OS, version, model, steps, and redacted logs
+- **Talk:** [GitHub Discussions](https://github.com/yogendra-sudo/AutoVideoClip/discussions) · [First-clip Q&A](https://github.com/yogendra-sudo/AutoVideoClip/discussions/128) · [Ideas](https://github.com/yogendra-sudo/AutoVideoClip/discussions/129)
+- **Bugs:** use the [issue form](https://github.com/yogendra-sudo/AutoVideoClip/issues/new/choose) with OS, version, model, steps, and redacted logs
 - **Partnerships:** [christine_zhouye@163.com](mailto:christine_zhouye@163.com)
 
 Maintained by one person. Replies are not instant; there is no live support or one-to-one deploy help.
 
-![Star History](https://api.star-history.com/svg?repos=zhouxiaoka/autoclip&type=Date)
+![Star History](https://api.star-history.com/svg?repos=yogendra-sudo/AutoVideoClip&type=Date)
 
 Thanks to FastAPI, React, Tauri, FFmpeg, yt-dlp, Whisper, FunASR, and every contributor. [MIT License](LICENSE).
 #   A u t o V i d e o C l i p  

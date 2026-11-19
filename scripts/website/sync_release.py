@@ -2,7 +2,7 @@
 """
 Sync version numbers, download links, and installer sizes in the website index.html with the latest (or specified) main-repository Release.
 
-    python scripts/sync_release.py            # Use the latest release from zhouxiaoka/autoclip
+    python scripts/sync_release.py            # Use the latest release from yogendra-sudo/AutoVideoClip
     python scripts/sync_release.py v1.3.0     # Specify a tag
     python scripts/sync_release.py --check    # Report whether the site is outdated without editing files (exit code 1 = outdated)
 
@@ -26,7 +26,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "index.html"
-REPO = "zhouxiaoka/autoclip"
+REPO = "yogendra-sudo/AutoVideoClip"
 ASSETS = {
     "mac": re.compile(r"^AutoClip\.Desktop_(?P<ver>[\d.]+)_aarch64\.dmg$"),
     "win": re.compile(r"^AutoClip\.Desktop_(?P<ver>[\d.]+)_x64-setup\.exe$"),

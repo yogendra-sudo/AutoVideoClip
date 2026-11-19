@@ -1,10 +1,10 @@
 [package]
-name = "autoclip-desktop"
+name = "autovideoclip-desktop"
 version = "1.5.8"
-description = "AutoClip Desktop Application"
-authors = ["AutoClip Team"]
+description = "AutoVideoClip Desktop Application"
+authors = ["AutoVideoClip Contributors"]
 license = "MIT"
-repository = "https://github.com/zhouxiaoka/autoclip"
+repository = "https://github.com/yogendra-sudo/AutoVideoClip"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

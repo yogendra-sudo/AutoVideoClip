@@ -18,10 +18,10 @@
 
 ## autoclip://
 
-可选。中转站若支持 New API「聊天应用」占位符 `{key}` 和 `{address}`，加一行即可，不必改 AutoClip：
+可选。中转站若支持 New API「聊天应用」占位符 `{key}` 和 `{address}`，加一行即可，不必改 AutoVideoClip：
 
 ```json
-{"AutoClip":"autoclip://import?key={key}&base_url={address}/v1"}
+{"AutoVideoClip":"autoclip://import?key={key}&base_url={address}/v1"}
 ```
 
 `{address}` 不含末尾斜杠，也不含 `/v1`。也接受查询参数 `api_key` / `token`，以及 `url` / `server` / `address`。可选 `provider` 为预置 id；它和地址、前缀冲突时仍要用户选择。

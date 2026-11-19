@@ -14,7 +14,7 @@
 - 验收机上 `WINQA_USER` 有一个**已登录的交互桌面**（RDP 窗口开着即可，不要注销）。没人登录时脚本退回 session 0 直接启动，
   结果里 `mode=direct-session0`，界面相关结论不成立。
 - 仓库 checkout 要和候选包同一提交（默认用本仓库根目录；CI 冒烟脚本和示例素材从这里拷到验收机）。
-- **每次运行都会先卸载 AutoClip 并删除用户数据**（`%APPDATA%\AutoClip`、`%LOCALAPPDATA%\com.autoclip.desktop`、安装目录、临时冒烟目录），
+- **每次运行都会先卸载 AutoVideoClip 并删除用户数据**（`%APPDATA%\AutoVideoClip`、`%LOCALAPPDATA%\com.autoclip.desktop`、安装目录、临时冒烟目录），
   所以验收机上不要放别的东西。
 
 ## 环境变量
@@ -34,8 +34,8 @@
 ```bash
 export WINQA_HOST=<验收机地址> WINQA_USER=<Windows 账号>
 scripts/winqa/run_winqa.sh \
-  --prev      /path/AutoClip.Desktop_<上一正式版>_x64-setup.exe \
-  --candidate "/path/AutoClip Desktop_<候选>_x64-setup.exe" \
+  --prev      /path/AutoVideoClip.Desktop_<上一正式版>_x64-setup.exe \
+  --candidate "/path/AutoVideoClip Desktop_<候选>_x64-setup.exe" \
   --version   <候选版本号>
 # 可选：--prev-version X.Y.Z  --marker 'resources\backend\...'（只在新版存在的文件）
 #       --with-asr  --no-smoke  --no-failure  --out DIR

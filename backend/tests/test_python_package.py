@@ -8,7 +8,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 DEV_PACKAGES = {'pytest', 'pytest-cov', 'pytest-mock'}
-INSTALL_COMMANDS = ('uvx autoclip-mcp', 'npx skills add zhouxiaoka/autoclip')
+INSTALL_COMMANDS = ('uvx autoclip-mcp', 'npx skills add yogendra-sudo/AutoVideoClip')
 WHEEL_GLOB = 'autoclip_mcp-*-py3-none-any.whl'
 
 
@@ -65,7 +65,7 @@ def test_registry_metadata_matches_the_pypi_package():
     readme = (ROOT / 'README.md').read_text(encoding='utf-8')
     name = server['name']
     package = server['packages'][0]
-    assert name == 'io.github.zhouxiaoka/autoclip-mcp'
+    assert name == 'io.github.yogendra-sudo/AutoVideoClip-mcp'
     assert f'<!-- mcp-name: {name} -->' in readme
     assert server['version'] == project['version']
     assert 1 <= len(server['description']) <= 100

@@ -1,4 +1,4 @@
-# AutoClip 1.4 PostHog / Sentry 审查与补齐方案
+# AutoVideoClip 1.4 PostHog / Sentry 审查与补齐方案
 
 日期：2026-09-27；代码基线：`13d25ad2`。范围：已读取代码、执行离线验证，并只读检查现有 PostHog 看板和 Sentry 项目。以下矩阵保留审查时的缺口；本轮已按清单实施，当前契约、线上链接和验收限制见 [Studio 监控实施记录](analytics/STUDIO_MONITORING.md)。
 

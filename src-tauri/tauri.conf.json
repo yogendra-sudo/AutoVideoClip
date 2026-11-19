@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "AutoClip Desktop",
+  "productName": "AutoVideoClip Desktop",
   "version": "1.5.8",
-  "identifier": "com.autoclip.desktop",
+  "identifier": "com.autovideoclip.desktop",
   "build": {
     "beforeDevCommand": "cd ../frontend && npm run dev",
     "devUrl": "http://localhost:3000",
@@ -13,7 +13,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "AutoClip Desktop",
+        "title": "AutoVideoClip Desktop",
         "width": 1200,
         "height": 800,
         "minWidth": 800,
@@ -42,8 +42,8 @@
     ],
     "category": "DeveloperTool",
     "shortDescription": "AI video clipping tool for desktop",
-    "longDescription": "AutoClip is an AI-powered video clipping tool that automatically detects highlights and creates compilations.",
-    "copyright": "© 2024 AutoClip Team",
+    "longDescription": "AutoVideoClip is an AI-powered video clipping tool that automatically detects highlights and creates compilations.",
+    "copyright": "© 2024 AutoVideoClip Contributors",
     "createUpdaterArtifacts": false,
     "resources": [],
     "externalBin": [],
@@ -93,13 +93,15 @@
     },
     "deep-link": {
       "desktop": {
-        "schemes": ["autoclip"]
+        "schemes": [
+          "autovideoclip"
+        ]
       }
     },
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDlENzFDRkQ0OTZDRTMzRDIKUldUU004NlcxTTl4bldZcjJsNFhjMk9TTjFNWnhPc2s5c3lOQTVTcExpUkJDTUhrcmpwc2dadlIK",
       "endpoints": [
-        "https://github.com/zhouxiaoka/autoclip/releases/latest/download/latest.json"
+        "https://github.com/yogendra-sudo/AutoVideoClip/releases/latest/download/latest.json"
       ],
       "windows": {
         "installMode": "passive"

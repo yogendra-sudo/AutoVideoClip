@@ -1,14 +1,14 @@
-# Use 88API with AutoClip
+# Use 88API with AutoVideoClip
 
 [简体中文](88API_SETUP.md) · [Back to README](../README-EN.md)
 
-88API Token Platform sponsors AutoClip and provides OpenAI-compatible APIs for analysis and cover images.
+88API Token Platform sponsors AutoVideoClip and provides OpenAI-compatible APIs for analysis and cover images.
 
 ## Register and create an API key
 
-Register through the [AutoClip referral link](https://88api.ai/sign-up?aff=2PIc), then create an API key in the console. New users can receive trial credit; the amount, eligibility and terms are set by the platform. Live support is available on the platform. The referral link includes commission that supports project maintenance.
+Register through the [AutoVideoClip referral link](https://88api.ai/sign-up?aff=2PIc), then create an API key in the console. New users can receive trial credit; the amount, eligibility and terms are set by the platform. Live support is available on the platform. The referral link includes commission that supports project maintenance.
 
-## Configure AutoClip
+## Configure AutoVideoClip
 
 ### New versions: select 88API directly
 
@@ -20,7 +20,7 @@ Register through the [AutoClip referral link](https://88api.ai/sign-up?aff=2PIc)
 No default text model or account allowlist is assumed. Use exact model IDs available to your account. Image and audio previews shown without a key are reference catalogs, not proof of account access.
 
 - **Covers** can reuse the AI service key with supported OpenAI Images models such as account-listed `gpt-image-1` or `dall-e-3`. Other image models depend on their actual API and returned capability metadata.
-- The platform also offers video generation and TTS; these are not corresponding AutoClip features. Cloud transcription uses Alibaba Cloud Bailian or OpenAI.
+- The platform also offers video generation and TTS; these are not corresponding AutoVideoClip features. Cloud transcription uses Alibaba Cloud Bailian or OpenAI.
 
 ### Older versions: use the OpenAI-compatible provider
 

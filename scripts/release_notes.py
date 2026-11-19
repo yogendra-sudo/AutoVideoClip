@@ -32,18 +32,18 @@ DOWNLOAD_NOTES = """\
 There is currently no desktop installer for Intel Macs; use Docker (`DOCKER.md`) or the CLI. Linux also has no desktop installer; use Docker, the `uvx` command above, or `pip install -e .` to run the `autoclip` CLI.
 
 Both desktop packages include a portable Python runtime and static FFmpeg, so nothing needs to be installed in advance. The Windows installer is per-user and does not require administrator privileges; WebView2 is downloaded if needed.
-Without downloading the ZIP: run `uvx autoclip-mcp` to install and start the MCP server, or `npx skills add zhouxiaoka/autoclip` to install the skill. Source installation is also available (`python -m pip install --no-deps .` from the repository root).
+Without downloading the ZIP: run `uvx autoclip-mcp` to install and start the MCP server, or `npx skills add yogendra-sudo/AutoVideoClip` to install the skill. Source installation is also available (`python -m pip install --no-deps .` from the repository root).
 
 If the project list is empty after installation, select "Explore a sample project" on the home page. The sample is included in the installer and does not require an API key.
 The first time you process a video without subtitles, the app downloads a local transcription component (about 220 MB; around 15 minutes on some networks). If installation fails or is too slow, open "Settings → Default model → Speech to subtitles" and switch to cloud transcription; audio is uploaded to the cloud. If import is blocked, select "Use cloud transcription".
 
 A video without subtitles downloads the local transcription component the first time (about 220 MB, about 15 minutes on a slow network). Built-in portable Python + static ffmpeg, nothing else to install. On macOS 15 and later, double-click once; if blocked, open System Settings → Privacy & Security → Open Anyway ([Apple](https://developer.apple.com/news/?id=saqachfa)). Older macOS: right-click the app → Open. Windows is unsigned (SmartScreen → More info → Run anyway). There is no Intel Mac desktop build; use Docker or the CLI. If a listed file is missing, that platform's build failed for this tag — see the Desktop Build workflow run.
-Without the ZIP: `uvx autoclip-mcp` installs and starts MCP, and `npx skills add zhouxiaoka/autoclip` installs the skill. Installing from a source checkout still works (`python -m pip install --no-deps .` from the repo root).
+Without the ZIP: `uvx autoclip-mcp` installs and starts MCP, and `npx skills add yogendra-sudo/AutoVideoClip` installs the skill. Installing from a source checkout still works (`python -m pip install --no-deps .` from the repo root).
 """
 
 FEEDBACK_NOTES = """\
 ### Feedback
-- Known issues and current status: #96 · Report reproducible bugs with an [Issue template](https://github.com/zhouxiaoka/autoclip/issues/new/choose) · Share ideas and use cases in [Discussions](https://github.com/zhouxiaoka/autoclip/discussions)
+- Known issues and current status: #96 · Report reproducible bugs with an [Issue template](https://github.com/yogendra-sudo/AutoVideoClip/issues/new/choose) · Share ideas and use cases in [Discussions](https://github.com/yogendra-sudo/AutoVideoClip/discussions)
 """
 
 
@@ -66,7 +66,7 @@ def build(tag: str) -> str:
     if section:
         parts.append("### Changes\n\n" + section + "\n")
     else:
-        parts.append(f"_No [{ver}] section was found in CHANGELOG.md; see [CHANGELOG.md](https://github.com/zhouxiaoka/autoclip/blob/main/CHANGELOG.md) for all changes._\n")
+        parts.append(f"_No [{ver}] section was found in CHANGELOG.md; see [CHANGELOG.md](https://github.com/yogendra-sudo/AutoVideoClip/blob/main/CHANGELOG.md) for all changes._\n")
     parts.append(FEEDBACK_NOTES)
     return "\n".join(parts)
 

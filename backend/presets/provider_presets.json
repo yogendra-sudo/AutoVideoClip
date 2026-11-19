@@ -119,7 +119,7 @@
       "cloud_hint": "赞助合作伙伴。新用户注册赠送体验额度，站内提供人工客服。",
       "sponsor": {
         "register_url": "https://88api.ai/sign-up?aff=2PIc",
-        "guide_url": "https://github.com/zhouxiaoka/autoclip/blob/main/docs/88API_SETUP.md",
+        "guide_url": "https://github.com/yogendra-sudo/AutoVideoClip/blob/main/docs/88API_SETUP.md",
         "offer": "新用户体验额度",
         "description": "新用户通过专属链接注册可获体验额度；站内提供人工客服。",
         "topup_url": "https://88api.ai/"
@@ -182,7 +182,7 @@
       "cloud_hint": "赞助合作伙伴。一个 Key 调 Claude / GPT / Gemini / DeepSeek 等模型，专属链接注册可领体验额度。",
       "sponsor": {
         "register_url": "https://www.infistar.cc/register?aff=XLK3BCM6&ref_source=link",
-        "guide_url": "https://github.com/zhouxiaoka/autoclip/blob/main/docs/INFISTAR_SETUP.md",
+        "guide_url": "https://github.com/yogendra-sudo/AutoVideoClip/blob/main/docs/INFISTAR_SETUP.md",
         "offer": "$5 免费体验额度",
         "description": "通过专属链接注册，可领取 $5 免费体验额度。",
         "topup_url": "https://www.infistar.cc/"

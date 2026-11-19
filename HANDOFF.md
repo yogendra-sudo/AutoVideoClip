@@ -1,7 +1,7 @@
-# AutoClip — 项目状态 / 进度 / 计划
+# AutoVideoClip — 项目状态 / 进度 / 计划
 
 > 更新：2026-10-06。**1.5.5 已正式发布为 latest**（tag `v1.5.5` → `e9aba52e`），包含 1.5.1–1.5.4 的全部修复。负责人豁免了未完成的安装包验收和观察期，出问题往前修；豁免范围和上线后要盯的信号见 [1.5.5 发布记录](docs/RELEASE_1_5_5.md)。1.5.1–1.5.3 保持 Pre-release，`v1.5.4` 标签没有生成 Release。待跟进：#247、#249（Whisper 失败）、#266（Gemini key 保存）已请用户在 1.5.5 上复现。
-> 以下为 2026-10-01 的状态：**1.5.0 已通过 [PR #250](https://github.com/zhouxiaoka/autoclip/pull/250) 合入 main，并正式发布为 latest**；固定 tag `v1.5.0` 指向 `e940f5ae`。桌面与 CLI/MCP 从同一 tag 构建，最终资产见 [1.5.0 Release](https://github.com/zhouxiaoka/autoclip/releases/tag/v1.5.0)，应用内更新清单已确认返回 1.5.0。Windows 缺人工界面验收及未完成观察期已在 Release 明确，官网由负责人更新。
+> 以下为 2026-10-01 的状态：**1.5.0 已通过 [PR #250](https://github.com/yogendra-sudo/AutoVideoClip/pull/250) 合入 main，并正式发布为 latest**；固定 tag `v1.5.0` 指向 `e940f5ae`。桌面与 CLI/MCP 从同一 tag 构建，最终资产见 [1.5.0 Release](https://github.com/yogendra-sudo/AutoVideoClip/releases/tag/v1.5.0)，应用内更新清单已确认返回 1.5.0。Windows 缺人工界面验收及未完成观察期已在 Release 明确，官网由负责人更新。
 > **验收与同事 CLI / MCP 测试见 [RELEASE_1_5.md](docs/RELEASE_1_5.md)**：竖版选择、片尾开关、字幕修复、完整 headless 出片，以及人物模型漏包 / 长视频队列两个 P1 均已修复并复测。旧候选 wheel 不含最后的长视频修复，同事应以正式 tag 资产为准，同版本候选包须强制重装。
 > **接手 1.5.0 先读 [1.5.0 交接文档](docs/HANDOFF_1_5_FAST_OUTPUT.md)**：现状、负责人决定、迭代过程、代码地图、踩坑和待办都在那里，随进度维护。
 > 下方 2026-09-28 及更早的内容是历史快照。
@@ -203,7 +203,7 @@ label 体系：默认 9 个 + 新增 `docker` / `windows` / `feature`。**置顶
 - #96 已加「怎么反馈」小节。
 - 飞书 CLI 不再用于收反馈。旧表可留档，不要再挂到应用或官网上。
 - **应用内反馈**（2026-09-07 做完）：`frontend/src/analytics/feedback.ts` + `components/FeedbackDialog.tsx`。入口：设置页「反馈」区、项目卡失败态 `重试 · 反馈`、详情页失败态 `反馈问题`、切片为 0 空态。自动附带 版本 / OS / 架构 / provider / model / 失败阶段 / 错误文本；用户只写一句话 + 可选联系方式。
-  - 事件：`feedback_opened` / `feedback_submitted` / `feedback_dismissed`（PostHog）。若 PostHog 项目里存在名为 **「AutoClip 应用内反馈」**（`FEEDBACK_SURVEY_NAME`，或 `VITE_PUBLIC_POSTHOG_FEEDBACK_SURVEY_ID` 指定 id）的 API 型 Survey（无 UI，第一题自由文本、第二题单选分类），会同时按 PostHog 约定发 `survey shown / sent / dismissed`，结果进 Surveys 面板。**Survey 尚未在 PostHog 后台创建**（不创建也不影响事件采集）。
+  - 事件：`feedback_opened` / `feedback_submitted` / `feedback_dismissed`（PostHog）。若 PostHog 项目里存在名为 **「AutoVideoClip 应用内反馈」**（`FEEDBACK_SURVEY_NAME`，或 `VITE_PUBLIC_POSTHOG_FEEDBACK_SURVEY_ID` 指定 id）的 API 型 Survey（无 UI，第一题自由文本、第二题单选分类），会同时按 PostHog 约定发 `survey shown / sent / dismissed`，结果进 Surveys 面板。**Survey 尚未在 PostHog 后台创建**（不创建也不影响事件采集）。
   - 点「发送」不看匿名统计开关。句子进入 PostHog 的 `feedback_submitted`（带反馈编号）。每小时 `.github/workflows/ingest-feedback.yml` 把它写进 GitHub：故障开 Issue（`bug` / `needs-triage` / `from-app`），想法开 Ideas，其他开 Q&A。同一编号只写一次。邮箱不进公开帖。没有 PostHog key 或网络失败时，打开预填好的 GitHub 页面。收件需要仓库 secret `POSTHOG_PERSONAL_API_KEY`（`POSTHOG_PROJECT_ID` 可省略，默认 450605）。
 - **每周反馈周报**：`scripts/weekly_digest.py`（仅标准库）。合并 GitHub 新 issue（`gh`，或 `GH_TOKEN` REST）+ Discussions + PostHog `feedback_submitted`（`POSTHOG_PERSONAL_API_KEY` + `POSTHOG_PROJECT_ID`，HogQL）→ markdown。可选发到飞书群机器人 webhook（`FEISHU_WEBHOOK_URL`，可选 `FEISHU_WEBHOOK_SECRET`），这只是把周报推给维护者，不再从飞书表格读反馈。`--json` 给 agent 做主题归纳，`--post --message-file` 发归纳后的版本。Cursor Automation（每周一 09:00 跑该脚本并归纳主题）的草稿已备好，待在 Automations 编辑器里配 secrets 后保存。
 
@@ -212,7 +212,7 @@ label 体系：默认 9 个 + 新增 `docker` / `windows` / `feature`。**置顶
 公开路线图定为 **GitHub Discussions + GitHub Projects**，费用为零。Quackback 留到非开发者反馈明显多过 GitHub 再装。Featurebase、Linear、Productlane 不采用。规则、六列、初始看板和触发条件见 `docs/COMMUNITY_BOARD.md`。
 
 - 想法、用法、模型、提问走 Discussions 五个分类；能复现的故障才开 Issue。功能请求模板已去掉。
-- 已决定跟进的需求写成带 `status:*` 的 Issue，放进公开 Project「AutoClip Roadmap」。
+- 已决定跟进的需求写成带 `status:*` 的 Issue，放进公开 Project「AutoVideoClip Roadmap」。
 - Agent 读 `scripts/feature_signals.py`，人确认后才能把卡推进到 Planned 及以后。操作说明在 `skills/product-board/SKILL.md`。
 - 应用内反馈先到 PostHog，再由收件任务进入 Issue 或 Discussions。这些帖子不是路线图卡片。飞书表格不再收反馈。
 - 装到 GitHub 上：`python3 scripts/setup_community_board.py --apply` 写标签和公开 Project。Discussion 分类没有写入接口，脚本会列出要在网页上新建或修改的分类。种子 Issue 另跑 `--seed-issues`，避免一次开出十几张旧账。
@@ -227,8 +227,8 @@ label 体系：默认 9 个 + 新增 `docker` / `windows` / `feature`。**置顶
 - [x] 合并 #89 #90 #91 #92 #93 #94
 - [x] `workflow_dispatch` 只勾 Windows 试构建：通过，安装包 145 MB（run 34040814275）
 - [x] 打 `v1.2.1` tag（`a5c20ae`）→ Desktop Build run 34042037733 全绿（Windows 10 min / mac 14 min），
-      Release 两个文件齐：`AutoClip.Desktop_1.2.1_aarch64.dmg`（223 MB）、`AutoClip.Desktop_1.2.1_x64-setup.exe`（145 MB）；标题已改；#73 已关
-- [ ] 把 Windows 安装包装到一台干净 Windows 上验证：能启动、设置页保存 provider、跑通一条本地视频。v1.3.1 发布后这条仍没有记录（最可能翻车的点：NSIS 几千个 Python 文件、WebView2 引导、`%APPDATA%\AutoClip` 目录）
+      Release 两个文件齐：`AutoVideoClip.Desktop_1.2.1_aarch64.dmg`（223 MB）、`AutoVideoClip.Desktop_1.2.1_x64-setup.exe`（145 MB）；标题已改；#73 已关
+- [ ] 把 Windows 安装包装到一台干净 Windows 上验证：能启动、设置页保存 provider、跑通一条本地视频。v1.3.1 发布后这条仍没有记录（最可能翻车的点：NSIS 几千个 Python 文件、WebView2 引导、`%APPDATA%\AutoVideoClip` 目录）
 - [ ] 用真实 key 各测一遍 4 个 provider 的「测试连接」+ 一次完整处理（#92 改动了 provider 选择链路，单测覆盖了逻辑但没打过真接口；尤其 openai SDK 已是 3.x）。v1.3.1 没有补上这条记录
 - [x] 关闭已修复 issue、关闭外部 PR #83 #84 #85 #78
 - [x] label 体系 + 置顶帖 #96 + "用不了"类统一回复关闭
@@ -313,6 +313,6 @@ Linux 宿主机首次启动前先 `mkdir -p data logs uploads && chmod -R 777 da
 
 命令行排查桌面后端：
 ```bash
-'/Applications/AutoClip Desktop.app/Contents/MacOS/autoclip-desktop'
+'/Applications/AutoVideoClip Desktop.app/Contents/MacOS/autoclip-desktop'
 # 应看到 Backend started on port: XXXXX / Application startup complete
 ```

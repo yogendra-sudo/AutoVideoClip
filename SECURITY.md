@@ -1,12 +1,12 @@
 # 安全政策
 
-安全修复集中在当前 `main`，通过后续正式版本提供给安装包用户。旧版本没有独立维护分支；请查看 [Releases](https://github.com/zhouxiaoka/autoclip/releases) 与发布说明确认修复是否已进入你使用的版本。合入源码不代表已发布安装包。
+安全修复集中在当前 `main`，通过后续正式版本提供给安装包用户。旧版本没有独立维护分支；请查看 [Releases](https://github.com/yogendra-sudo/AutoVideoClip/releases) 与发布说明确认修复是否已进入你使用的版本。合入源码不代表已发布安装包。
 
 ## 报告问题
 
 项目目前未开启 GitHub 私密漏洞报告。可使用维护者公开联系邮箱 [christine_zhouye@163.com](mailto:christine_zhouye@163.com)私下联系；如通过 Issue 联系，只描述需要建立安全联系，不公开漏洞利用步骤、API Key、Cookie、私人素材或含密钥的日志。建立私密渠道后，再提供影响版本、复现条件和脱敏证据。
 
-本项目没有公布专用安全邮箱、响应时限或第三方审计承诺。已公开的安全信息以[安全公告](https://github.com/zhouxiaoka/autoclip/security/advisories)、发布说明及对应修复记录为准。
+本项目没有公布专用安全邮箱、响应时限或第三方审计承诺。已公开的安全信息以[安全公告](https://github.com/yogendra-sudo/AutoVideoClip/security/advisories)、发布说明及对应修复记录为准。
 
 ## 使用与更新
 

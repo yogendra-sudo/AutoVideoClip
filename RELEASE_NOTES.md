@@ -1,6 +1,6 @@
-# AutoClip 桌面版发布说明
+# AutoVideoClip 桌面版发布说明
 
-> 自 **v1.4.0** 起，用户可见的版本说明以 [CHANGELOG.md](CHANGELOG.md) 和 [GitHub Releases](https://github.com/zhouxiaoka/autoclip/releases) 为准。本文保留较早版本的历史说明，不单独作为当前功能范围。
+> 自 **v1.4.0** 起，用户可见的版本说明以 [CHANGELOG.md](CHANGELOG.md) 和 [GitHub Releases](https://github.com/yogendra-sudo/AutoVideoClip/releases) 为准。本文保留较早版本的历史说明，不单独作为当前功能范围。
 
 ## v1.1.0 - 2026年5月
 
@@ -35,7 +35,7 @@
 
 ### 📦 安装说明（macOS, Apple Silicon）
 
-1. 双击 DMG，将 `AutoClip Desktop` 拖入「应用程序」。
+1. 双击 DMG，将 `AutoVideoClip Desktop` 拖入「应用程序」。
 2. **首次打开请右键点应用 → 选「打开」**（ad-hoc 签名、未做 Apple 公证，用于绕过 Gatekeeper）。
 3. 进入「设置」填入 AI 提供商的 API Key 即可开始使用。
 
@@ -47,7 +47,7 @@
 
 ### 🎉 首次发布
 
-AutoClip桌面版是基于AI的智能视频切片工具，支持自动识别精彩片段并生成合集。
+AutoVideoClip桌面版是基于AI的智能视频切片工具，支持自动识别精彩片段并生成合集。
 
 ### ✨ 主要功能
 
@@ -130,7 +130,7 @@ AutoClip桌面版是基于AI的智能视频切片工具，支持自动识别精�
 #### 获取帮助
 - 查看 [用户指南](docs/USER_GUIDE.md)
 - 阅读 [常见问题](docs/FAQ.md)
-- 提交 [GitHub Issue](https://github.com/zhouxiaoka/autoclip/issues)
+- 提交 [GitHub Issue](https://github.com/yogendra-sudo/AutoVideoClip/issues)
 
 ### 🛣️ 未来计划
 
@@ -155,9 +155,9 @@ AutoClip桌面版是基于AI的智能视频切片工具，支持自动识别精�
 
 ---
 
-**下载地址**: [GitHub Releases](https://github.com/zhouxiaoka/autoclip/releases)
+**下载地址**: [GitHub Releases](https://github.com/yogendra-sudo/AutoVideoClip/releases)
 
-**项目主页**: [GitHub Repository](https://github.com/zhouxiaoka/autoclip)
+**项目主页**: [GitHub Repository](https://github.com/yogendra-sudo/AutoVideoClip)
 
-**问题反馈**: [GitHub Issues](https://github.com/zhouxiaoka/autoclip/issues)
+**问题反馈**: [GitHub Issues](https://github.com/yogendra-sudo/AutoVideoClip/issues)
 

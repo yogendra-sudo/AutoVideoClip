@@ -14,8 +14,8 @@ Back end source code, static ffmpeg/ffprobe all entered in the 0-bit, user machi
 Product:
 ```
 src-tauri/target/release/bundle/macos/
-AutoClip Desktop.app#Application Package (~550M)
-- AutoClip Desktop_1.0.0_aarch64.dmg #DMG Installer (~260M)
+AutoVideoClip Desktop.app#Application Package (~550M)
+- AutoVideoClip Desktop_1.0.0_aarch64.dmg #DMG Installer (~260M)
 ```
 
 The following is a list of the most commonly used types of scripting techniques.
@@ -54,7 +54,7 @@ DMG is an ad-hoc signature (not Apple certified), so:
 
 The command line runs directly to the app and looks at the back end of the output:
 ```bash
-'/Applications/AutoClip Desktop.app/Contents/MacOS/autoclip-desktop'
+'/Applications/AutoVideoClip Desktop.app/Contents/MacOS/autoclip-desktop'
 ```
 The first is the "C" and "C" respectively.
 

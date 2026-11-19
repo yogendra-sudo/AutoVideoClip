@@ -4,11 +4,11 @@
 
 ## Cost, models, and data
 
-### Is AutoClip free? Do I need an API key?
+### Is AutoVideoClip free? Do I need an API key?
 
-AutoClip itself stays free and open source under MIT. Cloud model providers bill their own usage; consult your provider for pricing, quotas, and model availability. Ollama / LM Studio presets need no cloud API key, but require downloaded models and suitable hardware. Local Whisper needs separate speech components and model files.
+AutoVideoClip itself stays free and open source under MIT. Cloud model providers bill their own usage; consult your provider for pricing, quotas, and model availability. Ollama / LM Studio presets need no cloud API key, but require downloaded models and suitable hardware. Local Whisper needs separate speech components and model files.
 
-As of **v1.3.2**, overseas publishing needs your own [Upload-Post](https://www.upload-post.com) account. Free and paid tiers, and daily caps for TikTok, YouTube, Instagram, and other platforms, follow Upload-Post’s own pages. They are not AutoClip promises.
+As of **v1.3.2**, overseas publishing needs your own [Upload-Post](https://www.upload-post.com) account. Free and paid tiers, and daily caps for TikTok, YouTube, Instagram, and other platforms, follow Upload-Post’s own pages. They are not AutoVideoClip promises.
 
 ### Are videos uploaded? Can I work offline?
 
@@ -24,13 +24,13 @@ To see a result before you configure anything: when the home screen has no proje
 
 After that, use your own 3–5 minute clip with clear speech, preferably with an accurately timed `.srt`. Use a local file or Bilibili, and confirm that you have the right to use it.
 
-Setup steps are in the [installation guide](USER_INSTALLATION_GUIDE.en.md#see-the-example-then-use-your-own-clip); sticking points are in [Discussion #128](https://github.com/zhouxiaoka/autoclip/discussions/128).
+Setup steps are in the [installation guide](USER_INSTALLATION_GUIDE.en.md#see-the-example-then-use-your-own-clip); sticking points are in [Discussion #128](https://github.com/yogendra-sudo/AutoVideoClip/discussions/128).
 
 ## Installation and startup
 
 ### Which file should I download?
 
-In [Releases](https://github.com/zhouxiaoka/autoclip/releases/latest), choose `aarch64.dmg` for Apple Silicon Mac or `x64-setup.exe` for Windows x64. There is no Intel Mac desktop build; use Docker or the CLI, the same as Linux. Check the actual release assets; `Source code` is not a desktop installer. For a first look, use “用示例项目看看效果” in the app. The example is inside the installer.
+In [Releases](https://github.com/yogendra-sudo/AutoVideoClip/releases/latest), choose `aarch64.dmg` for Apple Silicon Mac or `x64-setup.exe` for Windows x64. There is no Intel Mac desktop build; use Docker or the CLI, the same as Linux. Check the actual release assets; `Source code` is not a desktop installer. For a first look, use “用示例项目看看效果” in the app. The example is inside the installer.
 
 On macOS 15 and later, double-click once. If macOS blocks the app, open System Settings → Privacy & Security → Open Anyway ([Apple’s note](https://developer.apple.com/news/?id=saqachfa)). On older macOS, right-click the app and choose Open. If Windows SmartScreen appears, choose More info → Run anyway. Routine use does not require administrator privileges. Details are in the [installation guide](USER_INSTALLATION_GUIDE.en.md).
 
@@ -75,7 +75,7 @@ You can still use local Whisper. A video without subtitles has to download the l
 
 ### What if installing Whisper on Windows still says mlx-whisper only supports Apple Silicon?
 
-If installing local Whisper from Settings → Default models → “Speech to subtitles” still shows the red error 「mlx-whisper 仅支持 Apple Silicon (macOS)」 on Windows or any other non-Mac system, update to **v1.3.3** or later (includes [#145](https://github.com/zhouxiaoka/autoclip/pull/145)). On desktop, use Settings → Application → Check for updates, or download it from [Releases](https://github.com/zhouxiaoka/autoclip/releases). Older builds showed that message and blocked the install by mistake. After you update, install again. See [#141](https://github.com/zhouxiaoka/autoclip/issues/141).
+If installing local Whisper from Settings → Default models → “Speech to subtitles” still shows the red error 「mlx-whisper 仅支持 Apple Silicon (macOS)」 on Windows or any other non-Mac system, update to **v1.3.3** or later (includes [#145](https://github.com/yogendra-sudo/AutoVideoClip/pull/145)). On desktop, use Settings → Application → Check for updates, or download it from [Releases](https://github.com/yogendra-sudo/AutoVideoClip/releases). Older builds showed that message and blocked the install by mistake. After you update, install again. See [#141](https://github.com/yogendra-sudo/AutoVideoClip/issues/141).
 
 ### Why were no clips generated?
 
@@ -95,7 +95,7 @@ autoclip doctor --provider ollama
 autoclip run talk.mp4 --provider ollama --srt talk.srt --min-score 0.5 --json
 ```
 
-Replace the filenames and provider with your actual setup. Without SRT, remove `--srt talk.srt` and prepare transcription first. Lowering the threshold changes selection; it does not guarantee clips. For a first check, use “用示例项目看看效果” on the home screen, or a clip you provide. If usage is still unclear, continue in the [first-clip Q&A](https://github.com/zhouxiaoka/autoclip/discussions/128). Reproducible bugs still belong in Issues.
+Replace the filenames and provider with your actual setup. Without SRT, remove `--srt talk.srt` and prepare transcription first. Lowering the threshold changes selection; it does not guarantee clips. For a first check, use “用示例项目看看效果” on the home screen, or a clip you provide. If usage is still unclear, continue in the [first-clip Q&A](https://github.com/yogendra-sudo/AutoVideoClip/discussions/128). Reproducible bugs still belong in Issues.
 
 ### Why is processing slow or using too much memory?
 
@@ -124,7 +124,7 @@ After clips are ready, open Publish on a clip. Overseas platforms and Bilibili s
 - Overseas platforms use your own Upload-Post account and the platforms you connected there: TikTok, Instagram, YouTube, Facebook, LinkedIn, X, Threads, Pinterest, Bluesky, Discord, Telegram, and Google Business, as available on that account.
 - Bilibili is one account. Paste a Cookie once in Settings. It must include `SESSDATA`, `bili_jct`, and `DedeUserID`.
 
-Publish now or on a schedule. A Bilibili schedule must be more than two hours ahead. Title and description are optional and default to the clip title. Burned-in captions default on. The title card, about four seconds at the start, defaults on. Visibility defaults to private / self where the platform supports it. AutoClip promises that only for TikTok, YouTube, and Bilibili. You can download the file without publishing.
+Publish now or on a schedule. A Bilibili schedule must be more than two hours ahead. Title and description are optional and default to the clip title. Burned-in captions default on. The title card, about four seconds at the start, defaults on. Visibility defaults to private / self where the platform supports it. AutoVideoClip promises that only for TikTok, YouTube, and Bilibili. You can download the file without publishing.
 
 The project page shows publish history and a calendar, and can cancel a schedule that has not gone out. “Plan this week” is overseas only: it fills unpublished clips into Monday, Wednesday, and Friday at 09:00. It does not include Bilibili.
 
@@ -157,9 +157,9 @@ SELECT project_type, COUNT(*) FROM projects GROUP BY project_type;
 
 ### Where are known issues? How can I get help?
 
-Check [known issues](https://github.com/zhouxiaoka/autoclip/issues/96) and [release notes](https://github.com/zhouxiaoka/autoclip/releases) first. Feature ideas and how you use AutoClip go to [Discussions](https://github.com/zhouxiaoka/autoclip/discussions): [welcome and categories](https://github.com/zhouxiaoka/autoclip/discussions/127), [first-clip Q&A](https://github.com/zhouxiaoka/autoclip/discussions/128), and [ideas](https://github.com/zhouxiaoka/autoclip/discussions/129). Reproducible bugs go to Issues. The board rules are in the [community board](COMMUNITY_BOARD.md) (Chinese). If needed, send one email to [christine_zhouye@163.com](mailto:christine_zhouye@163.com) with:
+Check [known issues](https://github.com/yogendra-sudo/AutoVideoClip/issues/96) and [release notes](https://github.com/yogendra-sudo/AutoVideoClip/releases) first. Feature ideas and how you use AutoVideoClip go to [Discussions](https://github.com/yogendra-sudo/AutoVideoClip/discussions): [welcome and categories](https://github.com/yogendra-sudo/AutoVideoClip/discussions/127), [first-clip Q&A](https://github.com/yogendra-sudo/AutoVideoClip/discussions/128), and [ideas](https://github.com/yogendra-sudo/AutoVideoClip/discussions/129). Reproducible bugs go to Issues. The board rules are in the [community board](COMMUNITY_BOARD.md) (Chinese). If needed, send one email to [christine_zhouye@163.com](mailto:christine_zhouye@163.com) with:
 
-- OS and CPU architecture, AutoClip version, and desktop / Docker / CLI mode.
+- OS and CPU architecture, AutoVideoClip version, and desktop / Docker / CLI mode.
 - Model provider and name, video source and approximate duration, and whether subtitles were supplied.
 - Reproduction steps, failed stage, and an error screenshot or relevant recent logs.
 - API keys, Cookies, private paths, and private transcript text removed from the logs.

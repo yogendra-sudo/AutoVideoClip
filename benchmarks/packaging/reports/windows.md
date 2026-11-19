@@ -2,8 +2,8 @@
 
 本文件不是测速脚本生成的报告，仓库里也没有对应的 `windows.json`。下面的表和机器信息照录自上述评论，待 Windows 验收机重跑后用脚本输出整文件替换。
 
-- https://github.com/zhouxiaoka/autoclip/pull/314#issuecomment-6093245237
-- https://github.com/zhouxiaoka/autoclip/pull/314#issuecomment-6093609293
+- https://github.com/yogendra-sudo/AutoVideoClip/pull/314#issuecomment-6093245237
+- https://github.com/yogendra-sudo/AutoVideoClip/pull/314#issuecomment-6093609293
 
 ## 评论 6093245237
 
@@ -25,7 +25,7 @@ PR head `9640e4f9` 的脚本在腾讯云 Windows 验收机跑完：2 秒短烟�
 
 组合单条 0.24×、双平台组合 0.44×，与 Linux（0.22× / 0.39×）接近。
 
-**机器**：AMD EPYC 7K62 2 vCPU @2.6GHz、8GB、Windows Server 2025 (10.0.26100)。Python 3.13.13 + ffmpeg N-127252（均为 AutoClip 1.5.6 自带），Playwright 1.63.0，系统 Edge 155 headless。核数是 Linux 参照机的一半，是耗时约 2× 的主因。
+**机器**：AMD EPYC 7K62 2 vCPU @2.6GHz、8GB、Windows Server 2025 (10.0.26100)。Python 3.13.13 + ffmpeg N-127252（均为 AutoVideoClip 1.5.6 自带），Playwright 1.63.0，系统 Edge 155 headless。核数是 Linux 参照机的一半，是耗时约 2× 的主因。
 
 **硬件编码**：无可用。仅 Microsoft Basic Display Adapter；ffmpeg 虽带 NVENC/QSV/AMF，但产品 encoder 检测选了 libx264（单遍回退 veryfast crf20，两遍 medium 8.09Mbps）。
 
@@ -40,7 +40,7 @@ PR head `9640e4f9` 的脚本在腾讯云 Windows 验收机跑完：2 秒短烟�
 | 修复 | 结果 |
 |---|---|
 | pip 国内镜像回退 | **PASS**。日志：`包装组件 pip 从 pypi 失败（pypi: 退出码 1），改用 mirror` → `安装完成`。未卡住，事前未设 PIP_INDEX_URL / pip.ini / AUTOCLIP_PIP_INDEX。 |
-| ffmpeg 路径查找 | **PASS**。未设 AUTOCLIP_FFMPEG_PATH/FFPROBE，解析到 `...\AutoClip Desktop\resources\ffmpeg\ffmpeg.exe`。 |
+| ffmpeg 路径查找 | **PASS**。未设 AUTOCLIP_FFMPEG_PATH/FFPROBE，解析到 `...\AutoVideoClip Desktop\resources\ffmpeg\ffmpeg.exe`。 |
 
 ### 组合·单平台（70s editorial，msedge）
 

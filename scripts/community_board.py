@@ -15,7 +15,7 @@ import re
 import subprocess
 from typing import Any
 
-REPO = "zhouxiaoka/autoclip"
+REPO = "yogendra-sudo/AutoVideoClip"
 PROJECT_TITLE = "AutoClip Roadmap"
 DISCUSSIONS_URL = f"https://github.com/{REPO}/discussions"
 ISSUES_URL = f"https://github.com/{REPO}/issues/new/choose"

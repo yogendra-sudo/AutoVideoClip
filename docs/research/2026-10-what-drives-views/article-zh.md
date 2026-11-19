@@ -1,22 +1,22 @@
 ---
 title: "Pick the moment, not the effect: what 158 short clips taught us about what drives views"
 date: 2026-10-09
-authors: AutoClip team (Charlie Zhou et al.)
+authors: AutoVideoClip team (Charlie Zhou et al.)
 tags: [research, short-video, clipping, packaging, evidence]
 lang: en
 ---
 
 # Pick the moment, not the effect: what 158 short clips taught us about what drives views
 
-*AutoClip Research Note #1 · 9 October 2026 · [中文版](article-zh.md)*
+*AutoVideoClip Research Note #1 · 9 October 2026 · [中文版](article-zh.md)*
 
-> **TL;DR.** We logged 158 public short clips from six content groups (interview/podcast, news, documentary, variety/film, gaming/live, vlog/editorial), then compared high and low performers **within the same account**. One pattern held across groups: **who or what is in the clip, and where the clip starts,** predicted views far better than how it was edited. GQ posted 2,823,259-view and 6,261-view Shorts in one identical template. HasanAbi's four clips in one template ranged 8–12×. Cut rate, zooms, stylised captions (花字), stickers, sound effects, grading and templates showed up in hits and flops alike. So AutoClip is putting its effort into **input selection and start-point/quote detection**. We treat packaging as a **quality floor plus brand taste**, not as a growth lever. Everything below is a snapshot of public metrics taken on 2026-10-09 (UTC+8). We have **no data from our own account yet**, and we list what we plan to A/B test.
+> **TL;DR.** We logged 158 public short clips from six content groups (interview/podcast, news, documentary, variety/film, gaming/live, vlog/editorial), then compared high and low performers **within the same account**. One pattern held across groups: **who or what is in the clip, and where the clip starts,** predicted views far better than how it was edited. GQ posted 2,823,259-view and 6,261-view Shorts in one identical template. HasanAbi's four clips in one template ranged 8–12×. Cut rate, zooms, stylised captions (花字), stickers, sound effects, grading and templates showed up in hits and flops alike. So AutoVideoClip is putting its effort into **input selection and start-point/quote detection**. We treat packaging as a **quality floor plus brand taste**, not as a growth lever. Everything below is a snapshot of public metrics taken on 2026-10-09 (UTC+8). We have **no data from our own account yet**, and we list what we plan to A/B test.
 
 ---
 
 ## 1. Why we did this
 
-AutoClip is an open-source tool that cuts long videos (interviews, podcasts, talks) into short clips ([github.com/zhouxiaoka/autoclip](https://github.com/zhouxiaoka/autoclip)). Every clipping tool, ours included, is tempted to compete on effects: auto-zooms, animated captions, emoji, sound effects, templates. These are easy to demo and to screenshot.
+AutoVideoClip is an open-source tool that cuts long videos (interviews, podcasts, talks) into short clips ([github.com/yogendra-sudo/AutoVideoClip](https://github.com/yogendra-sudo/AutoVideoClip)). Every clipping tool, ours included, is tempted to compete on effects: auto-zooms, animated captions, emoji, sound effects, templates. These are easy to demo and to screenshot.
 
 Before we spent another quarter on templates, we wanted to know which of those things actually move views, and which are just *craft*: what competent channels do whether or not a clip takes off. This note covers what we found, how we found it, what we changed, and what we still don't know.
 
@@ -213,7 +213,7 @@ Source: 芒果TV, YouTube, <https://www.youtube.com/shorts/lGAK1CfY60M>; 芒果T
 
 **What packaging does do:** it decides whether an account *looks* like it has taste and a consistent identity, and it plausibly affects likes and saves. Design-forward accounts with a fixed type system had high save rates (歸藏's "AI 早报": 5.4 saves per 1,000 impressions; Colin and Samir's concept animation: 9.5). We value that. It just isn't where reach comes from.
 
-## 4. What this means for AutoClip
+## 4. What this means for AutoVideoClip
 
 **Thesis:** for a clipping tool, the highest-leverage decisions come **before the edit**: which video, which moment, which first second, which title. Packaging should be a reliable floor that never embarrasses the creator, plus a few tasteful looks. It is not where we compete.
 

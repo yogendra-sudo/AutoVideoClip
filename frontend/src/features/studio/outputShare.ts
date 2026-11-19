@@ -1,6 +1,6 @@
 import { t } from '../../i18n'
 
-export const REPO_URL = 'https://github.com/zhouxiaoka/autoclip'
+export const REPO_URL = 'https://github.com/yogendra-sudo/AutoVideoClip'
 export const USE_CASE_URL = `${REPO_URL}/discussions/new?category=use-cases`
 const RATING_KEY = 'autoclip.output-rating.v1'
 const RATING_INTERVAL_MS = 7 * 86400000

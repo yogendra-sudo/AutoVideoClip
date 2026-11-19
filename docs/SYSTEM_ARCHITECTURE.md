@@ -1,8 +1,8 @@
-# AutoClip 系统架构说明
+# AutoVideoClip 系统架构说明
 
 ## 🏗️ 系统整体架构
 
-AutoClip 是一个基于 Python + React 的视频自动切片和合集生成系统，采用前后端分离架构。
+AutoVideoClip 是一个基于 Python + React 的视频自动切片和合集生成系统，采用前后端分离架构。
 
 ### **架构组件**
 

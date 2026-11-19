@@ -1,6 +1,6 @@
 # GitHub issue 修复与验收（2026-09-30）
 
-基线 `main/e2b2e49a`，修复分支 `codex/issue-triage-fixes-20260930`，交付 [PR #236](https://github.com/zhouxiaoka/autoclip/pull/236)。核查全部 40 条开放 issue。合并表示主线已修复，不表示已发布新版安装包或复现了报告者的私人素材。
+基线 `main/e2b2e49a`，修复分支 `codex/issue-triage-fixes-20260930`，交付 [PR #236](https://github.com/yogendra-sudo/AutoVideoClip/pull/236)。核查全部 40 条开放 issue。合并表示主线已修复，不表示已发布新版安装包或复现了报告者的私人素材。
 
 ## 修复
 
@@ -13,7 +13,7 @@
 
 ## 验证证据
 
-- [Windows 覆盖安装验收](https://github.com/zhouxiaoka/autoclip/actions/runs/36687128296)：安装正式 v1.4.0，模拟旧 Python 占用 `_asyncio.pyd`，使用既有主线构建产物 `36546843402` 覆盖升级；旧进程被结束，内置 ffmpeg 出片、yt-dlp ffmpeg 定位、后端健康与来源守卫全部通过。该包验证之前 #221 的安装器/媒体修复，不是本 PR 新构建包。报告位于步骤日志（原工作流没有找到 JSON artifact）。
+- [Windows 覆盖安装验收](https://github.com/yogendra-sudo/AutoVideoClip/actions/runs/36687128296)：安装正式 v1.4.0，模拟旧 Python 占用 `_asyncio.pyd`，使用既有主线构建产物 `36546843402` 覆盖升级；旧进程被结束，内置 ffmpeg 出片、yt-dlp ffmpeg 定位、后端健康与来源守卫全部通过。该包验证之前 #221 的安装器/媒体修复，不是本 PR 新构建包。报告位于步骤日志（原工作流没有找到 JSON artifact）。
 - 新增 `.github/workflows/issue-recovery.yml`：Windows Python 3.13 安装真实 Whisper 运行时、下载 tiny、对公开访谈的 12 秒中文路径素材离线转写；另在独立依赖目录及新进程中加载 PyAV 19 再验证恢复。CI 产出 `windows-issue-recovery` 报告。首轮真实失败帮助定位 PyAV 兼容问题；最终结果见 PR 检查。
 - 用户明确授权两次 DashScope/qwen-plus 付费小样本验收：CLI 与 MCP 分别处理同一公开访谈前 90 秒及配套 SRT，两者都完成并各生成 2 个非空视频。CLI 退出码 0；MCP 调用 `start_clip_job` 后经 `get_job_status` 轮询到 completed（直接调用工具函数，不宣称验证 MCP 传输协议）。使用 `category=speech`、`min_score=0.5`，输出为未评分兜底 0.5，0 合集；这证明链路可出片，不代替默认阈值或剪辑质量验收。
 - CLI 项目 `31235423-f079-43fe-83e7-157a9bb288b6`，MCP 项目 `aa7a699d-5056-4245-acc2-ec66e351f462`；本地记录 `/tmp/autoclip-recovery-live/cli-output.log`、`mcp-result.json`，无密钥入库。

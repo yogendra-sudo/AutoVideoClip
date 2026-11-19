@@ -1,4 +1,4 @@
-# AutoClip 当前界面与交互拆解
+# AutoVideoClip 当前界面与交互拆解
 
 核对日期：2026-09-21。工作分支：`codex/visual-game-ads`。
 
@@ -52,7 +52,7 @@ flowchart TD
 
 ### A. 全局栏
 
-- 左侧 AutoClip 品牌入口回首页；右侧主题切换、设置。
+- 左侧 AutoVideoClip 品牌入口回首页；右侧主题切换、设置。
 - 无全局素材库、创意库、导出中心或任务中心导航。
 - 内页自行提供返回入口。设计规范使用暖灰、克制蓝、卡片和较大留白。
 - 参考：[Header.tsx](../frontend/src/components/Header.tsx)、[DESIGN.md](../DESIGN.md)。

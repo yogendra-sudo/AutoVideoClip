@@ -1,14 +1,14 @@
 blank_issues_enabled: false
 contact_links:
   - name: 📋 Status and known issues
-    url: https://github.com/zhouxiaoka/autoclip/issues/96
+    url: https://github.com/yogendra-sudo/AutoVideoClip/issues/96
     about: Check here first; your question may already be answered.
   - name: 💡 Ideas
-    url: https://github.com/zhouxiaoka/autoclip/discussions/categories/ideas
+    url: https://github.com/yogendra-sudo/AutoVideoClip/discussions/categories/ideas
     about: Share feature requests, usage questions, or model requests in Discussions instead of opening an issue.
   - name: 🙋 Q&A
-    url: https://github.com/zhouxiaoka/autoclip/discussions/categories/q-a
+    url: https://github.com/yogendra-sudo/AutoVideoClip/discussions/categories/q-a
     about: Ask about usage, model selection, or clip quality. File an issue for reproducible bugs.
   - name: 🔒 Security
-    url: https://github.com/zhouxiaoka/autoclip/blob/main/SECURITY.md
+    url: https://github.com/yogendra-sudo/AutoVideoClip/blob/main/SECURITY.md
     about: Report vulnerabilities or exposed credentials privately as described in the security policy. Do not post sensitive details publicly.

@@ -72,5 +72,5 @@ autoclip publish --status <request_id>
 - 没有字幕、第一次很慢：Whisper 要下载模型。`check_environment` 里 `whisper.ok=false` 时，让用户在桌面「设置 → 默认模型 → 语音转字幕」安装，或传 `srt_path`。
 - 模型连不上：看 `check_environment` 的 `llm.error`。`ollama` 不可达时提示 `ollama serve` 和 `ollama pull qwen2.5:7b`。云端缺 key 时让用户在桌面设置里填，或设置 `AUTOCLIP_API_KEY`。
 - 切片为 0：把 `min_score` 降到 0.5。仍为 0 说明内容不适合切高光。
-- 本地地址被系统代理拦成 502：AutoClip 对 localhost 和内网会绕过代理。
+- 本地地址被系统代理拦成 502：AutoVideoClip 对 localhost 和内网会绕过代理。
 - 一次只跑一个切片任务。连续 `start_clip_job` 会排队。

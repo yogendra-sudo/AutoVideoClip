@@ -1,14 +1,14 @@
-# Use Infistar with AutoClip
+# Use Infistar with AutoVideoClip
 
 [简体中文](INFISTAR_SETUP.md) · [Back to README](../README-EN.md)
 
-Infistar sponsors AutoClip and can be configured through the existing OpenAI-compatible API option.
+Infistar sponsors AutoVideoClip and can be configured through the existing OpenAI-compatible API option.
 
 ## Register and create an API key
 
-Register through the [AutoClip referral link](https://www.infistar.cc/register?aff=XLK3BCM6&ref_source=link), then create an API key in the Infistar console. The partner's promotion offers $5 in trial credit; eligibility and changes to the offer are governed by its promotion page.
+Register through the [AutoVideoClip referral link](https://www.infistar.cc/register?aff=XLK3BCM6&ref_source=link), then create an API key in the Infistar console. The partner's promotion offers $5 in trial credit; eligibility and changes to the offer are governed by its promotion page.
 
-## Configure AutoClip
+## Configure AutoVideoClip
 
 ### Version 1.4.1 and later: pick Infistar directly
 

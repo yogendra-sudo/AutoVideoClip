@@ -1,6 +1,6 @@
 # 最新反馈排查（2026-09-28，待发布）
 
-目标为新出现的 [#224](https://github.com/zhouxiaoka/autoclip/issues/224) 与 [#225](https://github.com/zhouxiaoka/autoclip/issues/225)。修复追加到 `codex/recent-feedback-fixes` / PR #221；不修改 #185，不自动回复或关闭反馈。
+目标为新出现的 [#224](https://github.com/yogendra-sudo/AutoVideoClip/issues/224) 与 [#225](https://github.com/yogendra-sudo/AutoVideoClip/issues/225)。修复追加到 `codex/recent-feedback-fixes` / PR #221；不修改 #185，不自动回复或关闭反馈。
 
 ## #224：Windows 1.4.0 升级、导入和预览
 
@@ -28,6 +28,6 @@
 - 前端 136 项测试、typecheck、lint、build 通过。
 - macOS `cargo check` 通过（指定现有 MacOSX15.4 SDK；默认 SDK 27 与本机 linker 不兼容）。
 - 后端全量 639 passed、1 skipped（macOS 跳过 Windows IOCP）；末次缓存删除恢复边界单独 4 项回归通过。
-- [Windows CI](https://github.com/zhouxiaoka/autoclip/actions/runs/36368556991) 在 `29342b56` 上通过：13 项 IOCP 测试、2 项真实进程树测试、完整桌面 `cargo check`。编译使用资源占位目录，不是安装包验收；后续改动仅为兼容预览缓存恢复、UI 手动入口与文档。
-- [PR CI](https://github.com/zhouxiaoka/autoclip/actions/runs/36368559552) 的后端、前端、Docker 冒烟均通过。
+- [Windows CI](https://github.com/yogendra-sudo/AutoVideoClip/actions/runs/36368556991) 在 `29342b56` 上通过：13 项 IOCP 测试、2 项真实进程树测试、完整桌面 `cargo check`。编译使用资源占位目录，不是安装包验收；后续改动仅为兼容预览缓存恢复、UI 手动入口与文档。
+- [PR CI](https://github.com/yogendra-sudo/AutoVideoClip/actions/runs/36368559552) 的后端、前端、Docker 冒烟均通过。
 - 本轮没有发布安装包或关闭 issue；线上旧版不会因 PR 更新而自动修复。

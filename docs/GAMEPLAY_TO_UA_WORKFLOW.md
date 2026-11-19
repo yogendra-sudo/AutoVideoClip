@@ -1,6 +1,6 @@
 # 从游戏长视频到买量短片：三条真实输入与制作方案
 
-更新：2026-09-21。已完成三条输入的浏览器抽查，并从跑酷原片 226.5–248.5 秒制作三条 22 秒开头变体。实际调用 Seed Pro 2.1 复核 11 张有序抽帧，使用 HyperFrames CLI 渲染；尚未逐秒分析全部输入、完成事件精标或接入 AutoClip 产品。下文创意脚本保留为提案；实际产物见[样片记录](../artifacts/game-ads/run-20260921/README.md)。语言配置及应用内交互以[编辑与渲染集成方案](GAME_AD_EDITOR_INTEGRATION.md)为准。
+更新：2026-09-21。已完成三条输入的浏览器抽查，并从跑酷原片 226.5–248.5 秒制作三条 22 秒开头变体。实际调用 Seed Pro 2.1 复核 11 张有序抽帧，使用 HyperFrames CLI 渲染；尚未逐秒分析全部输入、完成事件精标或接入 AutoVideoClip 产品。下文创意脚本保留为提案；实际产物见[样片记录](../artifacts/game-ads/run-20260921/README.md)。语言配置及应用内交互以[编辑与渲染集成方案](GAME_AD_EDITOR_INTEGRATION.md)为准。
 
 ## 1. 三条输入带来的产品修正
 
@@ -96,9 +96,9 @@ Jev 可以在已验证的文本事件上帮助排重、分类与候选比较；�
 
 官方 skill 的适配入口是 `hyperframes → general-video`（已有素材重组），按需使用 core、keyframes、audio、media-use、cli；不是把游戏录屏套成网站宣传页。已安装并执行 general-video 工作流，实际完成三条本地样片。[官方路由说明](https://raw.githubusercontent.com/heygen-com/hyperframes/main/skills/hyperframes/SKILL.md)
 
-建议为 AutoClip 增加独立 renderer adapter：内部编辑方案稳定，输出可以选择基础 FFmpeg 或 HyperFrames，避免供应商格式成为业务唯一存储。
+建议为 AutoVideoClip 增加独立 renderer adapter：内部编辑方案稳定，输出可以选择基础 FFmpeg 或 HyperFrames，避免供应商格式成为业务唯一存储。
 
-| AutoClip 编辑字段 | HyperFrames 映射/处理 |
+| AutoVideoClip 编辑字段 | HyperFrames 映射/处理 |
 | --- | --- |
 | 源片段入点 | `data-media-start` |
 | 成片开始时间 / 成片持续时间 | `data-start` / `data-duration` |
@@ -127,4 +127,4 @@ Jev 可以在已验证的文本事件上帮助排重、分类与候选比较；�
 4. 用 Gossip Harbor 验证有效画面裁切与合成因果链，再扩驾驶。
 5. 在质量基线稳定后比较 Jev 的效率收益，并在获得真实投放结果后更新 Golden 库。
 
-本轮已完成输入抽查、创意与架构设计及三条本地开头变体；尚未验证投放效果。下一实施里程碑是可配置语言/字幕的 AutoClip 应用内制作与导出，不要求用户打开 Studio。
+本轮已完成输入抽查、创意与架构设计及三条本地开头变体；尚未验证投放效果。下一实施里程碑是可配置语言/字幕的 AutoVideoClip 应用内制作与导出，不要求用户打开 Studio。

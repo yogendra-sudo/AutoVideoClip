@@ -1,6 +1,6 @@
-# AutoClip MCPB
+# AutoVideoClip MCPB
 
-Smithery 本地 stdio 用的薄 MCP Bundle。包内不包含 AutoClip 后端源码。`pyproject.toml` 依赖已发布的 PyPI 包 `autoclip-mcp`，`src/server.py` 只转调 `backend.mcp_server:main`。
+Smithery 本地 stdio 用的薄 MCP Bundle。包内不包含 AutoVideoClip 后端源码。`pyproject.toml` 依赖已发布的 PyPI 包 `autoclip-mcp`，`src/server.py` 只转调 `backend.mcp_server:main`。
 
 宿主启动命令是 `uv run --directory <本目录> src/server.py`。需要 PATH 里有 `uv`、`ffmpeg`、`ffprobe`。Python 3.10+ 由 UV 安装。
 

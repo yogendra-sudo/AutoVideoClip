@@ -45,7 +45,7 @@
 
 复查还发现真实 Whisper/SenseVoice 的验收工作流未阻断 Desktop Build。已将它们复用到桌面构建依赖，并要求 Release Acceptance 验证同一次 tag 构建中的相应 job；不以其他 PR 的旧绿灯替代。
 
-Windows 新回归的首次红灯见 [failed job](https://github.com/zhouxiaoka/autoclip/actions/runs/36965127130/job/110707097871)。本地绿灯不能覆盖平台红灯，修复后须等待新 SHA 的 Windows CI 再通过；不跳过、不当作环境噪音。
+Windows 新回归的首次红灯见 [failed job](https://github.com/yogendra-sudo/AutoVideoClip/actions/runs/36965127130/job/110707097871)。本地绿灯不能覆盖平台红灯，修复后须等待新 SHA 的 Windows CI 再通过；不跳过、不当作环境噪音。
 
 提交 `ca27a556edde08ef304d99ca2cf8f671ce772acb` 已完成后端 1132 passed / 2 allowed skips、前端 206 passed 的本地全量检查及所有 PR 检查，包括三平台实际 SenseVoice 转写和 Windows Whisper。之后继续 review 的七项新回归在该提交下失败，覆盖只读 ready 临时文件、失败汇总丢码、筛选失败未结束 generation、按需派发失败无法重试。此前手动候选构建因此取消；新增修复须按新 SHA 重新全量检查和构建。
 

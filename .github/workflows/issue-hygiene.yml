@@ -30,7 +30,7 @@ jobs:
               'Thanks for your feedback. This open-source project is maintained in our spare time. Issues are usually triaged together **within one week** rather than answered immediately one by one.',
               '',
               '- Current status and known issues: #96',
-              '- Issues are for reproducible bugs and feature requests accepted by maintainers for the roadmap. Share ideas, use cases, and model requests in [Discussions](https://github.com/zhouxiaoka/autoclip/discussions).',
+              '- Issues are for reproducible bugs and feature requests accepted by maintainers for the roadmap. Share ideas, use cases, and model requests in [Discussions](https://github.com/yogendra-sudo/AutoVideoClip/discussions).',
               '- Bugs missing **version / platform / model** are labeled `needs-info`. Without an update for 14 days, they are marked stale and automatically closed after 7 more days without a reply. A maintainer will review any new information before reopening.',
               '',
               '_Issues are for reproducible bugs and accepted roadmap items. Ideas belong in Discussions. Bugs missing version / platform / model get `needs-info`, are marked stale after 14 days without a reply, then close after 7 more days._'

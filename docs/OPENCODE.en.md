@@ -1,7 +1,7 @@
-# Connect AutoClip to opencode CLI (MCP)
+# Connect AutoVideoClip to opencode CLI (MCP)
 
-[opencode](https://opencode.ai) is a terminal AI agent. Register AutoClip as a local MCP server and you can
-point opencode at a video path — it will call AutoClip to clip highlights, export vertical videos, and publish.
+[opencode](https://opencode.ai) is a terminal AI agent. Register AutoVideoClip as a local MCP server and you can
+point opencode at a video path — it will call AutoVideoClip to clip highlights, export vertical videos, and publish.
 
 | Goal | How |
 |---|---|
@@ -12,7 +12,7 @@ point opencode at a video path — it will call AutoClip to clip highlights, exp
 
 ## 1. Prerequisites
 
-- AutoClip CLI installed (`pip install -r requirements.txt && pip install -e .`) — see the CLI / MCP guide;
+- AutoVideoClip CLI installed (`pip install -r requirements.txt && pip install -e .`) — see the CLI / MCP guide;
   running from the repo (`python -m backend.mcp_server`) also works
 - `ffmpeg` on PATH and a working model: `autoclip doctor`
 - opencode installed (`opencode --version`)

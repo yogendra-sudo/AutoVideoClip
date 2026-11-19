@@ -1,4 +1,4 @@
-# AutoClip Documentation Center
+# AutoVideoClip Documentation Center
 
 [Project homepage and language READMEs](../README.md) · [English README](../README-EN.md)
 
@@ -34,8 +34,8 @@
 - [Contributing guide](../CONTRIBUTING.md)
 - [Build guide](../BUILD_GUIDE.md)
 - [README translation and badge maintenance](i18n.md)
-- [Changelog](../CHANGELOG.md) · [Releases](https://github.com/zhouxiaoka/autoclip/releases)
-- [Known issue](https://github.com/zhouxiaoka/autoclip/issues/96)
+- [Changelog](../CHANGELOG.md) · [Releases](https://github.com/yogendra-sudo/AutoVideoClip/releases)
+- [Known issue](https://github.com/yogendra-sudo/AutoVideoClip/issues/96)
 - [Community board](COMMUNITY_BOARD.md)
 
 The detailed technical documentation is translated as needed. The README language variants do not indicate the languages supported by the application interface or models. Download availability and feature availability are determined by the corresponding release.

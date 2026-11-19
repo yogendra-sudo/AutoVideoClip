@@ -1,14 +1,14 @@
 ---
 name: autoclip
 description: >-
-  用 AutoClip 把一条 YouTube / B 站链接，或本地长视频（讲座、访谈、播客、课程），做成各平台成片、封面、发布文案和 ZIP 发布包。
+  用 AutoVideoClip 把一条 YouTube / B 站链接，或本地长视频（讲座、访谈、播客、课程），做成各平台成片、封面、发布文案和 ZIP 发布包。
   当用户要「出片」「做封面」「写发布文案」「打包发布」「从这个链接做短视频」时使用。
   只要原始高光切片、合集，或把旧切片发到 Upload-Post 时不要用这份说明，改读 references/legacy.md。
 ---
 
-# AutoClip：从链接或长视频到发布包
+# AutoVideoClip：从链接或长视频到发布包
 
-AutoClip 在本机把一条素材做成可发布的成片。产物和桌面应用共用数据目录，桌面首页能看到同一个项目。
+AutoVideoClip 在本机把一条素材做成可发布的成片。产物和桌面应用共用数据目录，桌面首页能看到同一个项目。
 
 先调用 `get_version`（或 `autoclip --version`）读取当前安装的版本。版本号来自安装包，不要和文档里的数字核对。
 
@@ -30,13 +30,13 @@ AutoClip 在本机把一条素材做成可发布的成片。产物和桌面应�
 
 - 只要带评分的原始切片和合集：读 [references/legacy.md](references/legacy.md)。
 - 把已经切好的旧片段发到 TikTok / YouTube 等（Upload-Post）：同样读那份参考，不要走下面的出片流程。
-- 用户只是在问 AutoClip 怎么安装、或还没有视频：先说明装法，不要空跑任务。
+- 用户只是在问 AutoVideoClip 怎么安装、或还没有视频：先说明装法，不要空跑任务。
 
 ## 先选调用方式
 
-1. **有 AutoClip MCP 工具** → 用工具，不要自己拼命令。
+1. **有 AutoVideoClip MCP 工具** → 用工具，不要自己拼命令。
 2. **没有 MCP，但能跑 shell** → `autoclip produce <source> --json`。
-3. **两者都没有** → 一行安装：`uvx autoclip-mcp`，skill 用 `npx skills add zhouxiaoka/autoclip`。备选是在仓库根目录执行 `python -m pip install -r requirements.txt`，再执行 `python -m pip install --no-deps .`。详见 `docs/CLI_AND_MCP.md`。
+3. **两者都没有** → 一行安装：`uvx autoclip-mcp`，skill 用 `npx skills add yogendra-sudo/AutoVideoClip`。备选是在仓库根目录执行 `python -m pip install -r requirements.txt`，再执行 `python -m pip install --no-deps .`。详见 `docs/CLI_AND_MCP.md`。
 
 模型密钥放在桌面应用的设置里，或环境变量 `AUTOCLIP_API_KEY`。不要把 key 写进工具参数或对话。
 

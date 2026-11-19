@@ -1,6 +1,6 @@
 # 更新日志
 
-本文档记录了AutoClip项目的所有重要变更。
+本文档记录了AutoVideoClip项目的所有重要变更。
 
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
@@ -39,7 +39,7 @@
 
 - Windows / 桌面关主窗与托盘退出的「正在制作」判定与状态栏 keep-awake 对齐：除 `status=processing` 外，也认 `pending` 以及 `studio_generation_status∈{screening,production,rendering}`。制作中（含「制作中，已阻止休眠」/「制作中 · 查看进度」）关窗必弹「正在制作 / 后台继续 / 仍然退出」，不再在状态滞后窗口直接 `confirm_quit`。（Win e2e tip 25970f2c M3）
 
-- macOS 应用菜单「退出 AutoClip」与 Cmd+Q：用自定义 `MenuItem`（id `quit` + `CmdOrCtrl+Q`）替换 muda 预定义 Quit（`terminate:`，事件环销毁后无法 `prevent_exit`），经 `on_menu_event` 与托盘退出共用 `close-requested`；制作中弹出「正在制作 / 后台继续 / 仍然退出」，选后台继续则进程继续跑。文案随 `set_tray_language` 切换。`ExitRequested` 拦截仍保留作窗销毁等兜底。须 Mac 真机冒烟后再认定生效。（接 #556 假修复）
+- macOS 应用菜单「退出 AutoVideoClip」与 Cmd+Q：用自定义 `MenuItem`（id `quit` + `CmdOrCtrl+Q`）替换 muda 预定义 Quit（`terminate:`，事件环销毁后无法 `prevent_exit`），经 `on_menu_event` 与托盘退出共用 `close-requested`；制作中弹出「正在制作 / 后台继续 / 仍然退出」，选后台继续则进程继续跑。文案随 `set_tray_language` 切换。`ExitRequested` 拦截仍保留作窗销毁等兜底。须 Mac 真机冒烟后再认定生效。（接 #556 假修复）
 
 - 桌面后端被重新拉起后，首页项目列表也会立刻刷新（不再最多等 30 秒轮询），制作中被中断的项目能尽快显示「应用刚重启，这次制作已中断，请重试。」与重试入口。工作室侧此前已由 #502 覆盖。（#487）
 - 首页失败项目卡与工作室一致：空文案或裸「错误」也会写出步骤（下载/转写/分析/制作）和人话原因；有计费调用时附带核对余额提示。Win tip 验收时失败卡未拍到，多半是项目仍在制作中；此补强避免首页只剩「处理失败」。（#491）
@@ -197,7 +197,7 @@
 
 - pip 安装子进程不再比后端活得久：Windows 上放进后端自己的 Job Object（关闭即杀）；Linux 上设 PDEATHSIG；POSIX 上退出或收到 SIGTERM 时杀掉整个进程组。另外维护一份在跑子进程的登记表，取消安装和后端关闭（shutdown、atexit）时都会结束 pip。取消安装不进入自动重试冷却。修复后端不由桌面壳启动时 pip 成为孤儿进程约 5 分钟的问题（1.5.7 Windows S3，#344）。
 
-- 组件安装失败原因分类更准确：连不上 pip 源（连接被拒、连接重置、超时、代理或证书错误、DNS 解析失败等）不再被说成“没有可用的预编译包，请更新 AutoClip”，改为提示检查网络或代理，或设置 PIP_INDEX_URL。只有在没有网络错误、确实没有可用 wheel 时，才提示没有预编译包。Whisper 和人物识别组件都适用，界面按 8 种语言显示（`error_code`）。换到清华镜像后，每个阶段的进度文案都带上当前源名（1.5.7 W157-F2 / W157-F3，#344）。
+- 组件安装失败原因分类更准确：连不上 pip 源（连接被拒、连接重置、超时、代理或证书错误、DNS 解析失败等）不再被说成“没有可用的预编译包，请更新 AutoVideoClip”，改为提示检查网络或代理，或设置 PIP_INDEX_URL。只有在没有网络错误、确实没有可用 wheel 时，才提示没有预编译包。Whisper 和人物识别组件都适用，界面按 8 种语言显示（`error_code`）。换到清华镜像后，每个阶段的进度文案都带上当前源名（1.5.7 W157-F2 / W157-F3，#344）。
 
 - Windows 新装后在应用里安装本地 Whisper，不再因为 pip 回溯到只有源码包的旧版本、现场编译一个多小时后失败（1.5.7 Windows 验收）。现在只装预编译包，Windows 上 faster-whisper、av、ctranslate2、onnxruntime、tokenizers 钉在有 cp313 win_amd64 wheel 的版本；先连官方 PyPI，失败或超时再换清华镜像；碰到要编译、没有可用预编译包或超时就马上停，并写清原因。（#339）
 
@@ -237,7 +237,7 @@
 
 - 视频太短，或没有音轨且不能改用画面分析时，在调用模型前直接给出原因，不再先消耗模型请求再失败；制作中删除项目会停止后台渲染并清理项目文件。（#300）
 
-- 制作中应用被关闭或重启后，未完成的项目显示「服务已重启，请重新生成」并提供重新生成入口，不再显示已完成或一直制作中；启动时清理已删除项目遗留的文件夹。本地 Whisper 转写时显示进度百分比；模型服务连接失败、超时或限流时只显示一句简明说明。Windows 卸载默认保留 %APPDATA%\AutoClip，只有勾选删除数据时才一并删除，升级时不删除。（#301）
+- 制作中应用被关闭或重启后，未完成的项目显示「服务已重启，请重新生成」并提供重新生成入口，不再显示已完成或一直制作中；启动时清理已删除项目遗留的文件夹。本地 Whisper 转写时显示进度百分比；模型服务连接失败、超时或限流时只显示一句简明说明。Windows 卸载默认保留 %APPDATA%\AutoVideoClip，只有勾选删除数据时才一并删除，升级时不删除。（#301）
 
 - 使用 Ollama、LM Studio 等本地模型分析长视频时，按更小的片段分批发送字幕，减少上下文不足导致的截断；设置页提示把本地模型的上下文调到 16384 以上。云端模型不受影响。（#302）
 
@@ -348,7 +348,7 @@
 - **按内容情绪变换风格**：模型判断每段内容的情绪（冷静、严肃、强观点、真诚、轻松），据此在 7 套配色和多种字幕动效里挑选，不同片段风格各异，同一片段在各平台保持一致。
 - **每个平台先生成最好的 10 条**：长视频会挑出 20–40 个片段，先按目标平台的时长要求筛选，再自动生成评分最高的 10 条，其余列为「备选片段」，点「生成这条」再制作，省时间也省模型费用。
 - **每条成片自带发布包**：按目标平台写好标题、简介和话题（抖音钩子式、小红书笔记式、B 站信息完整、TikTok / Reels / Shorts 英文文案），按平台字数与话题数限制；封面在成片完成后自动设计——说话人画面、成片同款标题与配色、嘉宾名牌，按平台比例（竖屏 9:16、小红书 3:4、B 站 16:10、YouTube 16:9）。成片卡片上可直接改文案、复制、导出「发布包」（视频 + 封面 + 文案），也可以一键用 AI 重新设计封面；去发布时自动带上这套文案与封面。
-- **新片尾动画**：1.8 秒的 AutoClip 标志动画与提示音，竖屏、横屏各一版，其他比例自动居中适配。
+- **新片尾动画**：1.8 秒的 AutoVideoClip 标志动画与提示音，竖屏、横屏各一版，其他比例自动居中适配。
 - 竖屏成片按说话人自动取景，主持人与嘉宾切换时画面跟着说话的人走。
 - 新增赞助合作伙伴 88API：八语 README、首页与设置页推荐入口、独立 API Key、模型发现、兼容封面与 Whisper 转写；CLI / MCP 使用 `api88`。
 - 模型设置新增赞助合作伙伴「Infistar 无限星河」：接口地址已预设，填好 Key 后自动列出账号可用的模型；设置页提供专属注册链接（可领 $5 体验额度）和接入说明。CLI / MCP 支持 `--provider infistar` 与 `INFISTAR_API_KEY`。
@@ -392,7 +392,7 @@
 - 测试使用临时数据库，不再清空开发者本机的 `data/autoclip.db`。
 
 ### 安全
-- 本地后端只接受 AutoClip 自己界面的跨域请求，其他网页不能再读取设置里的 API Key 或发起导入、发布；桌面端拒绝非本机 Host，防 DNS 重绑定。
+- 本地后端只接受 AutoVideoClip 自己界面的跨域请求，其他网页不能再读取设置里的 API Key 或发起导入、发布；桌面端拒绝非本机 Host，防 DNS 重绑定。
 - 调试路由默认不再挂载（`AUTOCLIP_ENABLE_DEBUG_ROUTES=1` 开启）；`python -m backend.main` 默认只监听 127.0.0.1。
 - Docker 从局域网 IP 或自定义域名打开前端时，需要在 `AUTOCLIP_ALLOWED_ORIGINS` 里加上前端地址（逗号分隔）。
 
@@ -549,7 +549,7 @@
 - `docker-compose.yml` 四个服务共用 `autoclip:local` 镜像，只需构建一次
 - CI 新增 `docker-smoke` job：构建镜像、拉起 redis + api + worker、校验健康检查、yt-dlp 可用、REDIS_URL 连通、worker 监听了全部路由队列
 - 桌面壳启动后端时注入 `AUTOCLIP_APP_VERSION`，后端 `/settings` 不再固定返回 `1.0.0`
-- 桌面壳按平台设置数据目录 `AUTOCLIP_APP_DIR`（macOS 路径不变；Windows 为 `%APPDATA%\AutoClip`），Windows 下强制 `PYTHONUTF8=1` 且不弹控制台窗口
+- 桌面壳按平台设置数据目录 `AUTOCLIP_APP_DIR`（macOS 路径不变；Windows 为 `%APPDATA%\AutoVideoClip`），Windows 下强制 `PYTHONUTF8=1` 且不弹控制台窗口
 - `src-tauri/Cargo.toml` 版本与 `tauri.conf.json` 对齐
 - `desktop-build.yml` 改为 macOS + Windows 并行构建，`release` job 汇总产物，单一平台失败不阻塞另一平台上传
 
@@ -652,21 +652,21 @@
 
 ### 链接
 
-- [Unreleased]: https://github.com/zhouxiaoka/autoclip/compare/v1.5.7...HEAD
-- [1.5.7]: https://github.com/zhouxiaoka/autoclip/compare/v1.5.6...v1.5.7
-- [1.5.6]: https://github.com/zhouxiaoka/autoclip/compare/v1.5.3...v1.5.6
-- [1.5.3]: https://github.com/zhouxiaoka/autoclip/compare/v1.5.2...v1.5.3
-- [1.5.2]: https://github.com/zhouxiaoka/autoclip/compare/v1.5.1...v1.5.2
-- [1.5.1]: https://github.com/zhouxiaoka/autoclip/compare/v1.5.0...v1.5.1
-- [1.5.0]: https://github.com/zhouxiaoka/autoclip/compare/v1.4.0...v1.5.0
-- [1.4.0]: https://github.com/zhouxiaoka/autoclip/compare/v1.3.5...v1.4.0
-- [1.3.5]: https://github.com/zhouxiaoka/autoclip/compare/v1.3.4...v1.3.5
-- [1.3.4]: https://github.com/zhouxiaoka/autoclip/compare/v1.3.3...v1.3.4
-- [1.3.3]: https://github.com/zhouxiaoka/autoclip/compare/v1.3.2...v1.3.3
-- [1.3.2]: https://github.com/zhouxiaoka/autoclip/compare/v1.3.1...v1.3.2
-- [1.3.1]: https://github.com/zhouxiaoka/autoclip/compare/v1.3.0...v1.3.1
-- [1.3.0]: https://github.com/zhouxiaoka/autoclip/compare/v1.2.1...v1.3.0
-- [1.2.1]: https://github.com/zhouxiaoka/autoclip/compare/v1.2.0...v1.2.1
-- [1.2.0]: https://github.com/zhouxiaoka/autoclip/releases/tag/v1.2.0
-- [1.1.0]: https://github.com/zhouxiaoka/autoclip/releases/tag/v1.1.0
-- [1.0.0]: https://github.com/zhouxiaoka/autoclip/releases/tag/v1.0.0
+- [Unreleased]: https://github.com/yogendra-sudo/AutoVideoClip/compare/v1.5.7...HEAD
+- [1.5.7]: https://github.com/yogendra-sudo/AutoVideoClip/compare/v1.5.6...v1.5.7
+- [1.5.6]: https://github.com/yogendra-sudo/AutoVideoClip/compare/v1.5.3...v1.5.6
+- [1.5.3]: https://github.com/yogendra-sudo/AutoVideoClip/compare/v1.5.2...v1.5.3
+- [1.5.2]: https://github.com/yogendra-sudo/AutoVideoClip/compare/v1.5.1...v1.5.2
+- [1.5.1]: https://github.com/yogendra-sudo/AutoVideoClip/compare/v1.5.0...v1.5.1
+- [1.5.0]: https://github.com/yogendra-sudo/AutoVideoClip/compare/v1.4.0...v1.5.0
+- [1.4.0]: https://github.com/yogendra-sudo/AutoVideoClip/compare/v1.3.5...v1.4.0
+- [1.3.5]: https://github.com/yogendra-sudo/AutoVideoClip/compare/v1.3.4...v1.3.5
+- [1.3.4]: https://github.com/yogendra-sudo/AutoVideoClip/compare/v1.3.3...v1.3.4
+- [1.3.3]: https://github.com/yogendra-sudo/AutoVideoClip/compare/v1.3.2...v1.3.3
+- [1.3.2]: https://github.com/yogendra-sudo/AutoVideoClip/compare/v1.3.1...v1.3.2
+- [1.3.1]: https://github.com/yogendra-sudo/AutoVideoClip/compare/v1.3.0...v1.3.1
+- [1.3.0]: https://github.com/yogendra-sudo/AutoVideoClip/compare/v1.2.1...v1.3.0
+- [1.2.1]: https://github.com/yogendra-sudo/AutoVideoClip/compare/v1.2.0...v1.2.1
+- [1.2.0]: https://github.com/yogendra-sudo/AutoVideoClip/releases/tag/v1.2.0
+- [1.1.0]: https://github.com/yogendra-sudo/AutoVideoClip/releases/tag/v1.1.0
+- [1.0.0]: https://github.com/yogendra-sudo/AutoVideoClip/releases/tag/v1.0.0

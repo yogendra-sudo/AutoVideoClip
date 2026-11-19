@@ -1,4 +1,4 @@
-# AutoClip 埋点体系（历史）
+# AutoVideoClip 埋点体系（历史）
 
 > **2026-10-14：本页与 [ANALYTICS_V2.md](ANALYTICS_V2.md) 都是历史说明，不再是准绳。** 现行规范是 [analytics/TRACKING_PLAN.md](analytics/TRACKING_PLAN.md) 与 [analytics/event_inventory.json](analytics/event_inventory.json)。北极星不是 `clips_exported`。下方原文只供对照 1.3.x 看板。
 

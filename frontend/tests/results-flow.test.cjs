@@ -19,7 +19,7 @@ const workflow = require('./load-ts.cjs').loadTs(path.join(__dirname, '../src/an
 const reason = load('../src/features/studio/clipReason.ts')
 const pack = load('../src/features/studio/publishPack.ts', {
   '../../i18n': { t: value => value },
-  './outputShare': { REPO_URL: 'https://github.com/zhouxiaoka/autoclip' },
+  './outputShare': { REPO_URL: 'https://github.com/yogendra-sudo/AutoVideoClip' },
 })
 
 function tracker() {

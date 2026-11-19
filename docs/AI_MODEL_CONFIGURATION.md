@@ -43,7 +43,7 @@
 
 官方生图参考目录位于 `backend/core/image_model_catalog.py`，保留核对日期和各官方文档链接，与 models.dev 的动态能力元数据及账号实时列表共同使用。Seed 官方 ID 与聚合站别名分别管理；已下线型号不作为无 Key 预览推荐。仅编辑模型不列入文生图列表。模型目录不等同于账号权限，也不代表已经做过真实付费生成验证。
 
-发现一个型号不保证账号有调用权限，也不代表 AutoClip 已适配该模型的所有专有协议。自定义模型可手动选择，但服务必须兼容选定协议。图片测试会产生少量调用，列表刷新不执行生成式测试。此改动不增加云端语音转写协议。
+发现一个型号不保证账号有调用权限，也不代表 AutoVideoClip 已适配该模型的所有专有协议。自定义模型可手动选择，但服务必须兼容选定协议。图片测试会产生少量调用，列表刷新不执行生成式测试。此改动不增加云端语音转写协议。
 
 ## 默认模型与 ASR（设置 → 服务商与模型）
 
@@ -103,7 +103,7 @@ Whisper 模型（Systran/faster-whisper-*）由 `whisper_model_manager.py` 下�
 
 显式请求 `output_timestamp=True`，严格配对 `words` 与毫秒 `timestamp`，先恢复原文空格和标点，再按标点、42 字符、8 秒上限以及停顿生成字幕。词级信息写入带 SRT 内容校验的 `.words.json`，用于已有字幕对齐流程。缺失、不完整、倒退、重叠或明显超出音频的时间戳会中断任务并显示 SenseVoice 的处理建议；不会按文字比例伪造时间轴，也不会把一条粗 VAD 段当作精确字幕。失败不会覆盖已存在的字幕。
 
-接入参考 [#67 讨论](https://github.com/zhouxiaoka/autoclip/issues/67)、[123mlly 的 feature/dev 分支](https://github.com/123mlly/autoclip/tree/feature/dev) 和 [LauraGPT 的时间戳修复 PR](https://github.com/123mlly/autoclip/pull/1)。词级聚合思路依据该 MIT 许可实现改写，保留项目 [MIT 许可证](../LICENSE)；不搬入 fork 的其他改动和比例铺字幕兜底。
+接入参考 [#67 讨论](https://github.com/yogendra-sudo/AutoVideoClip/issues/67)、[123mlly 的 feature/dev 分支](https://github.com/123mlly/autoclip/tree/feature/dev) 和 [LauraGPT 的时间戳修复 PR](https://github.com/123mlly/autoclip/pull/1)。词级聚合思路依据该 MIT 许可实现改写，保留项目 [MIT 许可证](../LICENSE)；不搬入 fork 的其他改动和比例铺字幕兜底。
 
 FunASR/SenseVoice 源码 MIT 与模型权重许可不同。权重使用前请阅读 [SenseVoiceSmall 模型卡及其许可链接](https://huggingface.co/FunAudioLLM/SenseVoiceSmall)；安装包不内置或重新分发这些权重。硅基流动的云端 SenseVoice 型号仍需独立的云端时间戳适配，不能与这个本地实现混用。
 

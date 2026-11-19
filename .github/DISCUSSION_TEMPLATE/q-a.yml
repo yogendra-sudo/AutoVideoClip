@@ -2,8 +2,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Ask usage questions here. If the app will not open, progress is stuck, or no clips are produced—and you can provide the version and platform—use the [Bug Report](https://github.com/zhouxiaoka/autoclip/issues/new/choose) template.
-        Check [known issues](https://github.com/zhouxiaoka/autoclip/issues/96) before posting.
+        Ask usage questions here. If the app will not open, progress is stuck, or no clips are produced—and you can provide the version and platform—use the [Bug Report](https://github.com/yogendra-sudo/AutoVideoClip/issues/new/choose) template.
+        Check [known issues](https://github.com/yogendra-sudo/AutoVideoClip/issues/96) before posting.
   - type: textarea
     id: question
     attributes:

@@ -30,9 +30,9 @@
 产物：
 ```
 src-tauri/target/release/bundle/macos/
-├── AutoClip Desktop.app
-├── AutoClip Desktop_<version>_aarch64.dmg
-└── AutoClip.Desktop_<version>_aarch64.app.tar.gz   # 应用内更新；有密钥时还有 .sig
+├── AutoVideoClip Desktop.app
+├── AutoVideoClip Desktop_<version>_aarch64.dmg
+└── AutoVideoClip.Desktop_<version>_aarch64.app.tar.gz   # 应用内更新；有密钥时还有 .sig
 ```
 
 ### Windows x64
@@ -46,7 +46,7 @@ bash scripts/build_windows_x64.sh
 产物：
 ```
 src-tauri/target/release/bundle/nsis/
-└── AutoClip Desktop_<version>_x64-setup.exe
+└── AutoVideoClip Desktop_<version>_x64-setup.exe
 ```
 
 Windows 与 macOS 的唯一结构差异：macOS 是构建后把 `python/ backend/ ffmpeg/` 注入 `.app`
@@ -70,8 +70,8 @@ Tauri 合并，不影响 macOS。
 
 - Python：`resources/python/bin/python3`（unix）或 `resources/python/python.exe`（Windows）
 - ffmpeg：`resources/ffmpeg/ffmpeg[.exe]`，通过 `AUTOCLIP_FFMPEG_PATH` / `AUTOCLIP_FFPROBE_PATH` 传给后端
-- 数据目录：Rust 侧设置 `AUTOCLIP_APP_DIR=<平台数据目录>/AutoClip`
-  （macOS `~/Library/Application Support/AutoClip`，Windows `%APPDATA%\AutoClip`）
+- 数据目录：Rust 侧设置 `AUTOCLIP_APP_DIR=<平台数据目录>/AutoVideoClip`
+  （macOS `~/Library/Application Support/AutoVideoClip`，Windows `%APPDATA%\AutoVideoClip`）
 - Windows 额外：`PYTHONUTF8=1`（后端 stdout 有 emoji，否则 GBK 控制台直接 UnicodeEncodeError）、
   `CREATE_NO_WINDOW`（不弹黑框）
 

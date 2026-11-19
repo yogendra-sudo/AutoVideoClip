@@ -13,7 +13,7 @@ MODEL_BASE_URL="${WINQA_MODEL_BASE_URL:-}"; MODEL="${WINQA_MODEL:-}"; MODEL_PROV
 MODEL_API_KEY="${WINQA_MODEL_API_KEY:-${AUTOCLIP_QA_DASHSCOPE_KEY:-}}"
 PREV=""; CAND=""; VERSION=""; PREV_VERSION=""
 MARKER='resources\backend\services\studio\readiness.py'
-UPDATER_URL='https://github.com/zhouxiaoka/autoclip/releases/latest/download/latest.json'
+UPDATER_URL='https://github.com/yogendra-sudo/AutoVideoClip/releases/latest/download/latest.json'
 SMOKE=1; WITH_ASR=0; FAILURE=1; OUTDIR=""; FROM=0; TO=99; REAL=0; HF_MIRROR=0; BILI_URL=""; LOCAL_SECONDS=150
 
 usage() { sed -n '2,4p' "$0"; cat <<'U'

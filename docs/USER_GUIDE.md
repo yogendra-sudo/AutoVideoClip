@@ -1,4 +1,4 @@
-# 📚 AutoClip Desktop 用户使用指南
+# 📚 AutoVideoClip Desktop 用户使用指南
 
 ## 🎯 快速开始
 
@@ -377,4 +377,4 @@
 - **用户社区**：https://community.autoclip.ai
 - **技术支持**：support@autoclip.ai
 
-感谢您使用 AutoClip Desktop！🎉
+感谢您使用 AutoVideoClip Desktop！🎉

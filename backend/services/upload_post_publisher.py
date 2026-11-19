@@ -144,7 +144,7 @@ def _headers(config: UploadPostConfig) -> dict[str, str]:
     version = os.getenv("AUTOCLIP_APP_VERSION", "dev")
     return {
         "Authorization": f"Apikey {config.api_key}",
-        "User-Agent": f"autoclip/{version} (+https://github.com/zhouxiaoka/autoclip)",
+        "User-Agent": f"autoclip/{version} (+https://github.com/yogendra-sudo/AutoVideoClip)",
     }
 
 

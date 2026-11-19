@@ -1,4 +1,4 @@
-# AutoClip Privacy Policy
+# AutoVideoClip Privacy Policy
 
 *[中文版 →](./PRIVACY.md)*
 
@@ -7,7 +7,7 @@
 
 > ⚠️ This is a draft template. Please have legal counsel review it before publishing (see "Clauses Requiring Legal Review" at the end).
 
-AutoClip ("the Software", "we", "us") is a **local-first** desktop video clipping tool. We take your privacy seriously. This policy explains what information we collect, how we use, store, and protect it, and the rights you have.
+AutoVideoClip ("the Software", "we", "us") is a **local-first** desktop video clipping tool. We take your privacy seriously. This policy explains what information we collect, how we use, store, and protect it, and the rights you have.
 
 This policy is drafted with reference to China's Personal Information Protection Law (PIPL), Cybersecurity Law, and Data Security Law. For users in other regions, see "International Transfers" and the compliance notes below.
 
@@ -60,7 +60,7 @@ To fix crashes, the Software may send stack traces via **Sentry** when a DSN is 
 - Plaintext third-party API keys
 - Name, phone number, geolocation, ID documents, or other personally identifying information. An email is collected only if you type it into feedback, and it is not published on GitHub
 
-“We do not collect” means AutoClip and our servers. The cloud provider you configure receives the subtitles or copy that route needs, or sampled frames and the necessary text.
+“We do not collect” means AutoVideoClip and our servers. The cloud provider you configure receives the subtitles or copy that route needs, or sampled frames and the necessary text.
 
 ---
 
@@ -99,8 +99,8 @@ To exercise these rights or file a complaint, contact us using the details below
 ## 5. Data Storage and Retention
 
 - **Local data** (projects, videos, subtitles, settings, keys): stored on your device and fully under your control; deleting a project removes its data. Uninstalling keeps this data by default so a reinstall can pick it up:
-  - Windows: tick "Also delete my AutoClip data (projects, settings, API keys)" in the uninstaller to also delete `%APPDATA%\AutoClip` and the app's WebView data (`%APPDATA%\com.autoclip.desktop`, `%LOCALAPPDATA%\com.autoclip.desktop`); it is unticked by default. A silent uninstall deletes the same directories only when `/DELETEAPPDATA` is passed explicitly; upgrades never delete them.
-  - macOS / Linux: delete the data directory `~/Library/Application Support/AutoClip` or `~/.local/share/AutoClip` manually.
+  - Windows: tick "Also delete my AutoVideoClip data (projects, settings, API keys)" in the uninstaller to also delete `%APPDATA%\AutoVideoClip` and the app's WebView data (`%APPDATA%\com.autoclip.desktop`, `%LOCALAPPDATA%\com.autoclip.desktop`); it is unticked by default. A silent uninstall deletes the same directories only when `/DELETEAPPDATA` is passed explicitly; upgrades never delete them.
+  - macOS / Linux: delete the data directory `~/Library/Application Support/AutoVideoClip` or `~/.local/share/AutoVideoClip` manually.
 - **Anonymous analytics data**: stored by PostHog, retained according to our retention policy (by default no longer than **12 months**), after which it is automatically deleted or anonymized.
 
 ---
@@ -156,7 +156,7 @@ When our data practices change, we will update this policy and revise the "Last 
 For any questions, comments, or complaints about this Privacy Policy or our handling of personal information, contact:
 
 - Email: **christine95zhouye@gmail.com**
-- Website: **https://zhouxiaoka.github.io/autoclip_intro/**
+- Website: **https://yogendra-sudo.github.io/autoclip_intro/**
 
 ---
 

@@ -6,7 +6,7 @@
 
 ## #487 卡住的「正在制作」/ `service_restarted` / 约 0% CPU
 
-反馈（v1.5.6，Windows x64）：3 小时片在准备素材 99% 后出现 “The service restarted. Please generate again.”；13 分钟片停在 “Producing ready-to-post videos” 超过 15 分钟，0 条成片，任务管理器里 AutoClip 约 0% CPU、约 5 MB。
+反馈（v1.5.6，Windows x64）：3 小时片在准备素材 99% 后出现 “The service restarted. Please generate again.”；13 分钟片停在 “Producing ready-to-post videos” 超过 15 分钟，0 条成片，任务管理器里 AutoVideoClip 约 0% CPU、约 5 MB。
 
 ### 今天已经复现（通过）
 
@@ -26,7 +26,7 @@ macOS（从终端启动，环境变量才能进到后端；`open -a` 不会替�
 
 ```bash
 AUTOCLIP_CLIP_JOB_BUDGET_SEC=20 \
-  "/Applications/AutoClip.app/Contents/MacOS/AutoClip"
+  "/Applications/AutoVideoClip.app/Contents/MacOS/AutoVideoClip"
 # 另开一个终端。任务进入「正在制作可发布成片」之后：
 pgrep -lf autoclip-backend
 # 记下 pid、RSS。只杀这一条：
@@ -37,7 +37,7 @@ Windows（PowerShell，同样从终端起，不要只双击）：
 
 ```powershell
 $env:AUTOCLIP_CLIP_JOB_BUDGET_SEC = '20'
-& "$env:LOCALAPPDATA\AutoClip\AutoClip.exe"   # 以实际安装路径为准
+& "$env:LOCALAPPDATA\AutoVideoClip\AutoVideoClip.exe"   # 以实际安装路径为准
 # 制作进行中，只结束后端：
 Get-Process autoclip-backend | Format-Table Id,CPU,WorkingSet64
 Stop-Process -Name autoclip-backend -Force
@@ -45,7 +45,7 @@ Stop-Process -Name autoclip-backend -Force
 
 我们要记的证据（都在测试机上）：
 
-- 杀之前、杀之后 `autoclip-backend` 与 `AutoClip` 各自的 PID、CPU、工作集。5 MB 量级更像壳；Python 后端空转也已经接近 10 MB，带模型会更大。两条要分开看。
+- 杀之前、杀之后 `autoclip-backend` 与 `AutoVideoClip` 各自的 PID、CPU、工作集。5 MB 量级更像壳；Python 后端空转也已经接近 10 MB，带模型会更大。两条要分开看。
 - 壳的 stderr：`后端进程意外退出，N 秒后自动重启（第 k 次）`。第 4 次应出现 `自动重启次数已用尽`，之后端口不再起来。
 - 拉起之后读本机 `studio.json`（数据目录下该项目的 `metadata/studio.json`）和项目接口：`error_code=service_restarted`，`failure_stage`，`shutdown_kind`，文案为目录句。
 - **窗口保持聚焦**再杀一次：快轮询失败后，大约 10 秒内应自己换成 `service_restarted` 的失败句，不必先切走窗口。切走再切回来仍然会刷新。安装包上还没眼见过。

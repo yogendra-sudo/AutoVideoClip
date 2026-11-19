@@ -579,11 +579,11 @@
   ],
   "blockers": [],
   "approval": {
-    "name": "zhouxiaoka (product owner)",
+    "name": "yogendra-sudo (product owner)",
     "approved_at": "2026-10-06T07:14:25+00:00"
   },
   "owner_waiver": {
-    "name": "zhouxiaoka (product owner)",
+    "name": "yogendra-sudo (product owner)",
     "approved_at": "2026-10-06T07:14:25+00:00",
     "reason": "Owner decision on 2026-10-06: v1.5.0 users carry known production defects fixed in this candidate; after three days of acceptance without progress, ship 1.5.4 now and fix forward. Unexecuted rows are waived, not passed; release monitoring follows docs/RELEASE_1_5_4.md."
   }

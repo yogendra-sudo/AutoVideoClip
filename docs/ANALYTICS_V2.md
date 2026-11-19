@@ -1,4 +1,4 @@
-# AutoClip 业务分析 V2：实现与验收（历史）
+# AutoVideoClip 业务分析 V2：实现与验收（历史）
 
 > **2026-10-14：本页是历史说明，不再是准绳。** 现行规范是 [analytics/TRACKING_PLAN.md](analytics/TRACKING_PLAN.md)。`clips_exported` / `video_imported` / `api_key_configured` 已列入废弃，停发日见规范 §12。
 

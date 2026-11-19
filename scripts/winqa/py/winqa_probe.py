@@ -378,7 +378,7 @@ if __name__ == '__main__':
     ap.add_argument('phase', choices=['seed', 'check', 'failure'])
     ap.add_argument('--media', default=r'C:\winqa\repo\backend\assets\example')
     ap.add_argument('--expect-version', default='')
-    ap.add_argument('--updater-url', default='https://github.com/zhouxiaoka/autoclip/releases/latest/download/latest.json')
+    ap.add_argument('--updater-url', default='https://github.com/yogendra-sudo/AutoVideoClip/releases/latest/download/latest.json')
     ap.add_argument('--label', default='candidate')
     ap.add_argument('--timeout', type=int, default=420)
     a = ap.parse_args()

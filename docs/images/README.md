@@ -23,7 +23,7 @@
 
 ### 历史成片墙
 
-[PR #248](https://github.com/zhouxiaoka/autoclip/pull/248) 引入的 [成片墙](v2/demo-wall.webp) 保留供历史引用，图中展示以下素材的访谈式与播客式效果：
+[PR #248](https://github.com/yogendra-sudo/AutoVideoClip/pull/248) 引入的 [成片墙](v2/demo-wall.webp) 保留供历史引用，图中展示以下素材的访谈式与播客式效果：
 
 - [Dwarkesh Patel — Dario Amodei](https://www.youtube.com/watch?v=n1E9IZfvGMA)
 - [Y Combinator — Sam Altman](https://www.youtube.com/watch?v=ZIaOBAjvc38)
@@ -39,7 +39,7 @@
 | [clips-v1.4.0.png](clips-v1.4.0.png) | 已完成项目的真实切片列表、评分、起止时间与操作入口 |
 | [studio-v1.4.0.png](studio-v1.4.0.png) | 从真实切片打开 Studio，预览原片并调整成片设置 |
 
-- **源码版本**：本地 `origin/main` 提交 [`ad996131`](https://github.com/zhouxiaoka/autoclip/commit/ad996131)，版本字段为 `1.4.0`，包含 v1.4.0 发布后的 Studio 处理、监控和 Windows 导入预览修复。截图不是原始 v1.4.0 标签的界面，也不代表另一个已发布版本。
+- **源码版本**：本地 `origin/main` 提交 [`ad996131`](https://github.com/yogendra-sudo/AutoVideoClip/commit/ad996131)，版本字段为 `1.4.0`，包含 v1.4.0 发布后的 Studio 处理、监控和 Windows 导入预览修复。截图不是原始 v1.4.0 标签的界面，也不代表另一个已发布版本。
 - **运行环境**：独立工作树、独立端口与演示数据库副本；不使用个人项目或已保存的 API Key。原有运行环境与案例数据没有被修改。
 - **案例来源**：[Sources Podcast — Sam Altman on Astra, AGI, and the future of OpenAI](https://www.youtube.com/watch?v=VeizK1M7V7E)。原片约 68 分 39 秒，使用此前 v1.4.0 正式流水线运行得到的 13 条切片、0 个合集；本次仅在新版界面中展示已有结果，没有重新调用模型。
 - **结果边界**：标题、推荐理由、分数与时间范围保留原始模型输出，分数不是传播效果或内容真实性指标；截图不构成对生成标题或观点的背书。案例字幕和生成标题为英文，UI 为中文。

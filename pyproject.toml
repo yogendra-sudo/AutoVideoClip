@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "autoclip-mcp"
 version = "1.5.8"
-description = "AutoClip — AI long-video auto-clipping: CLI and MCP server entry point"
+description = "AutoVideoClip — AI long-video auto-clipping: CLI and MCP server entry point"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -46,10 +46,12 @@ dependencies = [
 [project.scripts]
 autoclip = "backend.cli:main"
 autoclip-mcp = "backend.mcp_server:main"
+autovideoclip = "backend.cli:main"
+autovideoclip-mcp = "backend.mcp_server:main"
 
 [project.urls]
-Homepage = "https://github.com/zhouxiaoka/autoclip"
-Issues = "https://github.com/zhouxiaoka/autoclip/issues"
+Homepage = "https://github.com/yogendra-sudo/AutoVideoClip"
+Issues = "https://github.com/yogendra-sudo/AutoVideoClip/issues"
 
 [tool.setuptools.packages.find]
 include = ["backend", "backend.*"]

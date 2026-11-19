@@ -3,7 +3,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Tell us which model or provider you need and how you plan to use it: analysis, vision, covers, or transcription. See the [model guide](https://github.com/zhouxiaoka/autoclip/blob/main/docs/AI_MODEL_CONFIGURATION.md) and Settings for current support and configuration. Local transcription includes Whisper and SenseVoice.
+        Tell us which model or provider you need and how you plan to use it: analysis, vision, covers, or transcription. See the [model guide](https://github.com/yogendra-sudo/AutoVideoClip/blob/main/docs/AI_MODEL_CONFIGURATION.md) and Settings for current support and configuration. Local transcription includes Whisper and SenseVoice.
         If the model is missing from the list but can be entered through a compatible API, say so in your post to avoid duplicate requests.
   - type: input
     id: model
