@@ -19,7 +19,7 @@ def assert_binary_contains_posthog_key(binary: Path, key: str) -> None:
 
 
 def macos_desktop_binary(resources: Path) -> Path:
-    binary = resources.resolve().parents[1] / "MacOS" / "autoclip-desktop"
+    binary = resources.resolve().parents[1] / "MacOS" / "autovideoclip-desktop"
     if not binary.is_file():
         raise AssertionError("desktop binary is missing")
     return binary
@@ -35,7 +35,7 @@ def windows_desktop_binary(resources: Path) -> Path:
 def assert_packaged_telemetry_identity() -> None:
     """A release launcher sets production, and the app dir can hold an anonymous id.
 
-    Call this only after AUTOCLIP_BUILD_ENVIRONMENT=production and AUTOCLIP_APP_DIR
+    Call this only after AUTOVIDEOCLIP_BUILD_ENVIRONMENT=production and AUTOVIDEOCLIP_APP_DIR
     are already on the process. The id itself is not printed.
     """
     from backend.core.event_catalog import analytics_environment

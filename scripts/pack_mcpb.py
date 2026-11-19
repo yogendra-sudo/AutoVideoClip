@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate mcpb/ and pack dist/autoclip-mcp.mcpb. Does not publish to Smithery."""
+"""Validate mcpb/ and pack dist/autovideoclip-mcp.mcpb. Does not publish to Smithery."""
 from __future__ import annotations
 
 import argparse
@@ -10,10 +10,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUNDLE = ROOT / "mcpb"
-DEFAULT_OUT = ROOT / "dist" / "autoclip-mcp.mcpb"
+DEFAULT_OUT = ROOT / "dist" / "autovideoclip-mcp.mcpb"
 MCPB_PACKAGE = "@anthropic-ai/mcpb@2.1.2"
 PUBLISH_COMMAND = (
-    "smithery mcp publish ./dist/autoclip-mcp.mcpb -n io.github.yogendra-sudo/AutoVideoClip-mcp"
+    "smithery mcp publish ./dist/autovideoclip-mcp.mcpb -n io.github.yogendra-sudo/AutoVideoClip-mcp"
 )
 
 

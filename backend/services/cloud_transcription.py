@@ -21,7 +21,7 @@ from backend.utils.ffmpeg_utils import get_ffmpeg_path
 
 def _workers() -> int:
     try:
-        return max(1, int(os.getenv('AUTOCLIP_ASR_CONCURRENCY', '8') or 8))
+        return max(1, int(os.getenv('AUTOVIDEOCLIP_ASR_CONCURRENCY', '8') or 8))
     except ValueError:
         return 8
 
@@ -213,7 +213,7 @@ def transcribe(video: Path, output: Path | None, settings, language='auto', time
         return output
     # Each upload is <= 150 seconds / 4.8 MB PCM, including base64 < 10 MB.
     # Exact sample offsets avoid encoder delay/drift when merging long recordings.
-    with tempfile.TemporaryDirectory(prefix='autoclip-asr-') as temp:
+    with tempfile.TemporaryDirectory(prefix='autovideoclip-asr-') as temp:
         audio = Path(temp) / 'source.wav'
         completed = subprocess.run([get_ffmpeg_path(), '-nostdin', '-y', '-i', str(video), '-vn',
                                     '-ac', '1', '-ar', '16000', '-c:a', 'pcm_s16le', str(audio)],

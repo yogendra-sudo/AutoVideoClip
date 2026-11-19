@@ -5,7 +5,7 @@
 ## 分支与范围
 
 - 基线：`main@336abd57`；功能：`codex/visual-game-ads@f77fc79a`。
-- 集成分支：`codex/1.4-integration`，目录 `/Users/zhoukk/.codex/worktrees/1.4-integration/autoclip`。
+- 集成分支：`codex/1.4-integration`，目录 `/Users/zhoukk/.codex/worktrees/1.4-integration/autovideoclip`。
 - 主工作区未改动；未跟踪素材和 `docs/PROJECT_REVIEW_2026-09-21.md` 保留。功能分支原有15份样片源文件与主目录同名未跟踪文件逐字节一致；没有新增提交本机视频、模型密钥或运行数据。正式切换主目录前仍需复核未跟踪文件状态。
 - 保留已发布1.3.1版本号，不创建触发发布的tag。没有合入main或推送远端。
 
@@ -31,7 +31,7 @@
 - 实际渲染：`2774a912-8c59-4a39-b802-5e3a32f6219c`中的跑酷候选，保存中文漫画v6与竖屏，导出任务`38374fc6f278414396bec1ba0f01c511`完成。ffprobe：H.264/AAC，1080×1920，音视频起点0，时长均26.700秒；检查了实际烧录帧。这是集成烟测，不是L2创意验收。
 - 旧切片兼容样本是手工样本，只证明转草稿和编辑入口；不作为旧流水线真实AI重新出片的证据。
 
-本机审阅：<http://127.0.0.1:8781/>。数据位于 `/tmp/autoclip-integration-preview/`，不纳入git；原8780演示保持不变。新渲染文件：`/tmp/autoclip-integration-preview/data/projects/2774a912-8c59-4a39-b802-5e3a32f6219c/output/studio/38374fc6f278414396bec1ba0f01c511.mp4`。
+本机审阅：<http://127.0.0.1:8781/>。数据位于 `/tmp/autovideoclip-integration-preview/`，不纳入git；原8780演示保持不变。新渲染文件：`/tmp/autovideoclip-integration-preview/data/projects/2774a912-8c59-4a39-b802-5e3a32f6219c/output/studio/38374fc6f278414396bec1ba0f01c511.mp4`。
 
 ## RC前仍需完成
 
@@ -128,7 +128,7 @@ Studio完成文件作为不可变发布来源接入现有B站/海外发布与封
 "$resources/python/bin/python3" -B scripts/verify_macos_bundle.py --resources "$resources"
 ```
 
-基于a311ce23重新构建macOS ARM64包成功（含共享编辑恢复和有限轮询；生产代码对应d962beed，a311ce23新增验收脚本）。本次SDKROOT仍仅指定本机26.5，版本仍1.3.2，ad-hoc签名；447MB app、236MB DMG、160MB tar均仅本地。验收使用包内Python3.13.13/FFmpeg通过，证据/private/tmp/autoclip-bundle-smoke-x3k5kzed/report.json；之后codesign --verify --deep --strict通过。合成测试片仅验证运行时和渲染，不作为真实游戏或买量效果证据。尚未覆盖原生窗口、升级和Windows。
+基于a311ce23重新构建macOS ARM64包成功（含共享编辑恢复和有限轮询；生产代码对应d962beed，a311ce23新增验收脚本）。本次SDKROOT仍仅指定本机26.5，版本仍1.3.2，ad-hoc签名；447MB app、236MB DMG、160MB tar均仅本地。验收使用包内Python3.13.13/FFmpeg通过，证据/private/tmp/autovideoclip-bundle-smoke-x3k5kzed/report.json；之后codesign --verify --deep --strict通过。合成测试片仅验证运行时和渲染，不作为真实游戏或买量效果证据。尚未覆盖原生窗口、升级和Windows。
 
 **当前合入阻塞：**远程main已更新到26b92494，含v1.3.3、旧枚举兼容、macOS播放/下载、导入Celery错误、字幕/模型缺失提示等61个文件变更。本次只fetch核对，未合并或rebase，避免改变构建中的基线。PR147再次显示CONFLICTING，仅文档检查通过，不能沿用7b6da8cb旧CI绿色宣称最新候选通过。下一轮优先备份候选并集成这些主线修复，重跑完整回归；本包不是最新main的RC，不用于发布。
 
@@ -158,9 +158,9 @@ RC仍需：最新包/升级和Windows、Studio完整实际下载、长视频扫�
 
 ## 2026-09-25 凌晨：当前候选本地包验收
 
-基于0a6b4f6a重新构建macOS ARM64 app、DMG及更新tar，包含v1.3.4主线和Studio系统下载接入。包仍标记1.3.4，仅内部验证：ad-hoc签名，无更新签名、无公证、未上传或安装覆盖。SDKROOT仅本进程使用本机26.5。构建日志/tmp/autoclip-build-0925.log。
+基于0a6b4f6a重新构建macOS ARM64 app、DMG及更新tar，包含v1.3.4主线和Studio系统下载接入。包仍标记1.3.4，仅内部验证：ad-hoc签名，无更新签名、无公证、未上传或安装覆盖。SDKROOT仅本进程使用本机26.5。构建日志/tmp/autovideoclip-build-0925.log。
 
-包内Python3.13.13/FFmpeg在全新隔离目录通过六款v6中英图层、1秒1080×1920合成画面渲染、原声音轨和桌面后端health；之后codesign --verify --deep --strict通过。报告/tmp路径见/tmp/autoclip-bundle-smoke-0925.log，可持久审阅的版本、产物SHA256和结果见[evidence/macos-1.4-validation-20260925.json](evidence/macos-1.4-validation-20260925.json)。本轮无付费接口、无用户数据变更。代码基线0a6b4f6a远程CI已5/5通过（36017556442）。
+包内Python3.13.13/FFmpeg在全新隔离目录通过六款v6中英图层、1秒1080×1920合成画面渲染、原声音轨和桌面后端health；之后codesign --verify --deep --strict通过。报告/tmp路径见/tmp/autovideoclip-bundle-smoke-0925.log，可持久审阅的版本、产物SHA256和结果见[evidence/macos-1.4-validation-20260925.json](evidence/macos-1.4-validation-20260925.json)。本轮无付费接口、无用户数据变更。代码基线0a6b4f6a远程CI已5/5通过（36017556442）。
 
 新增[RC候选验收与回退清单](RC_ACCEPTANCE_1_4.md)，将运行时、原生下载、升级/回退和真实创意验收分开。清单已编写，但演练尚未执行。当前包不是已验收RC；仍缺原生窗口实际保存、安装升级/Windows、长视频超时与真实多游戏/L2质量、动态文案及导出历史一致性收口。主线未合入，未发布。
 

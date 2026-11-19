@@ -29,8 +29,8 @@ print(json.dumps({name: logging.getLogger(name).level for name in names}))
     env.update({
         "PYTHONPATH": str(Path(__file__).resolve().parents[2]),
         "HOME": str(tmp_path),
-        "AUTOCLIP_APP_DIR": str(tmp_path),
-        "AUTOCLIP_DATA_DIR": str(tmp_path),
+        "AUTOVIDEOCLIP_APP_DIR": str(tmp_path),
+        "AUTOVIDEOCLIP_DATA_DIR": str(tmp_path),
         "DATABASE_URL": "sqlite:///:memory:",
         "REDIS_URL": "memory://",
     })

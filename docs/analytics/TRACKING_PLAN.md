@@ -25,7 +25,7 @@
 2. **只发枚举、计数、布尔、随机 token。** 不上报 key、完整 URL、提示词、字幕/转写、视频标题、文件名、带用户名的本机路径、内部项目/作业 ID。`base_url` 只留 host；本机/内网记 `local`。详见 §10–§11。schema 校验必须拦住这些值。**例外：** `feedback_submitted` 是 `user_submitted`，可以带用户写下的 `text` 和可选 `contact`（见 §10）。`ingest_app_feedback.py` 据此开 Issue。
 3. **终态与请求分开。** 按钮点击不是成功。后台受理用 `*_accepted`，真正做完用 `*_finished`。浏览器点击下载不是落盘。
 4. **失败必有身份。** 失败的 run 级事件必须有 `error_code` + `failure_stage`。模型失败另带 `upstream_error_type`（站点拒绝、素材太短/无音轨等不算上游错误）。
-5. **同一匿名 ID。** 前端 PostHog 在 webview localStorage 持久化匿名 UUID，待桌面后端就绪后经 `PUT /settings/analytics-identity` 原子写入 app 数据目录的 `analytics.json`；失败有限重试。Tauri 下次启动把已有 UUID 通过 `AUTOCLIP_ANONYMOUS_DEVICE_ID` 交给后端，并给 webview bootstrap 同一 ID。后端以共享文件为准、环境变量兜底；晚到的 ID 更新 Sentry 全局 scope，发送前再次读取。只接受 UUID，不接受标题、密钥、邮箱、路径或正文。分析开关关闭时不对齐（§10.1）。
+5. **同一匿名 ID。** 前端 PostHog 在 webview localStorage 持久化匿名 UUID，待桌面后端就绪后经 `PUT /settings/analytics-identity` 原子写入 app 数据目录的 `analytics.json`；失败有限重试。Tauri 下次启动把已有 UUID 通过 `AUTOVIDEOCLIP_ANONYMOUS_DEVICE_ID` 交给后端，并给 webview bootstrap 同一 ID。后端以共享文件为准、环境变量兜底；晚到的 ID 更新 Sentry 全局 scope，发送前再次读取。只接受 UUID，不接受标题、密钥、邮箱、路径或正文。分析开关关闭时不对齐（§10.1）。
 6. **生产与验收隔离。** 业务看板只看 `analytics_environment=production` 且目标 `app_version`。validation 单独列，不进转化率。
 
 ---
@@ -110,7 +110,7 @@ multiIf(
 | 属性 | 来源 | 规则 | 必填 |
 | --- | --- | --- | --- |
 | `distinct_id` | PostHog 匿名 ID；后端读 `analytics.json` | 与 Sentry `user.id` 相同；禁止 email / IP | 是（SDK 自动；后端显式传） |
-| `app_version` | 前端 `VITE_APP_VERSION`；后端 `AUTOCLIP_APP_VERSION` 或 `backend.__version__` | `MAJOR.MINOR.PATCH`，无 `v` 前缀。**禁止**再把版本写进 `version`（MCP / `app_installed` 过渡期见 §4.4） | 是 |
+| `app_version` | 前端 `VITE_APP_VERSION`；后端 `AUTOVIDEOCLIP_APP_VERSION` 或 `backend.__version__` | `MAJOR.MINOR.PATCH`，无 `v` 前缀。**禁止**再把版本写进 `version`（MCP / `app_installed` 过渡期见 §4.4） | 是 |
 | `os` | 生命周期 super property；后端 `event_catalog.detect_os()` | **只允许** `macos` / `windows` / `linux` / `unknown`。`darwin`→`macos`，`win32`→`windows`。查询见 §4.4 | 是（前端 register；后端补） |
 | `arch` | Tauri 在前端脚本之前注入原生架构；后端使用 native env / `platform.machine()` | `arm64`→`aarch64`，`amd64` / `x64`→`x86_64`；只发 `aarch64` / `x86_64` / `unknown`。浏览器无法可靠识别 Mac 架构时允许 `unknown`。PostHog loaded 同步注册 os/arch；业务 capture 再附加，不等版本异步查询 | UI 与后端公共信封是；历史/旁路事件可空 |
 | `session_id` | PostHog `$session_id`（前端）；后端暂无会话 | 前端依赖 SDK，不要另造。后端事件用 `distinct_id` + 时间窗近似 | 前端是；后端可空 |
@@ -624,10 +624,10 @@ person_id NOT IN COHORT {internal_cohort_id}
 
 | 开关 | 存在哪 | 关闭后 |
 | --- | --- | --- |
-| 设置页「使用分析」 | 前端 `setAnalyticsEnabled(false)` → `localStorage` 键 `autoclip.analytics.optOut=true` | `isAnalyticsEnabled()` 为 false；`captureBusinessEvent` 直接 return；`posthog.opt_out_capturing()`；停 flag 网络；`syncSentryUser(null)`；**不再** `PUT /settings/analytics-identity`；观察器 `workflow.clear()` |
+| 设置页「使用分析」 | 前端 `setAnalyticsEnabled(false)` → `localStorage` 键 `autovideoclip.analytics.optOut=true` | `isAnalyticsEnabled()` 为 false；`captureBusinessEvent` 直接 return；`posthog.opt_out_capturing()`；停 flag 网络；`syncSentryUser(null)`；**不再** `PUT /settings/analytics-identity`；观察器 `workflow.clear()` |
 | 未配置 `VITE_PUBLIC_POSTHOG_KEY` | 构建 | `initAnalytics` 不初始化 SDK，零网络 |
 | `privacy.json` 的 `analytics: false` | 桌面数据目录（与崩溃报告同文件） | 后端 `qa.telemetry._analytics_allowed()` / MCP 发送 / `llm_emit._post_event` 全部 no-op |
-| 崩溃报告另开 | `privacy.json` `crash_reports`；前端 `autoclip.crashReports.optOut` | 与分析开关独立；分析关时 Sentry 仍不得带 PostHog id 去「补发」业务事件 |
+| 崩溃报告另开 | `privacy.json` `crash_reports`；前端 `autovideoclip.crashReports.optOut` | 与分析开关独立；分析关时 Sentry 仍不得带 PostHog id 去「补发」业务事件 |
 
 关闭时允许：生产者函数被调用、本地算脱敏字典、写测试夹具。禁止：对 `us.i.posthog.com`（或自建 host）发**业务** capture/identify/flag；把未发送的事件缓冲到以后再补发。打开开关后只收**之后**的事件。
 
@@ -734,7 +734,7 @@ Schema 测试必须用 §9 的 12 条夹具证明：sanitize 之后仍含这五�
 - `attribution_source`（1.5.7 R26，闭集 `request`/`phase`/`local`，随三个 studio 终态事件、Sentry tag 和 analysis_history 一起上报）：`request` = 失败请求自己的记录；`phase` = 没有请求记录的**模型类**失败，用阶段冻结的连接；`local` = 非模型失败（存储锁超时 `store_lock_timeout`、ffmpeg、本地渲染、请求发出前的本地校验），可带阶段身份但不带请求状态，不算服务商失败。R29（I500）起只查显式异常链 `__cause__`（`raise ... from`），不看隐式 `__context__`。analysis_history 另保留 `model`、`base_url_host`（R26 #400）。
 - 归因快照（1.5.7 R29，设计见 `backend/core/failure_attribution.py` 模块说明）：离服务商调用最近、异常链完整的一层调用一次 `build_attribution` 生成快照，之后 dict、线程、store、事件都原样携带，下游不重新判定。脱敏边界（`log_safe_exception`、云端转写、封面）保留 `from None`，快照挂在安全异常（`AttributedError`）的 `.attribution` 上，只含来源、身份、状态码、上游类型、失败阶段，不含消息/URL/正文。连接错误和超时算模型侧（请求已发往服务商），用 `error_code`（`connection`/`timeout`）区分；`http_status` 只在真正收到 HTTP 响应时写。模型返回 200 但内容校验失败抛 `ModelResponseInvalid`，判模型侧，`error_code=invalid_response`。
 
-`service_restarted` 失败另带 `shutdown_kind`，按上次进程在 `<标记目录>/<instance>` 留下的记录分类（标记目录由桌面壳启动时统一解析为 `<应用目录>/shutdown_markers`，经 `AUTOCLIP_SHUTDOWN_MARKER_DIR` 交给后端，壳写 `unacked` 也写这里；无壳运行时为 `<数据目录>/shutdown_markers`）（每个 instance 一条记录、一个目录、一套修剪规则）：
+`service_restarted` 失败另带 `shutdown_kind`，按上次进程在 `<标记目录>/<instance>` 留下的记录分类（标记目录由桌面壳启动时统一解析为 `<应用目录>/shutdown_markers`，经 `AUTOVIDEOCLIP_SHUTDOWN_MARKER_DIR` 交给后端，壳写 `unacked` 也写这里；无壳运行时为 `<数据目录>/shutdown_markers`）（每个 instance 一条记录、一个目录、一套修剪规则）：
 
 | 值 | 含义 |
 |---|---|

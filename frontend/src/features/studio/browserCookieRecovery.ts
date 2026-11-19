@@ -5,7 +5,7 @@ export const BROWSER_COOKIE_IMPORT_PATH = `/?focus=${BROWSER_COOKIE_FOCUS}`
 /** Human-readable fallback; recovery should primarily follow the stable backend error code. */
 export const COOKIE_ACCESS_HINT = 'Browser sign-in could not be read. Quit that browser completely and retry, or choose another signed-in browser. Public videos can also be downloaded without selecting a browser. Your source media is preserved.'
 
-const RECOVERY_URL_KEY = 'autoclip.browserCookieRecoveryUrl'
+const RECOVERY_URL_KEY = 'autovideoclip.browserCookieRecoveryUrl'
 const HTTP_URL = /^https?:\/\/\S+$/i
 
 export function browserCookieRecovery(code?: string | null, error?: string | null): boolean {

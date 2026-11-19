@@ -56,7 +56,7 @@ def reset_seen() -> None:
 def client_label(raw: str | None) -> str:
     """A short client token. Paths and free text become unknown."""
     if not isinstance(raw, str) or not raw.strip():
-        raw = os.environ.get('AUTOCLIP_MCP_CLIENT', '')
+        raw = os.environ.get('AUTOVIDEOCLIP_MCP_CLIENT', '')
     if not isinstance(raw, str) or any(mark in raw for mark in ('/', '\\', ':')):
         return 'unknown'
     parts = raw.strip().split()

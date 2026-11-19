@@ -19,12 +19,12 @@ if ($inst -and $inst.Uninstall) {
 Start-Sleep 2
 # NSIS remembers the last install dir in HKCU\Software\<publisher>\<product>; a stale value (e.g. an old QA folder)
 # silently redirects the next "clean" install there. Drop it so every run installs to the default per-user location.
-$result.install_dir_key = (Get-ItemProperty 'HKCU:\Software\autoclip\AutoClip Desktop' -ErrorAction SilentlyContinue).'(default)'
-Remove-Item 'HKCU:\Software\autoclip' -Recurse -Force -ErrorAction SilentlyContinue
+$result.install_dir_key = (Get-ItemProperty 'HKCU:\Software\autovideoclip\AutoClip Desktop' -ErrorAction SilentlyContinue).'(default)'
+Remove-Item 'HKCU:\Software\autovideoclip' -Recurse -Force -ErrorAction SilentlyContinue
 [Environment]::SetEnvironmentVariable('HF_ENDPOINT', $null, 'User'); [Environment]::SetEnvironmentVariable('HF_HUB_DISABLE_XET', $null, 'User')  # undo hf_mirror.ps1 workaround
-$paths = @($dir, 'C:\AutoClipQA', (Join-Path $env:LOCALAPPDATA 'com.autoclip.desktop'), (Join-Path $env:APPDATA 'AutoClip'),
-           (Join-Path $env:APPDATA 'com.autoclip.desktop'), (Join-Path $env:LOCALAPPDATA 'AutoClip'))
-$paths += @(Get-ChildItem $env:TEMP -Directory -Filter 'autoclip-*' -ErrorAction SilentlyContinue | ForEach-Object FullName)
+$paths = @($dir, 'C:\AutoClipQA', (Join-Path $env:LOCALAPPDATA 'com.autovideoclip.desktop'), (Join-Path $env:APPDATA 'AutoClip'),
+           (Join-Path $env:APPDATA 'com.autovideoclip.desktop'), (Join-Path $env:LOCALAPPDATA 'AutoClip'))
+$paths += @(Get-ChildItem $env:TEMP -Directory -Filter 'autovideoclip-*' -ErrorAction SilentlyContinue | ForEach-Object FullName)
 foreach ($p in $paths) {
   if ($p -and (Test-Path -LiteralPath $p)) {
     Remove-Item -LiteralPath $p -Recurse -Force -ErrorAction SilentlyContinue
@@ -33,7 +33,7 @@ foreach ($p in $paths) {
 }
 Get-ChildItem $Out -File -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue
 $result.left_processes = @(Get-AutoClipProcesses $dir)
-$result.left_install = [bool](Get-AutoClipInstall) -or (Test-Path 'HKCU:\Software\autoclip')
+$result.left_install = [bool](Get-AutoClipInstall) -or (Test-Path 'HKCU:\Software\autovideoclip')
 $result.finished_at = Now-Iso
 Save-Json ([pscustomobject]$result) 'clean.json'
 if ($result.left_install -or $result.left_processes.Count) { Write-Error 'clean incomplete'; exit 1 }

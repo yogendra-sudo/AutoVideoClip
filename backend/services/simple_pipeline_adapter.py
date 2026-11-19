@@ -348,8 +348,8 @@ class SimplePipelineAdapter:
     @staticmethod
     def _preflight_llm() -> None:
         """跑任何 LLM 步骤之前先确认提供商可用；否则 step1 会把每个块都报错然后交一个空大纲出去。
-        AUTOCLIP_LLM_CACHE_DIR 回放模式下不需要真实提供商（backend/eval）。"""
-        if os.getenv("AUTOCLIP_LLM_CACHE_DIR"):
+        AUTOVIDEOCLIP_LLM_CACHE_DIR 回放模式下不需要真实提供商（backend/eval）。"""
+        if os.getenv("AUTOVIDEOCLIP_LLM_CACHE_DIR"):
             return
         from backend.core.llm_manager import get_llm_manager
         info = get_llm_manager().get_current_provider_info()

@@ -6,7 +6,7 @@
 const { execFileSync } = require('node:child_process')
 const path = require('node:path')
 const ROOT = path.resolve(__dirname, '../../..')
-const PYTHON = process.env.AUTOCLIP_TEST_PYTHON || process.env.PYTHON || 'python'
+const PYTHON = process.env.AUTOVIDEOCLIP_TEST_PYTHON || process.env.PYTHON || 'python'
 const TERMINAL = ['completed', 'partial', 'failed']
 const cache = new Map()
 

@@ -22,7 +22,7 @@ import {
   type FirstRunChoice,
 } from './firstRunGuidance'
 
-const DISMISSED_KEY = 'autoclip.firstRunSetup.dismissed'
+const DISMISSED_KEY = 'autovideoclip.firstRunSetup.dismissed'
 
 const OPTION_COPY: Record<FirstRunChoice, { title: () => string; detail: (name?: string) => string; badge?: () => string }> = {
   api88: {

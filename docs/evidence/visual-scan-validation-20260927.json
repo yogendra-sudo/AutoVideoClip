@@ -200,7 +200,7 @@
   "exports": [
     {
       "kind": "highlight",
-      "path": "/tmp/autoclip-rc-20260927/data/projects/real-sample/output/studio/highlight.mp4",
+      "path": "/tmp/autovideoclip-rc-20260927/data/projects/real-sample/output/studio/highlight.mp4",
       "media": {
         "width": 1080,
         "height": 1920,
@@ -212,7 +212,7 @@
     },
     {
       "kind": "promo",
-      "path": "/tmp/autoclip-rc-20260927/data/projects/real-sample/output/studio/promo.mp4",
+      "path": "/tmp/autovideoclip-rc-20260927/data/projects/real-sample/output/studio/promo.mp4",
       "media": {
         "width": 1080,
         "height": 1920,

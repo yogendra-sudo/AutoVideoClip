@@ -21,9 +21,9 @@
 
 1. [Studio 看板](https://us.posthog.com/project/450605/dashboard/2140564) 的“新契约·生产”业务图显示无匹配行；validation 图有导入、确认、筛选和制作失败等 10 组记录。看板说明仍写“2026-09-27…尚未发布”。这只能证明该查询下未收得生产记录，不能证明无人使用 Studio，也不能单凭这一点确定是未发布、无流量还是埋点故障。
 2. Sentry 最近 7 天：后端多个版本的错误事件使用 `desktop` 环境；前端环境采用 production/development，验收后端使用 web。前后端同名 environment 的含义确实不同。
-3. [PYTHON-FASTAPI-4](https://autoclip-ts.sentry.io/issues/PYTHON-FASTAPI-4) 抽样栈来自 `get_processing_status` → 配置目录创建失败。它说明查询状态也会反复触发错误；没有执行关联信息时，不能把事件次数当作制作失败次数。Issue 展示的 Users Impacted=0 也不能当作零影响，因为没有可靠的用户身份分母。
+3. [PYTHON-FASTAPI-4](https://autovideoclip-ts.sentry.io/issues/PYTHON-FASTAPI-4) 抽样栈来自 `get_processing_status` → 配置目录创建失败。它说明查询状态也会反复触发错误；没有执行关联信息时，不能把事件次数当作制作失败次数。Issue 展示的 Users Impacted=0 也不能当作零影响，因为没有可靠的用户身份分母。
 
-上述为查询时点快照，滚动窗口再次查询会变化。Sentry [聚合查询入口](https://autoclip-ts.sentry.io/explore/discover/homepage/?dataset=errors&queryDataset=error-events&field=project&field=environment&field=release&field=count%28%29&sort=-count%28%29&statsPeriod=7d&mode=aggregate&yAxis=count%28%29)。不在本报告保存反馈正文、邮箱、用户地理信息、原始事件标识或凭据。
+上述为查询时点快照，滚动窗口再次查询会变化。Sentry [聚合查询入口](https://autovideoclip-ts.sentry.io/explore/discover/homepage/?dataset=errors&queryDataset=error-events&field=project&field=environment&field=release&field=count%28%29&sort=-count%28%29&statsPeriod=7d&mode=aggregate&yAxis=count%28%29)。不在本报告保存反馈正文、邮箱、用户地理信息、原始事件标识或凭据。
 
 ## 发现与优先级
 

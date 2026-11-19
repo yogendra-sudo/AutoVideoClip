@@ -33,7 +33,7 @@ def create_app(mode: str = "web") -> FastAPI:
         mode: 运行模式，支持 "web" 或 "desktop"
     """
     # 设置模式环境变量
-    os.environ["AUTOCLIP_MODE"] = mode
+    os.environ["AUTOVIDEOCLIP_MODE"] = mode
 
     if mode == "desktop":
         from backend.core.windows_asyncio import install_windows_proactor_cleanup

@@ -52,7 +52,7 @@
         "image",
         "video"
       ],
-      "docs_url": "https://go.apimart.ai/tw-autoclip",
+      "docs_url": "https://go.apimart.ai/tw-autovideoclip",
       "locked": true,
       "default_model": "",
       "catalog": [],
@@ -64,7 +64,7 @@
       "hint": "赞助合作伙伴。一个 Key 调用语言、图像和视频模型，接口地址已预设。",
       "cloud_hint": "赞助合作伙伴。一个 Key 调用语言、图像和视频模型，接口地址已预设。",
       "sponsor": {
-        "register_url": "https://go.apimart.ai/tw-autoclip",
+        "register_url": "https://go.apimart.ai/tw-autovideoclip",
         "guide_url": "https://docs.apimart.ai/en/quickstart",
         "offer": "获取 API Key",
         "description": "在 APIMart 创建密钥后粘贴到这里即可，接口地址已预设。",

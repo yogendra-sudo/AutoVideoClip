@@ -76,7 +76,7 @@ def test_adapter_makes_zero_paid_calls_when_asr_missing(tmp_path, monkeypatch):
     from backend.services import simple_pipeline_adapter as adapter_module
     from backend.pipeline import media_precheck
 
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path / 'data'))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path / 'data'))
     adapter = adapter_module.SimplePipelineAdapter('p-asr', 't-asr')
     paid = []
     monkeypatch.setattr(adapter, '_preflight_llm', lambda: paid.append('llm') or pytest.fail('paid llm'))
@@ -170,7 +170,7 @@ def test_visual_without_screening_stays_visual_when_whisper_is_missing(monkeypat
 
 def test_screening_does_not_start_production_when_local_whisper_is_missing(tmp_path, monkeypatch):
     """URL-style screening (file already on disk, no upload gate) must fail before production."""
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     from backend.services.studio import jobs, store
 
     _local_preferences(monkeypatch, 'subtitle', configured=False, screening=False)
@@ -205,7 +205,7 @@ def test_needs_transcription_respects_srt_and_visual_mode():
 
 
 def test_confirm_subtitle_route_makes_zero_paid_calls_when_asr_missing(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     from backend.pipeline import media_precheck
     from backend.services.studio import jobs, store
     from backend.services.studio.models import ConfirmPlan, Preferences
@@ -242,8 +242,8 @@ def test_confirm_subtitle_route_makes_zero_paid_calls_when_asr_missing(tmp_path,
 
 
 def test_cli_mcp_path_makes_zero_paid_calls_when_asr_missing(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path / 'data'))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path / 'data'))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path / 'data'))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path / 'data'))
     from backend.pipeline import media_precheck
     from backend.services import local_runner
     from backend.services.simple_pipeline_adapter import SimplePipelineAdapter

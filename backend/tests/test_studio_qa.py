@@ -265,7 +265,7 @@ def test_checker_exception_is_a_skip_and_a_sanitized_sentry_event(monkeypatch, t
     assert str(captured['error']) == 'loudness'
     assert captured['phase'] == 'qa'
     assert 'secret' not in str(captured['error'])
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     event = {
         'tags': {'area': 'studio', 'phase': 'qa', 'error_code': 'unexpected', 'path': r'C:\secret\clip.mp4'},
         'exception': {'values': [{'type': 'QaCheckerError', 'value': r'C:\secret\clip.mp4 hello'}]},
@@ -291,19 +291,19 @@ def test_feature_defaults_and_safe_mode_kill_switch():
     assert features.normalize_flag('qa_gate_blocking', 'blocking') == 'block'
     assert features.resolve_features(None)['qa_gate_blocking'] == 'shadow'
     assert features.resolve_features({'qa_gate_blocking': 'block'})['qa_gate_blocking'] == 'block'
-    killed = features.resolve_features({'autoclip_safe_mode': True, 'qa_gate_blocking': 'block'})
+    killed = features.resolve_features({'autovideoclip_safe_mode': True, 'qa_gate_blocking': 'block'})
     assert killed['qa_gate_blocking'] == 'off'
-    forced = features.resolve_features({'autoclip_safe_mode': True}, env='qa_gate_blocking=block')
+    forced = features.resolve_features({'autovideoclip_safe_mode': True}, env='qa_gate_blocking=block')
     assert forced['qa_gate_blocking'] == 'off'
     assert record.effective_mode({'qa_gate_blocking': 'block'}) == 'shadow'
     assert record.effective_mode({'qa_gate_blocking': 'off'}) == 'off'
-    assert record.effective_mode({'autoclip_safe_mode': True, 'qa_gate_blocking': 'shadow'}) == 'off'
+    assert record.effective_mode({'autovideoclip_safe_mode': True, 'qa_gate_blocking': 'shadow'}) == 'off'
     assert features.flag_enabled(features.DEFAULTS, 'qa_gate_blocking') is False
 
 
 def _project(tmp_path, monkeypatch, features_snapshot):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     (tmp_path / 'privacy.json').write_text('{"crash_reports":false,"analytics":false}')
     monkeypatch.setattr(jobs, 'sync_project_completion', lambda _project_id: None)
     monkeypatch.setattr(jobs, '_design_covers', lambda *_args, **_kwargs: None)
@@ -426,7 +426,7 @@ def test_off_and_safe_mode_do_not_write_a_report(tmp_path, monkeypatch):
             'id': 'v2', 'draft_id': 'd1', 'draft_revision': 1, 'strategy_id': 'original',
             'strategy_version': 1, 'status': 'running', 'render_job_id': 'job-2',
         })
-        data['generation']['features'] = {'autoclip_safe_mode': True, 'qa_gate_blocking': 'shadow'}
+        data['generation']['features'] = {'autovideoclip_safe_mode': True, 'qa_gate_blocking': 'shadow'}
         data['generation']['status'] = 'rendering'
 
     store.change('qa-shadow', arm_safe)
@@ -511,7 +511,7 @@ def test_non_python_host_uses_the_packaged_runtime(tmp_path, monkeypatch):
     venv_runtime.parent.mkdir(parents=True)
     runtime.write_bytes(b'portable')
     venv_runtime.write_bytes(b'venv')
-    host = resources / 'autoclip-backend.exe'
+    host = resources / 'autovideoclip-backend.exe'
     host.write_bytes(b'')
     monkeypatch.setattr(qa_schedule.sys, 'executable', str(host))
     cmd, kwargs = qa_schedule._command()
@@ -562,7 +562,7 @@ def test_analytics_identity_rejects_paths_and_stores_anonymous_ids(tmp_path, mon
     from fastapi import FastAPI
     from fastapi.testclient import TestClient
     from backend.api.v1.settings import router
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     app = FastAPI()
     app.include_router(router)
     client = TestClient(app)
@@ -581,14 +581,14 @@ def test_analytics_identity_change_is_used_by_later_events(tmp_path, monkeypatch
     from backend.services.studio.qa import telemetry
     old = '018f6b2a-7c3d-7b2a-8c11-111111111111'
     new = '018f6b2a-7c3d-7b2a-8c11-222222222222'
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_ANONYMOUS_DEVICE_ID', old)
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_ANONYMOUS_DEVICE_ID', old)
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
     (tmp_path / 'analytics.json').write_text(json.dumps({'distinct_id': old}), encoding='utf-8')
     assert telemetry.remember_distinct_id(new)
     assert telemetry.anonymous_distinct_id() == new
     # The launch env is only a fallback. The file wins for events in this process.
-    assert os.environ['AUTOCLIP_ANONYMOUS_DEVICE_ID'] == old
+    assert os.environ['AUTOVIDEOCLIP_ANONYMOUS_DEVICE_ID'] == old
     assert telemetry.remember_distinct_id(new)
     assert telemetry.anonymous_distinct_id() == new
     captured = {}
@@ -616,7 +616,7 @@ def test_identity_temp_file_includes_the_pid(tmp_path, monkeypatch):
     import os
     from pathlib import Path
     from backend.services.studio.qa import telemetry
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     names = []
     original = Path.replace
 
@@ -649,8 +649,8 @@ def test_hard_cap_kills_the_child(monkeypatch):
 
 def test_backend_emits_one_qa_event(monkeypatch, tmp_path):
     from backend.services.studio.qa import telemetry
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
     monkeypatch.delenv('VITE_PUBLIC_POSTHOG_KEY', raising=False)
     (tmp_path / 'privacy.json').write_text('{"analytics":false,"crash_reports":false}')
     called = []

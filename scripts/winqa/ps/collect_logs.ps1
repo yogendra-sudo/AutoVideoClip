@@ -6,8 +6,8 @@ param([string]$Label = 'logs')
 $ErrorActionPreference = 'Continue'
 $sources = [ordered]@{
   'backend' = Join-Path (Get-AppDataDir) 'logs'
-  'desktop' = Join-Path $env:LOCALAPPDATA 'com.autoclip.desktop\logs'
-  'desktop-roaming' = Join-Path $env:APPDATA 'com.autoclip.desktop\logs'
+  'desktop' = Join-Path $env:LOCALAPPDATA 'com.autovideoclip.desktop\logs'
+  'desktop-roaming' = Join-Path $env:APPDATA 'com.autovideoclip.desktop\logs'
 }
 $t = Join-Path $env:TEMP 'winqa-logs'
 Remove-Item -Recurse -Force $t -ErrorAction SilentlyContinue

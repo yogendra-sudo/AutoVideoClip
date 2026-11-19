@@ -4,7 +4,7 @@
 """
 import os
 
-if os.getenv("AUTOCLIP_DESKTOP_MODE", "").lower() not in {"1", "true", "yes"}:
+if os.getenv("AUTOVIDEOCLIP_DESKTOP_MODE", "").lower() not in {"1", "true", "yes"}:
     raise RuntimeError("此模块仅在桌面模式下可用")
 
 from celery import Celery
@@ -15,7 +15,7 @@ from backend.core.log_redaction import install_celery_log_redaction
 install_celery_log_redaction()
 
 # 文件系统 broker + sqlite backend（示例）
-app_dir = Path(os.getenv("AUTOCLIP_APP_DIR", "~/Library/Application Support/AutoClip")).expanduser()
+app_dir = Path(os.getenv("AUTOVIDEOCLIP_APP_DIR", "~/Library/Application Support/AutoClip")).expanduser()
 app_dir.mkdir(parents=True, exist_ok=True)
 
 # 创建Celery目录
@@ -26,7 +26,7 @@ celery_dir.mkdir(parents=True, exist_ok=True)
 (celery_dir / "processed").mkdir(exist_ok=True)
 
 celery_app = Celery(
-    "autoclip_desktop",
+    "autovideoclip_desktop",
     broker="filesystem://",
     backend=f"db+sqlite:///{app_dir}/celery/results.sqlite3",
 )

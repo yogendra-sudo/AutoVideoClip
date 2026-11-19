@@ -1,6 +1,6 @@
 """Reap ffmpeg/ffprobe left behind by a previous AutoClip backend that was killed (kill -9, crash).
 
-`mark_environment()` stamps `AUTOCLIP_BACKEND_OWNER=<pid>:<create_time>` into os.environ at startup,
+`mark_environment()` stamps `AUTOVIDEOCLIP_BACKEND_OWNER=<pid>:<create_time>` into os.environ at startup,
 so every ffmpeg the backend spawns inherits it. `reap_orphans()` later scans ffmpeg/ffprobe processes
 and kills only those carrying a marker whose owner backend no longer runs (pid + create time, so PID
 reuse is safe). Unmarked ffmpeg (the user's own, other apps) is never touched. Works with psutil on
@@ -14,7 +14,7 @@ from typing import Iterable, Optional
 
 logger = logging.getLogger(__name__)
 
-ENV = 'AUTOCLIP_BACKEND_OWNER'
+ENV = 'AUTOVIDEOCLIP_BACKEND_OWNER'
 TARGET_NAMES = ('ffmpeg', 'ffprobe')
 
 

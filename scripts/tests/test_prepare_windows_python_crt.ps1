@@ -43,7 +43,7 @@ Check 'reject unexpected CA despite Microsoft organization' (-not (Test-Official
 Check 'reject missing certificate' (-not (Test-OfficialMicrosoftCrtSignature ([pscustomobject]@{Status='Valid'; SignerCertificate=$null})))
 $real = Get-AuthenticodeSignature -LiteralPath $OfficialDll
 Check 'actual official DLL is trusted Microsoft' (Test-OfficialMicrosoftCrtSignature $real)
-$temp = Join-Path ([IO.Path]::GetTempPath()) ('autoclip-crt-tampered-' + [Guid]::NewGuid().ToString('N') + '.dll')
+$temp = Join-Path ([IO.Path]::GetTempPath()) ('autovideoclip-crt-tampered-' + [Guid]::NewGuid().ToString('N') + '.dll')
 try {
     $bytes = [IO.File]::ReadAllBytes($OfficialDll)
     if ($bytes.Length -le 0x1000) { throw 'Official DLL too small for signature mutation test' }

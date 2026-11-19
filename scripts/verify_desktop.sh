@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PYTHON_BIN="${PYTHON_BIN:-${ROOT_DIR}/venv/bin/python}"
-VERIFY_DATA_DIR="${AUTOCLIP_DATA_DIR:-/private/tmp/autoclip-desktop-verify-data}"
+VERIFY_DATA_DIR="${AUTOVIDEOCLIP_DATA_DIR:-/private/tmp/autovideoclip-desktop-verify-data}"
 export VERIFY_DATA_DIR
 
 if [[ ! -x "${PYTHON_BIN}" ]]; then
@@ -25,10 +25,10 @@ from urllib.request import urlopen
 
 python = os.environ.get("PYTHON_BIN") or "python3"
 env = os.environ.copy()
-env["AUTOCLIP_DESKTOP_MODE"] = "true"
-env["AUTOCLIP_MODE"] = "desktop"
-env.setdefault("AUTOCLIP_APP_DIR", os.environ["VERIFY_DATA_DIR"])
-env.setdefault("AUTOCLIP_DATA_DIR", os.environ["VERIFY_DATA_DIR"])
+env["AUTOVIDEOCLIP_DESKTOP_MODE"] = "true"
+env["AUTOVIDEOCLIP_MODE"] = "desktop"
+env.setdefault("AUTOVIDEOCLIP_APP_DIR", os.environ["VERIFY_DATA_DIR"])
+env.setdefault("AUTOVIDEOCLIP_DATA_DIR", os.environ["VERIFY_DATA_DIR"])
 
 proc = subprocess.Popen(
     [python, "-m", "backend.desktop_main"],

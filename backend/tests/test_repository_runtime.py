@@ -111,9 +111,9 @@ with open(os.environ['CAPTURE'], 'a') as f: f.write(json.dumps(args)+'\\n')
 if args[:2] == ['compose', 'version']: sys.exit(0)
 if args[0] == 'inspect':
     print(os.getenv('CONTAINER_STATE', 'running healthy')); sys.exit(0)
-if args[-2:] == ['config', '--services']: print('redis\\nautoclip')
+if args[-2:] == ['config', '--services']: print('redis\\nautovideoclip')
 if 'ps' in args and '-q' in args:
-    if not (os.getenv('MISSING_SERVICE') and args[-1]=='autoclip'): print('abc123')
+    if not (os.getenv('MISSING_SERVICE') and args[-1]=='autovideoclip'): print('abc123')
 ''')
     (binary / 'docker').chmod(0o755)
     env = dict(os.environ, PATH=f'{binary}:{os.environ["PATH"]}', CAPTURE=str(capture))

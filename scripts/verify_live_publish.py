@@ -94,7 +94,7 @@ def verify_upload_post(video: Path) -> dict:
         "title": title,
         "async_upload": "true",
         "request_id": request_id,
-        "external_id": f"autoclip:live-verify:{request_id[:8]}",
+        "external_id": f"autovideoclip:live-verify:{request_id[:8]}",
         **extra,
     }
     headers = up._headers(cfg)
@@ -152,7 +152,7 @@ def main() -> int:
         print("Optional: UPLOAD_POST_USER (default: main), UPLOAD_POST_PLATFORM (default: youtube)", file=sys.stderr)
         return 2
 
-    with tempfile.TemporaryDirectory(prefix="autoclip-live-publish-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="autovideoclip-live-publish-") as tmp:
         video = Path(tmp) / "private-check.mp4"
         _make_sample(video)
         up = verify_upload_post(video)

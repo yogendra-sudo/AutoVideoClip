@@ -7,7 +7,7 @@ import sys, os
 # 添加项目根目录到sys.path，确保能找到backend包
 current_file = os.path.abspath(__file__)
 backend_dir = os.path.dirname(os.path.dirname(current_file))  # backend目录
-project_root = os.path.dirname(backend_dir)  # autoclip根目录
+project_root = os.path.dirname(backend_dir)  # autovideoclip根目录
 
 # 将项目根目录添加到sys.path，这样Python能找到backend包
 if project_root not in sys.path:

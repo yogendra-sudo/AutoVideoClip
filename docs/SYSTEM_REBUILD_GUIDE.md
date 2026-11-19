@@ -27,7 +27,7 @@
 
 1. **检查数据库表结构**
    ```bash
-   sqlite3 data/autoclip.db ".schema"
+   sqlite3 data/autovideoclip.db ".schema"
    ```
 
 2. **检查目录结构**
@@ -72,8 +72,8 @@
 
 ```
 data/
-├── autoclip.db                 # 干净的数据库
-├── autoclip_backup_*.db        # 数据库备份
+├── autovideoclip.db                 # 干净的数据库
+├── autovideoclip_backup_*.db        # 数据库备份
 ├── projects/                   # 空的项目目录
 ├── output/                     # 空的输出目录
 │   ├── clips/                  # 切片视频

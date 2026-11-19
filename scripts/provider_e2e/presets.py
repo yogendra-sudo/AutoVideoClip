@@ -1,7 +1,7 @@
 """Optional catalog loader for the provider-e2e matrix.
 
 Reads ``backend/presets/provider_presets.json`` when that file exists (P12) or when
-``AUTOCLIP_PROVIDER_PRESETS`` points at a JSON file. This module does not ship
+``AUTOVIDEOCLIP_PROVIDER_PRESETS`` points at a JSON file. This module does not ship
 or rewrite a product catalog. Live chat URLs (Gemini ``/openai``) and
 fallback models (DashScope ``qwen-plus``) stay in ``matrix.py``. Never print
 secrets — the catalog has none, and extra key-like fields are dropped.
@@ -29,12 +29,12 @@ def reset_catalog_cache() -> None:
 
 def find_e2e_presets_path(start: Path | None = None) -> Path | None:
     """Env override, then the product JSON. Missing env path is fail-closed."""
-    env = (os.environ.get('AUTOCLIP_PROVIDER_PRESETS') or '').strip()
+    env = (os.environ.get('AUTOVIDEOCLIP_PROVIDER_PRESETS') or '').strip()
     if env:
         path = Path(env).expanduser()
         if path.is_file():
             return path.resolve()
-        raise FileNotFoundError(f'AUTOCLIP_PROVIDER_PRESETS not found: {path}')
+        raise FileNotFoundError(f'AUTOVIDEOCLIP_PROVIDER_PRESETS not found: {path}')
     seen: set[Path] = set()
     roots = [Path(start).resolve() if start else Path(__file__).resolve().parent, Path.cwd()]
     for root in roots:

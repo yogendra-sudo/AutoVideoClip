@@ -39,7 +39,7 @@ Include `/v1` only once and do not append `/chat/completions`. Select the model,
 
 ```bash
 export API88_API_KEY="your API key"
-autoclip run video.mp4 --provider api88 --model "exact account model ID"
+autovideoclip run video.mp4 --provider api88 --model "exact account model ID"
 ```
 
 `API_API88_API_KEY` and `--api-key` are also supported. Use `provider="api88"` with MCP.

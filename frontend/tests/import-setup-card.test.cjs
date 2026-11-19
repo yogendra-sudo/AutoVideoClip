@@ -161,7 +161,7 @@ test('later only dismisses the first-run overlay', async () => {
     assert.ok(statuses.length >= 1 && statuses.every(value => value === true))
     await act(async () => { button(host, 'Set up later').click() })
     assert.equal(host.querySelector('[role="dialog"]'), null)
-    assert.equal(window.sessionStorage.getItem('autoclip.firstRunSetup.dismissed'), '1')
+    assert.equal(window.sessionStorage.getItem('autovideoclip.firstRunSetup.dismissed'), '1')
     assert.ok(statuses.every(value => value === true))
     await act(async () => { root.unmount() })
   } finally {

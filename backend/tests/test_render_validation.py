@@ -23,7 +23,7 @@ def _clip(path, seconds):
 
 @pytest.fixture
 def env(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     folder = store.directory('p') / 'output/studio'
     folder.mkdir(parents=True)
     output = folder / 'job.mp4'
@@ -278,7 +278,7 @@ def test_r14_success_is_exactly_body_with_outro_appended(env, monkeypatch):
 
 def test_r14_real_append_outro_reports_the_outro_duration_actually_used(tmp_path, monkeypatch):
     # keep the outro cache out of the default data directory.
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path / 'data'))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path / 'data'))
     monkeypatch.setattr(output_branding, '_cache_dir', lambda: _tmp_cache(tmp_path))
     body = _clip__r13_render_validation(tmp_path / 'body.mp4', 2, audio=True)
     out = tmp_path / 'out.mp4'
@@ -309,7 +309,7 @@ def _clip__r15_outro_probe(path, seconds):
 
 @pytest.fixture
 def isolated(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path / 'data'))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path / 'data'))
     cache = tmp_path / 'outro-cache'
     cache.mkdir()
     monkeypatch.setattr(output_branding, '_cache_dir', lambda: cache)

@@ -40,7 +40,7 @@ On macOS 15 and later, double-click once. If macOS blocks the app, open System S
 2. Check free disk space and note the exact error and failed stage.
 3. Desktop backend ports are managed by the launcher; inspect startup logs instead of assuming port 8000. Docker defaults to port 3000 for the web UI and 8000 for the API.
 4. In web mode, disable browser page translation and refresh if it was enabled.
-5. For Docker, run `docker compose ps` and `docker compose logs --tail=100 autoclip celery-worker`; see the [Docker guide](DOCKER.en.md).
+5. For Docker, run `docker compose ps` and `docker compose logs --tail=100 autovideoclip celery-worker`; see the [Docker guide](DOCKER.en.md).
 
 ### Why does the model connection test fail?
 
@@ -91,8 +91,8 @@ Read the project error first, then check the failed stage:
 Check the CLI environment, then try a lower threshold:
 
 ```bash
-autoclip doctor --provider ollama
-autoclip run talk.mp4 --provider ollama --srt talk.srt --min-score 0.5 --json
+autovideoclip doctor --provider ollama
+autovideoclip run talk.mp4 --provider ollama --srt talk.srt --min-score 0.5 --json
 ```
 
 Replace the filenames and provider with your actual setup. Without SRT, remove `--srt talk.srt` and prepare transcription first. Lowering the threshold changes selection; it does not guarantee clips. For a first check, use “用示例项目看看效果” on the home screen, or a clip you provide. If usage is still unclear, continue in the [first-clip Q&A](https://github.com/yogendra-sudo/AutoVideoClip/discussions/128). Reproducible bugs still belong in Issues.
@@ -110,7 +110,7 @@ Check that the link opens in your browser and that your account has access. Conf
 Clips are segments cut from the source video using time ranges. Publishing export applies a preset, such as vertical layout, burned-in subtitles, and title cards. After generating clips, run export and play the result to check it.
 
 ```bash
-autoclip export PROJECT_ID --preset shorts
+autovideoclip export PROJECT_ID --preset shorts
 ```
 
 Replace `PROJECT_ID` with the actual project ID. Other presets include `douyin`, `xiaohongshu`, `bilibili`, and `original`; see the [CLI / MCP reference](CLI_AND_MCP.md) (Chinese).

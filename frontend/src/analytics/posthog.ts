@@ -20,7 +20,7 @@ export const POSTHOG_HOST =
   'https://us.i.posthog.com'
 
 /** Storage key for user tracking point switch preferences（true = OffCollect）。 */
-const OPT_OUT_STORAGE_KEY = 'autoclip.analytics.optOut'
+const OPT_OUT_STORAGE_KEY = 'autovideoclip.analytics.optOut'
 
 let initialized = false
 let flagsNetworkEnabled = false

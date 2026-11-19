@@ -16,7 +16,7 @@
 - [Windows 覆盖安装验收](https://github.com/yogendra-sudo/AutoVideoClip/actions/runs/36687128296)：安装正式 v1.4.0，模拟旧 Python 占用 `_asyncio.pyd`，使用既有主线构建产物 `36546843402` 覆盖升级；旧进程被结束，内置 ffmpeg 出片、yt-dlp ffmpeg 定位、后端健康与来源守卫全部通过。该包验证之前 #221 的安装器/媒体修复，不是本 PR 新构建包。报告位于步骤日志（原工作流没有找到 JSON artifact）。
 - 新增 `.github/workflows/issue-recovery.yml`：Windows Python 3.13 安装真实 Whisper 运行时、下载 tiny、对公开访谈的 12 秒中文路径素材离线转写；另在独立依赖目录及新进程中加载 PyAV 19 再验证恢复。CI 产出 `windows-issue-recovery` 报告。首轮真实失败帮助定位 PyAV 兼容问题；最终结果见 PR 检查。
 - 用户明确授权两次 DashScope/qwen-plus 付费小样本验收：CLI 与 MCP 分别处理同一公开访谈前 90 秒及配套 SRT，两者都完成并各生成 2 个非空视频。CLI 退出码 0；MCP 调用 `start_clip_job` 后经 `get_job_status` 轮询到 completed（直接调用工具函数，不宣称验证 MCP 传输协议）。使用 `category=speech`、`min_score=0.5`，输出为未评分兜底 0.5，0 合集；这证明链路可出片，不代替默认阈值或剪辑质量验收。
-- CLI 项目 `31235423-f079-43fe-83e7-157a9bb288b6`，MCP 项目 `aa7a699d-5056-4245-acc2-ec66e351f462`；本地记录 `/tmp/autoclip-recovery-live/cli-output.log`、`mcp-result.json`，无密钥入库。
+- CLI 项目 `31235423-f079-43fe-83e7-157a9bb288b6`，MCP 项目 `aa7a699d-5056-4245-acc2-ec66e351f462`；本地记录 `/tmp/autovideoclip-recovery-live/cli-output.log`、`mcp-result.json`，无密钥入库。
 - 本地全套后端当时 746 passed / 2 skipped，唯一受沙箱监听端口限制的 HTTP 测试在允许监听的环境单独通过。后续新增回归由最终 CI 覆盖。前端原有 167 项及新增失败卡 3 项、类型检查和构建通过。Whisper 定向回归 24 项通过（含 ffmpeg 数组回退）。
 - 模型缓存检测不包括权重哈希；真实 ASR 保留普通字幕，不宣称词级对齐质量验收通过。
 

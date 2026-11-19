@@ -29,7 +29,7 @@ def start(source: str, platforms: list[str], *, name: str | None = None, srt_pat
 
     style_for_request(template)
     if template is not None and not flag_enabled(resolve_features(), 'mcp_v2_tools'):
-        raise StyleDisabled('剪辑风格尚未开放，请设置 AUTOCLIP_FLAGS=mcp_v2_tools=on')
+        raise StyleDisabled('剪辑风格尚未开放，请设置 AUTOVIDEOCLIP_FLAGS=mcp_v2_tools=on')
     options = ImportOptions(auto_start=True, platforms=platforms, instruction=instruction, portrait_style=portrait_style,
                             html_template=template)
     parsed = urlparse(source)

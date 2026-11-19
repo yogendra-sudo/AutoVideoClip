@@ -24,7 +24,7 @@ export type NoticeTransport = {
   setBadge?: (count?: number) => void | Promise<void>
 }
 
-const NOTICE_KEY = 'autoclip.notices.v1'
+const NOTICE_KEY = 'autovideoclip.notices.v1'
 
 
 export const NOTICE_COPY: Record<NoticeKind, string> = {

@@ -4,7 +4,7 @@
  * Setting 「Prevent sleep while producing」 defaults on (localStorage).
  */
 
-export const KEEP_AWAKE_SETTING_KEY = 'autoclip.keep_awake.enabled.v1'
+export const KEEP_AWAKE_SETTING_KEY = 'autovideoclip.keep_awake.enabled.v1'
 export const KEEP_AWAKE_RELEASE_DELAY_MS = 10_000
 
 const RUNNING_GENERATION = new Set(['screening', 'production', 'rendering'])

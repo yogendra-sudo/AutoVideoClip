@@ -17,8 +17,8 @@ from copy import deepcopy
 def main():
     payload = json.loads(sys.stdin.read())
     with tempfile.TemporaryDirectory() as root:
-        os.environ['AUTOCLIP_DATA_DIR'] = root
-        os.environ['AUTOCLIP_APP_DIR'] = root
+        os.environ['AUTOVIDEOCLIP_DATA_DIR'] = root
+        os.environ['AUTOVIDEOCLIP_APP_DIR'] = root
         with open(os.path.join(root, 'privacy.json'), 'w') as f:
             f.write('{"crash_reports":false}')
         from backend.services.studio import attempts, store

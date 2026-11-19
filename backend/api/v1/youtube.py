@@ -26,12 +26,12 @@ router = APIRouter()
 download_tasks = {}
 
 # Requesting too many subtitle languages at once triggers YouTube HTTP 429 and fails the whole download;
-# default to Chinese and English only, overridable via AUTOCLIP_YT_SUBTITLE_LANGS (comma-separated).
+# default to Chinese and English only, overridable via AUTOVIDEOCLIP_YT_SUBTITLE_LANGS (comma-separated).
 DEFAULT_SUBTITLE_LANGS = ['zh-Hans', 'zh', 'en']
 
 
 def get_subtitle_langs() -> list:
-    raw = os.getenv('AUTOCLIP_YT_SUBTITLE_LANGS', '')
+    raw = os.getenv('AUTOVIDEOCLIP_YT_SUBTITLE_LANGS', '')
     langs = [lang.strip() for lang in raw.split(',') if lang.strip()]
     return langs or list(DEFAULT_SUBTITLE_LANGS)
 
@@ -123,7 +123,7 @@ async def parse_youtube_video(
                 cmd.extend(['--cookies-from-browser', browser.lower()])
 
             # Optional fallback client to bypass SABR
-            yt_client = (client or os.getenv('AUTOCLIP_YT_CLIENT', '')).strip().lower()
+            yt_client = (client or os.getenv('AUTOVIDEOCLIP_YT_CLIENT', '')).strip().lower()
             if yt_client in {"android", "ios", "tv"}:
                 cmd.extend(['--extractor-args', f"youtube:player_client={yt_client}"])
             
@@ -217,7 +217,7 @@ async def create_youtube_download_task(request: YouTubeDownloadRequest):
             ydl_opts['cookiesfrombrowser'] = (request.browser.lower(),)
 
         # Optional fallback client
-        yt_client_env = os.getenv('AUTOCLIP_YT_CLIENT', '').strip().lower()
+        yt_client_env = os.getenv('AUTOVIDEOCLIP_YT_CLIENT', '').strip().lower()
         if yt_client_env in {"android", "ios", "tv"}:
             ydl_opts.setdefault('extractor_args', {}).setdefault('youtube', {}).setdefault('player_client', []).append(yt_client_env)
         
@@ -479,7 +479,7 @@ async def process_youtube_download_task(task_id: str, request: YouTubeDownloadRe
             ydl_opts['cookiesfrombrowser'] = (request.browser.lower(),)
 
         # Optional fallback client
-        yt_client_env = os.getenv('AUTOCLIP_YT_CLIENT', '').strip().lower()
+        yt_client_env = os.getenv('AUTOVIDEOCLIP_YT_CLIENT', '').strip().lower()
         if yt_client_env in {"android", "ios", "tv"}:
             ydl_opts.setdefault('extractor_args', {}).setdefault('youtube', {}).setdefault('player_client', []).append(yt_client_env)
         

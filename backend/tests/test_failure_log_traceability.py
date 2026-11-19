@@ -24,7 +24,7 @@ def test_failing_chunk_logs_ids_without_content(stage, tmp_path, monkeypatch, ca
     from backend.pipeline import step1_outline, step2_timeline, step3_scoring, step4_title, step5_clustering
     from backend.pipeline.failures import PipelineFailure
 
-    monkeypatch.setenv("AUTOCLIP_LLM_CONCURRENCY", "1")
+    monkeypatch.setenv("AUTOVIDEOCLIP_LLM_CONCURRENCY", "1")
     monkeypatch.setattr("time.sleep", lambda seconds: None)
     caplog.set_level(logging.DEBUG)
     clips = [{"id": "17", "chunk_index": 0, "outline": PRIVATE, "content": PRIVATE, "final_score": .9}]
@@ -121,7 +121,7 @@ def test_parallel_chunk_failure_ids_are_isolated(tmp_path, monkeypatch, caplog):
     from backend.core import project_cancellation
     from backend.pipeline.step4_title import TitleGenerator
 
-    monkeypatch.setenv("AUTOCLIP_LLM_CONCURRENCY", "2")
+    monkeypatch.setenv("AUTOVIDEOCLIP_LLM_CONCURRENCY", "2")
     generator = object.__new__(TitleGenerator)
     generator.title_prompt = PRIVATE
     generator.llm_raw_output_dir = tmp_path / "raw"
@@ -152,7 +152,7 @@ def test_parallel_chunk_failure_ids_are_isolated(tmp_path, monkeypatch, caplog):
 def test_failure_context_rejects_non_identifier_fields(bad_id, tmp_path, monkeypatch, caplog):
     from backend.pipeline.step4_title import TitleGenerator
 
-    monkeypatch.setenv("AUTOCLIP_LLM_CONCURRENCY", "1")
+    monkeypatch.setenv("AUTOVIDEOCLIP_LLM_CONCURRENCY", "1")
     generator = object.__new__(TitleGenerator)
     generator.title_prompt = PRIVATE
     generator.llm_raw_output_dir = tmp_path / "raw"

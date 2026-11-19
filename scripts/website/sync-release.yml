@@ -7,7 +7,7 @@ name: Sync release info
 
 on:
   repository_dispatch:
-    types: [autoclip-release]
+    types: [autovideoclip-release]
   schedule:
     - cron: "17 3 * * *"   # Daily at 03:17 UTC (11:17 China Standard Time)
   workflow_dispatch:

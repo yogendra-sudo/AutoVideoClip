@@ -51,7 +51,7 @@ test('extraction keeps one key and rejects urls, sentences, and short tokens', (
   assert.equal(guide.extractApiKey('a'.repeat(32)), null)
   assert.equal(guide.extractApiKey('123e4567-e89b-12d3-a456-426614174000'), null)
   assert.equal(guide.extractApiKey(`${GENERIC} ${OPENAI}`), null)
-  assert.equal(guide.looksLikeApiKey('autoclip://import?key=' + GENERIC), false)
+  assert.equal(guide.looksLikeApiKey('autovideoclip://import?key=' + GENERIC), false)
 })
 
 const AUDIT_PATH = '/workspace/docs/SUCCESS_RATE_PIPELINE_AUDIT_1_5_7.md'
@@ -89,14 +89,14 @@ test('file paths and filenames are not api keys', () => {
   assert.equal(guide.looksLikeApiKey('Ab3xY9kLm2Qp8Vn4Hs7Td1Wc6Rf0Zj5Ue.12'), true)
 })
 
-test('autoclip links keep the key out of the path and reject other schemes', () => {
-  const link = guide.parseAutoclipLink(`autoclip://import?key=${GENERIC}&base_url=https://gw.example/v1/chat/completions`)
+test('autovideoclip links keep the key out of the path and reject other schemes', () => {
+  const link = guide.parseAutoclipLink(`autovideoclip://import?key=${GENERIC}&base_url=https://gw.example/v1/chat/completions`)
   assert.equal(link.key, GENERIC)
   assert.equal(link.baseUrl, 'https://gw.example/v1')
   assert.equal(link.providerId, null)
   assert.equal(guide.parseAutoclipLink('http://example.com/?key=' + GENERIC), null)
-  assert.equal(guide.parseAutoclipLink(`autoclip://user:secret@import?key=${GENERIC}`), null)
-  assert.equal(guide.parseAutoclipLink('autoclip://import?key=short'), null)
+  assert.equal(guide.parseAutoclipLink(`autovideoclip://user:secret@import?key=${GENERIC}`), null)
+  assert.equal(guide.parseAutoclipLink('autovideoclip://import?key=short'), null)
   assert.equal(guide.normalizeGuideBaseUrl('https://user:pass@gw.example/v1'), '')
   assert.equal(guide.normalizeGuideBaseUrl('https://api.deepseek.com'), 'https://api.deepseek.com/v1')
 })
@@ -227,7 +227,7 @@ test('key guide dialog rows keep labels outside a full-width control', () => {
 
 test('deep link docs keep the New API placeholder line and do not log the key', () => {
   const doc = fs.readFileSync(path.join(__dirname, '../../docs/KEY_GUIDE.md'), 'utf8')
-  assert.match(doc, /autoclip:\/\/import\?key=\{key\}&base_url=\{address\}\/v1/)
+  assert.match(doc, /autovideoclip:\/\/import\?key=\{key\}&base_url=\{address\}\/v1/)
   const rust = fs.readFileSync(path.join(__dirname, '../../src-tauri/src/lib.rs'), 'utf8')
   assert.equal(/println!\([^)]*argv/.test(rust), false)
   assert.equal(/eprintln!\([^)]*argv/.test(rust), false)

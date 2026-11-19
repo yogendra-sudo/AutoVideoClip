@@ -20,7 +20,7 @@ from backend.services.whisper_model_manager import (
 
 @pytest.fixture(autouse=True)
 def _clean_source_env(monkeypatch):
-    for name in ("AUTOCLIP_WHISPER_MODEL_SOURCE", "HF_ENDPOINT", "HF_HUB_DISABLE_XET"):
+    for name in ("AUTOVIDEOCLIP_WHISPER_MODEL_SOURCE", "HF_ENDPOINT", "HF_HUB_DISABLE_XET"):
         monkeypatch.delenv(name, raising=False)
     # never probe the real network from tests; individual tests override this
     monkeypatch.setattr("backend.services.whisper_model_manager._reachable", lambda endpoint, timeout=0: True)
@@ -268,7 +268,7 @@ def test_auto_uses_official_source_when_reachable(monkeypatch, tmp_path):
 
 
 def test_hf_mirror_source_goes_straight_to_the_mirror(monkeypatch, tmp_path):
-    monkeypatch.setenv("AUTOCLIP_WHISPER_MODEL_SOURCE", "hf-mirror")
+    monkeypatch.setenv("AUTOVIDEOCLIP_WHISPER_MODEL_SOURCE", "hf-mirror")
     calls, download = _recording(tmp_path)
     _install_fake_hub(monkeypatch, download)
     manager = _manager(monkeypatch, tmp_path)
@@ -277,7 +277,7 @@ def test_hf_mirror_source_goes_straight_to_the_mirror(monkeypatch, tmp_path):
 
 
 def test_huggingface_source_never_falls_back(monkeypatch, tmp_path):
-    monkeypatch.setenv("AUTOCLIP_WHISPER_MODEL_SOURCE", "huggingface")
+    monkeypatch.setenv("AUTOVIDEOCLIP_WHISPER_MODEL_SOURCE", "huggingface")
     calls, download = _recording(tmp_path, fail_endpoints=("https://huggingface.co",))
     _install_fake_hub(monkeypatch, download)
     manager = _manager(monkeypatch, tmp_path)
@@ -375,7 +375,7 @@ def test_ensure_downloaded_blocks_until_the_snapshot_exists(monkeypatch, tmp_pat
 
 
 def test_ensure_downloaded_raises_the_recorded_error(monkeypatch, tmp_path):
-    monkeypatch.setenv("AUTOCLIP_WHISPER_MODEL_SOURCE", "huggingface")
+    monkeypatch.setenv("AUTOVIDEOCLIP_WHISPER_MODEL_SOURCE", "huggingface")
     _, download = _recording(tmp_path, fail_endpoints=("https://huggingface.co",))
     _install_fake_hub(monkeypatch, download)
     manager = _manager(monkeypatch, tmp_path)
@@ -430,7 +430,7 @@ def test_e3_saved_source_is_used_and_validated(monkeypatch, tmp_path):
     assert wmm.download_plan() == [("huggingface", wmm.OFFICIAL_ENDPOINT)]
     with pytest.raises(ValueError):
         wmm.save_model_source("https://evil.example")
-    monkeypatch.setenv("AUTOCLIP_WHISPER_MODEL_SOURCE", "hf-mirror")
+    monkeypatch.setenv("AUTOVIDEOCLIP_WHISPER_MODEL_SOURCE", "hf-mirror")
     assert wmm.model_source() == "hf-mirror"  # env override for QA still wins
 
 
@@ -493,8 +493,8 @@ def test_r28_i520_background_download_failure_is_reported_once_without_text_url_
     monkeypatch.setattr(sentry_setup, "sync_anonymous_user", lambda *a, **k: None)
     monkeypatch.setenv("SENTRY_DSN", "https://k@o0.ingest.sentry.io/0")  # memory transport: nothing leaves the box
     # refuses pytest and a source checkout. Stub only those two refusals.
-    monkeypatch.setenv("AUTOCLIP_APP_VERSION", "1.5.7")
-    monkeypatch.setenv("AUTOCLIP_BUILD_ENVIRONMENT", "production")
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_VERSION", "1.5.7")
+    monkeypatch.setenv("AUTOVIDEOCLIP_BUILD_ENVIRONMENT", "production")
     monkeypatch.setattr(sentry_setup, "_under_pytest", lambda: False)
     monkeypatch.setattr(sentry_setup, "_running_from_source_tree", lambda: False)
 

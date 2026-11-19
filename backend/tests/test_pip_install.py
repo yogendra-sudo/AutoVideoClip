@@ -5,7 +5,7 @@ from backend.services import pip_install
 
 
 def test_plan_order_and_pip_index_url(monkeypatch):
-    for name in ("AUTOCLIP_PIP_INDEX", "PIP_INDEX_URL"):
+    for name in ("AUTOVIDEOCLIP_PIP_INDEX", "PIP_INDEX_URL"):
         monkeypatch.delenv(name, raising=False)
     assert [label for label, _ in pip_install.index_plan()] == ["pypi", "mirror"]
     monkeypatch.setenv("PIP_INDEX_URL", "https://example.invalid/simple")

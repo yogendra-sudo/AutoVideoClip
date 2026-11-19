@@ -7,7 +7,7 @@ from backend.services.ai_model_settings import Assignment, Connection, ModelSett
 
 @pytest.fixture(autouse=True)
 def isolated(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     binary = tmp_path / 'ffmpeg'
     binary.write_bytes(b'ffmpeg')
     monkeypatch.setattr('backend.utils.ffmpeg_utils.get_ffmpeg_path', lambda: str(binary))

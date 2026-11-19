@@ -4,7 +4,7 @@ environment carries: create_app (init_sentry), the QA event, the LLM event and t
 import os
 import time
 
-TELEMETRY_ENV = ('SENTRY_DSN', 'VITE_PUBLIC_SENTRY_DSN', 'SENTRY_AUTH_TOKEN', 'AUTOCLIP_POSTHOG_KEY', 'AUTOCLIP_POSTHOG_HOST',
+TELEMETRY_ENV = ('SENTRY_DSN', 'VITE_PUBLIC_SENTRY_DSN', 'SENTRY_AUTH_TOKEN', 'AUTOVIDEOCLIP_POSTHOG_KEY', 'AUTOVIDEOCLIP_POSTHOG_HOST',
                  'VITE_PUBLIC_POSTHOG_KEY', 'VITE_PUBLIC_POSTHOG_HOST', 'POSTHOG_KEY', 'POSTHOG_HOST', 'POSTHOG_PERSONAL_API_KEY')
 
 
@@ -13,7 +13,7 @@ def test_no_telemetry_env_name_is_inherited():
 
 
 def test_every_telemetry_entry(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))   # no privacy.json -> analytics allowed (product default)
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))   # no privacy.json -> analytics allowed (product default)
     from backend.app_factory import create_app
     create_app(mode='web')
     from backend.services.studio.qa import telemetry as qa_telemetry

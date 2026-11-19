@@ -3,7 +3,7 @@
  * successfully (and pass validation) the app returns to that project, where the failed step shows
  * 「Continue」 (the same retry API: new attempt_id + retry_of).
  */
-export const SETTINGS_SAVED_EVENT = 'autoclip:model-settings-saved'
+export const SETTINGS_SAVED_EVENT = 'autovideoclip:model-settings-saved'
 const RETURN_PARAM = 'return_project'
 export const CONTINUE_PARAM = 'continue'
 

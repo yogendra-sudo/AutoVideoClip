@@ -110,10 +110,10 @@ def test_main_records_the_ffmpeg_lookup_order_when_it_is_missing(monkeypatch, tm
     assert bench.main(["--out", str(out), "--seconds", "1", "--skip-1080"]) == 1
     payload = json.loads(out.read_text(encoding="utf-8"))
     assert payload["status"] == "error"
-    assert "AUTOCLIP_FFMPEG_PATH" in payload["error"]
+    assert "AUTOVIDEOCLIP_FFMPEG_PATH" in payload["error"]
     assert "resources/ffmpeg" in payload["error"]
     assert "PATH" in payload["error"]
-    assert "AUTOCLIP_FFPROBE_PATH" in payload["error"]
+    assert "AUTOVIDEOCLIP_FFPROBE_PATH" in payload["error"]
 
 
 def test_require_ffmpeg_rejects_a_path_that_is_not_on_disk(monkeypatch):

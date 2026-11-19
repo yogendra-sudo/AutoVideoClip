@@ -19,15 +19,15 @@ if args.resources:
     assert Path(sys.executable).resolve().is_relative_to(resources / 'python'), 'installed Python required'
     os.chdir(resources)
     sys.path.insert(0, str(resources))
-    os.environ.update(AUTOCLIP_FFMPEG_PATH=str(resources / 'ffmpeg/ffmpeg.exe'),
-                      AUTOCLIP_FFPROBE_PATH=str(resources / 'ffmpeg/ffprobe.exe'))
+    os.environ.update(AUTOVIDEOCLIP_FFMPEG_PATH=str(resources / 'ffmpeg/ffmpeg.exe'),
+                      AUTOVIDEOCLIP_FFPROBE_PATH=str(resources / 'ffmpeg/ffprobe.exe'))
     from windows_python_crt import verify as verify_python_crt, loaded_paths
     python_crt = verify_python_crt(resources / 'python')
 else:
     sys.path.insert(0, str(checkout))
-root = Path(tempfile.mkdtemp(prefix="autoclip-whisper-acceptance-"))
-os.environ.update(AUTOCLIP_DATA_DIR=str(root), AUTOCLIP_APP_DIR=str(root),
-                  HF_HUB_DISABLE_PROGRESS_BARS="1", AUTOCLIP_WHISPER_DEVICE="cpu")
+root = Path(tempfile.mkdtemp(prefix="autovideoclip-whisper-acceptance-"))
+os.environ.update(AUTOVIDEOCLIP_DATA_DIR=str(root), AUTOVIDEOCLIP_APP_DIR=str(root),
+                  HF_HUB_DISABLE_PROGRESS_BARS="1", AUTOVIDEOCLIP_WHISPER_DEVICE="cpu")
 from backend.services import whisper_runtime
 from backend.services.whisper_model_manager import get_model_manager, ModelStatus
 from backend.utils.speech_recognizer import SpeechRecognizer, SpeechRecognitionConfig
@@ -67,13 +67,13 @@ import os, sys
 from pathlib import Path
 from backend.services import whisper_runtime
 whisper_runtime.ensure_on_path()
-sys.path.insert(0, str(Path(os.environ['AUTOCLIP_DATA_DIR']) / 'av19-runtime'))
+sys.path.insert(0, str(Path(os.environ['AUTOVIDEOCLIP_DATA_DIR']) / 'av19-runtime'))
 import av, huggingface_hub
 assert av.__version__ == '19.0.0', av.__version__
 def offline(*args, **kwargs): raise AssertionError('unexpected Hub access')
 huggingface_hub.snapshot_download = offline
 from backend.utils.speech_recognizer import SpeechRecognizer, SpeechRecognitionConfig
-root = Path(os.environ['AUTOCLIP_DATA_DIR'])
+root = Path(os.environ['AUTOVIDEOCLIP_DATA_DIR'])
 output = root / 'av19.srt'
 SpeechRecognizer.__new__(SpeechRecognizer)._generate_subtitle_whisper_local(
     root / 'speech_sample.mp4', output, SpeechRecognitionConfig(model='tiny'))

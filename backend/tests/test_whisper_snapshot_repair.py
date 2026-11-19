@@ -35,7 +35,7 @@ REPO = "Systran/faster-whisper-base"
 
 @pytest.fixture(autouse=True)
 def _clean_source_env(monkeypatch):
-    for name in ("AUTOCLIP_WHISPER_MODEL_SOURCE", "HF_ENDPOINT", "HF_HUB_DISABLE_XET"):
+    for name in ("AUTOVIDEOCLIP_WHISPER_MODEL_SOURCE", "HF_ENDPOINT", "HF_HUB_DISABLE_XET"):
         monkeypatch.delenv(name, raising=False)
     monkeypatch.setattr("backend.services.whisper_model_manager._reachable", lambda endpoint, timeout=0: True)
     monkeypatch.setattr(
@@ -296,8 +296,8 @@ def _sentry(monkeypatch):
     monkeypatch.setenv("SENTRY_DSN", "https://k@o0.ingest.sentry.io/0")
     # refuses pytest and a source checkout. Stub only those two refusals so this
     # test still runs the real init, privacy filter and volume hook.
-    monkeypatch.setenv("AUTOCLIP_APP_VERSION", "1.5.7")
-    monkeypatch.setenv("AUTOCLIP_BUILD_ENVIRONMENT", "production")
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_VERSION", "1.5.7")
+    monkeypatch.setenv("AUTOVIDEOCLIP_BUILD_ENVIRONMENT", "production")
     monkeypatch.setattr(sentry_setup, "_under_pytest", lambda: False)
     monkeypatch.setattr(sentry_setup, "_running_from_source_tree", lambda: False)
     assert sentry_setup.init_sentry("desktop") is True

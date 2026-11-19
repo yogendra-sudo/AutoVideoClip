@@ -4,7 +4,7 @@
   "title": "AutoClip",
   "description": "Clip long videos into short clips with covers and captions. Local CLI and MCP.",
   "version": "1.5.8",
-  "websiteUrl": "https://yogendra-sudo.github.io/autoclip_intro/",
+  "websiteUrl": "https://yogendra-sudo.github.io/autovideoclip_intro/",
   "repository": {
     "url": "https://github.com/yogendra-sudo/AutoVideoClip",
     "source": "github",
@@ -14,7 +14,7 @@
     {
       "registryType": "pypi",
       "registryBaseUrl": "https://pypi.org",
-      "identifier": "autoclip-mcp",
+      "identifier": "autovideoclip-mcp",
       "version": "1.5.8",
       "runtimeHint": "uvx",
       "transport": {
@@ -22,7 +22,7 @@
       },
       "environmentVariables": [
         {
-          "name": "AUTOCLIP_API_KEY",
+          "name": "AUTOVIDEOCLIP_API_KEY",
           "description": "Model API key. Optional when desktop settings already include one.",
           "isRequired": false,
           "isSecret": true

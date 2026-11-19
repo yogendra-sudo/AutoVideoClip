@@ -9,8 +9,8 @@ from backend.services.studio import cover_design, intelligence, jobs
 
 @pytest.fixture
 def configured(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     monkeypatch.setattr(ai, 'migrate_legacy', lambda: ai.ModelSettings())
     settings = ai.ModelSettings(
         connections=[ai.Connection(id='existing', name='Existing account', provider='openai',

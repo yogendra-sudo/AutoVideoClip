@@ -47,10 +47,10 @@ def test_b_a_test_that_sets_a_dsn_itself_does_not_initialize(monkeypatch, tmp_pa
     from backend.tests.sentry_leak_probe import CountingTransport
     real_init = sentry_sdk.init
     calls = []
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     monkeypatch.setenv('SENTRY_DSN', FAKE_DSN)
-    monkeypatch.setenv('AUTOCLIP_APP_VERSION', '1.5.7')
-    monkeypatch.setenv('AUTOCLIP_BUILD_ENVIRONMENT', 'production')
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_VERSION', '1.5.7')
+    monkeypatch.setenv('AUTOVIDEOCLIP_BUILD_ENVIRONMENT', 'production')
     monkeypatch.setattr(sentry_sdk, 'init', lambda **options: calls.append(options) or real_init(**{**options, 'transport': CountingTransport}))
     assert sentry_setup.init_sentry('web') is False
     assert sentry_setup.init_sentry('desktop') is False
@@ -60,7 +60,7 @@ def test_b_a_test_that_sets_a_dsn_itself_does_not_initialize(monkeypatch, tmp_pa
 
 def test_c_next_test_starts_without_a_dsn_or_an_initialized_flag(monkeypatch, tmp_path):
     import sentry_sdk
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     assert 'SENTRY_DSN' not in os.environ
     assert sentry_setup._initialized is False and not sentry_sdk.get_client().is_active()
     assert sentry_setup.init_sentry('desktop') is False
@@ -71,9 +71,9 @@ no PostHog worker started. The probe refuses every connection, so nothing leaves
 The DSN and key here are fakes (example.invalid / phc_fake...)."""
 FAKE = {
     'SENTRY_DSN': 'https://public@example.invalid/1',
-    'AUTOCLIP_POSTHOG_KEY': 'phc_fake_i538_autoclip',
+    'AUTOVIDEOCLIP_POSTHOG_KEY': 'phc_fake_i538_autovideoclip',
     'VITE_PUBLIC_POSTHOG_KEY': 'phc_fake_i538_vite',
-    'AUTOCLIP_POSTHOG_HOST': 'https://posthog.example.invalid',
+    'AUTOVIDEOCLIP_POSTHOG_HOST': 'https://posthog.example.invalid',
 }
 
 

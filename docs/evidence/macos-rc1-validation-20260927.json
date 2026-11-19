@@ -15,7 +15,7 @@
       "duration": 1.0
     },
     "desktop_health": "passed",
-    "output": "/private/tmp/autoclip-rc-20260927/autoclip-bundle-smoke-xyyo2mgu/data/projects/bundle-smoke/output/studio/bundle-output.mp4"
+    "output": "/private/tmp/autovideoclip-rc-20260927/autovideoclip-bundle-smoke-xyyo2mgu/data/projects/bundle-smoke/output/studio/bundle-output.mp4"
   },
   "signature_before_smoke": "passed",
   "signature_after_smoke": "passed",

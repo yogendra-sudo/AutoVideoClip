@@ -22,7 +22,7 @@ class CatalogPackagingTests(unittest.TestCase):
                         'assert catalog_path().is_relative_to(Path(sys.argv[1])); '
                         'assert load_catalog()["events"]', str(target)],
                        cwd=target, capture_output=True, text=True,
-                       env=dict(os.environ, AUTOCLIP_EVENT_CATALOG=''))
+                       env=dict(os.environ, AUTOVIDEOCLIP_EVENT_CATALOG=''))
         self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_wheel_build_py_copies_canonical_catalog(self):

@@ -100,7 +100,7 @@ async function withWindow(url, run) {
 
 test('#481 import expands the browser picker and keeps the chosen browser on submit', async () => {
   await withWindow('http://localhost/?focus=browser-cookies', async window => {
-    window.sessionStorage.setItem('autoclip.browserCookieRecoveryUrl', 'https://www.youtube.com/watch?v=abc')
+    window.sessionStorage.setItem('autovideoclip.browserCookieRecoveryUrl', 'https://www.youtube.com/watch?v=abc')
     const { createRoot } = require('react-dom/client')
     const calls = []
     const ready = { analysis_mode: 'auto', ready: true, checks: { analysis: { ok: true, code: 'ok', repair: 'none' }, transcription: { ok: true, code: 'ok', repair: 'none' }, visual: { ok: true, code: 'ok', repair: 'none' }, ffmpeg: { ok: true, code: 'ok', repair: 'none' } } }
@@ -141,7 +141,7 @@ test('#481 import expands the browser picker and keeps the chosen browser on sub
       './TranscriptionGatePrompt': { default: () => null },
       './transcriptionRecovery': { isRecoveryCode: () => false, probeConfig: () => ({}) },
       './useTranscriptionRecovery': { useTranscriptionRecovery: () => [{ phase: 'idle', percent: null }, { open() {}, close() {}, install: async () => {}, retry: async () => {} }] },
-      './settingsReturn': { SETTINGS_SAVED_EVENT: 'autoclip:model-settings-saved' },
+      './settingsReturn': { SETTINGS_SAVED_EVENT: 'autovideoclip:model-settings-saved' },
       '../settings/OutputCaptionsSetting': { OutputCaptionsSwitch: () => null },
       './UrlPreview': { default: 'url-preview', shouldSuggestFirstWindow: () => false },
     './studio.css': {}, './quick-output.css': {},
@@ -214,7 +214,7 @@ test('#481 a normal import keeps the browser picker inside the closed preference
       './TranscriptionGatePrompt': { default: () => null },
       './transcriptionRecovery': { isRecoveryCode: () => false, probeConfig: () => ({}) },
       './useTranscriptionRecovery': { useTranscriptionRecovery: () => [{ phase: 'idle', percent: null }, { open() {}, close() {}, install: async () => {}, retry: async () => {} }] },
-      './settingsReturn': { SETTINGS_SAVED_EVENT: 'autoclip:model-settings-saved' },
+      './settingsReturn': { SETTINGS_SAVED_EVENT: 'autovideoclip:model-settings-saved' },
       '../settings/OutputCaptionsSetting': { OutputCaptionsSwitch: () => null },
       './UrlPreview': { default: 'url-preview', shouldSuggestFirstWindow: () => false },
     './studio.css': {}, './quick-output.css': {},

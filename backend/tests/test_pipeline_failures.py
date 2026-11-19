@@ -181,7 +181,7 @@ def adapter(tmp_path, monkeypatch):
     from backend.core import path_utils
     from backend.services import simple_pipeline_adapter as mod
 
-    monkeypatch.delenv("AUTOCLIP_LLM_CACHE_DIR", raising=False)
+    monkeypatch.delenv("AUTOVIDEOCLIP_LLM_CACHE_DIR", raising=False)
     monkeypatch.setattr(path_utils, "get_project_directory", lambda pid: tmp_path / "projects" / pid)
     monkeypatch.setattr(mod, "clear_progress", lambda pid: None)
     events = []
@@ -483,10 +483,10 @@ def test_adapter_happy_path_still_succeeds(adapter, monkeypatch, tmp_path):
 
 
 def test_adapter_replay_mode_skips_llm_preflight(adapter, monkeypatch, tmp_path):
-    """backend/eval 用 AUTOCLIP_LLM_CACHE_DIR 回放，不需要真实提供商"""
+    """backend/eval 用 AUTOVIDEOCLIP_LLM_CACHE_DIR 回放，不需要真实提供商"""
     from backend.services import simple_pipeline_adapter as mod
 
-    monkeypatch.setenv("AUTOCLIP_LLM_CACHE_DIR", str(tmp_path / "cache"))
+    monkeypatch.setenv("AUTOVIDEOCLIP_LLM_CACHE_DIR", str(tmp_path / "cache"))
     _fake_manager(monkeypatch, available=False)
     srt = tmp_path / "in.srt"
     srt.write_text(SRT, encoding="utf-8")

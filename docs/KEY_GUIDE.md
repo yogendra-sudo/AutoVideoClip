@@ -16,25 +16,25 @@
 
 忽略之后，同一次会话里焦点扫描不再提起同一段密钥。记住的是哈希，不是密钥本身。
 
-## autoclip://
+## autovideoclip://
 
 可选。中转站若支持 New API「聊天应用」占位符 `{key}` 和 `{address}`，加一行即可，不必改 AutoVideoClip：
 
 ```json
-{"AutoVideoClip":"autoclip://import?key={key}&base_url={address}/v1"}
+{"AutoVideoClip":"autovideoclip://import?key={key}&base_url={address}/v1"}
 ```
 
 `{address}` 不含末尾斜杠，也不含 `/v1`。也接受查询参数 `api_key` / `token`，以及 `url` / `server` / `address`。可选 `provider` 为预置 id；它和地址、前缀冲突时仍要用户选择。
 
 链接只打开确认框。密钥不进路由、不进日志、不进埋点。页面上报只使用 `/settings?section=ai`，需要时再加 `provider=<预置 id>`。
 
-协议名是 `autoclip`。注册方式：
+协议名是 `autovideoclip`。注册方式：
 
 | 平台 | 安装包 | 开发运行 |
 | --- | --- | --- |
-| macOS | 打包进 `.app` 的 Info.plist。系统只把链接交给已安装的应用，通常在 `/Applications`。 | `tauri dev` 收不到协议。用安装后的包验证：`open "autoclip://import?key=...&base_url=https://example.com/v1"` |
-| Windows | 安装器写入协议。第一次启动也会 `register_all`。 | 开发进程启动时 `register_all`。`start autoclip://import?key=...&base_url=https://example.com/v1` |
-| Linux | 打包时注册。运行时同样 `register_all`。 | `xdg-open "autoclip://import?key=...&base_url=https://example.com/v1"` |
+| macOS | 打包进 `.app` 的 Info.plist。系统只把链接交给已安装的应用，通常在 `/Applications`。 | `tauri dev` 收不到协议。用安装后的包验证：`open "autovideoclip://import?key=...&base_url=https://example.com/v1"` |
+| Windows | 安装器写入协议。第一次启动也会 `register_all`。 | 开发进程启动时 `register_all`。`start autovideoclip://import?key=...&base_url=https://example.com/v1` |
+| Linux | 打包时注册。运行时同样 `register_all`。 | `xdg-open "autovideoclip://import?key=...&base_url=https://example.com/v1"` |
 
 Windows 和 Linux 要靠单实例把第二次启动收进已经打开的窗口，否则系统会再开一个进程，链接到不了当前界面。macOS 也使用同一插件，第二次打开会把已有窗口带到前台。启动参数里可能含有密钥，原生层不打印这些参数。
 

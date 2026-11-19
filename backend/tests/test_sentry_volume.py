@@ -45,10 +45,10 @@ def _child_env(tmp_path, **overrides):
     env = {key: value for key, value in os.environ.items()
            if not key.startswith(('SENTRY_', 'POSTHOG', 'VITE_PUBLIC_POSTHOG', 'VITE_PUBLIC_SENTRY'))
            and key not in {'PYTEST_CURRENT_TEST', 'PYTEST_ADDOPTS'}}
-    env.update(AUTOCLIP_APP_DIR=str(tmp_path), AUTOCLIP_DATA_DIR=str(tmp_path),
-               AUTOCLIP_MODE='desktop', AUTOCLIP_BUILD_ENVIRONMENT='production',
-               AUTOCLIP_APP_VERSION='1.5.7', SENTRY_DSN='https://public@example.invalid/1',
-               AUTOCLIP_EVENT_CATALOG=str(tmp_path / 'missing-catalog.json'),
+    env.update(AUTOVIDEOCLIP_APP_DIR=str(tmp_path), AUTOVIDEOCLIP_DATA_DIR=str(tmp_path),
+               AUTOVIDEOCLIP_MODE='desktop', AUTOVIDEOCLIP_BUILD_ENVIRONMENT='production',
+               AUTOVIDEOCLIP_APP_VERSION='1.5.7', SENTRY_DSN='https://public@example.invalid/1',
+               AUTOVIDEOCLIP_EVENT_CATALOG=str(tmp_path / 'missing-catalog.json'),
                DATABASE_URL='sqlite:///' + str(tmp_path / 'isolated.sqlite'),
                PYTHONDONTWRITEBYTECODE='1')
     env.update(overrides)
@@ -191,7 +191,7 @@ def test_i650_budget_is_per_hour_and_polling_stays_once(monkeypatch):
 
 
 def test_i650_dropped_disconnect_does_not_spend_the_budget(monkeypatch, tmp_path):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     _reset_volume(monkeypatch)
     noise = {'exception': {'values': [{'type': 'ConnectionResetError', 'value': '/Users/private',
         'stacktrace': {'frames': [{'module': 'asyncio.proactor_events', 'filename': 'proactor_events.py',
@@ -202,7 +202,7 @@ def test_i650_dropped_disconnect_does_not_spend_the_budget(monkeypatch, tmp_path
 
 
 def test_i651_only_proactor_disconnects_are_dropped(monkeypatch, tmp_path):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
 
     def event(type_, module):
         return {'exception': {'values': [{'type': type_, 'value': 'secret /Users/private/video.mp4',
@@ -272,10 +272,10 @@ def test_i652_packaged_layout_is_a_backend_directory_without_tests(monkeypatch, 
 def test_i652_pytest_never_inits_even_when_the_layout_looks_packaged(monkeypatch, tmp_path):
     import sentry_sdk
     calls = []
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     monkeypatch.setenv('SENTRY_DSN', 'https://public@example.invalid/1')
-    monkeypatch.setenv('AUTOCLIP_BUILD_ENVIRONMENT', 'production')
-    monkeypatch.setenv('AUTOCLIP_APP_VERSION', '1.5.7')
+    monkeypatch.setenv('AUTOVIDEOCLIP_BUILD_ENVIRONMENT', 'production')
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_VERSION', '1.5.7')
     monkeypatch.setattr(sentry_setup, '_running_from_source_tree', lambda: False)
     monkeypatch.setattr(sentry_setup, '_initialized', False)
     monkeypatch.setattr(sentry_sdk, 'init', lambda **options: calls.append(options))
@@ -298,17 +298,17 @@ def test_i652_pytest_never_inits_even_when_the_layout_looks_packaged(monkeypatch
 def test_i652_initializes_only_in_packaged_desktop_build(monkeypatch, tmp_path, mode, build, version, expected):
     import sentry_sdk
     calls = []
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     monkeypatch.setenv('SENTRY_DSN', 'https://public@example.invalid/1')
-    monkeypatch.setenv('AUTOCLIP_BUILD_ENVIRONMENT', build)
+    monkeypatch.setenv('AUTOVIDEOCLIP_BUILD_ENVIRONMENT', build)
     monkeypatch.delenv('SENTRY_RELEASE', raising=False)
     # The env matrix is the packaged process. pytest and the checkout are covered separately.
     monkeypatch.setattr(sentry_setup, '_under_pytest', lambda: False)
     monkeypatch.setattr(sentry_setup, '_running_from_source_tree', lambda: False)
     if version is None:
-        monkeypatch.delenv('AUTOCLIP_APP_VERSION', raising=False)
+        monkeypatch.delenv('AUTOVIDEOCLIP_APP_VERSION', raising=False)
     else:
-        monkeypatch.setenv('AUTOCLIP_APP_VERSION', version)
+        monkeypatch.setenv('AUTOVIDEOCLIP_APP_VERSION', version)
     monkeypatch.setattr(sentry_setup, '_initialized', False)
     monkeypatch.setattr(sentry_setup, 'sync_anonymous_user', lambda *a, **k: None)
     monkeypatch.setattr(sentry_sdk, 'init', lambda **options: calls.append(options))
@@ -316,5 +316,5 @@ def test_i652_initializes_only_in_packaged_desktop_build(monkeypatch, tmp_path, 
     assert len(calls) == (1 if expected else 0)
     if expected:
         assert calls[0]['environment'] == 'desktop'
-        assert calls[0]['release'] == 'autoclip-backend@1.5.7'
+        assert calls[0]['release'] == 'autovideoclip-backend@1.5.7'
         assert calls[0]['before_send'].__name__ == '_before_send_limited'

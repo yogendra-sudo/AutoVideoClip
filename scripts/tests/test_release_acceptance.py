@@ -19,12 +19,12 @@ class AcceptanceTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.assets = self.root / 'assets'
         self.assets.mkdir()
-        self.tag, self.commit, self.repo = 'v1.5.1', 'a' * 40, 'owner/autoclip'
+        self.tag, self.commit, self.repo = 'v1.5.1', 'a' * 40, 'owner/autovideoclip'
         self.now = dt.datetime.now(dt.timezone.utc)
         self.built = self.now - dt.timedelta(hours=30)
         files = ('AutoClip.dmg', 'AutoClip.app.tar.gz', 'AutoClip-x64-setup.exe',
                  'AutoClip.app.tar.gz.sig', 'AutoClip-x64-setup.exe.sig',
-                 'autoclip-1.5.1-py3-none-any.whl', 'autoclip-1.5.1-cli-mcp.zip')
+                 'autovideoclip-1.5.1-py3-none-any.whl', 'autovideoclip-1.5.1-cli-mcp.zip')
         for name in files:
             (self.assets / name).write_text('fixture-signature' if name.endswith('.sig') else 'fixture-package')
         (self.assets / 'latest.json').write_text(json.dumps({'version': '1.5.1', 'platforms': {
@@ -176,8 +176,8 @@ class AcceptanceTests(unittest.TestCase):
             self.validate()
 
     def test_updater_cannot_reference_another_release_or_wrong_signature(self):
-        for wrong in ('https://github.com/owner/autoclip/releases/download/v1.5.0/AutoClip.app.tar.gz',
-                      'https://other.example/owner/autoclip/releases/download/v1.5.1/AutoClip.app.tar.gz'):
+        for wrong in ('https://github.com/owner/autovideoclip/releases/download/v1.5.0/AutoClip.app.tar.gz',
+                      'https://other.example/owner/autovideoclip/releases/download/v1.5.1/AutoClip.app.tar.gz'):
             updater = json.loads((self.assets / 'latest.json').read_text())
             updater['platforms']['darwin-aarch64']['url'] = wrong
             (self.assets / 'latest.json').write_text(json.dumps(updater))

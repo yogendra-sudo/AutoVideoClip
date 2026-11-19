@@ -14,7 +14,7 @@ FIXTURE = "phc_package_check_fixture"
 class PosthogBundleCheckTests(unittest.TestCase):
     def test_present_key_passes_and_a_missing_key_does_not_echo_it(self):
         with tempfile.TemporaryDirectory() as temp:
-            binary = Path(temp) / "autoclip-desktop"
+            binary = Path(temp) / "autovideoclip-desktop"
             binary.write_bytes(b"prefix-" + FIXTURE.encode() + b"-suffix")
             check.assert_binary_contains_posthog_key(binary, FIXTURE)
             binary.write_bytes(b"no key here")
@@ -28,7 +28,7 @@ class PosthogBundleCheckTests(unittest.TestCase):
     def test_launcher_passes_the_frontend_key_without_logging_it(self):
         source = (ROOT / "src-tauri/src/backend_manager.rs").read_text(encoding="utf-8")
         self.assertIn('option_env!("VITE_PUBLIC_POSTHOG_KEY")', source)
-        self.assertIn('cmd.env("AUTOCLIP_POSTHOG_KEY", key)', source)
+        self.assertIn('cmd.env("AUTOVIDEOCLIP_POSTHOG_KEY", key)', source)
         self.assertNotIn("println!", source[source.find("VITE_PUBLIC_POSTHOG_KEY"):source.find("VITE_PUBLIC_POSTHOG_KEY") + 400])
         for name in ("verify_macos_bundle.py", "verify_windows_install.py"):
             text = (ROOT / "scripts" / name).read_text(encoding="utf-8")

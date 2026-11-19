@@ -31,25 +31,25 @@ class ReleaseContractTests(unittest.TestCase):
     def test_plist_version_and_production_are_the_only_keys(self):
         env = contract.release_launcher_env(self.resources)
         self.assertEqual(env, {
-            "AUTOCLIP_APP_VERSION": "1.5.7",
-            "AUTOCLIP_BUILD_ENVIRONMENT": "production",
+            "AUTOVIDEOCLIP_APP_VERSION": "1.5.7",
+            "AUTOVIDEOCLIP_BUILD_ENVIRONMENT": "production",
         })
 
     def test_runner_env_cannot_choose_version_or_environment(self):
         with patch.dict(os.environ, {
-            "AUTOCLIP_BUILD_ENVIRONMENT": "validation",
-            "AUTOCLIP_APP_VERSION": "9.9.9",
-            "AUTOCLIP_ENABLE_SENTRY": "1",
+            "AUTOVIDEOCLIP_BUILD_ENVIRONMENT": "validation",
+            "AUTOVIDEOCLIP_APP_VERSION": "9.9.9",
+            "AUTOVIDEOCLIP_ENABLE_SENTRY": "1",
         }):
             env = contract.apply_release_launcher_env({
-                "AUTOCLIP_BUILD_ENVIRONMENT": "development",
-                "AUTOCLIP_APP_VERSION": "0.0.1",
+                "AUTOVIDEOCLIP_BUILD_ENVIRONMENT": "development",
+                "AUTOVIDEOCLIP_APP_VERSION": "0.0.1",
                 "SENTRY_DSN": "https://public@example.invalid/0",
             }, self.resources)
-        self.assertEqual(env["AUTOCLIP_APP_VERSION"], "1.5.7")
-        self.assertEqual(env["AUTOCLIP_BUILD_ENVIRONMENT"], "production")
+        self.assertEqual(env["AUTOVIDEOCLIP_APP_VERSION"], "1.5.7")
+        self.assertEqual(env["AUTOVIDEOCLIP_BUILD_ENVIRONMENT"], "production")
         self.assertEqual(env["SENTRY_DSN"], "https://public@example.invalid/0")
-        self.assertNotIn("AUTOCLIP_ENABLE_SENTRY", env)
+        self.assertNotIn("AUTOVIDEOCLIP_ENABLE_SENTRY", env)
 
     def test_missing_plist_or_unknown_version_refuses(self):
         (self.resources.parents[1] / "Info.plist").unlink()
@@ -63,8 +63,8 @@ class ReleaseContractTests(unittest.TestCase):
     def test_smoke_calls_the_helper_and_adds_no_enable_flag(self):
         source = (Path(__file__).resolve().parents[1] / "verify_macos_bundle.py").read_text(encoding="utf-8")
         self.assertIn("apply_release_launcher_env", source)
-        self.assertNotIn("AUTOCLIP_ENABLE_SENTRY", source)
-        self.assertNotIn("AUTOCLIP_FORCE", source)
+        self.assertNotIn("AUTOVIDEOCLIP_ENABLE_SENTRY", source)
+        self.assertNotIn("AUTOVIDEOCLIP_FORCE", source)
 
 
 if __name__ == "__main__":

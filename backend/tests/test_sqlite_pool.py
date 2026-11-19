@@ -20,10 +20,10 @@ from backend.core.database import is_memory_sqlite, sqlite_engine_kwargs
 def test_memory_sqlite_keeps_static_pool_file_sqlite_uses_null_pool():
     assert is_memory_sqlite("sqlite://")
     assert is_memory_sqlite("sqlite:///:memory:")
-    assert not is_memory_sqlite("sqlite:///autoclip.db")
+    assert not is_memory_sqlite("sqlite:///autovideoclip.db")
     assert sqlite_engine_kwargs("sqlite:///:memory:")["poolclass"] is StaticPool
     assert sqlite_engine_kwargs("sqlite://")["poolclass"] is StaticPool
-    file_kwargs = sqlite_engine_kwargs("sqlite:///autoclip.db")
+    file_kwargs = sqlite_engine_kwargs("sqlite:///autovideoclip.db")
     assert file_kwargs["poolclass"] is NullPool
     assert file_kwargs["poolclass"] is not StaticPool
 

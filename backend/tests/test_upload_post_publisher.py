@@ -13,8 +13,8 @@ sys.path.insert(0, str(ROOT))
 @pytest.fixture
 def data_dir(tmp_path, monkeypatch):
     d = tmp_path / "data"
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(d))
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(d))
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(d))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(d))
     monkeypatch.setenv("DATABASE_URL", f"sqlite:///{d / 'test.db'}")
     for name in ("UPLOAD_POST_API_KEY", "UPLOAD_POST_USER", "UPLOAD_POST_API_BASE"):
         monkeypatch.delenv(name, raising=False)
@@ -160,7 +160,7 @@ def test_publish_clip_builds_multipart_and_writes_record(data_dir, monkeypatch):
     assert form["platform[]"] == ["tiktok", "youtube"]              # 重复字段按 list 传
     assert form["title"] == "高分片段" and form["description"] == "desc"
     assert form["async_upload"] == "true"
-    assert form["external_id"] == "autoclip:p1:2"
+    assert form["external_id"] == "autovideoclip:p1:2"
     assert form["privacy_level"] == "SELF_ONLY" and form["youtube_notify_subscribers"] == "false"
     assert "scheduled_date" not in form
 
@@ -409,7 +409,7 @@ def test_real_http_client_against_local_upload_post(data_dir, monkeypatch):
         server.shutdown()
 
 
-@pytest.mark.skipif(os.environ.get('AUTOCLIP_LIVE_NETWORK_TESTS') != '1',
+@pytest.mark.skipif(os.environ.get('AUTOVIDEOCLIP_LIVE_NETWORK_TESTS') != '1',
                     reason='External Upload-Post smoke is opt-in; offline source gate uses loopback fixtures')
 def test_live_upload_post_rejects_unknown_key():
     import requests

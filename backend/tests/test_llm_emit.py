@@ -40,8 +40,8 @@ class _ProbeProvider(LLMProvider):
 
 @pytest.fixture
 def capture(monkeypatch, tmp_path):
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
-    monkeypatch.setenv("AUTOCLIP_POSTHOG_KEY", "phc_test")
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_POSTHOG_KEY", "phc_test")
     monkeypatch.delenv("VITE_PUBLIC_POSTHOG_KEY", raising=False)
     (tmp_path / "privacy.json").write_text('{"analytics":true}', encoding="utf-8")
     (tmp_path / "analytics.json").write_text(
@@ -427,7 +427,7 @@ def test_asr_and_validation_hooks_are_allowlisted(capture):
 
 def test_failed_store_write_always_has_error_code_and_failure_stage(tmp_path, monkeypatch):
     from backend.services.studio import store
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
     monkeypatch.setattr(store, "directory", lambda project_id: tmp_path / project_id)
     (tmp_path / "p1" / "metadata").mkdir(parents=True)
     store.write("p1", {
@@ -485,11 +485,11 @@ def test_sentry_tags_are_allowlisted_strings():
 
 
 def _analytics_dir(monkeypatch, tmp_path, *, key="phc_test", analytics=True):
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
     if key:
-        monkeypatch.setenv("AUTOCLIP_POSTHOG_KEY", key)
+        monkeypatch.setenv("AUTOVIDEOCLIP_POSTHOG_KEY", key)
     else:
-        monkeypatch.delenv("AUTOCLIP_POSTHOG_KEY", raising=False)
+        monkeypatch.delenv("AUTOVIDEOCLIP_POSTHOG_KEY", raising=False)
     monkeypatch.delenv("VITE_PUBLIC_POSTHOG_KEY", raising=False)
     (tmp_path / "privacy.json").write_text(
         json.dumps({"analytics": analytics}), encoding="utf-8")

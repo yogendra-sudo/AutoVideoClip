@@ -1,6 +1,6 @@
 """Run the fast-output regression set through the product API and report time, cost and output.
 
-    python scripts/fast_output_benchmark.py --server http://127.0.0.1:18765 --data-dir <AUTOCLIP_DATA_DIR> \
+    python scripts/fast_output_benchmark.py --server http://127.0.0.1:18765 --data-dir <AUTOVIDEOCLIP_DATA_DIR> \
         [--cases id1,id2] [--baseline benchmarks/fast_output/reports/<old>.json]
 
 Cases come from benchmarks/fast_output/cases.json and run one at a time (renders queue anyway).

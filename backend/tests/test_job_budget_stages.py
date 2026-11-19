@@ -44,8 +44,8 @@ def _spend_then_call_the_model():
 
 @pytest.fixture
 def isolated(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     (tmp_path / 'privacy.json').write_text('{"crash_reports":false}')
     monkeypatch.setattr(jobs, 'capture_studio_exception', lambda *args, **kwargs: None)
     monkeypatch.setattr(jobs, 'mark_project', lambda *args, **kwargs: None)
@@ -203,7 +203,7 @@ def test_render_model_work_stops_at_the_clip_budget(isolated, monkeypatch):
 
 
 def test_render_ffmpeg_wall_time_does_not_spend_clip_budget(isolated, monkeypatch):
-    """P1 #8: slow ffmpeg must not trip the model budget (AUTOCLIP_CLIP_JOB_BUDGET_SEC).
+    """P1 #8: slow ffmpeg must not trip the model budget (AUTOVIDEOCLIP_CLIP_JOB_BUDGET_SEC).
 
     Progress updates go through store.change → checkpoint → ensure_clip_job_budget;
     while pause_clip_job_budget is active those checks must not see wall time advance.
@@ -215,7 +215,7 @@ def test_render_ffmpeg_wall_time_does_not_spend_clip_budget(isolated, monkeypatc
     from backend.services.studio import render as render_mod
     from backend.services.studio.models import Draft, Scene
 
-    monkeypatch.setenv('AUTOCLIP_CLIP_JOB_BUDGET_SEC', '2')
+    monkeypatch.setenv('AUTOVIDEOCLIP_CLIP_JOB_BUDGET_SEC', '2')
     root = _project('render-pause')
     source = root / 'raw' / 'input.mp4'
     subprocess.run(

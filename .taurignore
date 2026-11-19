@@ -31,7 +31,7 @@ build
 
 # PyInstaller artifacts
 *.exe
-autoclip-backend*
+autovideoclip-backend*
 backend/dist/
 backend/build/
 backend/*.spec

@@ -7,7 +7,7 @@ import {
 } from '../../analytics/flags'
 
 const LABELS: Record<FlagName, string> = {
-  autoclip_safe_mode: 'Turn off every new feature',
+  autovideoclip_safe_mode: 'Turn off every new feature',
   remember_platforms: 'Remember the last platforms',
   one_click_paste_start: 'Start when a link is pasted',
   link_import_without_whisper: 'Link import does not wait for local transcription',

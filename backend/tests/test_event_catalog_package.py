@@ -29,7 +29,7 @@ def test_catalog_override_does_not_change_producer_scan(monkeypatch, tmp_path):
     with monkeypatch.context() as patch:
         override = tmp_path / "custom.json"
         override.write_text('{"common": {"os": ["custom"]}}', encoding="utf-8")
-        patch.setenv("AUTOCLIP_EVENT_CATALOG", str(override))
+        patch.setenv("AUTOVIDEOCLIP_EVENT_CATALOG", str(override))
         try:
             assert event_catalog.reload_catalog() == {"common": {"os": ["custom"]}}
             assert event_catalog.collect_producer_events() == expected
@@ -40,7 +40,7 @@ def test_catalog_override_does_not_change_producer_scan(monkeypatch, tmp_path):
 @pytest.mark.stdlib_only
 def test_installed_wheel_loads_event_catalog():
     # Build a fresh source copy: never reuse checkout build/ or egg-info caches.
-    with tempfile.TemporaryDirectory(prefix="autoclip-catalog-wheel-") as directory:
+    with tempfile.TemporaryDirectory(prefix="autovideoclip-catalog-wheel-") as directory:
         work = Path(directory).resolve()
         assert not work.is_relative_to(ROOT)
         source = work / "source"
@@ -52,12 +52,12 @@ def test_installed_wheel_loads_event_catalog():
             ignore=shutil.ignore_patterns("__pycache__", "tests", "data", "logs", "*.pyc"),
         )
         env = os.environ.copy()
-        for key in ("PYTHONPATH", "PYTHONHOME", "AUTOCLIP_EVENT_CATALOG",
-                    "AUTOCLIP_APP_VERSION", "VITE_APP_VERSION"):
+        for key in ("PYTHONPATH", "PYTHONHOME", "AUTOVIDEOCLIP_EVENT_CATALOG",
+                    "AUTOVIDEOCLIP_APP_VERSION", "VITE_APP_VERSION"):
             env.pop(key, None)
         env.update(
-            AUTOCLIP_DATA_DIR=str(work / "data"), AUTOCLIP_APP_DIR=str(work / "data"),
-            AUTOCLIP_BUILD_ENVIRONMENT="validation", PYTHONDONTWRITEBYTECODE="1",
+            AUTOVIDEOCLIP_DATA_DIR=str(work / "data"), AUTOVIDEOCLIP_APP_DIR=str(work / "data"),
+            AUTOVIDEOCLIP_BUILD_ENVIRONMENT="validation", PYTHONDONTWRITEBYTECODE="1",
         )
         subprocess.run(
             [sys.executable, "-m", "pip", "wheel", "--no-deps", "--no-index",

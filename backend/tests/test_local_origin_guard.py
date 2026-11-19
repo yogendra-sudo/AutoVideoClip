@@ -67,7 +67,7 @@ def test_web_mode_same_origin_and_extra_origins(monkeypatch):
     assert c.post("/import", headers={"Origin": "http://192.168.1.20:8000"}).status_code == 200
     # 前端在 :3000、后端在 :8000 的局域网部署 → 需要显式加入
     assert c.post("/import", headers={"Origin": "http://192.168.1.20:3000"}).status_code == 403
-    monkeypatch.setenv("AUTOCLIP_ALLOWED_ORIGINS", "http://192.168.1.20:3000")
+    monkeypatch.setenv("AUTOVIDEOCLIP_ALLOWED_ORIGINS", "http://192.168.1.20:3000")
     c = make_client(False, base_url="http://192.168.1.20:8000")
     assert c.post("/import", headers={"Origin": "http://192.168.1.20:3000"}).status_code == 200
 

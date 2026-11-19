@@ -18,7 +18,7 @@ export interface ReadinessCheck {
 export interface ImportReadiness {
   analysis_mode: AnalysisMode
   ready: boolean
-  /** Older or partial backends may omit the object or single checks (AUTOCLIP-FRONTEND-C). */
+  /** Older or partial backends may omit the object or single checks (AUTOVIDEOCLIP-FRONTEND-C). */
   checks?: {
     analysis?: ReadinessCheck | null
     transcription?: ReadinessCheck | null

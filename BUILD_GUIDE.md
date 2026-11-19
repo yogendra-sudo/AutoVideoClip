@@ -54,7 +54,7 @@ DMG is an ad-hoc signature (not Apple certified), so:
 
 The command line runs directly to the app and looks at the back end of the output:
 ```bash
-'/Applications/AutoVideoClip Desktop.app/Contents/MacOS/autoclip-desktop'
+'/Applications/AutoVideoClip Desktop.app/Contents/MacOS/autovideoclip-desktop'
 ```
 The first is the "C" and "C" respectively.
 

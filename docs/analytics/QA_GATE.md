@@ -7,7 +7,7 @@
 | 开关 | 取值 | 这一版 |
 |---|---|---|
 | `qa_gate_blocking` | `off` / `shadow` / `block` | 构建默认 `shadow`。`block` 与 `shadow` 相同，只记录 |
-| `autoclip_safe_mode` | 布尔 | 打开后强制 `qa_gate_blocking=off`，前端本地覆盖也不能把它留开 |
+| `autovideoclip_safe_mode` | 布尔 | 打开后强制 `qa_gate_blocking=off`，前端本地覆盖也不能把它留开 |
 
 ## 事件
 

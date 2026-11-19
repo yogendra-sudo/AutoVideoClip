@@ -97,7 +97,7 @@ def _clips():
 
 
 def _arm(monkeypatch, video):
-    monkeypatch.delenv('AUTOCLIP_FLAGS', raising=False)
+    monkeypatch.delenv('AUTOVIDEOCLIP_FLAGS', raising=False)
     monkeypatch.setattr(jobs.store, 'read', lambda _pid, **_k: {'generation': {'portrait_style': 'auto'}})
     monkeypatch.setattr(jobs, '_source_has_burned_subtitles', lambda *_a, **_k: False)
     monkeypatch.setattr(jobs, '_content_drafts', lambda *_a, **_k: _clips())

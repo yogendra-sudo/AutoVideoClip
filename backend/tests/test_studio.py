@@ -10,7 +10,7 @@ from backend.services.studio.models import Draft, Scene, Preferences
 
 @pytest.fixture
 def root(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     # Confirmation / import fixtures assume the frontend gate already passed.
     # Dedicated ASR-not-ready cases live in test_asr_preflight.py and do not use this fixture.
     monkeypatch.setattr(

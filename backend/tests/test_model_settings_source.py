@@ -22,7 +22,7 @@ def test_filled_legacy_model_is_user_and_empty_official_url_is_preset():
 
 
 def test_legacy_document_without_source_fields_keeps_filled_models_as_user(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     raw = {
         'version': 1,
         'connections': [
@@ -45,7 +45,7 @@ def test_legacy_document_without_source_fields_keeps_filled_models_as_user(tmp_p
 
 
 def test_unmigratable_purpose_in_saved_file_resets_to_recommended_and_keeps_key(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     raw = {
         'version': 1,
         'connections': [
@@ -69,7 +69,7 @@ def test_unmigratable_purpose_in_saved_file_resets_to_recommended_and_keeps_key(
 
 
 def test_save_freezes_preset_url_and_later_catalog_updates_do_not_rewrite(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     monkeypatch.setattr(ai, 'migrate_legacy', lambda: ai.ModelSettings())
     settings = ai.ModelSettings(
         connections=[ai.Connection(id='one', name='百炼', provider='dashscope', api_key='sk-live-secret')],
@@ -100,7 +100,7 @@ def test_save_freezes_preset_url_and_later_catalog_updates_do_not_rewrite(tmp_pa
 
 
 def test_new_connection_uses_current_catalog_url_and_notice_acks_on_save(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     monkeypatch.setattr(ai, 'migrate_legacy', lambda: ai.ModelSettings())
     raw = {
         'version': 1,
@@ -135,7 +135,7 @@ def test_annotate_legacy_empty_model_slot_is_preset_not_a_reset_notice():
 
 def test_migration_never_switches_binding_to_another_provider(tmp_path, monkeypatch):
     """A missing connection is needs-repair. Do not reuse connections[0] (that changes provider)."""
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     raw = {
         'version': 1,
         'connections': [
@@ -210,7 +210,7 @@ def test_preset_version_does_not_bypass_lock_on_wrong_gemini_host():
 
 
 def test_frozen_saved_host_and_scheme_survive_catalog_stamp(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     monkeypatch.setattr(ai, 'migrate_legacy', lambda: ai.ModelSettings())
     raw = {
         'version': 1,

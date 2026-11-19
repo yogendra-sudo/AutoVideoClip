@@ -5,7 +5,7 @@ Whisper 模型管理服务（faster-whisper）
 统一缓存到 `<data_dir>/whisper-models`（由 whisper_runtime 设置 HF_HOME）。
 依赖（huggingface_hub）来自运行时安装目录，所有相关 import 都延迟到函数内。
 
-下载源（AUTOCLIP_WHISPER_MODEL_SOURCE，RC156 Win QA #6）：
+下载源（AUTOVIDEOCLIP_WHISPER_MODEL_SOURCE，RC156 Win QA #6）：
 - auto（默认）：先连 huggingface.co，失败再走 hf-mirror.com（国内网络常连不上官方）。
 - huggingface：只用官方源；hf-mirror：只用镜像。
 用户自己设置了 HF_ENDPOINT 时尊重它，不再自动切换。走镜像时必须关掉 hf_xet：
@@ -75,7 +75,7 @@ def save_model_source(source: str) -> str:
 
 def model_source() -> str:
     """Env override (QA/CI) wins, then the saved setting."""
-    env = (os.environ.get("AUTOCLIP_WHISPER_MODEL_SOURCE") or "").strip().lower()
+    env = (os.environ.get("AUTOVIDEOCLIP_WHISPER_MODEL_SOURCE") or "").strip().lower()
     if env in MODEL_SOURCES:
         return env
     return saved_model_source()

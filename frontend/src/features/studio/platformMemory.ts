@@ -1,12 +1,12 @@
 /** Last chosen publish targets. Stored only on this computer; nothing here is sent as text. */
 
-const KEY = 'autoclip.platforms.v1'
+const KEY = 'autovideoclip.platforms.v1'
 /** ISO timestamp of the first successful generation on this device (T1). */
-export const FIRST_SUCCESS_KEY = 'autoclip.first_success_at.v1'
+export const FIRST_SUCCESS_KEY = 'autovideoclip.first_success_at.v1'
 /** One-shot stash: reuse source + preselect platforms when starting another project (T1 banner). */
-export const REUSE_IMPORT_KEY = 'autoclip.t1.reuse_import.v1'
+export const REUSE_IMPORT_KEY = 'autovideoclip.t1.reuse_import.v1'
 /** Dismissed the 「Make another onePlatform」 banner once. */
-export const MORE_PLATFORM_BANNER_KEY = 'autoclip.t1.more_platform_banner_seen.v1'
+export const MORE_PLATFORM_BANNER_KEY = 'autovideoclip.t1.more_platform_banner_seen.v1'
 
 export const PLATFORM_IDS = ['douyin', 'tiktok', 'instagram_reels', 'youtube_shorts', 'youtube_long', 'bilibili', 'xiaohongshu'] as const
 export type PlatformSource = 'remembered' | 'accounts' | 'locale' | 'user'

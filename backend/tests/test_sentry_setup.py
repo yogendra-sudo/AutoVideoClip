@@ -8,18 +8,18 @@ from backend.core import sentry_setup as sentry_setup
 
 
 def test_crash_reports_default_on(monkeypatch, tmp_path: Path):
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
     assert sentry_setup.crash_reports_enabled() is True
 
 
 def test_crash_reports_reads_privacy_file(monkeypatch, tmp_path: Path):
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
     (tmp_path / "privacy.json").write_text(json.dumps({"crash_reports": False}), encoding="utf-8")
     assert sentry_setup.crash_reports_enabled() is False
 
 
 def test_write_privacy_roundtrip(monkeypatch, tmp_path: Path):
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
     sentry_setup.write_privacy(crash_reports=False)
     assert sentry_setup.crash_reports_enabled() is False
     sentry_setup.write_privacy(crash_reports=True)
@@ -27,13 +27,13 @@ def test_write_privacy_roundtrip(monkeypatch, tmp_path: Path):
 
 
 def test_init_sentry_noop_without_dsn(monkeypatch, tmp_path: Path):
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
     monkeypatch.delenv("SENTRY_DSN", raising=False)
     assert sentry_setup.init_sentry("desktop") is False
 
 
 def test_before_send_rechecks_opt_out_without_restart(monkeypatch, tmp_path):
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
     event = {"exception": {"values": [{"type": "ValueError", "value": "secret"}]}}
     assert sentry_setup.before_send(event, {}) is not None
     sentry_setup.write_privacy(crash_reports=False)
@@ -44,7 +44,7 @@ def test_before_send_rechecks_opt_out_without_restart(monkeypatch, tmp_path):
 
 def test_before_send_splits_import_failures_without_keeping_the_message(monkeypatch, tmp_path):
     """配置类失败用固定 fingerprint；正文仍被抹掉，未预期故障不覆盖默认归组。"""
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
     from backend.tasks.import_processing import (
         ImportMissingCredential,
         ImportProcessingError,
@@ -86,8 +86,8 @@ def test_before_send_splits_import_failures_without_keeping_the_message(monkeypa
 
 
 def test_before_send_keeps_code_locations_without_private_payload(monkeypatch, tmp_path):
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
-    event = {"release": "autoclip-backend@1.3.1", "request": {"data": "private"},
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
+    event = {"release": "autovideoclip-backend@1.3.1", "request": {"data": "private"},
              "breadcrumbs": ["private"], "extra": {"key": "private"}, "server_name": "private",
              "exception": {"values": [{"type": "ValueError", "value": "private",
                  "stacktrace": {"frames": [{"filename": "/Users/private/backend/service.py",
@@ -101,15 +101,15 @@ def test_before_send_keeps_code_locations_without_private_payload(monkeypatch, t
 
 
 def test_corrupt_privacy_file_fails_closed(monkeypatch, tmp_path):
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
     (tmp_path / "privacy.json").write_text("invalid json")
     assert sentry_setup.crash_reports_enabled() is False
 
 
 def test_privacy_uses_web_data_directory(monkeypatch, tmp_path):
     from backend.core import path_utils
-    monkeypatch.delenv("AUTOCLIP_APP_DIR", raising=False)
-    monkeypatch.delenv("AUTOCLIP_DATA_DIR", raising=False)
+    monkeypatch.delenv("AUTOVIDEOCLIP_APP_DIR", raising=False)
+    monkeypatch.delenv("AUTOVIDEOCLIP_DATA_DIR", raising=False)
     monkeypatch.setattr(path_utils, "get_data_directory", lambda: tmp_path)
     sentry_setup.write_privacy(crash_reports=False)
     assert (tmp_path / "privacy.json").is_file()
@@ -117,7 +117,7 @@ def test_privacy_uses_web_data_directory(monkeypatch, tmp_path):
 
 
 def test_studio_tags_allowlisted_and_opt_out(monkeypatch, tmp_path):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     event = {'exception': {'values': [{'type':'RuntimeError', 'value':'secret'}]},
              'tags': {'area':'studio', 'phase':'production', 'goal':'promo', 'analysis_mode':'visual',
                       'build_environment':'validation', 'telemetry_test':'true', 'url':'secret', 'runtime':'secret'}}
@@ -131,7 +131,7 @@ def test_studio_tags_allowlisted_and_opt_out(monkeypatch, tmp_path):
 
 def test_studio_capture_uses_isolated_scope_and_never_breaks_worker(monkeypatch, tmp_path):
     import sentry_sdk
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     monkeypatch.setattr(sentry_setup, '_initialized', True)
     captured=[]
     def capture(error):
@@ -247,7 +247,7 @@ def test_studio_failure_context_without_status_in_chain_and_with_cycles():
 
 def test_studio_expected_pipeline_failure_keeps_code_and_warning(monkeypatch, tmp_path):
     from backend.pipeline.failures import PipelineFailure
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     error = PipelineFailure('ANALYZE', 'private key text', code='llm_not_configured')
     assert sentry_setup.studio_error_code(error) == 'llm_not_configured'
     clean = sentry_setup.before_send({'tags': {'area':'studio', 'phase':'production', 'error_code':'llm_not_configured'},
@@ -258,7 +258,7 @@ def test_studio_expected_pipeline_failure_keeps_code_and_warning(monkeypatch, tm
 
 
 def test_auto_frame_phase_survives_scrubbing_without_content(monkeypatch, tmp_path):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     event = {'tags': {'area': 'studio', 'phase': 'auto_frame', 'error_code': 'unexpected', 'private': 'secret'},
              'exception': {'values': [{'type': 'RuntimeError', 'value': 'private video title'}]}}
     clean = sentry_setup.before_send(event)
@@ -279,7 +279,7 @@ def test_text_sdk_failures_keep_provider_code_in_rewrite_and_render(monkeypatch,
     import httpx
     import openai
     import sentry_sdk
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     monkeypatch.setattr(sentry_setup, '_initialized', True)
     request = httpx.Request('POST', 'https://synthetic.example/v1/chat/completions')
     cls = getattr(openai, kind)
@@ -308,7 +308,7 @@ def test_text_sdk_failures_keep_provider_code_in_rewrite_and_render(monkeypatch,
 
 
 def test_before_send_keeps_anonymous_user_id_and_allowlisted_tags(monkeypatch, tmp_path):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     (tmp_path / 'privacy.json').write_text('{"analytics":true,"crash_reports":true}', encoding='utf-8')
     (tmp_path / 'analytics.json').write_text(
         '{"distinct_id":"018f6b2a-7c3d-7b2a-8c11-111111111111"}', encoding='utf-8')
@@ -334,7 +334,7 @@ def test_before_send_keeps_anonymous_user_id_and_allowlisted_tags(monkeypatch, t
 
 
 def test_provider_answers_do_not_spend_the_daily_budget(monkeypatch, tmp_path):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     event = {
         'event_id': '00000000-0000-0000-0000-000000000001',
         'exception': {'values': [{'type': 'RateLimitError', 'value': 'private'}]},
@@ -346,7 +346,7 @@ def test_provider_answers_do_not_spend_the_daily_budget(monkeypatch, tmp_path):
 
 
 def test_daily_cap_samples_after_full_fidelity_and_stops_at_the_hard_cap(monkeypatch, tmp_path):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     monkeypatch.setattr(sentry_setup, '_volume_allows', lambda _event: True)
     base = {'exception': {'values': [{'type': 'RuntimeError', 'value': 'boom'}]},
             'tags': {'error_code': 'unexpected'}}
@@ -365,8 +365,8 @@ def test_daily_cap_samples_after_full_fidelity_and_stops_at_the_hard_cap(monkeyp
 
 
 def test_launcher_identity_fallback_and_late_file_override(monkeypatch, tmp_path):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_ANONYMOUS_DEVICE_ID', '018f6b2a-7c3d-7b2a-8c11-111111111111')
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_ANONYMOUS_DEVICE_ID', '018f6b2a-7c3d-7b2a-8c11-111111111111')
     event = {'exception': {'values': [{'type': 'RuntimeError', 'value': 'private'}]}}
     assert sentry_setup.before_send(event)['user']['id'] == '018f6b2a-7c3d-7b2a-8c11-111111111111'
     # A reset/migration in the UI supersedes the immutable launch environment.
@@ -380,7 +380,7 @@ def test_launcher_identity_fallback_and_late_file_override(monkeypatch, tmp_path
 def test_identity_update_in_request_survives_in_worker(monkeypatch, tmp_path):
     import sentry_sdk
     from backend.services.studio.qa.telemetry import remember_distinct_id
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     monkeypatch.setattr(sentry_setup, '_initialized', True)
     scope = sentry_sdk.get_global_scope()
     previous = scope._user
@@ -398,8 +398,8 @@ def test_identity_update_in_request_survives_in_worker(monkeypatch, tmp_path):
     '/Users/private/video.mp4', 'https://private.example/a', 'private user content'])
 def test_launch_identity_rejects_content_and_credentials(monkeypatch, tmp_path, value):
     from backend.services.studio.qa.telemetry import remember_distinct_id
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_ANONYMOUS_DEVICE_ID', value)
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_ANONYMOUS_DEVICE_ID', value)
     event = {'user': {'id': value, 'email': 'private@example.invalid'},
              'exception': {'values': [{'type': 'RuntimeError', 'value': value}]}}
     clean = sentry_setup.before_send(event)
@@ -412,7 +412,7 @@ def test_source_blocked_is_classified_and_never_sent(monkeypatch, tmp_path):
     # RC156 Win QA #9: a site refusing this network (Bilibili 412) is expected, not a crash.
     import sentry_sdk
     from backend.pipeline.failures import PipelineFailure
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     error = PipelineFailure('INGEST', 'hint', code='source_blocked', http_status=412)
     assert 'source_blocked' in sentry_setup.STUDIO_ERROR_CODES
     assert sentry_setup.studio_error_code(error) == 'source_blocked'
@@ -434,7 +434,7 @@ def test_source_blocked_is_classified_and_never_sent(monkeypatch, tmp_path):
 
 def test_a1_3_capture_crash_recovery_once_per_instance(monkeypatch, tmp_path):
     from backend.core import sentry_setup as ss
-    monkeypatch.setenv('AUTOCLIP_SHUTDOWN_MARKER_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_SHUTDOWN_MARKER_DIR', str(tmp_path))
     ss._crash_reported.clear()
     monkeypatch.setattr(ss, '_initialized', True)
     monkeypatch.setattr(ss, 'crash_reports_enabled', lambda: True)
@@ -468,7 +468,7 @@ def test_a1_3_capture_crash_recovery_once_per_instance(monkeypatch, tmp_path):
 
 
 def test_a1_3_fault_frames_scrub_paths(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_SHUTDOWN_MARKER_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_SHUTDOWN_MARKER_DIR', str(tmp_path))
     from backend.services.studio import run_heartbeat
     instance = 'g' * 32
     (tmp_path / f'{instance}.fault').write_text(

@@ -37,8 +37,8 @@ def test_real_sdk_logs_hide_url_key_and_body(entrypoint, scenario, tmp_path, mon
     monkeypatch.setattr(root, "level", logging.DEBUG)
     for name in ("httpx", "httpcore", "openai"):
         monkeypatch.setattr(logging.getLogger(name), "level", logging.NOTSET)
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(tmp_path))
     monkeypatch.setenv("LOG_FILE", str(tmp_path / "sdk.log"))
     (tmp_path / "logs").mkdir()
     if entrypoint == "desktop":

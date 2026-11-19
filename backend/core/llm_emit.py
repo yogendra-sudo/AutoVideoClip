@@ -103,7 +103,7 @@ class RequestRecord:
         return {k: v for k, v in out.items() if v not in (None, "")}
 
 
-_RECORD_ATTR = "_autoclip_request_record"
+_RECORD_ATTR = "_autovideoclip_request_record"
 ATTRIBUTION_SOURCE_REQUEST = "request"
 ATTRIBUTION_SOURCE_PHASE = "phase"
 ATTRIBUTION_SOURCE_LOCAL = "local"  # no provider is blamed
@@ -518,7 +518,7 @@ def run_usage_checkpoint() -> dict | None:
     return acc.persisted_usage if acc is not None else None
 
 
-_held_failure: contextvars.ContextVar[BaseException | None] = contextvars.ContextVar("autoclip_held_failure", default=None)
+_held_failure: contextvars.ContextVar[BaseException | None] = contextvars.ContextVar("autovideoclip_held_failure", default=None)
 
 
 @contextmanager

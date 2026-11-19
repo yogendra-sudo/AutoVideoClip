@@ -1,6 +1,6 @@
 // Historical audit reproducer for the 2026-09-29 source, not a current regression test.
 // Fix verification now lives in frontend/tests/analytics.test.cjs.
-if (!process.env.AUTOCLIP_RUN_HISTORICAL_REPRO) {
+if (!process.env.AUTOVIDEOCLIP_RUN_HISTORICAL_REPRO) {
   console.log("Historical reproducer skipped. Run: cd frontend && npm test"); process.exit(0)
 }
 // No network calls. Run from any directory after frontend dependencies are installed.

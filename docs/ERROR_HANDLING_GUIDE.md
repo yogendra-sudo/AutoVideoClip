@@ -121,7 +121,7 @@ async def get_project(project_id: str):
 ```json
 {
   "error": {
-    "code": "AUTOCLIPS_VALIDATION",
+    "code": "AUTOVIDEOCLIPS_VALIDATION",
     "message": "项目不存在: abc123",
     "details": {
       "project_id": "abc123"
@@ -134,7 +134,7 @@ async def get_project(project_id: str):
 
 ### 字段说明
 
-- `code`: 错误代码，格式为 `AUTOCLIPS_{CATEGORY}` 或 `HTTP_{STATUS_CODE}`
+- `code`: 错误代码，格式为 `AUTOVIDEOCLIPS_{CATEGORY}` 或 `HTTP_{STATUS_CODE}`
 - `message`: 错误消息，用户友好的描述
 - `details`: 错误详情，包含调试信息
 - `request_id`: 请求ID，用于追踪
@@ -256,7 +256,7 @@ def test_api_error_response():
     
     assert response.status_code == 400
     assert "error" in response.json()
-    assert response.json()["error"]["code"] == "AUTOCLIPS_VALIDATION"
+    assert response.json()["error"]["code"] == "AUTOVIDEOCLIPS_VALIDATION"
 ```
 
 ## 🔍 错误监控和日志
@@ -279,7 +279,7 @@ traceback: [完整的堆栈跟踪]
 
 ```bash
 # 统计错误类型
-grep "AUTOCLIPS_" backend.log | cut -d' ' -f4 | sort | uniq -c
+grep "AUTOVIDEOCLIPS_" backend.log | cut -d' ' -f4 | sort | uniq -c
 
 # 统计错误频率
 grep "ERROR" backend.log | wc -l

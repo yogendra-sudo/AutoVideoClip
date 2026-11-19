@@ -1,6 +1,6 @@
 # HTML 包装模板（`pkg_templates_v1`）
 
-杂志风（editorial）和街头快剪（street）。默认关闭。`autoclip_safe_mode` 打开后回到关闭，除非操作者用 `AUTOCLIP_FLAGS=pkg_templates_v1=on` 明确打开。
+杂志风（editorial）和街头快剪（street）。默认关闭。`autovideoclip_safe_mode` 打开后回到关闭，除非操作者用 `AUTOVIDEOCLIP_FLAGS=pkg_templates_v1=on` 明确打开。
 
 没有同意统计时不请求这个开关。事件仍走 `captureBusinessEvent()`，统计关闭后不发送，也不会事后补发。
 
@@ -41,7 +41,7 @@
 
 导入页在开关打开、并且选了竖版平台时，默认杂志风，可以改成街头快剪或经典包装。得分最高的 3 条自动竖版成片用所选 HTML 模板，叠加层是 ffmpeg 的第二路输入。同一条再出另一个竖版平台时，这两次渲染都走 HTML：两个竖版平台就是 6 次渲染（3 条 × 2 个平台）。填充相同的叠加层可以复用缓存，抓帧次数可以少于渲染次数。其余自动竖版记 `rank` 并跳过，走经典包装，不算降级。超出自动渲染条数的片段仍是 on_demand，不抓 HTML。
 
-每条 HTML 成片的抓帧（含浏览器启动、打开页面、setData、截图）和 ffv1 编码共用一个预算，默认 90 秒，`AUTOCLIP_TEMPLATE_BUDGET_SEC` 可改（1–600）。超时、运行时缺失、抓帧失败、编码失败都降到经典，导出不会因为编码器失败。编码写到临时文件，成功后再换上缓存；失败删掉半截文件。坏掉的缓存不会被当成成品复用。缓存目录里的 concat 清单用完即删，叠加层目录有 512 MiB 上限，并清掉残留的 `.partial` 和 `.ffconcat`。Intel（x86_64）Mac 固定经典，原因 `intel_mac_unverified`。这条路径没有在 Intel Mac 上跑过，标成未验证。
+每条 HTML 成片的抓帧（含浏览器启动、打开页面、setData、截图）和 ffv1 编码共用一个预算，默认 90 秒，`AUTOVIDEOCLIP_TEMPLATE_BUDGET_SEC` 可改（1–600）。超时、运行时缺失、抓帧失败、编码失败都降到经典，导出不会因为编码器失败。编码写到临时文件，成功后再换上缓存；失败删掉半截文件。坏掉的缓存不会被当成成品复用。缓存目录里的 concat 清单用完即删，叠加层目录有 512 MiB 上限，并清掉残留的 `.partial` 和 `.ffconcat`。Intel（x86_64）Mac 固定经典，原因 `intel_mac_unverified`。这条路径没有在 Intel Mac 上跑过，标成未验证。
 
 下载和复制文案沿用 `studio_download_*` / `studio_output_shared`。成片结果里有 `template_render` 时，`template` 用实际渲染的 `editorial` / `street` / `classic`。
 

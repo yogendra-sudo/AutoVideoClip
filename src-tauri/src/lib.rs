@@ -18,7 +18,7 @@ pub fn run() {
     let telemetry_dir = telemetry_runtime::app_dir(dirs::data_dir());
     let mut builder = tauri::Builder::default();
     // Must be first. The callback receives the launch argv, which can contain
-    // an autoclip:// URL and an API key. Do not log argv or cwd.
+    // an autovideoclip:// URL and an API key. Do not log argv or cwd.
     #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
     {
         builder = builder.plugin(tauri_plugin_single_instance::init(|app, _argv, _cwd| {
@@ -77,8 +77,8 @@ pub fn run() {
         })
         .setup(|app| {
             // Set environment variables.
-            std::env::set_var("AUTOCLIP_DESKTOP_MODE", "true");
-            std::env::set_var("AUTOCLIP_MODE", "desktop");
+            std::env::set_var("AUTOVIDEOCLIP_DESKTOP_MODE", "true");
+            std::env::set_var("AUTOVIDEOCLIP_MODE", "desktop");
 
             // Set up the system tray.
             if let Err(e) = setup_system_tray(&app.handle()) {
@@ -110,7 +110,7 @@ pub fn run() {
             {
                 use tauri_plugin_deep_link::DeepLinkExt;
                 if let Err(_err) = app.deep_link().register_all() {
-                    eprintln!("autoclip deep link registration failed");
+                    eprintln!("autovideoclip deep link registration failed");
                 }
             }
 

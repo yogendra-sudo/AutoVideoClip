@@ -31,9 +31,9 @@ class ProviderError(openai.APIStatusError):
 
 @pytest.fixture
 def pipeline(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
-    monkeypatch.delenv('AUTOCLIP_LLM_CACHE_DIR', raising=False)
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.delenv('AUTOVIDEOCLIP_LLM_CACHE_DIR', raising=False)
     from types import SimpleNamespace
     from backend.core import llm_manager, path_utils
     from backend.services import simple_pipeline_adapter as mod

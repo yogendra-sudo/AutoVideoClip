@@ -19,12 +19,12 @@ from fastapi import FastAPI
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-app_data_dir = Path(os.getenv("AUTOCLIP_APP_DIR", "~/Library/Application Support/AutoClip")).expanduser()
+app_data_dir = Path(os.getenv("AUTOVIDEOCLIP_APP_DIR", "~/Library/Application Support/AutoClip")).expanduser()
 app_data_dir.mkdir(parents=True, exist_ok=True)
 (app_data_dir / "logs").mkdir(parents=True, exist_ok=True)
-os.environ.setdefault("AUTOCLIP_APP_DIR", str(app_data_dir))
-os.environ.setdefault("AUTOCLIP_DATA_DIR", str(app_data_dir))
-os.environ.setdefault("DATABASE_URL", f"sqlite:///{app_data_dir / 'autoclip.db'}")
+os.environ.setdefault("AUTOVIDEOCLIP_APP_DIR", str(app_data_dir))
+os.environ.setdefault("AUTOVIDEOCLIP_DATA_DIR", str(app_data_dir))
+os.environ.setdefault("DATABASE_URL", f"sqlite:///{app_data_dir / 'autovideoclip.db'}")
 os.environ.setdefault("LOG_FILE", str(app_data_dir / "logs" / "backend.log"))
 
 from backend.app_factory import create_app
@@ -64,7 +64,7 @@ class DesktopServiceManager:
             level=getattr(logging, self.config.log_level.upper()),
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             handlers=[
-                logging.FileHandler(self.config.paths.data_dir / "logs" / "autoclip.log"),
+                logging.FileHandler(self.config.paths.data_dir / "logs" / "autovideoclip.log"),
                 logging.StreamHandler()
             ]
         )
@@ -304,8 +304,8 @@ def get_service_manager() -> DesktopServiceManager:
 def main():
     """主函数"""
     # 设置桌面模式环境变量
-    os.environ["AUTOCLIP_DESKTOP_MODE"] = "true"
-    os.environ["AUTOCLIP_MODE"] = "desktop"
+    os.environ["AUTOVIDEOCLIP_DESKTOP_MODE"] = "true"
+    os.environ["AUTOVIDEOCLIP_MODE"] = "desktop"
     
     # 检查桌面模式
     if not is_desktop_mode():

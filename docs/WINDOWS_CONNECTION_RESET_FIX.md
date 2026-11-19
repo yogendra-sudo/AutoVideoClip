@@ -1,10 +1,10 @@
 # Windows connection reset 修复（待发布）
 
-日期：2026-09-27；问题：[PYTHON-FASTAPI-3](https://autoclip-ts.sentry.io/issues/PYTHON-FASTAPI-3)。
+日期：2026-09-27；问题：[PYTHON-FASTAPI-3](https://autovideoclip-ts.sentry.io/issues/PYTHON-FASTAPI-3)。
 
 ## 证据与范围
 
-正式后端 `autoclip-backend@1.4.0` 最近 7 天查询快照为 121 次，均为同一错误组、desktop 环境；该组跨版本累计约 9,079 次，不能将累计数当成 1.4.0 的次数或用户数。验收版本 `1.4.0-telemetry-validation` 不在此统计中。数据会继续变化。
+正式后端 `autovideoclip-backend@1.4.0` 最近 7 天查询快照为 121 次，均为同一错误组、desktop 环境；该组跨版本累计约 9,079 次，不能将累计数当成 1.4.0 的次数或用户数。验收版本 `1.4.0-telemetry-validation` 不在此统计中。数据会继续变化。
 
 代表事件堆栈为 `events.py:_run` → `proactor_events.py:165:_call_connection_lost`。桌面包固定 CPython 3.13.13；同一标准库实现中第 165 行调用 socket.shutdown。原实现若在这里抛出 ConnectionResetError，会跳过 close、server._detach 和 _called_connection_lost 标记。测试调用真实标准库 transport 配合模拟 reset socket，已复现这一清理中断。
 

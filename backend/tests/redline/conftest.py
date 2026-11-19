@@ -6,8 +6,8 @@ import pytest
 
 @pytest.fixture(autouse=True)
 def redline_isolation(tmp_path, monkeypatch):
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(tmp_path))
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
     monkeypatch.setenv("LOG_FILE", str(tmp_path / "redline.log"))
     (tmp_path / "privacy.json").write_text(
         '{"analytics":false,"crash_reports":false}', encoding="utf-8")

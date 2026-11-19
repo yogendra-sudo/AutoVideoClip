@@ -27,8 +27,8 @@ ENDPOINT_SRC = ROOT / 'backend' / 'core' / 'provider_endpoint.py'
 
 @pytest.fixture(autouse=True)
 def isolated(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     monkeypatch.setattr(ai, 'migrate_legacy', lambda: ai.ModelSettings())
     yield
     provider_presets.reset_catalog_cache()
@@ -138,7 +138,7 @@ def test_locked_urls_follow_swapped_json_catalog(tmp_path, monkeypatch):
     raw['providers']['ollama']['locked'] = True
     path = tmp_path / 'provider_presets.json'
     path.write_text(json.dumps(raw), encoding='utf-8')
-    monkeypatch.setenv('AUTOCLIP_PROVIDER_PRESETS', str(path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_PROVIDER_PRESETS', str(path))
     provider_presets.reset_catalog_cache()
     assert locked_chat_url('api88', 'https://wrong.example/v1') == 'https://lock.example.test/v1'
     assert LOCKED_PRESETS['api88'] == 'https://lock.example.test/v1'
@@ -156,7 +156,7 @@ def test_console_detection_allows_live_catalog_api_hosts(tmp_path, monkeypatch):
     raw['address_rules']['console_suffixes'].append('.console.fixture.test')
     path = tmp_path / 'provider_presets.json'
     path.write_text(json.dumps(raw), encoding='utf-8')
-    monkeypatch.setenv('AUTOCLIP_PROVIDER_PRESETS', str(path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_PROVIDER_PRESETS', str(path))
     provider_presets.reset_catalog_cache()
     assert not is_console_host('platform.deepseek.com')
     assert not is_console_host('aistudio.google.com')
@@ -170,7 +170,7 @@ def test_console_detection_allows_live_catalog_api_hosts(tmp_path, monkeypatch):
     assert is_console_host('control.fixture.test')
     assert is_console_host('account.console.fixture.test')
     provider_presets.reset_catalog_cache()
-    monkeypatch.delenv('AUTOCLIP_PROVIDER_PRESETS')
+    monkeypatch.delenv('AUTOVIDEOCLIP_PROVIDER_PRESETS')
     assert is_console_host('platform.deepseek.com')
     assert is_console_host('aistudio.google.com')
     assert not is_console_host('control.fixture.test')
@@ -182,7 +182,7 @@ def test_gemini_catalog_native_path_uses_shared_helper(tmp_path, monkeypatch):
     raw['providers']['gemini']['base_url'] = 'https://gemini.example.test/v1beta'
     path = tmp_path / 'provider_presets.json'
     path.write_text(json.dumps(raw), encoding='utf-8')
-    monkeypatch.setenv('AUTOCLIP_PROVIDER_PRESETS', str(path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_PROVIDER_PRESETS', str(path))
     provider_presets.reset_catalog_cache()
     assert official_chat_url('gemini') == 'https://gemini.example.test/v1beta/openai'
 
@@ -205,7 +205,7 @@ def test_catalog_change_preserves_frozen_connection_but_updates_new_one(tmp_path
     raw['providers'][provider]['base_url'] = 'https://changed.example.test/v1beta' if provider == 'gemini' else 'https://changed.example.test/v1'
     path = tmp_path / 'provider_presets.json'
     path.write_text(json.dumps(raw), encoding='utf-8')
-    monkeypatch.setenv('AUTOCLIP_PROVIDER_PRESETS', str(path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_PROVIDER_PRESETS', str(path))
     provider_presets.reset_catalog_cache()
     restored = ai.load().connections[0]
     assert ai.chat_endpoint(restored, 'fixture-model')['base_url'] == frozen_url
@@ -221,7 +221,7 @@ def test_stamped_urls_use_live_catalog_hosts_and_shared_chat_path(tmp_path, monk
     raw['providers'][provider]['accepted_hosts'] = ['legacy.example.test']
     path = tmp_path / 'provider_presets.json'
     path.write_text(json.dumps(raw), encoding='utf-8')
-    monkeypatch.setenv('AUTOCLIP_PROVIDER_PRESETS', str(path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_PROVIDER_PRESETS', str(path))
     provider_presets.reset_catalog_cache()
     saved = 'http://legacy.example.test:8443/v1beta' if provider == 'gemini' else 'http://legacy.example.test:8443/v1'
     connection = ai.Connection(

@@ -41,8 +41,8 @@ _leaders: set[int] = set()
 _temporary: dict[str, set[Path]] = {}
 _binds: dict[str, int] = {}
 _round_ignored: dict[str, int] = {}
-_current: contextvars.ContextVar[Optional[str]] = contextvars.ContextVar('autoclip_project', default=None)
-_recording_stop: contextvars.ContextVar[bool] = contextvars.ContextVar('autoclip_recording_stop', default=False)
+_current: contextvars.ContextVar[Optional[str]] = contextvars.ContextVar('autovideoclip_project', default=None)
+_recording_stop: contextvars.ContextVar[bool] = contextvars.ContextVar('autovideoclip_recording_stop', default=False)
 MESSAGE = '项目已删除，已停止生成'
 STOP_MESSAGE = '任务已取消'
 _CREATE_NEW_PROCESS_GROUP = 0x00000200

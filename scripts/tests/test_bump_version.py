@@ -26,7 +26,7 @@ class VersionTests(unittest.TestCase):
         self.enterContext(patch.object(bump, 'CARGO_LOCK', self.lock, create=True))
 
     def test_stale_lockfile_blocks_version_contract(self):
-        self.lock.write_text(re.sub(r'(name = "autoclip-desktop"\nversion = ")[^"]+', r'\g<1>0.0.1', self.original))
+        self.lock.write_text(re.sub(r'(name = "autovideoclip-desktop"\nversion = ")[^"]+', r'\g<1>0.0.1', self.original))
         with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
             self.assertEqual(bump.main(['--check']), 1)
 
@@ -48,7 +48,7 @@ class VersionTests(unittest.TestCase):
 
     def test_bump_preserves_locked_dependencies(self):
         bump.set_version('9.8.7')
-        expected = re.sub(r'(name = "autoclip-desktop"\nversion = ")[^"]+', r'\g<1>9.8.7', self.original)
+        expected = re.sub(r'(name = "autovideoclip-desktop"\nversion = ")[^"]+', r'\g<1>9.8.7', self.original)
         self.assertEqual(self.lock.read_text(), expected)
         self.assertEqual(set(bump.current_versions().values()), {'9.8.7'})
 

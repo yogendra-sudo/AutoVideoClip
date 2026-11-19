@@ -221,7 +221,7 @@ def test_startup_marks_environment_before_starting_services(monkeypatch):
     monkeypatch.setattr(child_guard, 'install_hooks', lambda: None)
     monkeypatch.setattr(orphan_reaper, 'reap_orphans',
                         lambda *a, **k: events.append(('reap', os.environ.get(orphan_reaper.ENV))) or 0)
-    monkeypatch.setenv('AUTOCLIP_DESKTOP_MODE', 'true')
+    monkeypatch.setenv('AUTOVIDEOCLIP_DESKTOP_MODE', 'true')
     with pytest.raises(StopStartup):
         desktop_main.main()
     assert [name for name, _ in events] == ['reap', 'start']

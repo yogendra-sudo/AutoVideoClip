@@ -13,8 +13,8 @@ DESKTOP_TRUE_VALUES = {"1", "true", "yes", "on"}
 def is_desktop_mode() -> bool:
     """判断当前是否为桌面运行模式"""
     return (
-        os.getenv("AUTOCLIP_DESKTOP_MODE", "").lower() in DESKTOP_TRUE_VALUES
-        or os.getenv("AUTOCLIP_MODE", "").lower() == "desktop"
+        os.getenv("AUTOVIDEOCLIP_DESKTOP_MODE", "").lower() in DESKTOP_TRUE_VALUES
+        or os.getenv("AUTOVIDEOCLIP_MODE", "").lower() == "desktop"
     )
 
 def get_project_root() -> Path:
@@ -35,11 +35,11 @@ def get_project_root() -> Path:
 
 def get_data_directory() -> Path:
     """获取数据目录"""
-    configured_data_dir = os.getenv("AUTOCLIP_DATA_DIR")
+    configured_data_dir = os.getenv("AUTOVIDEOCLIP_DATA_DIR")
     if configured_data_dir:
         data_dir = Path(configured_data_dir).expanduser()
     elif is_desktop_mode():
-        app_dir = os.getenv("AUTOCLIP_APP_DIR", "~/Library/Application Support/AutoClip")
+        app_dir = os.getenv("AUTOVIDEOCLIP_APP_DIR", "~/Library/Application Support/AutoClip")
         data_dir = Path(app_dir).expanduser()
     else:
         # 统一使用项目根目录下的data目录，与config.py保持一致
@@ -149,7 +149,7 @@ def get_log_file_path() -> Path:
         log_file = Path(configured_log_file).expanduser()
         log_file.parent.mkdir(parents=True, exist_ok=True)
         return log_file
-    if is_desktop_mode() or os.getenv("AUTOCLIP_DATA_DIR"):
+    if is_desktop_mode() or os.getenv("AUTOVIDEOCLIP_DATA_DIR"):
         logs_dir = get_data_directory() / "logs"
         logs_dir.mkdir(parents=True, exist_ok=True)
         return logs_dir / "backend.log"

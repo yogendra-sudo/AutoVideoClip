@@ -52,8 +52,8 @@ def _completion(text):
 
 @pytest.fixture(autouse=True)
 def isolated(tmp_path, monkeypatch):
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(tmp_path))
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
     monkeypatch.delenv("API_MODEL_NAME", raising=False)
     monkeypatch.delenv("LLM_MODEL", raising=False)
     monkeypatch.delenv("LLM_PROVIDER", raising=False)

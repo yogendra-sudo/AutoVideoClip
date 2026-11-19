@@ -199,7 +199,7 @@ if sys.platform == 'darwin':
     compatible = list(wheel_dir.glob(f'editdistance-0.8.1-*-{plat}.whl'))
     assert len(compatible) == 1, f'macOS 11-compatible {plat} wheel required'
     # Check the compiled binary too: changing a tag alone cannot lower its OS requirement.
-    with tempfile.TemporaryDirectory(prefix='autoclip-wheel-macho-check-') as target:
+    with tempfile.TemporaryDirectory(prefix='autovideoclip-wheel-macho-check-') as target:
         with zipfile.ZipFile(compatible[0]) as archive:
             extensions = [name for name in archive.namelist() if name.endswith('.so')]
             assert extensions, 'native extension missing'
@@ -209,7 +209,7 @@ if sys.platform == 'darwin':
                 headers = subprocess.check_output(['otool', '-arch', arch, '-l', str(binary)], text=True)
                 minimum = re.findall(r'cmd LC_(?:BUILD_VERSION|VERSION_MIN_MACOSX).*?(?:minos|version)\s+(\d+(?:\.\d+)*)', headers, re.S)
                 assert minimum and all(tuple(map(int, value.split('.'))) <= (11, 0, 0) for value in minimum), 'native extension requires newer macOS'
-with tempfile.TemporaryDirectory(prefix='autoclip-runtime-wheel-check-') as target:
+with tempfile.TemporaryDirectory(prefix='autovideoclip-runtime-wheel-check-') as target:
     subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-index', '--no-deps',
                     '--only-binary', ':all:', '--find-links', str(wheel_dir),
                     '--target', target, 'editdistance==0.8.1'], check=True)

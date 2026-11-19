@@ -8,6 +8,6 @@ export async function load(url, context, nextLoad) {
   try { path = new URL(url).pathname } catch { /* not a URL */ }
   if (!ENTRY.test(path) || result.format !== 'module' || result.source == null) return result
   const source = String(result.source) +
-    "\n;globalThis[Symbol.for('autoclip.test.happyDomLoaded')]?.({ BrowserWindow, PropertySymbol });\n"
+    "\n;globalThis[Symbol.for('autovideoclip.test.happyDomLoaded')]?.({ BrowserWindow, PropertySymbol });\n"
   return { ...result, source }
 }

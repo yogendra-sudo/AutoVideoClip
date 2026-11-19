@@ -19,13 +19,13 @@ The app is free; cloud models charge by usage. Open the editor whenever you want
 
 <a href="https://trendshift.io/repositories/25801"><img src="https://trendshift.io/api/badge/repositories/25801" alt="AutoVideoClip — GitHub Trending" width="250" height="55"></a>
 
-**[Website](https://yogendra-sudo.github.io/autoclip_intro/)** · **[Download desktop](https://github.com/yogendra-sudo/AutoVideoClip/releases/latest)** · [Case library](https://yogendra-sudo.github.io/autoclip_intro/cases/) · [Research](docs/research/2026-10-what-drives-views/article-en.md) · [Quick start](#quick-start) · [Docs](#documentation) · [Report an issue](https://github.com/yogendra-sudo/AutoVideoClip/issues/new/choose)
+**[Website](https://yogendra-sudo.github.io/autovideoclip_intro/)** · **[Download desktop](https://github.com/yogendra-sudo/AutoVideoClip/releases/latest)** · [Case library](https://yogendra-sudo.github.io/autovideoclip_intro/cases/) · [Research](docs/research/2026-10-what-drives-views/article-en.md) · [Quick start](#quick-start) · [Docs](#documentation) · [Report an issue](https://github.com/yogendra-sudo/AutoVideoClip/issues/new/choose)
 
 [English](README.md) · [English](README-EN.md) · [English](README-JA.md) · [English](README-KO.md) · [English](README-ES.md) · [English](README-PT.md) · [English](README-RU.md) · [English](README-FR.md)
 
 </div>
 
-**[The latest release](https://github.com/yogendra-sudo/AutoVideoClip/releases/latest)** is what `autoclip --version` reports, with desktop, CLI, and MCP updated together. See the [changelog](CHANGELOG.md) for quick output, caption pagination, speaker framing, and long-video queue fixes. Please upgrade older installations.
+**[The latest release](https://github.com/yogendra-sudo/AutoVideoClip/releases/latest)** is what `autovideoclip --version` reports, with desktop, CLI, and MCP updated together. See the [changelog](CHANGELOG.md) for quick output, caption pagination, speaker framing, and long-video queue fixes. Please upgrade older installations.
 
 ## Real clips
 
@@ -157,7 +157,7 @@ Full-screen podcast · TikTok · English<br>
 
 </details>
 
-Find videos, covers and post text in the **[case library →](https://yogendra-sudo.github.io/autoclip_intro/cases/?lang=en)**, and [share your clips](https://github.com/yogendra-sudo/AutoVideoClip/discussions/new?category=show-and-tell). Source videos belong to their creators; these clips are shown for demonstration only.
+Find videos, covers and post text in the **[case library →](https://yogendra-sudo.github.io/autovideoclip_intro/cases/?lang=en)**, and [share your clips](https://github.com/yogendra-sudo/AutoVideoClip/discussions/new?category=show-and-tell). Source videos belong to their creators; these clips are shown for demonstration only.
 
 ## What it does
 
@@ -221,7 +221,7 @@ There is no Intel Mac desktop build. Intel Macs and Linux use Docker or the CLI.
 
 ```bash
 git clone https://github.com/yogendra-sudo/AutoVideoClip.git
-cd autoclip
+cd autovideoclip
 cp env.example .env
 mkdir -p data logs uploads
 docker compose up -d --build
@@ -232,11 +232,11 @@ Open the [web UI](http://localhost:3000). [API docs](http://localhost:8000/docs)
 On Linux, if bind mounts fail on permissions, fix ownership first:
 
 ```bash
-docker compose run --rm --no-deps --user root --entrypoint sh autoclip -c 'chown -R autoclip:autoclip /app/data /app/logs /app/uploads'
+docker compose run --rm --no-deps --user root --entrypoint sh autovideoclip -c 'chown -R autovideoclip:autovideoclip /app/data /app/logs /app/uploads'
 docker compose up -d
 ```
 
-For a LAN IP or custom domain, add the frontend address to `AUTOCLIP_ALLOWED_ORIGINS` in `.env` (comma-separated).
+For a LAN IP or custom domain, add the frontend address to `AUTOVIDEOCLIP_ALLOWED_ORIGINS` in `.env` (comma-separated).
 
 **CLI / MCP**
 
@@ -246,14 +246,14 @@ Requires Python 3.10+ (3.11 recommended), with FFmpeg and FFprobe on PATH; local
 python3 -m venv venv
 source venv/bin/activate
 python -m pip install -r requirements.txt
-python -m pip install --force-reinstall --no-deps autoclip_mcp-*-py3-none-any.whl
+python -m pip install --force-reinstall --no-deps autovideoclip_mcp-*-py3-none-any.whl
 ```
 
 Without the ZIP, install with one command. Installing from a cloned source checkout remains available:
 
 ```bash
 # One-line installation
-uvx autoclip-mcp
+uvx autovideoclip-mcp
 npx skills add yogendra-sudo/AutoVideoClip
 ```
 
@@ -263,7 +263,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
 python -m pip install --no-deps .
-autoclip --version
+autovideoclip --version
 ```
 
 Commands above are for macOS / Linux. On Windows, create with `py -m venv venv` and activate with `.\venv\Scripts\Activate.ps1`, then use the same `python -m pip` installation commands.
@@ -271,16 +271,16 @@ Commands above are for macOS / Linux. On Windows, create with `py -m venv venv` 
 Save model settings first: reuse desktop settings, or configure your own data directory from the ZIP’s key-free example. See the [CLI / MCP guide](docs/CLI_AND_MCP.md) (Chinese). `produce` does not use the old `run --provider` override. Supply `--srt` to skip transcription.
 
 ```bash
-autoclip --version
-autoclip produce talk.mp4 --srt talk.srt --platform douyin --portrait-style podcast --json
-autoclip outputs PROJECT_ID --export-kits
+autovideoclip --version
+autovideoclip produce talk.mp4 --srt talk.srt --platform douyin --portrait-style podcast --json
+autovideoclip outputs PROJECT_ID --export-kits
 ```
 
-The MCP client starts the server. For standalone debugging, run `autoclip mcp` in a separate terminal; OpenCode users can write client configuration with `autoclip mcp install opencode`.
+The MCP client starts the server. For standalone debugging, run `autovideoclip mcp` in a separate terminal; OpenCode users can write client configuration with `autovideoclip mcp install opencode`.
 
-Replace `PROJECT_ID` with the project ID returned by production. MCP uses `start_quick_output` / `get_quick_output_status`; set the client’s `command` to the virtualenv’s absolute `autoclip` path and `args` to `["mcp"]`. Legacy `run` / `export` and clipping tools remain available. See [CLI / MCP](docs/CLI_AND_MCP.md) (Chinese), [OpenCode](docs/OPENCODE.en.md), and [Agent skill](skills/autoclip/SKILL.md) (Chinese).
+Replace `PROJECT_ID` with the project ID returned by production. MCP uses `start_quick_output` / `get_quick_output_status`; set the client’s `command` to the virtualenv’s absolute `autovideoclip` path and `args` to `["mcp"]`. Legacy `run` / `export` and clipping tools remain available. See [CLI / MCP](docs/CLI_AND_MCP.md) (Chinese), [OpenCode](docs/OPENCODE.en.md), and [Agent skill](skills/autovideoclip/SKILL.md) (Chinese).
 
-Smithery’s local stdio listing uses an MCPB bundle. From the repo root, run `python scripts/pack_mcpb.py`. The artifact is `dist/autoclip-mcp.mcpb` and is not committed. Publish with `smithery mcp publish ./dist/autoclip-mcp.mcpb -n io.github.yogendra-sudo/AutoVideoClip-mcp` using the maintainer’s own login. The repository does not store an API key. Steps are in [CLI / MCP](docs/CLI_AND_MCP.md) (Chinese).
+Smithery’s local stdio listing uses an MCPB bundle. From the repo root, run `python scripts/pack_mcpb.py`. The artifact is `dist/autovideoclip-mcp.mcpb` and is not committed. Publish with `smithery mcp publish ./dist/autovideoclip-mcp.mcpb -n io.github.yogendra-sudo/AutoVideoClip-mcp` using the maintainer’s own login. The repository does not store an API key. Steps are in [CLI / MCP](docs/CLI_AND_MCP.md) (Chinese).
 
 ## Model setup
 
@@ -324,11 +324,11 @@ Inside Docker, `localhost` is the container. Point at a host address the contain
   </tr>
   <tr>
     <td align="center" width="140">
-      <a href="https://go.apimart.ai/tw-autoclip"><img src="docs/sponsors/apimart.png" alt="APIMart" width="88"></a><br>
-      <a href="https://go.apimart.ai/tw-autoclip"><strong>APIMart</strong></a>
+      <a href="https://go.apimart.ai/tw-autovideoclip"><img src="docs/sponsors/apimart.png" alt="APIMart" width="88"></a><br>
+      <a href="https://go.apimart.ai/tw-autovideoclip"><strong>APIMart</strong></a>
     </td>
     <td>
-      Thanks to <strong>APIMart</strong> for sponsoring this project! <strong>APIMart</strong> is a low-cost API platform for AI image &amp; video generation — GPT-Image-2 from <strong>$0.006/image</strong>, <strong>160+</strong> images per dollar. One async API covers both image and video: submit a task, get an ID, fetch results via polling or callback. Batch tens of thousands of images without timeouts, switch models without changing code. Pay-as-you-go with no monthly fee — <a href="https://go.apimart.ai/tw-autoclip">sign up here</a> to get started.
+      Thanks to <strong>APIMart</strong> for sponsoring this project! <strong>APIMart</strong> is a low-cost API platform for AI image &amp; video generation — GPT-Image-2 from <strong>$0.006/image</strong>, <strong>160+</strong> images per dollar. One async API covers both image and video: submit a task, get an ID, fetch results via polling or callback. Batch tens of thousands of images without timeouts, switch models without changing code. Pay-as-you-go with no monthly fee — <a href="https://go.apimart.ai/tw-autovideoclip">sign up here</a> to get started.
     </td>
   </tr>
 </table>
@@ -368,7 +368,7 @@ Interviews, podcasts, courses, and talking-head footage are the main validated u
 <details>
 <summary>Why were no clips generated?</summary>
 
-Check the failed stage: captions/transcription, model connection, FFmpeg, disk space, and platform eligibility. YouTube long-form requires complete clips of at least 180 seconds; use Shorts or Bilibili for shorter footage. If it still fails, include the version from `autoclip --version`, OS, source duration, model, and sanitized logs in [known issues](https://github.com/yogendra-sudo/AutoVideoClip/issues/96).
+Check the failed stage: captions/transcription, model connection, FFmpeg, disk space, and platform eligibility. YouTube long-form requires complete clips of at least 180 seconds; use Shorts or Bilibili for shorter footage. If it still fails, include the version from `autovideoclip --version`, OS, source duration, model, and sanitized logs in [known issues](https://github.com/yogendra-sudo/AutoVideoClip/issues/96).
 
 </details>
 
@@ -381,7 +381,7 @@ Check the failed stage: captions/transcription, model connection, FFmpeg, disk s
 | You want | Docs |
 | --- | --- |
 | Install and first clips | [Installation](docs/USER_INSTALLATION_GUIDE.en.md) |
-| Self-host and automation | [Docker](docs/DOCKER.en.md) · [CLI / MCP](docs/CLI_AND_MCP.md) (Chinese) · [Agent skill](skills/autoclip/SKILL.md) (Chinese) · [OpenCode](docs/OPENCODE.en.md) |
+| Self-host and automation | [Docker](docs/DOCKER.en.md) · [CLI / MCP](docs/CLI_AND_MCP.md) (Chinese) · [Agent skill](skills/autovideoclip/SKILL.md) (Chinese) · [OpenCode](docs/OPENCODE.en.md) |
 | Models and troubleshooting | [Model setup](docs/MULTI_LLM_PROVIDER_GUIDE.md) (Chinese) · [FAQ](docs/FAQ.en.md) |
 | Versions, roadmap, privacy | [Changelog](CHANGELOG.md) · [Roadmap](ROADMAP.md) (Chinese) · [Community board](docs/COMMUNITY_BOARD.md) (Chinese) · [Privacy](docs/PRIVACY.en.md) |
 | Research | [Research note #1: Pick the moment, not the effect](docs/research/2026-10-what-drives-views/article-en.md) |

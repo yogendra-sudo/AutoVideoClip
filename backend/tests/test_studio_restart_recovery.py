@@ -19,8 +19,8 @@ OLD = 'previous-process'
 
 @pytest.fixture
 def sessions(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     engine = create_engine('sqlite:///:memory:')
     Base.metadata.create_all(engine)
     factory = sessionmaker(bind=engine)
@@ -374,8 +374,8 @@ def test_long_video_stuck_in_processing_across_restarts_is_failed(sessions):
 
 def test_a1_2_crash_fields_from_heartbeat_exit_and_fault(tmp_path, monkeypatch):
     import json
-    monkeypatch.setenv('AUTOCLIP_SHUTDOWN_MARKER_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path / 'data'))
+    monkeypatch.setenv('AUTOVIDEOCLIP_SHUTDOWN_MARKER_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path / 'data'))
     from backend.services.studio import shutdown_marker as sm, run_heartbeat
     sm._consumed.clear(); sm._restart_cached.clear()
     sm._crash_exit_cached.clear(); sm._crash_scene_cached.clear()

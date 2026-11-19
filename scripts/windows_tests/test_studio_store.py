@@ -12,7 +12,7 @@ pytestmark = pytest.mark.skipif(os.name != 'nt', reason='actual Windows file sha
 
 @pytest.fixture
 def state_path(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     store.directory('p1').mkdir(parents=True)
     store.write('p1', {'drafts': [], 'events': [], 'jobs': [], 'analysis': None, 'marker': 'before'})
     return store.directory('p1') / 'metadata' / 'studio.json'

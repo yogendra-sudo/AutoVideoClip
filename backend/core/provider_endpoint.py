@@ -49,7 +49,7 @@ def locked_preset_url(provider: Optional[str]) -> Optional[str]:
 
 
 def locked_presets() -> dict[str, str]:
-    """Live map so tests can swap ``AUTOCLIP_PROVIDER_PRESETS``."""
+    """Live map so tests can swap ``AUTOVIDEOCLIP_PROVIDER_PRESETS``."""
     return {
         preset.id: url
         for preset in iter_providers()

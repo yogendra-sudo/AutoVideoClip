@@ -2,10 +2,10 @@ import { ERROR_CODE } from './failureCodes'
 /** Versioned business telemetry. Only explicit UI operations enroll projects. */
 export type Properties = Record<string, string | number | boolean | null | undefined>
 export type Watch = { kind: 'project' | 'export' | 'bilibili' | 'youtube' | 'studio-screen' | 'studio-production' | 'studio-export' | 'studio-generation' | 'studio-cover' | 'studio-variant' | 'framing-runtime'; id: string; projectId?: string; since: number; seen: string[]; settled?: boolean; properties?: Properties; token?: string; runId?: string; attemptId?: string }
-export const WORKFLOW_KEY = 'autoclip.analytics.workflow.v2'
+export const WORKFLOW_KEY = 'autovideoclip.analytics.workflow.v2'
 const TTL = 7 * 86400000
 const LIMIT = 50
-const CONTEXT_KEY = "autoclip.analytics.context.v1"
+const CONTEXT_KEY = "autovideoclip.analytics.context.v1"
 // Random base36 segments joined by '-' can spell a secret marker (e.g. a segment ending in "sk"
 // followed by '-' gives "sk-"), which the privacy check rightly flags. Ids must never contain one.
 // Keep in sync with event_catalog privacy.forbidden_substrings and backend llm_telemetry markers.
@@ -386,7 +386,7 @@ export class WorkflowTracker {
   emitOnce(w: Watch, key: string, event: string, properties: Properties, attemptId?: string): void {
     if (!this.enabled() || !this.watches.includes(w) || w.seen.includes(key) || w.seen.length >= 2000) return
     const id = attemptId || w.token
-    if (this.capture(event, (w.kind.startsWith('studio-') || w.kind === 'framing-runtime') ? { ...safeStudioProperties(w.properties), ...safeStudioProperties(properties), ...safeStudioProperties({ attempt_id: id }), ...(id && /^[a-z0-9-]{10,100}$/.test(id) ? { $insert_id: `studio-v1:${id}:${key}` } : {}) } : { ...this.context(w.projectId || w.id), ...properties, $insert_id: `autoclip-v2:${w.kind}:${w.id}:${key}` })) {
+    if (this.capture(event, (w.kind.startsWith('studio-') || w.kind === 'framing-runtime') ? { ...safeStudioProperties(w.properties), ...safeStudioProperties(properties), ...safeStudioProperties({ attempt_id: id }), ...(id && /^[a-z0-9-]{10,100}$/.test(id) ? { $insert_id: `studio-v1:${id}:${key}` } : {}) } : { ...this.context(w.projectId || w.id), ...properties, $insert_id: `autovideoclip-v2:${w.kind}:${w.id}:${key}` })) {
       w.seen.push(key)
       this.persist()
     }

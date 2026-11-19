@@ -16,8 +16,8 @@ sys.path.insert(0, str(ROOT))
 @pytest.fixture
 def data_dir(tmp_path, monkeypatch):
     d = tmp_path / "data"
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(d))
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(d))
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(d))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(d))
     monkeypatch.delenv("IMAGE_API_KEY", raising=False)
     monkeypatch.delenv("IMAGE_PROVIDER", raising=False)
     monkeypatch.delenv("IMAGE_BASE_URL", raising=False)
@@ -213,7 +213,7 @@ def test_image_urls_from_a_remote_provider_never_reach_this_machine(data_dir):
         _download(redirected, "https://cdn.example.com/x.png")
     assert len(redirected.calls) == 1, "the redirect to a local address is not followed"
     local = _Session([_Resp(200, content=b"img")])
-    local.autoclip_local = True
+    local.autovideoclip_local = True
     assert _download(local, "http://127.0.0.1:7860/out.png") == b"img", "a local image server may serve local URLs"
 
 

@@ -123,7 +123,7 @@ function Editor({ projectId, draftId }: { projectId: string; draftId: string }) 
   const [suggestion, setSuggestion] = useState<Draft | null>(null)
   const [undo, setUndo] = useState<Draft | null>(null)
   const video = useRef<HTMLVideoElement>(null)
-  const localKey = `autoclip.studio.${projectId}.${draftId}`
+  const localKey = `autovideoclip.studio.${projectId}.${draftId}`
   const dirty = !!draft && JSON.stringify(draft) !== saved
   const artworkStyle = isArtworkStyle(draft?.title_style)
   const scene = draft?.scenes[selected] || draft?.scenes[0]

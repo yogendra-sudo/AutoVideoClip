@@ -23,10 +23,10 @@ def _reset():
 
 
 def _capture(monkeypatch, tmp_path, *, analytics=True):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
     monkeypatch.delenv('VITE_PUBLIC_POSTHOG_KEY', raising=False)
-    monkeypatch.delenv('AUTOCLIP_FLAGS', raising=False)
+    monkeypatch.delenv('AUTOVIDEOCLIP_FLAGS', raising=False)
     (tmp_path / 'privacy.json').write_text(json.dumps({'analytics': analytics, 'crash_reports': False}))
     (tmp_path / 'analytics.json').write_text('{"distinct_id":"018f6b2a-7c3d-7b2a-8c11-111111111111"}')
     captured = []
@@ -76,7 +76,7 @@ def test_properties_are_enums_and_job_finished_is_once(monkeypatch, tmp_path):
     assert body['properties']['$feature/mcp_v2_tools'] is True
     blob = json.dumps(body['properties'])
     assert 'phc_test' not in blob and 'private' not in blob and 'api_key' not in body['properties']
-    assert flag_enabled(resolve_features({'autoclip_safe_mode': True, 'mcp_v2_tools': True}, env=''), 'mcp_v2_tools') is False
+    assert flag_enabled(resolve_features({'autovideoclip_safe_mode': True, 'mcp_v2_tools': True}, env=''), 'mcp_v2_tools') is False
 
 
 def test_paths_and_secrets_in_a_tool_result_are_not_properties():
@@ -143,7 +143,7 @@ def test_record_does_not_block_the_caller_or_the_event_loop(monkeypatch, tmp_pat
 
 def test_job_finished_duration_is_the_task_and_restart_does_not_resend(monkeypatch, tmp_path):
     captured = _capture(monkeypatch, tmp_path)
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     from backend.services import mcp_jobs
     mcp_jobs.write_job('job-9', status='completed', progress=100, error_code='none', started_at=time.time() - 8)
     mcp_telemetry.record('get_quick_output_status', 'cli', time.perf_counter(), ok=True, error_code='none',
@@ -164,8 +164,8 @@ def test_job_finished_duration_is_the_task_and_restart_does_not_resend(monkeypat
 
 
 def test_a_failed_post_is_not_marked_sent(monkeypatch, tmp_path):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
     monkeypatch.delenv('VITE_PUBLIC_POSTHOG_KEY', raising=False)
     (tmp_path / 'privacy.json').write_text(json.dumps({'analytics': True, 'crash_reports': False}))
     (tmp_path / 'analytics.json').write_text('{"distinct_id":"018f6b2a-7c3d-7b2a-8c11-111111111111"}')
@@ -266,7 +266,7 @@ def test_process_exit_flushes_the_queue(tmp_path):
         'mcp_telemetry.urllib.request.urlopen = urlopen\n'
     )
     env = os.environ.copy()
-    env.update(APP=str(tmp_path), OUT=str(out), AUTOCLIP_APP_DIR=str(tmp_path), AUTOCLIP_POSTHOG_KEY='phc_test')
+    env.update(APP=str(tmp_path), OUT=str(out), AUTOVIDEOCLIP_APP_DIR=str(tmp_path), AUTOVIDEOCLIP_POSTHOG_KEY='phc_test')
     env['PYTHONPATH'] = str(Path(__file__).resolve().parents[2]) + os.pathsep + env.get('PYTHONPATH', '')
     completed = subprocess.run([sys.executable, '-c', script], env=env, capture_output=True, text=True, timeout=10)
     assert completed.returncode == 0, completed.stderr
@@ -284,7 +284,7 @@ def test_process_exit_stops_waiting_after_two_seconds(tmp_path):
         'mcp_telemetry.urllib.request.urlopen = urlopen\n'
     )
     env = os.environ.copy()
-    env.update(APP=str(tmp_path), AUTOCLIP_APP_DIR=str(tmp_path), AUTOCLIP_POSTHOG_KEY='phc_test')
+    env.update(APP=str(tmp_path), AUTOVIDEOCLIP_APP_DIR=str(tmp_path), AUTOVIDEOCLIP_POSTHOG_KEY='phc_test')
     env['PYTHONPATH'] = str(Path(__file__).resolve().parents[2]) + os.pathsep + env.get('PYTHONPATH', '')
     started = time.monotonic()
     completed = subprocess.run([sys.executable, '-c', script], env=env, capture_output=True, text=True, timeout=10)

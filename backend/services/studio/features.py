@@ -1,9 +1,9 @@
 """Feature-flag snapshot for one generation.
 
 The desktop client sends the resolved snapshot with an import. CLI, MCP and
-Docker have no PostHog SDK: they read AUTOCLIP_FLAGS, then these defaults.
-Unknown keys and values are dropped. autoclip_safe_mode forces every other
-flag back to its safe off value unless AUTOCLIP_FLAGS sets that flag explicitly.
+Docker have no PostHog SDK: they read AUTOVIDEOCLIP_FLAGS, then these defaults.
+Unknown keys and values are dropped. autovideoclip_safe_mode forces every other
+flag back to its safe off value unless AUTOVIDEOCLIP_FLAGS sets that flag explicitly.
 qa_gate_blocking is the exception: safe mode always forces it to off.
 """
 from __future__ import annotations
@@ -12,7 +12,7 @@ import os
 
 # Keep in lockstep with frontend/src/analytics/flags.defaults.json.
 DEFAULTS: dict[str, bool | str] = {
-    'autoclip_safe_mode': False,
+    'autovideoclip_safe_mode': False,
     'remember_platforms': False,
     'one_click_paste_start': 'button',
     'link_import_without_whisper': False,
@@ -26,7 +26,7 @@ DEFAULTS: dict[str, bool | str] = {
     # Plan §10.2 starts this gate at full shadow. block is accepted and not enforced.
     'qa_gate_blocking': 'shadow',
     # 1.5.7: editing styles and the visual picker ship on. Remote PostHog, a
-    # local override or AUTOCLIP_FLAGS=...=off still turn them off; safe mode
+    # local override or AUTOVIDEOCLIP_FLAGS=...=off still turn them off; safe mode
     # forces them off.
     'pkg_templates_v1': True,
     'pkg_template_picker_visual': True,
@@ -80,9 +80,9 @@ def parse_flag_list(raw: str | None) -> dict[str, bool | str]:
 
 
 def resolve_features(snapshot: dict | None = None, env: str | None = None) -> dict[str, bool | str]:
-    """Defaults, then the client snapshot, then safe mode, then AUTOCLIP_FLAGS."""
+    """Defaults, then the client snapshot, then safe mode, then AUTOVIDEOCLIP_FLAGS."""
     if env is None:
-        env = os.environ.get('AUTOCLIP_FLAGS', '')
+        env = os.environ.get('AUTOVIDEOCLIP_FLAGS', '')
     operator = parse_flag_list(env)
     resolved = dict(DEFAULTS)
     if isinstance(snapshot, dict):
@@ -90,16 +90,16 @@ def resolve_features(snapshot: dict | None = None, env: str | None = None) -> di
             normalized = normalize_flag(str(key), value)
             if normalized is not None:
                 resolved[str(key)] = normalized
-    if resolved.get('autoclip_safe_mode') is True:
+    if resolved.get('autovideoclip_safe_mode') is True:
         for key in DEFAULTS:
-            if key != 'autoclip_safe_mode':
+            if key != 'autovideoclip_safe_mode':
                 resolved[key] = safe_off(key)
     resolved.update(operator)
-    if resolved.get('autoclip_safe_mode') is True:
+    if resolved.get('autovideoclip_safe_mode') is True:
         for key in DEFAULTS:
-            if key != 'autoclip_safe_mode' and key not in operator:
+            if key != 'autovideoclip_safe_mode' and key not in operator:
                 resolved[key] = safe_off(key)
-        # The kill switch wins even when AUTOCLIP_FLAGS names this gate.
+        # The kill switch wins even when AUTOVIDEOCLIP_FLAGS names this gate.
         resolved['qa_gate_blocking'] = 'off'
     return resolved
 

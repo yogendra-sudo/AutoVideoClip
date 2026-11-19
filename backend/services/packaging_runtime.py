@@ -9,10 +9,10 @@
 - 装到用户可写目录 `<data_dir>/packaging-runtime`，不写进 .app（避免只读和破坏签名）。
 - 用当前后端的 Python（`sys.executable`）做 `pip install --target`。
 - 浏览器二进制放在该目录下的 `browsers/`，并设置 `PLAYWRIGHT_BROWSERS_PATH`。
-- pip 源看 `AUTOCLIP_PIP_INDEX`（默认 `auto`）：先连官方 PyPI，静默超时再改清华镜像。
+- pip 源看 `AUTOVIDEOCLIP_PIP_INDEX`（默认 `auto`）：先连官方 PyPI，静默超时再改清华镜像。
   `pypi` 只用官方，`mirror` 只用镜像。已经设置 `PIP_INDEX_URL` 时尊重它，不再自动切换。
-- 浏览器下载看 `AUTOCLIP_PLAYWRIGHT_DOWNLOAD_SOURCE`（默认 `auto`）：先官方 CDN，超时再改
-  npmmirror。`PLAYWRIGHT_DOWNLOAD_HOST` 或 `AUTOCLIP_PLAYWRIGHT_DOWNLOAD_HOST` 钉死地址时
+- 浏览器下载看 `AUTOVIDEOCLIP_PLAYWRIGHT_DOWNLOAD_SOURCE`（默认 `auto`）：先官方 CDN，超时再改
+  npmmirror。`PLAYWRIGHT_DOWNLOAD_HOST` 或 `AUTOVIDEOCLIP_PLAYWRIGHT_DOWNLOAD_HOST` 钉死地址时
   不再切换。系统里已有 Chrome 或 Edge 就用 `channel='chrome'/'msedge'`，不再下载
   chromium-headless-shell，也不会访问下载镜像。Windows 优先 Edge，其他系统优先 Chrome。
 """
@@ -82,7 +82,7 @@ def _data_dir() -> Path:
         from backend.core.desktop_config import get_desktop_data_dir
         return Path(get_desktop_data_dir())
     except Exception:
-        return Path(os.getenv("AUTOCLIP_DATA_DIR", str(Path.home() / "Library/Application Support/AutoClip")))
+        return Path(os.getenv("AUTOVIDEOCLIP_DATA_DIR", str(Path.home() / "Library/Application Support/AutoClip")))
 
 
 def install_root() -> Path:
@@ -139,7 +139,7 @@ def _named_mode(value: str, allowed: tuple[str, ...], aliases: dict[str, str]) -
 
 
 def pip_index_mode() -> str:
-    raw = (os.getenv("AUTOCLIP_PIP_INDEX") or "auto").strip().lower()
+    raw = (os.getenv("AUTOVIDEOCLIP_PIP_INDEX") or "auto").strip().lower()
     return _named_mode(raw, PIP_INDEX_MODES, {
         "official": "pypi", "pypi.org": "pypi",
         "cn": "mirror", "china": "mirror", "tuna": "mirror", "tsinghua": "mirror",
@@ -166,14 +166,14 @@ def pip_index_plan(explicit: str | None = None) -> list[tuple[str, str]]:
 
 
 def playwright_download_mode() -> str:
-    raw = (os.getenv("AUTOCLIP_PLAYWRIGHT_DOWNLOAD_SOURCE") or "").strip().lower()
+    raw = (os.getenv("AUTOVIDEOCLIP_PLAYWRIGHT_DOWNLOAD_SOURCE") or "").strip().lower()
     chosen = _named_mode(raw, PLAYWRIGHT_DOWNLOAD_MODES, {
         "cdn": "official", "playwright": "official",
         "npmmirror": "mirror", "cn": "mirror", "china": "mirror",
     })
     if chosen:
         return chosen
-    switch = (os.getenv("AUTOCLIP_PLAYWRIGHT_MIRROR") or "").strip().lower()
+    switch = (os.getenv("AUTOVIDEOCLIP_PLAYWRIGHT_MIRROR") or "").strip().lower()
     if switch in {"0", "off", "false", "no"}:
         return "official"
     if switch in {"1", "on", "true", "yes", "cn"}:
@@ -184,7 +184,7 @@ def playwright_download_mode() -> str:
 def browser_download_plan() -> list[tuple[str, str | None]]:
     """[(label, PLAYWRIGHT_DOWNLOAD_HOST)]。官方 CDN 的 host 是 None。"""
     explicit = (os.getenv("PLAYWRIGHT_DOWNLOAD_HOST") or "").strip()
-    override = (os.getenv("AUTOCLIP_PLAYWRIGHT_DOWNLOAD_HOST") or "").strip()
+    override = (os.getenv("AUTOVIDEOCLIP_PLAYWRIGHT_DOWNLOAD_HOST") or "").strip()
     pinned = explicit or override
     if pinned:
         return [("custom", pinned)]

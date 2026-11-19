@@ -10,7 +10,7 @@ USER_="${WINQA_USER:-}"
 IDENTITY="${WINQA_SSH_IDENTITY:-}"   # Optional SSH private key path; otherwise use ssh-agent / ~/.ssh/config.
 REPO="${WINQA_REPO:-$(cd "$HERE/../.." && pwd)}"
 MODEL_BASE_URL="${WINQA_MODEL_BASE_URL:-}"; MODEL="${WINQA_MODEL:-}"; MODEL_PROVIDER="${WINQA_MODEL_PROVIDER:-dashscope}"
-MODEL_API_KEY="${WINQA_MODEL_API_KEY:-${AUTOCLIP_QA_DASHSCOPE_KEY:-}}"
+MODEL_API_KEY="${WINQA_MODEL_API_KEY:-${AUTOVIDEOCLIP_QA_DASHSCOPE_KEY:-}}"
 PREV=""; CAND=""; VERSION=""; PREV_VERSION=""
 MARKER='resources\backend\services\studio\readiness.py'
 UPDATER_URL='https://github.com/yogendra-sudo/AutoVideoClip/releases/latest/download/latest.json'
@@ -26,7 +26,7 @@ usage() { sed -n '2,4p' "$0"; cat <<'U'
   --no-smoke             Skip the CI-equivalent verify_windows_install.py
   --with-asr             Also run verify_sensevoice.py / verify_whisper_recovery.py (downloads runtime and models; may take longer)
   --no-failure           Skip failure-event and fallback probes
-  --out DIR              Evidence directory (default: ${WINQA_EVIDENCE_ROOT:-/tmp/autoclip-winqa}/evidence-<timestamp>; keep it outside the repository)
+  --out DIR              Evidence directory (default: ${WINQA_EVIDENCE_ROOT:-/tmp/autovideoclip-winqa}/evidence-<timestamp>; keep it outside the repository)
   --from-step N          Resume from step N (0-14; requires --out pointing to the existing evidence directory; completed steps are not rerun)
   --to-step N            Stop after step N (steps 8 and 9 still collect and summarize results)
   --real                 Run real-model scenarios for steps 10-14 (incurs model costs and requires authorization); read the key only from WINQA_MODEL_API_KEY and pass it to the acceptance machine via stdin
@@ -54,7 +54,7 @@ done
 [ "$FROM" -gt 0 ] && [ -z "$OUTDIR" ] && { echo "--from-step requires --out pointing to the existing evidence directory"; exit 2; }
 [ -n "$PREV_VERSION" ] || PREV_VERSION="$(basename "$PREV" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)"
 TS="$(date +%Y%m%d-%H%M%S)"
-OUT="${OUTDIR:-${WINQA_EVIDENCE_ROOT:-${TMPDIR:-/tmp}/autoclip-winqa}/evidence-$TS}"
+OUT="${OUTDIR:-${WINQA_EVIDENCE_ROOT:-${TMPDIR:-/tmp}/autovideoclip-winqa}/evidence-$TS}"
 mkdir -p "$OUT"
 LOG="$OUT/run.log"
 exec > >(tee -a "$LOG") 2>&1

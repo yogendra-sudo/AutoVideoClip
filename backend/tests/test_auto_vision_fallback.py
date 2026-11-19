@@ -17,8 +17,8 @@ SUBTITLES = b'1\n00:00:00,000 --> 00:00:10,000\nSynthetic subtitle\n'
 
 @pytest.fixture(autouse=True)
 def isolated_offline_settings(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     (tmp_path / 'privacy.json').write_text('{"analytics":false,"crash_reports":false}')
     original_send = httpx.Client.send
 

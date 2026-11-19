@@ -58,8 +58,8 @@ class _DB:
 
 
 def _isolate(monkeypatch, tmp_path):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     (tmp_path / 'privacy.json').write_text('{"crash_reports":false}', encoding='utf-8')
     from backend.services.studio import jobs, store
     row = _Row()

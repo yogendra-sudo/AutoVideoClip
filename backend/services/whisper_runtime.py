@@ -61,7 +61,7 @@ def _data_dir() -> Path:
         from backend.core.desktop_config import get_desktop_data_dir
         return Path(get_desktop_data_dir())
     except Exception:
-        return Path(os.getenv("AUTOCLIP_DATA_DIR", str(Path.home() / "Library/Application Support/AutoClip")))
+        return Path(os.getenv("AUTOVIDEOCLIP_DATA_DIR", str(Path.home() / "Library/Application Support/AutoClip")))
 
 
 def get_install_dir() -> Path:
@@ -118,7 +118,7 @@ def ensure_on_path() -> None:
     os.environ["HF_HUB_DISABLE_PROGRESS_BARS"] = "1"
     os.environ.setdefault("TQDM_DISABLE", "1")
     # faster-whisper 解码音频要用 ffmpeg：把内置 ffmpeg 所在目录并入 PATH
-    ffmpeg_path = os.getenv("AUTOCLIP_FFMPEG_PATH")
+    ffmpeg_path = os.getenv("AUTOVIDEOCLIP_FFMPEG_PATH")
     if ffmpeg_path:
         ffmpeg_dir = str(Path(ffmpeg_path).parent)
         if ffmpeg_dir not in os.environ.get("PATH", "").split(os.pathsep):

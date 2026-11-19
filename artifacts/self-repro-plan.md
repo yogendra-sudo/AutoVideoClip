@@ -14,7 +14,7 @@
 2. **活着的空闲进程不会被标成重启失败。** `test_idle_producer_stays_in_production_until_the_process_exits`：子进程卡在 `time.sleep`，本机测得 `status=sleeping`、`cpu_percent=0.0`、RSS 约 9.7 MB，恢复逻辑保持 `production` / 「正在制作可发布成片」。杀掉该进程之后，同一项目变成 `service_restarted`。
 3. **自动拉起上限是 3 次。** `src-tauri/src/backend_manager.rs` 里 `MAX_CRASH_RESTARTS = 3`，`should_auto_restart` 在已重启 3 次或主动停止时返回 false；间隔 1s、2s、4s。单测 `unexpected_exit_restarts_and_intentional_stop_does_not` 写了这些断言。这台机器的 Cargo 1.83 编不过桌面壳（依赖要求 `edition2024`），**这个 Rust 单测今天没有执行**。健康检查只看进程是否退出；端口连不上但进程还在时，只打日志，不拉起。
 4. **界面在后端消失后不再只停到窗口失焦。** 快轮询合同没改：网络错误仍然最多再试 2 次（一共 3 次失败），HTTP 错误立刻停，没有成功快照时也停。若最后一帧还是制作中，页面开着时改为每 10 秒再读一次；后端拉起来并把任务写成 `service_restarted` 之后，这一下会换掉「正在制作」。焦点 / 可见性刷新仍在。`workspace-polling.test.cjs` 锁住快预算（`calls===4`）和慢探测读到 `failed`。八语目录和 `failure_messages.json` 的 `service_restarted` 由 `studio-system-messages.test.cjs` 锁住。英文现在是 “The app restarted and this run was interrupted. Try again.”，不是反馈里那句 1.5.6 的 “The service restarted. Please generate again.”
-5. **时间上限是另一条失败，不是重启。** `AUTOCLIP_CLIP_JOB_BUDGET_SEC` 覆盖默认 20 分钟（`test_env_budget_overrides_the_default_and_is_still_a_timeout`）。超时的错误码是 `timeout`，不会重试。反馈里的 15 分钟还没到默认上限。
+5. **时间上限是另一条失败，不是重启。** `AUTOVIDEOCLIP_CLIP_JOB_BUDGET_SEC` 覆盖默认 20 分钟（`test_env_budget_overrides_the_default_and_is_still_a_timeout`）。超时的错误码是 `timeout`，不会重试。反馈里的 15 分钟还没到默认上限。
 
 相关回归：`backend/tests/test_studio_restart_recovery.py`、`backend/tests/test_job_budget.py`、`scripts/tests/test_provider_e2e.py` 里 `kill_backend` / `service_restarted` 的判定。本次一起跑过，通过。
 
@@ -25,10 +25,10 @@
 macOS（从终端启动，环境变量才能进到后端；`open -a` 不会替你带上）：
 
 ```bash
-AUTOCLIP_CLIP_JOB_BUDGET_SEC=20 \
+AUTOVIDEOCLIP_CLIP_JOB_BUDGET_SEC=20 \
   "/Applications/AutoVideoClip.app/Contents/MacOS/AutoVideoClip"
 # 另开一个终端。任务进入「正在制作可发布成片」之后：
-pgrep -lf autoclip-backend
+pgrep -lf autovideoclip-backend
 # 记下 pid、RSS。只杀这一条：
 kill -9 <backend-pid>
 ```
@@ -36,20 +36,20 @@ kill -9 <backend-pid>
 Windows（PowerShell，同样从终端起，不要只双击）：
 
 ```powershell
-$env:AUTOCLIP_CLIP_JOB_BUDGET_SEC = '20'
+$env:AUTOVIDEOCLIP_CLIP_JOB_BUDGET_SEC = '20'
 & "$env:LOCALAPPDATA\AutoVideoClip\AutoVideoClip.exe"   # 以实际安装路径为准
 # 制作进行中，只结束后端：
-Get-Process autoclip-backend | Format-Table Id,CPU,WorkingSet64
-Stop-Process -Name autoclip-backend -Force
+Get-Process autovideoclip-backend | Format-Table Id,CPU,WorkingSet64
+Stop-Process -Name autovideoclip-backend -Force
 ```
 
 我们要记的证据（都在测试机上）：
 
-- 杀之前、杀之后 `autoclip-backend` 与 `AutoVideoClip` 各自的 PID、CPU、工作集。5 MB 量级更像壳；Python 后端空转也已经接近 10 MB，带模型会更大。两条要分开看。
+- 杀之前、杀之后 `autovideoclip-backend` 与 `AutoVideoClip` 各自的 PID、CPU、工作集。5 MB 量级更像壳；Python 后端空转也已经接近 10 MB，带模型会更大。两条要分开看。
 - 壳的 stderr：`后端进程意外退出，N 秒后自动重启（第 k 次）`。第 4 次应出现 `自动重启次数已用尽`，之后端口不再起来。
 - 拉起之后读本机 `studio.json`（数据目录下该项目的 `metadata/studio.json`）和项目接口：`error_code=service_restarted`，`failure_stage`，`shutdown_kind`，文案为目录句。
 - **窗口保持聚焦**再杀一次：快轮询失败后，大约 10 秒内应自己换成 `service_restarted` 的失败句，不必先切走窗口。切走再切回来仍然会刷新。安装包上还没眼见过。
-- 另开一轮把 `AUTOCLIP_CLIP_JOB_BUDGET_SEC` 设成 `20`，后端保持存活：应在约 20 秒以 `timeout` 停，而不是 `service_restarted`，CPU 在等待模型时可以接近 0。
+- 另开一轮把 `AUTOVIDEOCLIP_CLIP_JOB_BUDGET_SEC` 设成 `20`，后端保持存活：应在约 20 秒以 `timeout` 停，而不是 `service_restarted`，CPU 在等待模型时可以接近 0。
 
 ### 仍然只有反馈者本人能提供的
 
@@ -144,7 +144,7 @@ yt-dlp --skip-download --no-warnings --no-playlist -J \
 ```bash
 ollama serve
 ollama pull qwen2.5:7b
-autoclip run <带字幕的口播.mp4> --provider ollama --srt <file.srt> --json
+autovideoclip run <带字幕的口播.mp4> --provider ollama --srt <file.srt> --json
 ```
 
 看 `error_code` 是 `invalid_response` 还是 `timeline_empty`，以及块报告里的 `attempts` 是否到 3。不需要反馈者的工程文件。

@@ -14,7 +14,7 @@
 - 验收机上 `WINQA_USER` 有一个**已登录的交互桌面**（RDP 窗口开着即可，不要注销）。没人登录时脚本退回 session 0 直接启动，
   结果里 `mode=direct-session0`，界面相关结论不成立。
 - 仓库 checkout 要和候选包同一提交（默认用本仓库根目录；CI 冒烟脚本和示例素材从这里拷到验收机）。
-- **每次运行都会先卸载 AutoVideoClip 并删除用户数据**（`%APPDATA%\AutoVideoClip`、`%LOCALAPPDATA%\com.autoclip.desktop`、安装目录、临时冒烟目录），
+- **每次运行都会先卸载 AutoVideoClip 并删除用户数据**（`%APPDATA%\AutoVideoClip`、`%LOCALAPPDATA%\com.autovideoclip.desktop`、安装目录、临时冒烟目录），
   所以验收机上不要放别的东西。
 
 ## 环境变量
@@ -25,7 +25,7 @@
 | `WINQA_USER` | 是 | 验收机 Windows 账号（需已登录交互桌面） |
 | `WINQA_SSH_IDENTITY` | 否 | SSH 私钥**文件路径**；不设则用 ssh-agent / `~/.ssh/config` |
 | `WINQA_REPO` | 否 | 仓库 checkout，默认本仓库根目录 |
-| `WINQA_EVIDENCE_ROOT` | 否 | 证据根目录，默认 `${TMPDIR:-/tmp}/autoclip-winqa` |
+| `WINQA_EVIDENCE_ROOT` | 否 | 证据根目录，默认 `${TMPDIR:-/tmp}/autovideoclip-winqa` |
 | `WINQA_MODEL_API_KEY` | `--real` 时 | 真实模型 key。只经 ssh stdin 传给验收机上的 Python，不进命令行、不写盘；证据由 `redact.py` 精确脱敏 |
 | `WINQA_MODEL_BASE_URL` / `WINQA_MODEL` / `WINQA_MODEL_PROVIDER` | `--real` 时 | 第 10 步保存的模型接口、模型名、提供商（也可用 `--model-base-url` / `--model` / `--model-provider`） |
 

@@ -57,7 +57,7 @@
 - 游戏项目：`http://127.0.0.1:8780/#/project/78a0587f-16e2-4b1c-ab58-23aad2165f4b`
 - 旧切片手工兼容样本：`http://127.0.0.1:8780/#/project/legacy-flow-review`
 
-这是当前实现的可操作预览，不是新的设计稿。数据在 `/tmp/autoclip-product-review`，与主工作区项目数据隔离。服务重启需运行 `/tmp/autoclip-product-review.py`；代码继续仅在 `codex/visual-game-ads` worktree中修改。
+这是当前实现的可操作预览，不是新的设计稿。数据在 `/tmp/autovideoclip-product-review`，与主工作区项目数据隔离。服务重启需运行 `/tmp/autovideoclip-product-review.py`；代码继续仅在 `codex/visual-game-ads` worktree中修改。
 
 
 ## 9月23日进展：草稿与成片状态

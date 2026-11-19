@@ -15,7 +15,7 @@
 
 测试连接会发送一张内置红色图片并校验识别结果，不发送项目素材。测试和保存分开；密钥不回显，留空保留，明确勾选才清除。配置保存在当前数据目录的 `vision-settings.json`，写入文件权限为 0600，与文本模型设置独立。
 
-未保存配置时兼容 `.env` / 进程环境变量 `AUTOCLIP_VISION_BASE_URL`、`AUTOCLIP_VISION_API_KEY`、`AUTOCLIP_VISION_MODEL`，以及现有 `SEEDANCE_BASE_URL`、`SEEDANCE_API_KEY`。已保存的界面配置优先，包括主动清除密钥的情况。
+未保存配置时兼容 `.env` / 进程环境变量 `AUTOVIDEOCLIP_VISION_BASE_URL`、`AUTOVIDEOCLIP_VISION_API_KEY`、`AUTOVIDEOCLIP_VISION_MODEL`，以及现有 `SEEDANCE_BASE_URL`、`SEEDANCE_API_KEY`。已保存的界面配置优先，包括主动清除密钥的情况。
 
 ## 数据与模块
 

@@ -1,6 +1,6 @@
 """SenseVoice CTC alignment, in milliseconds; never invent subtitle timing.
 
-Adapted from LauraGPT's MIT-licensed timestamp fix for 123mlly/autoclip PR #1.
+Adapted from LauraGPT's MIT-licensed timestamp fix for 123mlly/autovideoclip PR #1.
 We require complete CTC alignment instead of its coarse/proportional fallbacks.
 """
 import math

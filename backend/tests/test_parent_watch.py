@@ -1,7 +1,7 @@
 """RC156 #20: the desktop backend exits with the app, even after `kill -9` of the app.
 
 macOS has no Job Object, so the bundled backend (and its ffmpeg/Whisper children) used to
-outlive a killed or crashed app. The Tauri shell now passes AUTOCLIP_PARENT_PID; runs without
+outlive a killed or crashed app. The Tauri shell now passes AUTOVIDEOCLIP_PARENT_PID; runs without
 it (CLI, MCP, Docker, dev) are not watched at all.
 """
 import os
@@ -41,30 +41,30 @@ def _wait(predicate, timeout=20.0):
 
 # ---------------------------------------------------------------- opt-in only
 
-@pytest.mark.parametrize('environ', [{}, {'AUTOCLIP_PARENT_PID': ''}, {'AUTOCLIP_PARENT_PID': 'abc'},
-                                     {'AUTOCLIP_PARENT_PID': '1'}, {'AUTOCLIP_PARENT_PID': '0'}])
+@pytest.mark.parametrize('environ', [{}, {'AUTOVIDEOCLIP_PARENT_PID': ''}, {'AUTOVIDEOCLIP_PARENT_PID': 'abc'},
+                                     {'AUTOVIDEOCLIP_PARENT_PID': '1'}, {'AUTOVIDEOCLIP_PARENT_PID': '0'}])
 def test_runs_without_a_desktop_parent_are_not_watched(environ):
     called = []
     environ = dict(environ)
     assert parent_watch.start(called.append, environ=environ, interval=0.01) is None
-    assert 'AUTOCLIP_PARENT_PID' not in environ  # never inherited by our own children
+    assert 'AUTOVIDEOCLIP_PARENT_PID' not in environ  # never inherited by our own children
     time.sleep(0.05)
     assert called == []
 
 
 def test_own_pid_is_not_a_parent():
-    assert parent_watch.parent_pid_from_env({'AUTOCLIP_PARENT_PID': str(os.getpid())}) is None
+    assert parent_watch.parent_pid_from_env({'AUTOVIDEOCLIP_PARENT_PID': str(os.getpid())}) is None
 
 
 def test_variable_is_consumed_so_children_do_not_inherit_it():
-    environ = {'AUTOCLIP_PARENT_PID': str(os.getppid()), 'OTHER': 'x'}
+    environ = {'AUTOVIDEOCLIP_PARENT_PID': str(os.getppid()), 'OTHER': 'x'}
     assert parent_watch.parent_pid_from_env(environ) == os.getppid()
     assert environ == {'OTHER': 'x'}
 
 
 def test_live_parent_keeps_the_backend_running_and_normal_shutdown_ends_the_watch():
     called = []
-    thread = parent_watch.start(called.append, environ={'AUTOCLIP_PARENT_PID': str(os.getppid())}, interval=0.02)
+    thread = parent_watch.start(called.append, environ={'AUTOVIDEOCLIP_PARENT_PID': str(os.getppid())}, interval=0.02)
     assert thread is not None
     time.sleep(0.2)
     assert called == [] and thread.is_alive()
@@ -195,7 +195,7 @@ def test_desktop_main_starts_the_watch_after_the_server():
 
 def test_tauri_shell_passes_its_own_pid_to_the_backend():
     rust = (ROOT / 'src-tauri' / 'src' / 'backend_manager.rs').read_text(encoding='utf-8')
-    assert re.search(r'\.env\(\s*"AUTOCLIP_PARENT_PID",\s*std::process::id\(\)\.to_string\(\)\s*\)', rust)
+    assert re.search(r'\.env\(\s*"AUTOVIDEOCLIP_PARENT_PID",\s*std::process::id\(\)\.to_string\(\)\s*\)', rust)
 
 
 # ---------------------------------------------------------------- real kill -9 of the parent
@@ -213,14 +213,14 @@ CHILD = textwrap.dedent('''
     manager.is_running = True
     worker = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(120)"])  # stands in for ffmpeg
     assert parent_watch.start(manager.shutdown_for_lost_parent, interval=0.2) is not None
-    assert "AUTOCLIP_PARENT_PID" not in os.environ
+    assert "AUTOVIDEOCLIP_PARENT_PID" not in os.environ
     out.write_text(f"{os.getpid()} {worker.pid}")
     time.sleep(120)
 ''')
 
 PARENT = textwrap.dedent('''
     import os, subprocess, sys, time
-    env = dict(os.environ, AUTOCLIP_PARENT_PID=str(os.getpid()))
+    env = dict(os.environ, AUTOVIDEOCLIP_PARENT_PID=str(os.getpid()))
     subprocess.Popen([sys.executable, "-c", sys.argv[1], sys.argv[2]], env=env)
     time.sleep(120)
 ''')
@@ -229,9 +229,9 @@ PARENT = textwrap.dedent('''
 @pytest.mark.skipif(os.name != 'posix', reason='kill -9 semantics; Windows is covered by the Job Object')
 def test_backend_and_its_children_exit_after_kill_9_of_the_app(tmp_path):
     out = tmp_path / 'pids'
-    env = dict(os.environ, AUTOCLIP_APP_DIR=str(tmp_path), AUTOCLIP_DATA_DIR=str(tmp_path),
-               DATABASE_URL=f"sqlite:///{tmp_path / 'autoclip.db'}", PYTHONPATH=str(ROOT), SENTRY_DSN='')
-    env.pop('AUTOCLIP_PARENT_PID', None)
+    env = dict(os.environ, AUTOVIDEOCLIP_APP_DIR=str(tmp_path), AUTOVIDEOCLIP_DATA_DIR=str(tmp_path),
+               DATABASE_URL=f"sqlite:///{tmp_path / 'autovideoclip.db'}", PYTHONPATH=str(ROOT), SENTRY_DSN='')
+    env.pop('AUTOVIDEOCLIP_PARENT_PID', None)
     app = subprocess.Popen([sys.executable, '-c', PARENT, CHILD, str(out)], env=env, cwd=ROOT)
     try:
         assert _wait(lambda: out.exists() and out.read_text().strip(), 60), 'backend stand-in never started'

@@ -345,7 +345,7 @@ mod download_tests {
 
     #[tokio::test]
     async fn saves_a_chunked_download_without_overwriting() {
-        let dir = std::env::temp_dir().join(format!("autoclip-stream-success-{}", std::process::id()));
+        let dir = std::env::temp_dir().join(format!("autovideoclip-stream-success-{}", std::process::id()));
         std::fs::create_dir_all(&dir).unwrap();
         std::fs::write(dir.join("kit.zip"), b"previous").unwrap();
         let saved = save_response(response_from_fixture(32 * 8192).await, &dir, "kit.zip").await.unwrap();
@@ -357,7 +357,7 @@ mod download_tests {
 
     #[tokio::test]
     async fn removes_a_truncated_download() {
-        let dir = std::env::temp_dir().join(format!("autoclip-stream-failure-{}", std::process::id()));
+        let dir = std::env::temp_dir().join(format!("autovideoclip-stream-failure-{}", std::process::id()));
         std::fs::create_dir_all(&dir).unwrap();
         assert!(save_response(response_from_fixture(64 * 8192).await, &dir, "kit.zip").await.is_err());
         assert_eq!(std::fs::read_dir(&dir).unwrap().count(), 0);
@@ -382,7 +382,7 @@ mod download_tests {
 
     #[test]
     fn does_not_overwrite_an_existing_download() {
-        let dir = std::env::temp_dir().join(format!("autoclip-download-{}", std::process::id()));
+        let dir = std::env::temp_dir().join(format!("autovideoclip-download-{}", std::process::id()));
         let _ = std::fs::remove_dir_all(&dir);
         std::fs::create_dir_all(&dir).unwrap();
         std::fs::write(dir.join("clip.mp4"), b"old").unwrap();

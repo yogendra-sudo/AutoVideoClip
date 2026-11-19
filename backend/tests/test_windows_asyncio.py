@@ -103,7 +103,7 @@ def test_headless_startup_closes_reset_transport(tmp_path, monkeypatch, transpor
     # This runtime-only suite installs just pytest. Load the stdlib-only runner
     # directly so importing backend.services doesn't bring in SQLAlchemy.
     spec = importlib.util.spec_from_file_location(
-        'autoclip_runtime_runner', Path(__file__).parents[1] / 'services' / 'local_runner.py',
+        'autovideoclip_runtime_runner', Path(__file__).parents[1] / 'services' / 'local_runner.py',
     )
     module = importlib.util.module_from_spec(spec)
     monkeypatch.setitem(windows_asyncio.sys.modules, spec.name, module)
@@ -111,7 +111,7 @@ def test_headless_startup_closes_reset_transport(tmp_path, monkeypatch, transpor
     monkeypatch.setattr(_ProactorBasePipeTransport, '_call_connection_lost', _ProactorBasePipeTransport._call_connection_lost)
     monkeypatch.setattr(windows_asyncio.sys, 'platform', 'win32')
     monkeypatch.setattr(windows_asyncio.sys, 'version_info', (3, 13))
-    for name in ('AUTOCLIP_APP_DIR', 'AUTOCLIP_DATA_DIR', 'LOG_FILE', 'DATABASE_URL', 'AUTOCLIP_CLI_QUIET'):
+    for name in ('AUTOVIDEOCLIP_APP_DIR', 'AUTOVIDEOCLIP_DATA_DIR', 'LOG_FILE', 'DATABASE_URL', 'AUTOVIDEOCLIP_CLI_QUIET'):
         monkeypatch.setenv(name, 'test')
 
     module.configure_environment(tmp_path)

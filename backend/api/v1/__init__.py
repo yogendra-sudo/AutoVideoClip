@@ -50,7 +50,7 @@ api_router.include_router(upload_router, tags=["upload"])
 api_router.include_router(progress_router, prefix="/progress", tags=["progress"])
 api_router.include_router(pipeline_control_router, prefix="/pipeline", tags=["pipeline"])
 # Debug routes can push messages directly to publish channels; only mounted when explicitly enabled
-if os.getenv("AUTOCLIP_ENABLE_DEBUG_ROUTES", "").lower() in ("1", "true", "yes"):
+if os.getenv("AUTOVIDEOCLIP_ENABLE_DEBUG_ROUTES", "").lower() in ("1", "true", "yes"):
     api_router.include_router(debug_router, tags=["debug"])
 api_router.include_router(simple_progress_router, tags=["simple-progress"])
 # api_router.include_router(environment_router, tags=["environment"])  # file does not exist, temporarily commented out

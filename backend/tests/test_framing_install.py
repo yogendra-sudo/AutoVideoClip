@@ -16,7 +16,7 @@ def _clean(tmp_path, monkeypatch):
     monkeypatch.setattr(framing, "get_install_dir", lambda: tmp_path / "framing-runtime")
     monkeypatch.setattr(framing, "_data_dir", lambda: tmp_path)
     monkeypatch.setattr(framing, "is_installed", lambda: False)
-    for name in ("AUTOCLIP_PIP_INDEX", "PIP_INDEX_URL"):
+    for name in ("AUTOVIDEOCLIP_PIP_INDEX", "PIP_INDEX_URL"):
         monkeypatch.delenv(name, raising=False)
     framing._set_state(status="unknown", progress=0, message="")
     yield

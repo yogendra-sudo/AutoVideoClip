@@ -130,7 +130,7 @@ test('a granted notice is shown once, records a click, and a disabled flag does 
     transport: { permission: () => { called = true; return 'granted' }, notify: () => ({}) },
   }), null)
   assert.equal(called, false)
-  assert.equal(quiet.getItem('autoclip.notices.v1'), null)
+  assert.equal(quiet.getItem('autovideoclip.notices.v1'), null)
 })
 
 test('notice and override events keep enums and drop titles', () => {

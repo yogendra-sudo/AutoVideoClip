@@ -17,8 +17,8 @@ LATER = {'provider': 'kimi', 'config_source': 'customized'}  # settings changed 
 
 @pytest.fixture(autouse=True)
 def isolated(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     from backend.services.studio import failure_identity, shutdown_marker
     monkeypatch.setattr(failure_identity, 'provider_identity', lambda *_a, **_k: dict(LATER))
     shutdown_marker._consumed.clear()
@@ -253,7 +253,7 @@ def test_intent_router_is_mounted_in_the_app(monkeypatch):
     from backend.app_factory import create_app
     from backend.core import launch_token
     monkeypatch.setattr(launch_token, '_token', '')
-    monkeypatch.setenv('AUTOCLIP_SHUTDOWN_TOKEN', TOKEN)
+    monkeypatch.setenv('AUTOVIDEOCLIP_SHUTDOWN_TOKEN', TOKEN)
     client = TestClient(create_app(mode='web'), client=LOOPBACK)
     assert client.post('/internal/shutdown-intent', json={'kind': 'user_quit'}).status_code == 403
     response = client.post('/internal/shutdown-intent', json={'kind': 'update'}, headers={'X-AutoClip-Local-Token': TOKEN})
@@ -339,32 +339,32 @@ def test_loopback_clients_are_accepted(monkeypatch, host):
 
 
 def test_desktop_backend_binds_loopback_by_default(monkeypatch):
-    monkeypatch.delenv('AUTOCLIP_HOST', raising=False)
+    monkeypatch.delenv('AUTOVIDEOCLIP_HOST', raising=False)
     import inspect
     source = inspect.getsource(__import__('backend.core.desktop_config', fromlist=['x']))
-    assert 'os.getenv("AUTOCLIP_HOST", "127.0.0.1")' in source
+    assert 'os.getenv("AUTOVIDEOCLIP_HOST", "127.0.0.1")' in source
     rust = (Path(__file__).resolve().parents[2] / 'src-tauri/src/backend_manager.rs').read_text(encoding='utf-8')
-    assert 'AUTOCLIP_HOST' not in rust  # the shell never widens the bind
+    assert 'AUTOVIDEOCLIP_HOST' not in rust  # the shell never widens the bind
 
 
 def test_token_never_reaches_argv_logs_or_telemetry():
     root = Path(__file__).resolve().parents[2]
     rust = (root / 'src-tauri/src/backend_manager.rs').read_text(encoding='utf-8')
     # env only: exactly one place hands it to the child, never via .arg/.args, never printed.
-    assert rust.count('cmd.env("AUTOCLIP_SHUTDOWN_TOKEN", &token)') == 1
+    assert rust.count('cmd.env("AUTOVIDEOCLIP_SHUTDOWN_TOKEN", &token)') == 1
     for line in rust.splitlines():
         if 'token' in line.lower() and not line.strip().startswith('//'):
             assert not re.search(r'\b(println|eprintln|print|format|log::\w+|info|warn|error|debug)!\([^)]*\{token\}', line) or 'X-AutoClip-Local-Token: {token}' in line, line
             assert '.arg(' not in line and '.args(' not in line, line
     # Python: only launch_token reads the env var; nothing logs or emits the value.
-    readers = [p for p in (root / 'backend').rglob('*.py') if 'tests' not in p.parts and 'AUTOCLIP_SHUTDOWN_TOKEN' in p.read_text(encoding='utf-8', errors='ignore')]
+    readers = [p for p in (root / 'backend').rglob('*.py') if 'tests' not in p.parts and 'AUTOVIDEOCLIP_SHUTDOWN_TOKEN' in p.read_text(encoding='utf-8', errors='ignore')]
     assert [p.name for p in readers] == ['launch_token.py']
     for path in (root / 'backend/core/launch_token.py', root / 'backend/api/internal.py'):
         text = path.read_text(encoding='utf-8')
         assert not re.search(r'(logger|logging|print|capture_message|emit|posthog|sentry)\w*[.(]', text), path.name
     for catalog in (root / 'backend/core/event_catalog.json', root / 'docs/analytics/event_catalog.json'):
         text = catalog.read_text(encoding='utf-8').lower()
-        assert 'shutdown_token' not in text and 'local_token' not in text and 'autoclip_shutdown' not in text
+        assert 'shutdown_token' not in text and 'local_token' not in text and 'autovideoclip_shutdown' not in text
 
 
 def test_token_is_not_in_logs_on_any_response(monkeypatch, caplog):
@@ -387,13 +387,13 @@ def test_child_processes_never_inherit_the_token(tmp_path):
         "import backend.app_factory\n"
         "from backend.core import launch_token\n"
         "assert launch_token.get() == os.environ.get('EXPECT')\n"
-        "out = subprocess.run([sys.executable, '-c', 'import os; print(os.environ.get(\"AUTOCLIP_SHUTDOWN_TOKEN\", \"<absent>\"))'],"
+        "out = subprocess.run([sys.executable, '-c', 'import os; print(os.environ.get(\"AUTOVIDEOCLIP_SHUTDOWN_TOKEN\", \"<absent>\"))'],"
         " capture_output=True, text=True).stdout.strip()\n"
         "print('CHILD=' + out)\n"
-        "print('PARENT_ENV=' + os.environ.get('AUTOCLIP_SHUTDOWN_TOKEN', '<absent>'))\n"
+        "print('PARENT_ENV=' + os.environ.get('AUTOVIDEOCLIP_SHUTDOWN_TOKEN', '<absent>'))\n"
     )
-    env = {**__import__('os').environ, 'AUTOCLIP_SHUTDOWN_TOKEN': TOKEN, 'EXPECT': TOKEN,
-           'AUTOCLIP_DATA_DIR': str(tmp_path), 'AUTOCLIP_APP_DIR': str(tmp_path), 'PYTHONPATH': str(root)}
+    env = {**__import__('os').environ, 'AUTOVIDEOCLIP_SHUTDOWN_TOKEN': TOKEN, 'EXPECT': TOKEN,
+           'AUTOVIDEOCLIP_DATA_DIR': str(tmp_path), 'AUTOVIDEOCLIP_APP_DIR': str(tmp_path), 'PYTHONPATH': str(root)}
     done = subprocess.run([sys.executable, '-c', script], cwd=root, env=env, capture_output=True, text=True, timeout=120)
     assert done.returncode == 0, done.stderr[-2000:].replace(TOKEN, '<token>')
     assert 'CHILD=<absent>' in done.stdout
@@ -416,7 +416,7 @@ def test_a1_1_crash_exit_from_exit_and_signal_markers():
 
 def test_a1_1_existing_user_quit_marker_is_not_overwritten_by_exit(tmp_path, monkeypatch):
     """Shell must not overwrite an intentional quit with exit:* (create_new semantics)."""
-    monkeypatch.setenv('AUTOCLIP_SHUTDOWN_MARKER_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_SHUTDOWN_MARKER_DIR', str(tmp_path))
     from backend.services.studio import shutdown_marker as sm
     instance = 'a' * 32
     assert sm.mark('user_quit', instance)

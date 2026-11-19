@@ -97,7 +97,7 @@ def vision_call_at(phase, content):
 
 
 def _http_error_detail(error) -> str:
-    cached = getattr(error, "_autoclip_detail", None)
+    cached = getattr(error, "_autovideoclip_detail", None)
     if isinstance(cached, str):
         return cached
     try:
@@ -105,7 +105,7 @@ def _http_error_detail(error) -> str:
     except Exception:  # noqa: BLE001
         detail = ""
     try:
-        error._autoclip_detail = detail
+        error._autovideoclip_detail = detail
     except Exception:  # noqa: BLE001
         pass
     return detail

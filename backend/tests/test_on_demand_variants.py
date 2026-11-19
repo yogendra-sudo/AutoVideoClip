@@ -10,8 +10,8 @@ from backend.services.studio import jobs, store
 
 @pytest.fixture(autouse=True)
 def isolated_worker_paths(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     (tmp_path / 'privacy.json').write_text('{"crash_reports":false}')
     monkeypatch.setattr(store, '_read_failures', {})
     monkeypatch.setattr(store, '_pending_links', {})

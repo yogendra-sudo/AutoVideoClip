@@ -1,5 +1,5 @@
 {
-  "autoclip_safe_mode": false,
+  "autovideoclip_safe_mode": false,
   "remember_platforms": false,
   "one_click_paste_start": "button",
   "link_import_without_whisper": false,

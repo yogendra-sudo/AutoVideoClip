@@ -9,7 +9,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 BUNDLE = ROOT / 'mcpb'
-PYPI_NAME = 'autoclip-mcp'
+PYPI_NAME = 'autovideoclip-mcp'
 
 
 def _manifest() -> dict:
@@ -21,7 +21,7 @@ def _bundle_project() -> dict:
 
 
 def _load_entry():
-    spec = importlib.util.spec_from_file_location('autoclip_mcpb_entry', BUNDLE / 'src' / 'server.py')
+    spec = importlib.util.spec_from_file_location('autovideoclip_mcpb_entry', BUNDLE / 'src' / 'server.py')
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -46,12 +46,12 @@ def test_mcpb_manifest_is_a_thin_pypi_launcher():
     assert server['entry_point'] == 'src/server.py'
     assert server['mcp_config']['command'] == 'uv'
     assert server['mcp_config']['args'] == ['run', '--directory', '${__dirname}', 'src/server.py']
-    assert server['mcp_config']['env'] == {'AUTOCLIP_API_KEY': '${user_config.api_key}'}
+    assert server['mcp_config']['env'] == {'AUTOVIDEOCLIP_API_KEY': '${user_config.api_key}'}
     assert api_key['type'] == 'string'
     assert api_key['sensitive'] is True
     assert api_key['required'] is False
     assert 'default' not in api_key
-    assert project['name'] == 'autoclip-mcpb'
+    assert project['name'] == 'autovideoclip-mcpb'
     assert project['dependencies'] == [f'{PYPI_NAME}=={root["version"]}']
     assert (BUNDLE / 'icon.png').is_file()
     assert (BUNDLE / server['entry_point']).is_file()
@@ -63,17 +63,17 @@ def test_mcpb_manifest_is_a_thin_pypi_launcher():
 @pytest.mark.stdlib_only
 def test_blank_user_config_does_not_override_desktop_settings(monkeypatch):
     entry = _load_entry()
-    monkeypatch.setenv('AUTOCLIP_API_KEY', '   ')
+    monkeypatch.setenv('AUTOVIDEOCLIP_API_KEY', '   ')
     entry._drop_unset_api_key()
-    assert 'AUTOCLIP_API_KEY' not in os.environ
+    assert 'AUTOVIDEOCLIP_API_KEY' not in os.environ
 
-    monkeypatch.setenv('AUTOCLIP_API_KEY', '${user_config.api_key}')
+    monkeypatch.setenv('AUTOVIDEOCLIP_API_KEY', '${user_config.api_key}')
     entry._drop_unset_api_key()
-    assert 'AUTOCLIP_API_KEY' not in os.environ
+    assert 'AUTOVIDEOCLIP_API_KEY' not in os.environ
 
-    monkeypatch.setenv('AUTOCLIP_API_KEY', 'sk-real-key')
+    monkeypatch.setenv('AUTOVIDEOCLIP_API_KEY', 'sk-real-key')
     entry._drop_unset_api_key()
-    assert os.environ['AUTOCLIP_API_KEY'] == 'sk-real-key'
+    assert os.environ['AUTOVIDEOCLIP_API_KEY'] == 'sk-real-key'
 
 
 @pytest.mark.stdlib_only

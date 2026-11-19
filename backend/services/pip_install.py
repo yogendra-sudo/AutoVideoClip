@@ -1,6 +1,6 @@
 """按需组件的 pip 安装：Whisper 运行时和人物识别组件共用。
 
-- 源：沿用 packaging_runtime.pip_index_plan。显式参数 > AUTOCLIP_PIP_INDEX > PIP_INDEX_URL >
+- 源：沿用 packaging_runtime.pip_index_plan。显式参数 > AUTOVIDEOCLIP_PIP_INDEX > PIP_INDEX_URL >
   auto（先官方 PyPI，再清华镜像）。
 - 时长：官方源最多 15 分钟（后面还有镜像时），镜像 / 唯一的源最多 30 分钟；任何源 180 秒没有
   输出就停，换下一个源。

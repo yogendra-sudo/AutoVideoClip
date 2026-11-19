@@ -85,7 +85,7 @@ if (process.env.NODE_TEST_CONTEXT && /\.test\.c?js$/.test(process.argv[1] || '')
   }
   // #301: native import() bypasses Module._load. The loader hook appends a call to this function to
   // happy-dom's ESM entry, so the window class is patched before the importing test sees it.
-  globalThis[Symbol.for('autoclip.test.happyDomLoaded')] = patchHappyDom
+  globalThis[Symbol.for('autovideoclip.test.happyDomLoaded')] = patchHappyDom
   require('node:module').register(require('node:url').pathToFileURL(require('node:path').join(__dirname, 'setup-hooks.mjs')))
 
   function take() { return problems.splice(0) }

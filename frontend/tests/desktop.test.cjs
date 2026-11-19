@@ -40,7 +40,7 @@ test('crash payload removes private text and retains code positions for source m
   let config
   const sentry = load('sentry', { '@sentry/react': { init: c => { config = c } } }, { localStorage: { getItem: () => null }, window: DESKTOP_WINDOW })
   sentry.initSentry()
-  const event = config.beforeSend({ event_id: 'event', release: 'autoclip-frontend@1.3.1',
+  const event = config.beforeSend({ event_id: 'event', release: 'autovideoclip-frontend@1.3.1',
     message: 'private', request: { data: 'private' }, extra: { secret: 'private' }, breadcrumbs: ['private'], user: { id: 'private' },
     exception: { values: [{ type: 'TypeError', value: 'private', stacktrace: { frames: [{ filename: 'http://localhost/assets/index.js?token=private', lineno: 1, colno: 20, function: 'render', vars: { text: 'private' } }] } }] },
     debug_meta: { images: [{ debug_id: 'build-id' }] } })
@@ -88,13 +88,13 @@ test('an available update is checked again next launch; an up-to-date result wai
     '@tauri-apps/plugin-updater': { check: async () => { calls += 1; return calls === 1 ? null : { version: '1.4.0', body: '- Prompt to restart', download() {}, install() {}, close() {} } } },
   }, { localStorage: storage2 })
   assert.equal(await updater.maybeCheckForUpdate(), null)
-  assert.equal(store2.get('autoclip.updater.lastResult'), 'current')
+  assert.equal(store2.get('autovideoclip.updater.lastResult'), 'current')
   assert.equal(await updater.maybeCheckForUpdate(), null)
   assert.equal(calls, 1)
-  store2.set('autoclip.updater.lastResult', 'available')
+  store2.set('autovideoclip.updater.lastResult', 'available')
   const found = await updater.maybeCheckForUpdate()
   assert.equal(found.version, '1.4.0')
-  assert.equal(store2.get('autoclip.updater.lastResult'), 'available')
+  assert.equal(store2.get('autovideoclip.updater.lastResult'), 'available')
 })
 test('the same new version is offered at most once a day; a newer version can remind the same day', () => {
   const schedule = load('updateSchedule', {})
@@ -103,8 +103,8 @@ test('the same new version is offered at most once a day; a newer version can re
   assert.equal(schedule.areRemindersEnabled(storage), true)
   assert.equal(schedule.shouldRemind(storage, '1.5.7', 1_000), true)
   schedule.rememberReminder(storage, '1.5.7', 1_000)
-  assert.equal(store.get('autoclip.updater.lastRemindedVersion'), '1.5.7')
-  assert.equal(store.get('autoclip.updater.lastRemindedAt'), '1000')
+  assert.equal(store.get('autovideoclip.updater.lastRemindedVersion'), '1.5.7')
+  assert.equal(store.get('autovideoclip.updater.lastRemindedAt'), '1000')
   assert.equal(schedule.shouldRemind(storage, '1.5.7', 1_000 + 60_000), false)
   assert.equal(schedule.shouldRemind(storage, '1.5.7', 1_000 + schedule.UPDATE_CHECK_INTERVAL_MS - 1), false)
   assert.equal(schedule.shouldRemind(storage, '1.5.7', 1_000 + schedule.UPDATE_CHECK_INTERVAL_MS), true)
@@ -125,7 +125,7 @@ test('turning off reminders skips automatic checks and does not prompt', async (
   }, { localStorage: storage })
   assert.equal(await updater.maybeCheckForUpdate(), null)
   assert.equal(calls, 0)
-  assert.equal(store.has('autoclip.updater.lastCheckAt'), false)
+  assert.equal(store.has('autovideoclip.updater.lastCheckAt'), false)
 })
 test('already reminding the same version today does not offer it again even if the check still finds it', async () => {
   const schedule = load('updateSchedule', {})
@@ -182,6 +182,6 @@ test('offline automatic checks stay silent and do not persist a successful check
     '@tauri-apps/plugin-updater': { check: async () => { throw Object.assign(new Error('429 rate limited'), { status: 429 }) } },
   }, { localStorage: storage })
   assert.equal(await updater.maybeCheckForUpdate(), null)
-  assert.equal(store.get('autoclip.updater.lastCheckAt'), undefined)
-  assert.equal(store.get('autoclip.updater.lastResult'), undefined)
+  assert.equal(store.get('autovideoclip.updater.lastCheckAt'), undefined)
+  assert.equal(store.get('autovideoclip.updater.lastResult'), undefined)
 })

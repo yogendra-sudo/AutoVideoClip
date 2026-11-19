@@ -57,11 +57,11 @@ class QualityGateTests(unittest.TestCase):
 
             def execute(command, **kwargs):
                 environments.append(kwargs['env'].copy())
-                self.assertNotEqual(kwargs['env']['AUTOCLIP_DATA_DIR'], str(original))
-                self.assertTrue(Path(kwargs['env']['AUTOCLIP_DATA_DIR']).is_dir())
+                self.assertNotEqual(kwargs['env']['AUTOVIDEOCLIP_DATA_DIR'], str(original))
+                self.assertTrue(Path(kwargs['env']['AUTOVIDEOCLIP_DATA_DIR']).is_dir())
                 return subprocess.CompletedProcess(command, 1 if command[-1] == 'lint' else 0)
 
-            with patch.dict(os.environ, {'PYTEST_ADDOPTS': '-k nothing', 'PYTEST_PLUGINS': 'fixture', 'AUTOCLIP_DATA_DIR': str(original), 'SENTRY_DSN': 'fixture', 'OPENAI_API_KEY': 'fixture-key', 'API_DASHSCOPE_API_KEY': 'fixture-key'}), \
+            with patch.dict(os.environ, {'PYTEST_ADDOPTS': '-k nothing', 'PYTEST_PLUGINS': 'fixture', 'AUTOVIDEOCLIP_DATA_DIR': str(original), 'SENTRY_DSN': 'fixture', 'OPENAI_API_KEY': 'fixture-key', 'API_DASHSCOPE_API_KEY': 'fixture-key'}), \
                  patch('quality_gate.subprocess.check_output', side_effect=['a' * 40, '']), \
                  patch('quality_gate.subprocess.run', side_effect=execute):
                 self.assertEqual(quality_gate.run('frontend', report, sys.executable), 1)

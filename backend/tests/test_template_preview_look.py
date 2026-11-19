@@ -272,8 +272,8 @@ def test_prepare_overlay_paints_the_preview_marks(tmp_path, monkeypatch):
         pytest.skip('ffmpeg unavailable')
     if subprocess.run(['timeout', '5', CHROME, '--version'], capture_output=True).returncode != 0:
         pytest.skip('chrome unavailable')
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_TEMPLATE_BUDGET_SEC', '120')
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_TEMPLATE_BUDGET_SEC', '120')
     shots = tmp_path / 'shots'
     shots.mkdir()
 

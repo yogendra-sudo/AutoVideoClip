@@ -69,8 +69,8 @@ Tauri 合并，不影响 macOS。
 ### 运行时怎么找到这些资源（`src-tauri/src/backend_manager.rs`）
 
 - Python：`resources/python/bin/python3`（unix）或 `resources/python/python.exe`（Windows）
-- ffmpeg：`resources/ffmpeg/ffmpeg[.exe]`，通过 `AUTOCLIP_FFMPEG_PATH` / `AUTOCLIP_FFPROBE_PATH` 传给后端
-- 数据目录：Rust 侧设置 `AUTOCLIP_APP_DIR=<平台数据目录>/AutoVideoClip`
+- ffmpeg：`resources/ffmpeg/ffmpeg[.exe]`，通过 `AUTOVIDEOCLIP_FFMPEG_PATH` / `AUTOVIDEOCLIP_FFPROBE_PATH` 传给后端
+- 数据目录：Rust 侧设置 `AUTOVIDEOCLIP_APP_DIR=<平台数据目录>/AutoVideoClip`
   （macOS `~/Library/Application Support/AutoVideoClip`，Windows `%APPDATA%\AutoVideoClip`）
 - Windows 额外：`PYTHONUTF8=1`（后端 stdout 有 emoji，否则 GBK 控制台直接 UnicodeEncodeError）、
   `CREATE_NO_WINDOW`（不弹黑框）
@@ -94,7 +94,7 @@ Python wheel 的资源和人物取景校验：安装基础依赖与 `opencv-pyth
 先构建 wheel，再执行：
 
 ```bash
-python scripts/verify_python_wheel.py dist/autoclip_mcp-*-py3-none-any.whl --video backend/assets/example/source.mp4 --report /tmp/wheel-portrait.json
+python scripts/verify_python_wheel.py dist/autovideoclip_mcp-*-py3-none-any.whl --video backend/assets/example/source.mp4 --report /tmp/wheel-portrait.json
 ```
 
 脚本把 wheel 安装到源码目录外，核对 ONNX 与 MIT 许可证，并从真实视频抽帧生成访谈 / 播客两种裁切轨迹。

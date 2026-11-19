@@ -102,7 +102,7 @@ async def global_exception_handler(request: Request, exc: Exception) -> JSONResp
     
     # 根据异常类型返回不同的错误响应
     if isinstance(exc, AutoClipsException):
-        return handle_autoclips_exception(exc, request_id)
+        return handle_autovideoclips_exception(exc, request_id)
     elif isinstance(exc, ServiceError):
         return handle_service_error(exc, request_id)
     elif isinstance(exc, HTTPException):
@@ -115,13 +115,13 @@ async def global_exception_handler(request: Request, exc: Exception) -> JSONResp
         return handle_generic_exception(exc, request_id)
 
 
-def handle_autoclips_exception(exc: AutoClipsException, request_id: str = None) -> JSONResponse:
+def handle_autovideoclips_exception(exc: AutoClipsException, request_id: str = None) -> JSONResponse:
     """处理AutoClipsException"""
     status_code = get_status_code_for_category(exc.category)
     
     return create_error_response(
         status_code=status_code,
-        error_code=f"AUTOCLIPS_{exc.category.value}",
+        error_code=f"AUTOVIDEOCLIPS_{exc.category.value}",
         message=exc.message,
         details=exc.details,
         request_id=request_id

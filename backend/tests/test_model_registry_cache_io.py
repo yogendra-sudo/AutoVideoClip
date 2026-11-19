@@ -15,8 +15,8 @@ from backend.services import ai_model_settings as ai
 
 @pytest.fixture
 def catalog(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     cache = tmp_path / 'model-catalog-cache.json'
     monkeypatch.setattr(registry, '_path', lambda: cache)
     monkeypatch.setattr(ai, 'for_editing', lambda: ai.ModelSettings())

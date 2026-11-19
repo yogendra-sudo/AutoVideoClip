@@ -3,7 +3,7 @@
 Steps 1–4 call the text model once per transcript chunk. The calls do not depend on each other
 and mostly wait on the network, so a small pool cuts a 2 h video's analysis several-fold.
 Results keep chunk order. Local models (Ollama, LM Studio …) share this machine: sequential.
-`AUTOCLIP_LLM_CONCURRENCY` overrides the pool size (1–8).
+`AUTOVIDEOCLIP_LLM_CONCURRENCY` overrides the pool size (1–8).
 
 A process-wide limiter halves itself after a 429 so later chunks (and later steps) back off
 together. One chunk raising does not cancel its siblings: every submitted item finishes, then
@@ -32,7 +32,7 @@ _in_use = 0
 
 
 def workers() -> int:
-    configured = os.getenv('AUTOCLIP_LLM_CONCURRENCY', '').strip()
+    configured = os.getenv('AUTOVIDEOCLIP_LLM_CONCURRENCY', '').strip()
     if configured:
         try:
             return max(1, min(8, int(configured)))

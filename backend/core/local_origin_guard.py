@@ -10,7 +10,7 @@
 3. 桌面模式只接受 Host 为 127.0.0.1 / localhost 的请求，挡住 DNS 重绑定。
 
 CLI、curl、Tauri 的 reqwest 不带 Origin，照常放行。
-Docker 通过局域网 IP 或自定义域名访问时，用 AUTOCLIP_ALLOWED_ORIGINS 追加来源（逗号分隔）。
+Docker 通过局域网 IP 或自定义域名访问时，用 AUTOVIDEOCLIP_ALLOWED_ORIGINS 追加来源（逗号分隔）。
 """
 from __future__ import annotations
 
@@ -39,7 +39,7 @@ DRAIN_TIMEOUT_SEC = 5.0
 
 
 def allowed_origins() -> list[str]:
-    extra = [o.strip().rstrip("/") for o in os.getenv("AUTOCLIP_ALLOWED_ORIGINS", "").split(",") if o.strip()]
+    extra = [o.strip().rstrip("/") for o in os.getenv("AUTOVIDEOCLIP_ALLOWED_ORIGINS", "").split(",") if o.strip()]
     return list(dict.fromkeys([*DEFAULT_ALLOWED_ORIGINS, *extra]))
 
 

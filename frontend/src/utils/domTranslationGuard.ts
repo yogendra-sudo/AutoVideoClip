@@ -8,7 +8,7 @@
  * The downside is that the translation may retain old text.，But the page won't crash completely.。The approach is the same. facebook/react#11538 OfficialSuggested。
  */
 
-const GUARD_FLAG = '__autoclipDomTranslationGuard'
+const GUARD_FLAG = '__autovideoclipDomTranslationGuard'
 
 export function isPageTranslated(): boolean {
   if (typeof document === 'undefined') return false

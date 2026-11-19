@@ -92,7 +92,7 @@ class LLMManager:
     def _get_default_settings_file(self) -> Path:
         """获取默认设置文件路径"""
         # 优先使用桌面模式应用目录（与前端保存一致）
-        app_dir = os.getenv("AUTOCLIP_APP_DIR")
+        app_dir = os.getenv("AUTOVIDEOCLIP_APP_DIR")
         if app_dir:
             return Path(app_dir) / "settings.json"
 
@@ -561,7 +561,7 @@ class LLMManager:
             llm_telemetry.reset_retry_count(token)
 
     def call(self, prompt: str, input_data: Any = None, **kwargs) -> str:
-        """调用LLM。设了 AUTOCLIP_LLM_CACHE_DIR 时按 sha1(prompt+input) 录制 / 回放，给回归集用。
+        """调用LLM。设了 AUTOVIDEOCLIP_LLM_CACHE_DIR 时按 sha1(prompt+input) 录制 / 回放，给回归集用。
 
         ``model`` is per-call candidate state. It is not written to
         ``settings`` or ``current_provider.model_name``. A retired text model
@@ -835,8 +835,8 @@ def note_same_provider_degrade() -> int:
 
 
 def _llm_cache_path(prompt: str, input_data: Any) -> Optional[Path]:
-    """AUTOCLIP_LLM_CACHE_DIR 设了才启用；CI / eval 回放用。"""
-    root = os.getenv("AUTOCLIP_LLM_CACHE_DIR")
+    """AUTOVIDEOCLIP_LLM_CACHE_DIR 设了才启用；CI / eval 回放用。"""
+    root = os.getenv("AUTOVIDEOCLIP_LLM_CACHE_DIR")
     if not root:
         return None
     import hashlib

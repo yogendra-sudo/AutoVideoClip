@@ -17,11 +17,11 @@ from backend.models.base import Base
 # 数据库配置
 DATABASE_URL = os.getenv(
     "DATABASE_URL", 
-    "sqlite:///autoclip.db"
+    "sqlite:///autovideoclip.db"
 )
 
 # 如果没有设置环境变量，使用配置函数获取数据库URL
-if DATABASE_URL == "sqlite:///autoclip.db":
+if DATABASE_URL == "sqlite:///autovideoclip.db":
     try:
         from .config import get_database_url
         DATABASE_URL = get_database_url()

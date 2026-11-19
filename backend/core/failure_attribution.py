@@ -89,7 +89,7 @@ def unexpected_type_of(error: BaseException | None) -> str | None:
 
 
 
-_RECORD_ATTR = "_autoclip_request_record"
+_RECORD_ATTR = "_autovideoclip_request_record"
 
 
 class FailureKind(str, Enum):

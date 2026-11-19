@@ -133,11 +133,11 @@ def resolve_local_whisper_backend(device: Optional[str] = None) -> Tuple[str, st
     ValueError，所以这条 RuntimeError 是执行后端，不是坏的 mel。
     桌面安装不依赖本机 CUDA，因此默认不走这条路径。
 
-    ``AUTOCLIP_WHISPER_DEVICE=cuda`` 用 float16（近期显卡上能跑通的类型）。
+    ``AUTOVIDEOCLIP_WHISPER_DEVICE=cuda`` 用 float16（近期显卡上能跑通的类型）。
     ``auto`` 交给 CTranslate2 自己的 default，不再强制 int8。
     """
     if device is None:
-        device = os.getenv("AUTOCLIP_WHISPER_DEVICE", "cpu")
+        device = os.getenv("AUTOVIDEOCLIP_WHISPER_DEVICE", "cpu")
     device = (device or "cpu").strip().lower()
     if device == "cuda":
         return "cuda", "float16"
@@ -203,7 +203,7 @@ def describe_whisper_failure(exc: BaseException) -> str:
     if any(token in low for token in ("cuda", "cublas", "cudnn")):
         return (
             "本地 Whisper 在显卡上转写失败。"
-            "请重试；若仍失败，去掉 AUTOCLIP_WHISPER_DEVICE 让它走 CPU 后再试。"
+            "请重试；若仍失败，去掉 AUTOVIDEOCLIP_WHISPER_DEVICE 让它走 CPU 后再试。"
         )
     if "n_fft" in low or "no speech" in low or ("audio" in low and "empty" in low):
         return "没有从这段视频里识别到可用语音。请确认视频包含清晰人声，或直接导入 SRT 字幕。"
@@ -397,7 +397,7 @@ def _await_whisper(clock: _WhisperClock, fn, *, pulse=None):
             with lock:
                 holder["value"] = value
 
-    thread = threading.Thread(target=run, name="autoclip-whisper", daemon=True)
+    thread = threading.Thread(target=run, name="autovideoclip-whisper", daemon=True)
     thread.start()
     try:
         while thread.is_alive():

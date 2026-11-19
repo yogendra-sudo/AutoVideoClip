@@ -55,13 +55,13 @@ assert len(received) == 1, received
 event = received[0]
 expected = {'runtime': 'python', 'app_mode': 'desktop',
             'os': detect_os(), 'arch': detect_arch(),
-            'build_environment': os.environ['AUTOCLIP_BUILD_ENVIRONMENT'],
+            'build_environment': os.environ['AUTOVIDEOCLIP_BUILD_ENVIRONMENT'],
             'area': 'studio', 'phase': 'production', 'error_code': 'unexpected',
             'failure_stage': 'production', 'attribution_source': 'local'}  # R26 #392: not a provider failure
-if os.environ['AUTOCLIP_BUILD_ENVIRONMENT'] == 'validation':
+if os.environ['AUTOVIDEOCLIP_BUILD_ENVIRONMENT'] == 'validation':
     expected['telemetry_test'] = 'true'
 assert event.get('tags') == expected, event.get('tags')
-assert event['release'] == 'autoclip-backend@1.5.4'
+assert event['release'] == 'autovideoclip-backend@1.5.4'
 device_id = '018f6b2a-7c3d-7b2a-8c11-111111111111'
 if os.environ['IDENTITY_SOURCE'] == 'env':
     assert event['user'] == {'id': device_id}
@@ -88,14 +88,14 @@ assert len(received) == count, 'OFF must not submit another envelope'
 sentry_sdk.get_client().close()
 '''
     env = {key: value for key, value in os.environ.items() if key not in {'PYTEST_CURRENT_TEST', 'PYTEST_ADDOPTS'}}
-    env.update(AUTOCLIP_APP_DIR=str(tmp_path), AUTOCLIP_DATA_DIR=str(tmp_path),
-               AUTOCLIP_MODE='desktop', AUTOCLIP_BUILD_ENVIRONMENT=environment,
-               AUTOCLIP_APP_VERSION='1.5.4', SENTRY_DSN='https://public@example.invalid/1',
-               AUTOCLIP_EVENT_CATALOG=str(tmp_path / 'missing-catalog.json'),
+    env.update(AUTOVIDEOCLIP_APP_DIR=str(tmp_path), AUTOVIDEOCLIP_DATA_DIR=str(tmp_path),
+               AUTOVIDEOCLIP_MODE='desktop', AUTOVIDEOCLIP_BUILD_ENVIRONMENT=environment,
+               AUTOVIDEOCLIP_APP_VERSION='1.5.4', SENTRY_DSN='https://public@example.invalid/1',
+               AUTOVIDEOCLIP_EVENT_CATALOG=str(tmp_path / 'missing-catalog.json'),
                DATABASE_URL='sqlite:///' + str(tmp_path / 'isolated.sqlite'),
                PYTHONDONTWRITEBYTECODE='1')
     env.update(IDENTITY_SOURCE=identity_source,
-               AUTOCLIP_ANONYMOUS_DEVICE_ID='018f6b2a-7c3d-7b2a-8c11-111111111111' if identity_source == 'env' else '')
+               AUTOVIDEOCLIP_ANONYMOUS_DEVICE_ID='018f6b2a-7c3d-7b2a-8c11-111111111111' if identity_source == 'env' else '')
     result = subprocess.run([sys.executable, '-B', '-c', script],
                             cwd=Path(__file__).resolve().parents[2], env=env,
                             capture_output=True, text=True, timeout=45)

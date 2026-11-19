@@ -189,7 +189,7 @@ class MockHandler(BaseHTTPRequestHandler):
         if _is_models(path):
             self._json(200, {
                 'object': 'list',
-                'data': [{'id': 'mock-gpt', 'object': 'model', 'owned_by': 'autoclip-e2e'}],
+                'data': [{'id': 'mock-gpt', 'object': 'model', 'owned_by': 'autovideoclip-e2e'}],
             })
             return
         self._json(404, {'error': {'message': 'not found', 'type': 'invalid_request_error'}})

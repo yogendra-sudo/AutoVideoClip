@@ -107,7 +107,7 @@ def _prepare(pending) -> list[dict]:
     from backend.core.event_catalog import analytics_environment, app_version, detect_arch, detect_os, validate_event
     envelope = {
         'schema_version': 2,
-        'runtime': 'desktop' if os.environ.get('AUTOCLIP_MODE') == 'desktop' else 'web',
+        'runtime': 'desktop' if os.environ.get('AUTOVIDEOCLIP_MODE') == 'desktop' else 'web',
         'app_version': app_version(),
         'os': detect_os(),
         'arch': detect_arch(),

@@ -128,7 +128,7 @@ def test_a_non_positive_budget_does_not_start_ffmpeg(tmp_path):
 
 
 def test_packaging_html_sentry_phase_drops_paths_and_captions(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     event = {
         'tags': {'area': 'studio', 'phase': 'packaging_html', 'error_code': 'unexpected', 'path': str(tmp_path / 'secret.mp4')},
         'exception': {'values': [{'type': 'RuntimeError', 'value': f'failed {tmp_path}/clip.mp4 原话字幕'}]},

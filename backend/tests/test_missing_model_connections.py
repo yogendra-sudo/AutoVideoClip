@@ -11,8 +11,8 @@ from backend.services.studio.models import ConfirmPlan
 
 @pytest.fixture
 def missing_connection(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     # A usable old provider must never rescue a broken named assignment.
     (tmp_path / 'settings.json').write_text(json.dumps({
         'llm_provider': 'openai', 'openai_base_url': 'https://old.example/v1',

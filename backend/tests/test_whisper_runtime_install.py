@@ -8,8 +8,8 @@ from backend.services import whisper_runtime as wr
 
 @pytest.fixture(autouse=True)
 def _isolated(tmp_path, monkeypatch):
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(tmp_path))
-    for name in ("AUTOCLIP_PIP_INDEX", "PIP_INDEX_URL"):
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(tmp_path))
+    for name in ("AUTOVIDEOCLIP_PIP_INDEX", "PIP_INDEX_URL"):
         monkeypatch.delenv(name, raising=False)
     monkeypatch.setattr(wr, "_data_dir", lambda: tmp_path)
     wr._set_state(status="unknown", progress=0, message="", log_tail="")

@@ -79,8 +79,8 @@ OLD = 'f' * 32
 
 @pytest.fixture
 def isolated(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     from backend.services.studio import failure_identity, shutdown_marker
     monkeypatch.setattr(failure_identity, 'provider_identity', lambda *_a, **_k: dict(LATER))
     shutdown_marker._consumed.clear()
@@ -221,15 +221,15 @@ def test_100_backend_package_import_alone_strips_the_token(tmp_path):
         "import backend\n"
         "assert 'backend.core.launch_token' in sys.modules, 'backend/__init__ must import launch_token'\n"
         "assert 'backend.app_factory' not in sys.modules\n"
-        "out = subprocess.run([sys.executable, '-c', 'import os; print(os.environ.get(\"AUTOCLIP_SHUTDOWN_TOKEN\", \"<absent>\"))'],"
+        "out = subprocess.run([sys.executable, '-c', 'import os; print(os.environ.get(\"AUTOVIDEOCLIP_SHUTDOWN_TOKEN\", \"<absent>\"))'],"
         " capture_output=True, text=True).stdout.strip()\n"
         "print('CHILD=' + out)\n"
-        "print('PARENT_ENV=' + os.environ.get('AUTOCLIP_SHUTDOWN_TOKEN', '<absent>'))\n"
+        "print('PARENT_ENV=' + os.environ.get('AUTOVIDEOCLIP_SHUTDOWN_TOKEN', '<absent>'))\n"
         "from backend.core import launch_token\n"
         "print('KEPT=' + str(launch_token.get() == os.environ['EXPECT']))\n"
     )
-    env = {**os.environ, 'AUTOCLIP_SHUTDOWN_TOKEN': token, 'EXPECT': token,
-           'AUTOCLIP_DATA_DIR': str(tmp_path), 'AUTOCLIP_APP_DIR': str(tmp_path), 'PYTHONPATH': str(ROOT)}
+    env = {**os.environ, 'AUTOVIDEOCLIP_SHUTDOWN_TOKEN': token, 'EXPECT': token,
+           'AUTOVIDEOCLIP_DATA_DIR': str(tmp_path), 'AUTOVIDEOCLIP_APP_DIR': str(tmp_path), 'PYTHONPATH': str(ROOT)}
     done = subprocess.run([sys.executable, '-c', script], cwd=ROOT, env=env, capture_output=True, text=True, timeout=120)
     assert done.returncode == 0, done.stderr[-2000:].replace(token, '<token>')
     assert 'CHILD=<absent>' in done.stdout
@@ -307,16 +307,16 @@ def test_98_backend_uses_and_pops_the_shell_instance_id(tmp_path):
     instance = 'ab' * 16
     script = ("import os, sys\n"
               "import backend\n"
-              "print('ENV=' + os.environ.get('AUTOCLIP_INSTANCE_ID', '<absent>'))\n"
+              "print('ENV=' + os.environ.get('AUTOVIDEOCLIP_INSTANCE_ID', '<absent>'))\n"
               "from backend.services.studio import store\n"
               "print('INSTANCE=' + store.INSTANCE)\n")
-    env = {**os.environ, 'AUTOCLIP_INSTANCE_ID': instance, 'AUTOCLIP_DATA_DIR': str(tmp_path),
-           'AUTOCLIP_APP_DIR': str(tmp_path), 'PYTHONPATH': str(ROOT)}
-    env.pop('AUTOCLIP_SHUTDOWN_TOKEN', None)
+    env = {**os.environ, 'AUTOVIDEOCLIP_INSTANCE_ID': instance, 'AUTOVIDEOCLIP_DATA_DIR': str(tmp_path),
+           'AUTOVIDEOCLIP_APP_DIR': str(tmp_path), 'PYTHONPATH': str(ROOT)}
+    env.pop('AUTOVIDEOCLIP_SHUTDOWN_TOKEN', None)
     done = subprocess.run([sys.executable, '-c', script], cwd=ROOT, env=env, capture_output=True, text=True, timeout=120)
     assert done.returncode == 0, done.stderr[-2000:]
     assert 'ENV=<absent>' in done.stdout and f'INSTANCE={instance}' in done.stdout
-    env['AUTOCLIP_INSTANCE_ID'] = '../../etc'
+    env['AUTOVIDEOCLIP_INSTANCE_ID'] = '../../etc'
     done = subprocess.run([sys.executable, '-c', script], cwd=ROOT, env=env, capture_output=True, text=True, timeout=120)
     assert re.search(r'INSTANCE=[0-9a-f]{32}\n', done.stdout) and '../' not in done.stdout
 
@@ -379,8 +379,8 @@ def test_r20_134_prune_bounds_records_but_keeps_referenced_ones(monkeypatch, tmp
 @pytest.fixture
 def two_connections(tmp_path, monkeypatch):
     """Text on DeepSeek preset, vision on a separate customized OpenAI-compatible endpoint."""
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     monkeypatch.setattr(ai, 'migrate_legacy', lambda: ai.ModelSettings())
     ai.save(ai.ModelSettings(
         connections=[
@@ -448,9 +448,9 @@ VISUAL_PLAN = {'recommended_analysis': 'visual', 'confirmed_analysis': 'visual',
 @pytest.fixture
 
 def isolated__r21_415(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
-    monkeypatch.delenv('AUTOCLIP_SHUTDOWN_MARKER_DIR', raising=False)
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.delenv('AUTOVIDEOCLIP_SHUTDOWN_MARKER_DIR', raising=False)
     shutdown_marker._consumed.clear()
     shutdown_marker._restart_cached.clear()
 
@@ -554,9 +554,9 @@ def test_195_mid_run_settings_change_does_not_split_the_snapshot_identity(two_co
 @pytest.mark.usefixtures('isolated__r21_415')
 def test_196_backend_uses_the_marker_dir_the_shell_hands_it(tmp_path, monkeypatch):
     shell_dir = tmp_path / 'app' / 'shutdown_markers'
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path / 'app'))
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path / 'moved-data'))   # user moved the data dir
-    monkeypatch.setenv('AUTOCLIP_SHUTDOWN_MARKER_DIR', str(shell_dir))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path / 'app'))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path / 'moved-data'))   # user moved the data dir
+    monkeypatch.setenv('AUTOVIDEOCLIP_SHUTDOWN_MARKER_DIR', str(shell_dir))
     shell_dir.mkdir(parents=True)
     (shell_dir / OLD).write_text('unacked', encoding='ascii')                 # what the Rust shell writes
     assert shutdown_marker._root() == shell_dir
@@ -653,7 +653,7 @@ def test_199_failed_write_leaves_no_tmp_and_startup_drops_old_orphans(monkeypatc
     assert shutdown_marker.mark('user_quit', 'e' * 32) is False
     assert [p.name for p in root.iterdir()] == []
     monkeypatch.undo()
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(root.parent))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(root.parent))
     orphan, fresh = root / f'.{OLD}.1.tmp', root / f'.{OLD}.2.tmp'
     orphan.write_text('x'); fresh.write_text('x')
     os.utime(orphan, (time.time() - 7200, time.time() - 7200))
@@ -722,9 +722,9 @@ A, B, C = 'a' * 32, 'b' * 32, 'c' * 32
 @pytest.fixture
 
 def isolated__r22_415(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
-    monkeypatch.delenv('AUTOCLIP_SHUTDOWN_MARKER_DIR', raising=False)
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.delenv('AUTOVIDEOCLIP_SHUTDOWN_MARKER_DIR', raising=False)
     monkeypatch.setattr(ai, 'migrate_legacy', lambda: ai.ModelSettings())
     shutdown_marker._consumed.clear()
     shutdown_marker._restart_cached.clear()
@@ -1040,8 +1040,8 @@ Fails on f5921576 (observe_provider_call read settings before sending)."""
 @pytest.fixture
 
 def isolated__r23_415(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     monkeypatch.setattr(ai, 'migrate_legacy', lambda: ai.ModelSettings())
 
 
@@ -1450,7 +1450,7 @@ def _project__r25_415(pid, analysis):
 @pytest.mark.usefixtures('isolated__r22_415')
 def test_331_concurrent_chunk_failure_is_attributed_to_the_failing_request_everywhere(monkeypatch, posted):
     from backend.pipeline import concurrency
-    monkeypatch.setenv('AUTOCLIP_LLM_CONCURRENCY', '2')
+    monkeypatch.setenv('AUTOVIDEOCLIP_LLM_CONCURRENCY', '2')
     concurrency.reset_limiter()
     _project__r25_415('p331', {'status': 'running', 'phase': 'production', 'run_id': 'r', **KIMI})
     gate = threading.Event()
@@ -3695,7 +3695,7 @@ def test_dong3_network_kind_real_httpx_dns_failure_is_still_dns(monkeypatch):
     monkeypatch.setattr(socket, 'getaddrinfo', no_dns)
     with httpx.Client(trust_env=False) as client:
         with pytest.raises(httpx.ConnectError) as raised:
-            client.get('https://autoclip-r31.invalid/')
+            client.get('https://autovideoclip-r31.invalid/')
     assert network_kind_of(raised.value) == 'dns'
 
 

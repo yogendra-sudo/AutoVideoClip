@@ -1,5 +1,5 @@
 ---
-name: autoclip
+name: autovideoclip
 description: >-
   用 AutoVideoClip 把一条 YouTube / B 站链接，或本地长视频（讲座、访谈、播客、课程），做成各平台成片、封面、发布文案和 ZIP 发布包。
   当用户要「出片」「做封面」「写发布文案」「打包发布」「从这个链接做短视频」时使用。
@@ -10,7 +10,7 @@ description: >-
 
 AutoVideoClip 在本机把一条素材做成可发布的成片。产物和桌面应用共用数据目录，桌面首页能看到同一个项目。
 
-先调用 `get_version`（或 `autoclip --version`）读取当前安装的版本。版本号来自安装包，不要和文档里的数字核对。
+先调用 `get_version`（或 `autovideoclip --version`）读取当前安装的版本。版本号来自安装包，不要和文档里的数字核对。
 
 ## 什么时候用
 
@@ -35,14 +35,14 @@ AutoVideoClip 在本机把一条素材做成可发布的成片。产物和桌面
 ## 先选调用方式
 
 1. **有 AutoVideoClip MCP 工具** → 用工具，不要自己拼命令。
-2. **没有 MCP，但能跑 shell** → `autoclip produce <source> --json`。
-3. **两者都没有** → 一行安装：`uvx autoclip-mcp`，skill 用 `npx skills add yogendra-sudo/AutoVideoClip`。备选是在仓库根目录执行 `python -m pip install -r requirements.txt`，再执行 `python -m pip install --no-deps .`。详见 `docs/CLI_AND_MCP.md`。
+2. **没有 MCP，但能跑 shell** → `autovideoclip produce <source> --json`。
+3. **两者都没有** → 一行安装：`uvx autovideoclip-mcp`，skill 用 `npx skills add yogendra-sudo/AutoVideoClip`。备选是在仓库根目录执行 `python -m pip install -r requirements.txt`，再执行 `python -m pip install --no-deps .`。详见 `docs/CLI_AND_MCP.md`。
 
-模型密钥放在桌面应用的设置里，或环境变量 `AUTOCLIP_API_KEY`。不要把 key 写进工具参数或对话。
+模型密钥放在桌面应用的设置里，或环境变量 `AUTOVIDEOCLIP_API_KEY`。不要把 key 写进工具参数或对话。
 
 ## 示例 1：链接出发布包
 
-1. `get_version`（或 `autoclip --version`），记下返回的版本。不要对照文档里写死的版本号。
+1. `get_version`（或 `autovideoclip --version`），记下返回的版本。不要对照文档里写死的版本号。
 2. `start_quick_output`，`source` 用用户给的 HTTPS 链接（YouTube 或 B 站）。本地文件则先解析成绝对路径。`platforms` 用用户点名的平台；没点名时用 `douyin`。已有字幕就传 `srt_path`。
 3. 立刻拿到 `project_id`。按返回里的 `poll_after_sec` 调用 `get_quick_output_status`；没有这个字段时每 10 秒查一次。
 4. 每次把 `progress`、`stage`、`eta` 用一句话告诉用户。终态是 `completed`、`partial`、`failed`、`interrupted`、`cancelled`。`unknown` 表示没有这条任务，不要把它说成已完成。
@@ -52,8 +52,8 @@ AutoVideoClip 在本机把一条素材做成可发布的成片。产物和桌面
 没有 MCP 时：
 
 ```bash
-autoclip produce "https://www.youtube.com/watch?v=VIDEO" --platform douyin --platform youtube_shorts --json
-autoclip outputs PROJECT_ID --export-kits
+autovideoclip produce "https://www.youtube.com/watch?v=VIDEO" --platform douyin --platform youtube_shorts --json
+autovideoclip outputs PROJECT_ID --export-kits
 ```
 
 `youtube_long` 只生成至少 180 秒的完整片段。短素材改用 Shorts 或 B 站。
@@ -68,7 +68,7 @@ autoclip outputs PROJECT_ID --export-kits
 4. 其余步骤与示例 1 相同：轮询到终态，再 `export_kits=true`。
 
 ```bash
-autoclip produce talk.mp4 --template street --platform douyin --json
+autovideoclip produce talk.mp4 --template street --platform douyin --json
 ```
 
 ```json

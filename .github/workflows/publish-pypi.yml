@@ -1,4 +1,4 @@
-name: Publish autoclip-mcp to PyPI
+name: Publish autovideoclip-mcp to PyPI
 
 # Trusted publishing (OIDC): no API tokens or secrets.
 # - push tag mcp-v*     -> PyPI
@@ -48,7 +48,7 @@ jobs:
           set -euo pipefail
           VERSION=$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml","rb"))["project"]["version"])')
           NAME=$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml","rb"))["project"]["name"])')
-          test "$NAME" = "autoclip-mcp" || { echo "unexpected distribution name: $NAME"; exit 1; }
+          test "$NAME" = "autovideoclip-mcp" || { echo "unexpected distribution name: $NAME"; exit 1; }
           if [ "$REF_TYPE" = "tag" ]; then
             test "$REF_NAME" = "mcp-v$VERSION" || { echo "tag $REF_NAME does not match pyproject version $VERSION"; exit 1; }
           fi
@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: testpypi
-      url: https://test.pypi.org/project/autoclip-mcp/${{ needs.build.outputs.version }}/
+      url: https://test.pypi.org/project/autovideoclip-mcp/${{ needs.build.outputs.version }}/
     permissions:
       id-token: write
     steps:
@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/project/autoclip-mcp/${{ needs.build.outputs.version }}/
+      url: https://pypi.org/project/autovideoclip-mcp/${{ needs.build.outputs.version }}/
     permissions:
       id-token: write
     steps:
@@ -117,18 +117,18 @@ jobs:
           set -euo pipefail
           ARGS=()
           if [ "$TARGET" = "testpypi" ]; then
-            # Dependencies come from PyPI; only autoclip-mcp itself from TestPyPI.
+            # Dependencies come from PyPI; only autovideoclip-mcp itself from TestPyPI.
             ARGS=(--index https://test.pypi.org/simple/ --default-index https://pypi.org/simple/ --index-strategy unsafe-best-match)
           fi
           # The index can lag a few minutes behind the upload.
           for i in 1 2 3 4 5 6; do
-            uvx "${ARGS[@]}" --from "autoclip-mcp==$VERSION" python -c 'import backend.mcp_server' && break
+            uvx "${ARGS[@]}" --from "autovideoclip-mcp==$VERSION" python -c 'import backend.mcp_server' && break
             [ "$i" = 6 ] && exit 1
             sleep 30
           done
-          # `autoclip-mcp` takes no flags: it is the stdio MCP server itself, so --help would just
+          # `autovideoclip-mcp` takes no flags: it is the stdio MCP server itself, so --help would just
           # start it. Send an initialize request on stdin and expect a serverInfo reply.
           INIT='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"ci-smoke","version":"0"}}}'
-          OUT=$(printf '%s\n' "$INIT" | timeout 120 uvx "${ARGS[@]}" --from "autoclip-mcp==$VERSION" autoclip-mcp || true)
+          OUT=$(printf '%s\n' "$INIT" | timeout 120 uvx "${ARGS[@]}" --from "autovideoclip-mcp==$VERSION" autovideoclip-mcp || true)
           echo "$OUT"
           echo "$OUT" | grep -q '"serverInfo"'

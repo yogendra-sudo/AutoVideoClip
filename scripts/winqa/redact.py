@@ -1,10 +1,10 @@
 """Scrub the real QA key (read from env, never printed) and the app's masked key form from evidence text files.
 
-Usage: python3 redact.py EVIDENCE_DIR  (key from WINQA_MODEL_API_KEY, or legacy AUTOCLIP_QA_DASHSCOPE_KEY)
+Usage: python3 redact.py EVIDENCE_DIR  (key from WINQA_MODEL_API_KEY, or legacy AUTOVIDEOCLIP_QA_DASHSCOPE_KEY)
 """
 import os, re, sys
 from pathlib import Path
-key = os.environ.get('WINQA_MODEL_API_KEY') or os.environ.get('AUTOCLIP_QA_DASHSCOPE_KEY', '')
+key = os.environ.get('WINQA_MODEL_API_KEY') or os.environ.get('AUTOVIDEOCLIP_QA_DASHSCOPE_KEY', '')
 hits = 0
 for p in Path(sys.argv[1]).rglob('*'):
     if not p.is_file() or p.suffix.lower() not in ('.json', '.log', '.err', '.txt', '.md', '.cmd'):

@@ -22,7 +22,7 @@ def main():
     args=p.parse_args();out=args.output;out.mkdir(parents=True,exist_ok=True)
     version=args.version;previous=version-1
     with tempfile.TemporaryDirectory(prefix='comic-v4-') as data:
-        os.environ['AUTOCLIP_DATA_DIR']=data
+        os.environ['AUTOVIDEOCLIP_DATA_DIR']=data
         from backend.services.studio.models import Draft,Scene
         from backend.services.studio.render import render_draft
         from backend.services.studio.store import directory

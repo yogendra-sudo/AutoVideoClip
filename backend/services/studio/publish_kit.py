@@ -256,7 +256,7 @@ def caption_text(post: dict[str, Any]) -> str:
 
 
 def _safe_name(text: str) -> str:
-    return re.sub(r'[\\/:*?"<>|\n\r\t]+', ' ', text).strip()[:60] or 'autoclip'
+    return re.sub(r'[\\/:*?"<>|\n\r\t]+', ' ', text).strip()[:60] or 'autovideoclip'
 
 
 def _write_kit(target, video: Path, cover: Path | None, post: dict[str, Any], platform_label: str, *, english: bool) -> str:
@@ -272,7 +272,7 @@ def _write_kit(target, video: Path, cover: Path | None, post: dict[str, Any], pl
 
 def kit_file(video: Path, cover: Path | None, post: dict[str, Any], platform_label: str, *, english: bool = False) -> tuple[Path, str]:
     """Build on disk: a long video must not be duplicated into server memory for its download."""
-    with tempfile.NamedTemporaryFile(prefix='autoclip-kit-', suffix='.zip', delete=False) as temporary:
+    with tempfile.NamedTemporaryFile(prefix='autovideoclip-kit-', suffix='.zip', delete=False) as temporary:
         path = Path(temporary.name)
     try:
         return path, _write_kit(path, video, cover, post, platform_label, english=english)

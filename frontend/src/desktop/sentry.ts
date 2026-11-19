@@ -5,8 +5,8 @@
 import * as Sentry from '@sentry/react'
 
 const DSN = import.meta.env.VITE_PUBLIC_SENTRY_DSN
-const OPT_OUT_KEY = 'autoclip.crashReports.optOut'
-const DAILY_KEY = 'autoclip.sentry.daily'
+const OPT_OUT_KEY = 'autovideoclip.crashReports.optOut'
+const DAILY_KEY = 'autovideoclip.sentry.daily'
 // Provider answers (401/429/503 and the same closed set the backend drops) stay in PostHog.
 const EXPECTED_HTTP = new Set([401, 402, 403, 404, 408, 409, 429, 502, 503, 504])
 const EXPECTED_UPSTREAM = new Set([
@@ -108,7 +108,7 @@ export function initSentry(): void {
   }
 
   const release = import.meta.env.VITE_APP_VERSION
-    ? `autoclip-frontend@${import.meta.env.VITE_APP_VERSION}`
+    ? `autovideoclip-frontend@${import.meta.env.VITE_APP_VERSION}`
     : undefined
 
   Sentry.init({

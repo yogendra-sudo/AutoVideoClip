@@ -28,7 +28,7 @@ def get_json(url: str, timeout: float = 15) -> Any:
 
 
 def post_multipart(url: str, fields: dict[str, Any], files: dict[str, Path], timeout: float = 60) -> Any:
-    boundary = '----autoclipe2e' + uuid.uuid4().hex
+    boundary = '----autovideoclipe2e' + uuid.uuid4().hex
     chunks: list[bytes] = []
     for name, value in fields.items():
         if value is None:

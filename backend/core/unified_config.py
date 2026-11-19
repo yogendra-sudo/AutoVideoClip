@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 class DatabaseConfig(BaseModel):
     """数据库配置"""
-    url: str = Field(default="sqlite:///./data/autoclip.db", description="数据库连接URL")
+    url: str = Field(default="sqlite:///./data/autovideoclip.db", description="数据库连接URL")
     echo: bool = Field(default=False, description="是否打印SQL语句")
     pool_size: int = Field(default=5, description="连接池大小")
     max_overflow: int = Field(default=10, description="最大溢出连接数")

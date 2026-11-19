@@ -246,7 +246,7 @@ def test_preset_does_not_degrade_on_server_error(monkeypatch):
 def test_parallel_chunks_do_not_mutate_shared_model(monkeypatch):
     monkeypatch.setattr("time.sleep", lambda _seconds: None)
     concurrency.reset_limiter()
-    monkeypatch.setenv("AUTOCLIP_LLM_CONCURRENCY", "2")
+    monkeypatch.setenv("AUTOVIDEOCLIP_LLM_CONCURRENCY", "2")
     seen = []
     lock = threading.Lock()
 
@@ -346,7 +346,7 @@ def test_real_http_calls_under_concurrency_stay_within_chunk_cap(monkeypatch):
 
     monkeypatch.setattr("time.sleep", lambda _seconds: None)
     concurrency.reset_limiter()
-    monkeypatch.setenv("AUTOCLIP_LLM_CONCURRENCY", "2")
+    monkeypatch.setenv("AUTOVIDEOCLIP_LLM_CONCURRENCY", "2")
 
     from backend.core.llm_providers import OpenAIProvider
 

@@ -27,8 +27,8 @@ for path in ("/health", "/api/health/", "/api/v1/health/"):
 print(json.dumps(out))
 '''
     env = dict(os.environ)
-    env.pop('AUTOCLIP_APP_VERSION', None)
-    env.update(AUTOCLIP_APP_DIR=str(tmp_path), AUTOCLIP_DATA_DIR=str(tmp_path), SENTRY_DSN='',
+    env.pop('AUTOVIDEOCLIP_APP_VERSION', None)
+    env.update(AUTOVIDEOCLIP_APP_DIR=str(tmp_path), AUTOVIDEOCLIP_DATA_DIR=str(tmp_path), SENTRY_DSN='',
                DATABASE_URL='sqlite:///' + str(tmp_path / 'isolated.sqlite'),
                LOG_FILE=str(tmp_path / 'test.log'), PYTHONDONTWRITEBYTECODE='1')
     result = subprocess.run([sys.executable, '-B', '-c', script, mode], cwd=ROOT, env=env,
@@ -46,5 +46,5 @@ def test_package_version_matches_desktop_fallback(monkeypatch):
     # bump_version.py keeps these in sync; /health and the settings page must agree.
     from backend import __version__
     from backend.core.desktop_config import DesktopConfig
-    monkeypatch.delenv('AUTOCLIP_APP_VERSION', raising=False)
+    monkeypatch.delenv('AUTOVIDEOCLIP_APP_VERSION', raising=False)
     assert DesktopConfig.app_version.fget(object()) == __version__

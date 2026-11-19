@@ -141,10 +141,10 @@ def clear_config() -> None:
 
 
 def _headers(config: UploadPostConfig) -> dict[str, str]:
-    version = os.getenv("AUTOCLIP_APP_VERSION", "dev")
+    version = os.getenv("AUTOVIDEOCLIP_APP_VERSION", "dev")
     return {
         "Authorization": f"Apikey {config.api_key}",
-        "User-Agent": f"autoclip/{version} (+https://github.com/yogendra-sudo/AutoVideoClip)",
+        "User-Agent": f"autovideoclip/{version} (+https://github.com/yogendra-sudo/AutoVideoClip)",
     }
 
 
@@ -153,7 +153,7 @@ def _require(config: UploadPostConfig | None) -> UploadPostConfig:
     if not cfg.configured:
         raise UploadPostError(
             "没有配置 Upload-Post API Key：设置环境变量 UPLOAD_POST_API_KEY，"
-            "或 `autoclip publish --api-key <key> --user <profile> --save`。"
+            "或 `autovideoclip publish --api-key <key> --user <profile> --save`。"
             "Key 在 https://app.upload-post.com/api-keys 生成。"
         )
     return cfg
@@ -363,7 +363,7 @@ def build_form(req: PublishRequest, platforms: list[str], user: str, title: str,
         "title": title,
         "async_upload": "true",
         "request_id": request_id,
-        "external_id": f"autoclip:{req.project_id}:{req.clip_id}"[:255],
+        "external_id": f"autovideoclip:{req.project_id}:{req.clip_id}"[:255],
     }
     if req.description:
         form["description"] = req.description
@@ -391,7 +391,7 @@ def publish_clip(req: PublishRequest, config: UploadPostConfig | None = None,
     user = (req.user or cfg.user or "").strip()
     if not user:
         raise UploadPostError(
-            "没有指定 Upload-Post profile：传 user=…，或设置 UPLOAD_POST_USER / `autoclip publish --user <profile> --save`。"
+            "没有指定 Upload-Post profile：传 user=…，或设置 UPLOAD_POST_USER / `autovideoclip publish --user <profile> --save`。"
             "profile 在 https://app.upload-post.com/manage-users 创建并连接社交账号。"
         )
     preset = req.preset or pick_preset(platforms)

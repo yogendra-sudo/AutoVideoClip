@@ -146,7 +146,7 @@ function render(options = {}) {
     } },
     './importReadiness': readiness,
     './browserCookieRecovery': require('./load-ts.cjs').loadTs(path.join(__dirname, '../src/features/studio/browserCookieRecovery.ts')),
-    './settingsReturn': { SETTINGS_SAVED_EVENT: 'autoclip:model-settings-saved' },
+    './settingsReturn': { SETTINGS_SAVED_EVENT: 'autovideoclip:model-settings-saved' },
     './TranscriptionGatePrompt':{default:'transcription-gate'},'./transcriptionRecovery':{isRecoveryCode:c=>['whisper_not_installed','whisper_install_failed','whisper_model_missing','whisper_model_failed','whisper_installing','whisper_model_downloading'].includes(c)},'./useTranscriptionRecovery':{useTranscriptionRecovery:()=>[{phase:'idle',percent:null},{open:(c,m)=>{(globalThis.__recoveryOpened||(globalThis.__recoveryOpened=[])).push(c);installs.push('open:'+c+(m?':'+m:''))},close(){},install:async()=>{installs.push('controller.install')},retry:async()=>{}}]},
     './studio.css': {},
     './quick-output.css': {},
@@ -262,7 +262,7 @@ test('an installed runtime without its model offers the model download, not anot
   assert.equal(unready.calls.length, 0)
 })
 
-test('AUTOCLIP-FRONTEND-C: a readiness report without checks or transcription does not throw', () => {
+test('AUTOVIDEOCLIP-FRONTEND-C: a readiness report without checks or transcription does not throw', () => {
   for (const partial of [
     { analysis_mode: 'auto', ready: false },
     { analysis_mode: 'auto', ready: false, checks: null },

@@ -11,8 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def expected_wheel_name(version: str) -> str:
-    """PEP 427 filename for the autoclip-mcp distribution."""
-    return f'autoclip_mcp-{version}-py3-none-any.whl'
+    """PEP 427 filename for the autovideoclip-mcp distribution."""
+    return f'autovideoclip_mcp-{version}-py3-none-any.whl'
 
 
 def build(wheel: Path, out: Path):
@@ -36,14 +36,14 @@ Python 3.11+ and FFmpeg/FFprobe are required. In a fresh virtual environment:
 python -m pip install -r requirements.txt
 python -m pip install --force-reinstall --no-deps {wheel.name}
 python -m pip install 'opencv-python-headless>=4.10'
-autoclip --version
-autoclip produce /absolute/path/video.mp4 --srt /absolute/path/video.srt --platform douyin --portrait-style podcast --json
+autovideoclip --version
+autovideoclip produce /absolute/path/video.mp4 --srt /absolute/path/video.srt --platform douyin --portrait-style podcast --json
 ```
 
-Use the virtual environment's absolute autoclip path with args ["mcp"] in an MCP client.
+Use the virtual environment's absolute autovideoclip path with args ["mcp"] in an MCP client.
 Tools: start_quick_output / get_quick_output_status / get_version.
 portrait_style: auto / interview / podcast. Platform controls language; layout is independent.
-The default configuration shares the desktop's saved AI settings. For isolation set AUTOCLIP_DATA_DIR.
+The default configuration shares the desktop's saved AI settings. For isolation set AUTOVIDEOCLIP_DATA_DIR.
 See CLI_AND_MCP.md for setup and API options. Credentials and user data are not included.
 If replacing an earlier 1.5.0 candidate, --force-reinstall is required.
 Source commit: {commit}

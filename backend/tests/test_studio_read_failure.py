@@ -22,8 +22,8 @@ from backend.services.studio.models import Draft, Scene
 
 @pytest.fixture
 def project(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     monkeypatch.setattr(
         'backend.services.studio.readiness.transcription_check',
         lambda: {'ok': True, 'code': 'whisper_installed', 'repair': 'none'},
@@ -237,7 +237,7 @@ def test_read_failure_patch_does_not_cross_project_data_roots(project, monkeypat
         executor.futures[0].exception(timeout=3)
         control.blocked = False
         same_job = json.loads(project.path.read_bytes())['jobs'][0]['job_id']
-        monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path / 'other-root'))
+        monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path / 'other-root'))
         store.directory('p1').mkdir(parents=True)
         store.write('p1', {'drafts': [], 'events': [], 'jobs': [{'job_id': same_job, 'status': 'queued', 'instance': store.INSTANCE}], 'analysis': None, 'output_variants': []})
         assert store.read('p1')['jobs'][0]['status'] == 'queued'

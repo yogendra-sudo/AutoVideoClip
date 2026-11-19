@@ -31,7 +31,7 @@ _CREATE_NEW_PROCESS_GROUP = 0x00000200
 
 def schedule_after_render(project_id: str, draft, job_id: str, result):
     """Return the queued future, or None when QA is off. Never blocks on the checkers."""
-    if os.environ.get('AUTOCLIP_QA_DISABLED') == '1':
+    if os.environ.get('AUTOVIDEOCLIP_QA_DISABLED') == '1':
         return None
     try:
         from backend.services.studio.qa.record import effective_mode
@@ -83,7 +83,7 @@ def _packaged_runtime() -> Path | None:
 
 
 def _interpreter() -> str:
-    """Packaged runtime when this process is not itself Python (autoclip-backend.exe)."""
+    """Packaged runtime when this process is not itself Python (autovideoclip-backend.exe)."""
     host = _host_path()
     if host.name.lower() in _PYTHON_NAMES:
         return sys.executable

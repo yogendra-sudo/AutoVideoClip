@@ -104,7 +104,7 @@ export function captureProperties(draft: FeedbackDraft): Record<string, string |
     analytics_environment: 'production',
     runtime: 'desktop',
     schema_version: 2,
-    $lib: 'autoclip-feedback',
+    $lib: 'autovideoclip-feedback',
   }
   if (draft.contact) props.contact = draft.contact
   if (draft.stage) props.stage = draft.stage

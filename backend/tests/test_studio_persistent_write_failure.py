@@ -8,8 +8,8 @@ from backend.services.studio import jobs, store
 
 @pytest.fixture
 def project(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     (tmp_path / 'privacy.json').write_text('{"crash_reports":false}')
     root = store.directory('p1')
     (root / 'raw').mkdir(parents=True)
@@ -139,8 +139,8 @@ def test_failure_patch_does_not_cross_data_roots(project, monkeypatch, tmp_path)
         deny_state(blocked)
         with pytest.raises(PermissionError):
             store.change('p1', lambda data: data['jobs'][0].update(status='running'))
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path / 'other'))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path / 'other'))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path / 'other'))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path / 'other'))
     store.directory('p1').mkdir(parents=True)
     store.write('p1', {'jobs': [{'job_id': 'active', 'status': 'queued', 'instance': store.INSTANCE}]})
     assert store.read('p1')['jobs'][0]['status'] == 'queued'

@@ -1,7 +1,7 @@
 # CI-equivalent installed-runtime smoke (desktop-build.yml smoke-windows-x64) with the bundled Python.
 # Uses its own temp data dir; close the interactive app first.
 #   default      : backend started by bundled python (-m backend.desktop_main) from SSH (session 0)
-#   -LaunchDesktop: verify script launches the installed autoclip-desktop.exe; run inside the logged-on
+#   -LaunchDesktop: verify script launches the installed autovideoclip-desktop.exe; run inside the logged-on
 #                  desktop session via scheduled task (from session 0 the exe never prints PORT=, see README)
 param([switch]$LaunchDesktop, [switch]$WithAsr)
 . $PSScriptRoot\common.ps1

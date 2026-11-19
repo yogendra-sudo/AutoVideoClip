@@ -54,21 +54,21 @@ venv/bin/python -m uvicorn backend.main:app --env-file .env --host 127.0.0.1 --p
 
 ### 前端接入与验证
 
-前端对应 Sentry 组织 `autoclip-ts` 的 `autoclip-frontend` 项目；后端对应 `python-fastapi`。
+前端对应 Sentry 组织 `autovideoclip-ts` 的 `autovideoclip-frontend` 项目；后端对应 `python-fastapi`。
 本地在 `frontend/.env.local` 配置 `VITE_PUBLIC_SENTRY_DSN`，修改后重启 Vite。
 GitHub Actions 使用同名仓库 Secret，macOS / Windows 构建步骤均已引用。
 已于 2026-09-21 从真实开发页面触发并确认收到测试错误：
-[AUTOCLIP-FRONTEND-1](https://autoclip-ts.sentry.io/issues/AUTOCLIP-FRONTEND-1)。临时测试按钮及代码已移除。
+[AUTOCLIP-FRONTEND-1](https://autovideoclip-ts.sentry.io/issues/AUTOCLIP-FRONTEND-1)。临时测试按钮及代码已移除。
 
 当前前后端完成的是本地错误上报验证；正式桌面安装包需使用这些配置重新构建后再验收。
 
 ### 生产 source maps
 
 `@sentry/vite-plugin` 在带上传凭据的生产构建中注入 Debug ID、生成 hidden source maps、上传对应 JS 与映射，随后删除 `dist/**/*.map`，安装包不携带映射文件。
-SDK 事件与上传 release 使用同一个版本：`autoclip-frontend@<VITE_APP_VERSION>`；未传版本时从 `src-tauri/tauri.conf.json` 读取。
+SDK 事件与上传 release 使用同一个版本：`autovideoclip-frontend@<VITE_APP_VERSION>`；未传版本时从 `src-tauri/tauri.conf.json` 读取。
 插件上传失败会中止构建，不会降级为成功。
 
-CI 的 macOS / Windows 构建均读取仓库 Secret `SENTRY_AUTH_TOKEN`，组织为 `autoclip-ts`，项目为 `autoclip-frontend`。
+CI 的 macOS / Windows 构建均读取仓库 Secret `SENTRY_AUTH_TOKEN`，组织为 `autovideoclip-ts`，项目为 `autovideoclip-frontend`。
 已配置前端 DSN 的构建会设置 `SENTRY_UPLOAD_SOURCEMAPS=true`，并在下载运行时之前检查 token 是否存在。
 
 本地验证时，在 `frontend/.env.sentry-build-plugin` 写入 `SENTRY_AUTH_TOKEN=<组织上传令牌>`（已被 Git 忽略），然后从 `frontend` 运行 `npm run build`。
@@ -118,7 +118,7 @@ macOS 更新包必须是**注入 python/backend/ffmpeg 之后**的 `.app.tar.gz`
 
 v1.3.1 的公开源码生产构建已上传 source maps。使用隔离的模拟 API 返回无效项目数据，触发真实 HomePage 异常，未修改发布代码，也未使用用户素材。
 
-- [AUTOCLIP-FRONTEND-2](https://autoclip-ts.sentry.io/issues/AUTOCLIP-FRONTEND-2)，新事件 `49ee6b626ba64b3f8fe224d97234189a`。
-- release：`autoclip-frontend@1.3.1`；界面语言：`zh-CN`。
+- [AUTOCLIP-FRONTEND-2](https://autovideoclip-ts.sentry.io/issues/AUTOCLIP-FRONTEND-2)，新事件 `49ee6b626ba64b3f8fe224d97234189a`。
+- release：`autovideoclip-frontend@1.3.1`；界面语言：`zh-CN`。
 - 发送的异常正文为 `[message omitted for privacy]`，映射仍准确还原到 `frontend/src/pages/HomePage.tsx:300:40`。
 - 模拟触发条件已撤掉，页面恢复正常。此记录不替代实际安装包、Windows 真机和真实视频业务流程验收。

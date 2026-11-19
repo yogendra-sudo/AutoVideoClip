@@ -67,7 +67,7 @@ venv_*/
 *.db
 *.sqlite
 *.sqlite3
-data/autoclip.db
+data/autovideoclip.db
 data/progress.db
 data/*.json
 data/*.port
@@ -103,13 +103,13 @@ releases/
 *.toc
 *.pkg
 *.dmg
-backend/autoclip-backend.spec
+backend/autovideoclip-backend.spec
 src-tauri/resources/backend/
 src-tauri/resources/ffmpeg/
 src-tauri/resources/python/
 src-tauri/resources/ffmpeg-unified/
 src-tauri/resources/requirements.txt
-src-tauri/resources/autoclip-backend/
+src-tauri/resources/autovideoclip-backend/
 
 # System files
 .DS_Store

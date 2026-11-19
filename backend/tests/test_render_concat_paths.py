@@ -11,7 +11,7 @@ from backend.services.studio.packaging_html import concat_quote
 
 
 def test_concat_quote_drops_plain_quotes_and_escapes_space_and_apostrophe():
-    assert concat_quote('/tmp/autoclip-render-golden/studio/0.mkv') == '/tmp/autoclip-render-golden/studio/0.mkv'
+    assert concat_quote('/tmp/autovideoclip-render-golden/studio/0.mkv') == '/tmp/autovideoclip-render-golden/studio/0.mkv'
     assert concat_quote('/tmp/my clip/0.mkv') == r'/tmp/my\ clip/0.mkv'
     assert concat_quote("/tmp/it's/0.mkv") == r"/tmp/it\'s/0.mkv"
 
@@ -21,8 +21,8 @@ def _ffmpeg(*args):
 
 
 def test_classic_and_overlay_concat_paths_with_space_cjk_and_apostrophe(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_VIDEO_ENCODER', 'libx264')
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path / 'data'))
+    monkeypatch.setenv('AUTOVIDEOCLIP_VIDEO_ENCODER', 'libx264')
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path / 'data'))
     nasty = tmp_path / "a clip it's 中文"
     nasty.mkdir()
     from backend.services.studio import packaging_html as html

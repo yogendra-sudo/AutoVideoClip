@@ -2,12 +2,12 @@
 FFmpeg 可执行路径解析工具
 
 优先顺序：
-1) 环境变量 AUTOCLIP_FFMPEG_PATH / AUTOCLIP_FFPROBE_PATH / FFMPEG_PATH / FFPROBE_PATH
+1) 环境变量 AUTOVIDEOCLIP_FFMPEG_PATH / AUTOVIDEOCLIP_FFPROBE_PATH / FFMPEG_PATH / FFPROBE_PATH
 2) 安装包或仓库里的 resources/ffmpeg（桌面应用没把环境变量传出来时）
 3) 系统 PATH 中的 ffmpeg/ffprobe
 
 用途：统一为后端所有调用点提供 ffmpeg/ffprobe 路径，便于在桌面安装包内置二进制并实现零依赖。
-应用外直接跑脚本时，桌面壳不会设置 AUTOCLIP_FFMPEG_PATH，所以要自己找到安装目录里的二进制。
+应用外直接跑脚本时，桌面壳不会设置 AUTOVIDEOCLIP_FFMPEG_PATH，所以要自己找到安装目录里的二进制。
 """
 
 import logging
@@ -70,12 +70,12 @@ def bundled_candidates(base: str, executable: str | None = None, platform_name: 
 
 
 def missing_ffmpeg_message(name: str = "ffmpeg") -> str:
-    env = f"AUTOCLIP_{name.upper()}_PATH / {name.upper()}_PATH"
+    env = f"AUTOVIDEOCLIP_{name.upper()}_PATH / {name.upper()}_PATH"
     return (
         f"找不到 {name}。查找顺序是：环境变量 {env}，"
         "安装目录或仓库里的 resources/ffmpeg，然后是系统 PATH。"
         f"这些位置都没有可用的 {name}。"
-        "请安装 ffmpeg（含 ffprobe），或设置 AUTOCLIP_FFMPEG_PATH 和 AUTOCLIP_FFPROBE_PATH。"
+        "请安装 ffmpeg（含 ffprobe），或设置 AUTOVIDEOCLIP_FFMPEG_PATH 和 AUTOVIDEOCLIP_FFPROBE_PATH。"
     )
 
 
@@ -103,7 +103,7 @@ def _locate(base: str, env_names: list[str]) -> Optional[str]:
 
 def get_ffmpeg_path() -> str:
     """返回 ffmpeg 可执行文件路径（或命令名）。"""
-    found = _locate("ffmpeg", ["AUTOCLIP_FFMPEG_PATH", "FFMPEG_PATH"])
+    found = _locate("ffmpeg", ["AUTOVIDEOCLIP_FFMPEG_PATH", "FFMPEG_PATH"])
     if found:
         return found
     _report_missing("ffmpeg")
@@ -112,7 +112,7 @@ def get_ffmpeg_path() -> str:
 
 def get_ffprobe_path() -> str:
     """返回 ffprobe 可执行文件路径（或命令名）。"""
-    found = _locate("ffprobe", ["AUTOCLIP_FFPROBE_PATH", "FFPROBE_PATH"])
+    found = _locate("ffprobe", ["AUTOVIDEOCLIP_FFPROBE_PATH", "FFPROBE_PATH"])
     if found:
         return found
     _report_missing("ffprobe")
@@ -137,7 +137,7 @@ def ytdlp_js_runtimes() -> dict:
 def ytdlp_ffmpeg_options() -> dict:
     """给 yt-dlp 的外部工具选项：ffmpeg 位置，以及可用的 JS 运行时。
 
-    yt-dlp 只在 PATH 里找 ffmpeg，不读 AUTOCLIP_FFMPEG_PATH。桌面安装包的 ffmpeg 不在 PATH 上，
+    yt-dlp 只在 PATH 里找 ffmpeg，不读 AUTOVIDEOCLIP_FFMPEG_PATH。桌面安装包的 ffmpeg 不在 PATH 上，
     Windows 上合并 bestvideo+bestaudio、转字幕格式都会失败，导入就卡住或找不到 mp4。
     只有解析到真实文件时才传，否则交给 yt-dlp 自己找。
     """

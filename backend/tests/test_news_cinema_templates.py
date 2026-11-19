@@ -89,7 +89,7 @@ def test_news_and_cinema_overlay_can_start(tmp_path, monkeypatch):
     from backend.services.studio.models import Draft, Scene
     from backend.services.studio.render import render_draft
 
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     png = tmp_path / 'frame.png'
     subprocess.run([
         'ffmpeg', '-hide_banner', '-y', '-f', 'lavfi', '-i', 'color=c=red@0.4:s=16x16:d=0.04,format=rgba',

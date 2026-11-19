@@ -55,7 +55,7 @@ _BACKEND_FILES = (
 
 
 def catalog_path() -> Path:
-    override = os.environ.get("AUTOCLIP_EVENT_CATALOG")
+    override = os.environ.get("AUTOVIDEOCLIP_EVENT_CATALOG")
     if override:
         return Path(override)
     packaged = Path(__file__).resolve().with_name("event_catalog.json")
@@ -89,7 +89,7 @@ def normalize_os(value: str | None) -> str | None:
 
 
 def detect_os() -> str:
-    return normalize_os(os.getenv('AUTOCLIP_NATIVE_OS') or sys.platform) or "unknown"
+    return normalize_os(os.getenv('AUTOVIDEOCLIP_NATIVE_OS') or sys.platform) or "unknown"
 
 
 def normalize_arch(value: str | None) -> str:
@@ -103,11 +103,11 @@ def normalize_arch(value: str | None) -> str:
 
 def detect_arch() -> str:
     import platform
-    return normalize_arch(os.getenv('AUTOCLIP_NATIVE_ARCH') or platform.machine())
+    return normalize_arch(os.getenv('AUTOVIDEOCLIP_NATIVE_ARCH') or platform.machine())
 
 
 def app_version() -> str:
-    raw = (os.environ.get("AUTOCLIP_APP_VERSION") or os.environ.get("VITE_APP_VERSION") or "").strip()
+    raw = (os.environ.get("AUTOVIDEOCLIP_APP_VERSION") or os.environ.get("VITE_APP_VERSION") or "").strip()
     if raw[:1] in {"v", "V"} and len(raw) > 1 and raw[1].isdigit():
         raw = raw[1:]
     if raw:
@@ -120,7 +120,7 @@ def app_version() -> str:
 
 
 def analytics_environment() -> str:
-    value = (os.environ.get("AUTOCLIP_BUILD_ENVIRONMENT") or "").strip().lower()
+    value = (os.environ.get("AUTOVIDEOCLIP_BUILD_ENVIRONMENT") or "").strip().lower()
     if value in ANALYTICS_ENVIRONMENTS:
         return value
     return "development"

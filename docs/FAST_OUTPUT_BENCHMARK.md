@@ -7,7 +7,7 @@
 1. 用测试数据目录启动后端（不要用自己的真实数据目录），模型与语音识别按要测的配置设好：
 
    ```bash
-   AUTOCLIP_APP_DIR=<dir> AUTOCLIP_DATA_DIR=<dir> DATABASE_URL=sqlite:///<dir>/autoclip.db \
+   AUTOVIDEOCLIP_APP_DIR=<dir> AUTOVIDEOCLIP_DATA_DIR=<dir> DATABASE_URL=sqlite:///<dir>/autovideoclip.db \
      nice -n 15 python -m backend.main --port 18765
    ```
 

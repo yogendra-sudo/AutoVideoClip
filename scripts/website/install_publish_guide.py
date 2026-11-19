@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install the publishing guide in autoclip_intro and link it from the home-page FAQ, footer, and sitemap. Safe to rerun."""
+"""Install the publishing guide in autovideoclip_intro and link it from the home-page FAQ, footer, and sitemap. Safe to rerun."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 GUIDE_SRC = HERE / "guides" / "publish" / "index.html"
-SITEMAP_URL = "https://yogendra-sudo.github.io/autoclip_intro/guides/publish/"
+SITEMAP_URL = "https://yogendra-sudo.github.io/autovideoclip_intro/guides/publish/"
 
 FAQ_HTML = """        <details>
           <summary data-i18n="faq.7.q">How do I publish to Bilibili and other platforms?</summary>
@@ -167,7 +167,7 @@ def install(target: Path) -> None:
 
 def main() -> None:
     if len(sys.argv) != 2:
-        fail(f"Usage: {sys.argv[0]} <autoclip_intro repository path>")
+        fail(f"Usage: {sys.argv[0]} <autovideoclip_intro repository path>")
     target = Path(sys.argv[1]).resolve()
     install(target)
     print(f"Wrote {target / 'guides' / 'publish' / 'index.html'}")

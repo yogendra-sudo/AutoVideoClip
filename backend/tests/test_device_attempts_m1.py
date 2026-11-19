@@ -6,18 +6,18 @@ from backend.services.studio.terminal_outbox import wait_until_idle
 
 
 def _project(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_MODE', 'desktop')
-    monkeypatch.setenv('AUTOCLIP_BUILD_ENVIRONMENT', 'production')
-    monkeypatch.delenv('AUTOCLIP_POSTHOG_KEY', raising=False)
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_MODE', 'desktop')
+    monkeypatch.setenv('AUTOVIDEOCLIP_BUILD_ENVIRONMENT', 'production')
+    monkeypatch.delenv('AUTOVIDEOCLIP_POSTHOG_KEY', raising=False)
     store.directory('p').mkdir(parents=True)
     (tmp_path / 'analytics.json').write_text(
         '{"distinct_id":"018f6b2a-7c3d-7b2a-8c11-111111111111"}', encoding='utf-8')
 
 
 def test_ledger_is_idempotent_and_tracks_first_success(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     first = device_attempts.record('t-aaaaaaaaaa', 'error')
     assert first == {'attempt_index_on_device': 1, 'is_first_success_device': True}
     again = device_attempts.record('t-aaaaaaaaaa', 'error')
@@ -39,7 +39,7 @@ def _reset_device_ledger():
 
 def test_ledger_opt_out_stays_in_memory_only(tmp_path, monkeypatch):
     """privacy.json analytics:false → record must not create generation-device-attempts.json."""
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     _reset_device_ledger()
     (tmp_path / 'privacy.json').write_text(
         '{"analytics":false,"crash_reports":false}', encoding='utf-8')
@@ -55,7 +55,7 @@ def test_ledger_opt_out_stays_in_memory_only(tmp_path, monkeypatch):
 
 def test_ledger_opt_in_persists_to_disk(tmp_path, monkeypatch):
     """privacy.json analytics:true (or missing) keeps the on-disk ledger."""
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     _reset_device_ledger()
     (tmp_path / 'privacy.json').write_text(
         '{"analytics":true,"crash_reports":false}', encoding='utf-8')
@@ -80,7 +80,7 @@ def test_generation_summary_includes_source_duration_sec():
 
 
 def test_terminal_event_emits_m1_dims(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     receipt = {
         'attempt_id': 't-dddddddddd', 'flow_id': 'f-1', 'sequence': 1, 'kind': 'generation',
         'state': 'completed', 'trigger': 'initial',
@@ -106,7 +106,7 @@ def test_terminal_event_emits_m1_dims(tmp_path, monkeypatch):
 
 def test_settle_writes_m1_dims_onto_queued_terminal(tmp_path, monkeypatch):
     _project(tmp_path, monkeypatch)
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
     posted = []
 
     def fake(req, timeout=0):

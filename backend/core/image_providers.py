@@ -198,7 +198,7 @@ def _session_for(base_url: str, session: requests.Session | None) -> requests.Se
     http = requests.Session()
     if is_local_url(base_url):
         http.trust_env = False
-        http.autoclip_local = True  # a local image server may return its own local image URLs
+        http.autovideoclip_local = True  # a local image server may return its own local image URLs
     return http
 
 
@@ -267,7 +267,7 @@ def _check_image_url(url: str, allow_local: bool) -> None:
 
 
 def _download(session: requests.Session, url: str) -> bytes:
-    allow_local = bool(getattr(session, "autoclip_local", False))
+    allow_local = bool(getattr(session, "autovideoclip_local", False))
     for _ in range(4):  # follow redirects by hand so every hop is checked
         _check_image_url(url, allow_local)
         resp = session.get(url, timeout=60, stream=True, allow_redirects=False)

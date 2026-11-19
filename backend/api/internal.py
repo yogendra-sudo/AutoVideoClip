@@ -31,9 +31,9 @@ def _authorized(token: str | None) -> bool:
 
 
 @router.post('/internal/shutdown-intent')
-def shutdown_intent(body: ShutdownIntent, request: Request, x_autoclip_local_token: str | None = Header(default=None)):
+def shutdown_intent(body: ShutdownIntent, request: Request, x_autovideoclip_local_token: str | None = Header(default=None)):
     """Write the clean-quit marker, then return. Does NOT begin a shutdown: the shell kills us after 200."""
-    if not _loopback(request) or not _authorized(x_autoclip_local_token):
+    if not _loopback(request) or not _authorized(x_autovideoclip_local_token):
         raise HTTPException(status_code=403, detail='forbidden')  # never echo or log the token
     from backend.services.studio.shutdown_marker import INTENT_KINDS, mark
     if body.kind not in INTENT_KINDS:

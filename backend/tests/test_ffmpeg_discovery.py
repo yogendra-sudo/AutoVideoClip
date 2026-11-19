@@ -5,7 +5,7 @@ from backend.utils import ffmpeg_utils
 
 
 def _clear(monkeypatch):
-    for name in ("AUTOCLIP_FFMPEG_PATH", "FFMPEG_PATH", "AUTOCLIP_FFPROBE_PATH", "FFPROBE_PATH"):
+    for name in ("AUTOVIDEOCLIP_FFMPEG_PATH", "FFMPEG_PATH", "AUTOVIDEOCLIP_FFPROBE_PATH", "FFPROBE_PATH"):
         monkeypatch.delenv(name, raising=False)
     ffmpeg_utils._reported_missing.clear()
 
@@ -14,7 +14,7 @@ def test_env_wins_over_bundled_resources_and_path(tmp_path, monkeypatch):
     _clear(monkeypatch)
     binary = tmp_path / "from-env"
     binary.write_bytes(b"")
-    monkeypatch.setenv("AUTOCLIP_FFMPEG_PATH", str(binary))
+    monkeypatch.setenv("AUTOVIDEOCLIP_FFMPEG_PATH", str(binary))
     monkeypatch.setattr(ffmpeg_utils, "bundled_candidates", lambda *_args, **_kwargs: [tmp_path / "bundled"])
     monkeypatch.setattr(ffmpeg_utils.shutil, "which", lambda _name: str(tmp_path / "from-path"))
     assert ffmpeg_utils.get_ffmpeg_path() == str(binary)
@@ -42,10 +42,10 @@ def test_missing_ffmpeg_prints_the_lookup_order_once(monkeypatch, capsys):
     monkeypatch.setattr(ffmpeg_utils.shutil, "which", lambda _name: None)
     assert ffmpeg_utils.get_ffmpeg_path() == "ffmpeg"
     err = capsys.readouterr().err
-    assert "AUTOCLIP_FFMPEG_PATH" in err
+    assert "AUTOVIDEOCLIP_FFMPEG_PATH" in err
     assert "resources/ffmpeg" in err
     assert "PATH" in err
-    assert "AUTOCLIP_FFPROBE_PATH" in err
+    assert "AUTOVIDEOCLIP_FFPROBE_PATH" in err
     assert ffmpeg_utils.get_ffmpeg_path() == "ffmpeg"
     assert capsys.readouterr().err == ""
 

@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 def _is_desktop_mode() -> bool:
-    return os.getenv("AUTOCLIP_DESKTOP_MODE", "").lower() in {"1", "true", "yes"}
+    return os.getenv("AUTOVIDEOCLIP_DESKTOP_MODE", "").lower() in {"1", "true", "yes"}
 
 
 def _log_queue_depth(queue: str) -> Optional[int]:

@@ -447,7 +447,7 @@ def budget_watch(response: Any) -> Iterator[None]:
             if stop.wait(0.25):
                 return
 
-    thread = threading.Thread(target=run, name="autoclip-llm-budget", daemon=True)
+    thread = threading.Thread(target=run, name="autovideoclip-llm-budget", daemon=True)
     thread.start()
     try:
         yield

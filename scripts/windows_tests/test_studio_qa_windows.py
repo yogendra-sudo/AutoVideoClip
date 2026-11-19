@@ -1,6 +1,6 @@
 """Packaged Windows Python must actually run the QA child.
 
-A desktop host can be autoclip-backend.exe. Spawning that binary with -m makes
+A desktop host can be autovideoclip-backend.exe. Spawning that binary with -m makes
 every checker skip, and the skip is easy to miss. This case junctions the real
 interpreter into resources/python and runs one short clip through _spawn.
 """
@@ -24,7 +24,7 @@ def test_packaged_runtime_spawn_skips_under_30_percent(tmp_path, monkeypatch):
     real = Path(sys.executable).resolve()
     resources = tmp_path / 'resources'
     link = resources / 'python'
-    host = resources / 'autoclip-backend.exe'
+    host = resources / 'autovideoclip-backend.exe'
     resources.mkdir()
     host.write_bytes(b'MZ')
     linked = False

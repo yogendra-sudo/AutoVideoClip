@@ -59,8 +59,8 @@ def test_subtitle_import_screening_ignores_failed_vision(client, source, monkeyp
 
 @pytest.mark.parametrize('mode', ['visual'])  # S5: auto now falls back to subtitles (test_auto_vision_fallback.py)
 def test_failed_vision_blocks_generation_api_and_repair_restores_start(tmp_path, monkeypatch, mode):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     from backend.api.v1.studio import router
     from backend.core.database import get_db
     from backend.models import Base, Project

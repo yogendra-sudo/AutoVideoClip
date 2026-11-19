@@ -22,7 +22,7 @@ from backend.services.studio.qa.report import BUCKETS, CHECKERS
 
 logger = logging.getLogger(__name__)
 
-_HOST = os.environ.get('AUTOCLIP_POSTHOG_HOST', 'https://us.i.posthog.com').rstrip('/')
+_HOST = os.environ.get('AUTOVIDEOCLIP_POSTHOG_HOST', 'https://us.i.posthog.com').rstrip('/')
 _OUTCOMES = frozenset({'pass', 'fail', 'skip'})
 _QA_VARIANTS = VARIANTS['qa_gate_blocking']
 # Anonymous device ids only. Paths, emails and free text never qualify.
@@ -30,7 +30,7 @@ _ANONYMOUS_ID = re.compile(r'^(?:[A-Fa-f0-9]{32}|[A-Fa-f0-9]{8}(?:-[A-Fa-f0-9]{4
 
 
 def _key() -> str:
-    for name in ('AUTOCLIP_POSTHOG_KEY', 'VITE_PUBLIC_POSTHOG_KEY'):
+    for name in ('AUTOVIDEOCLIP_POSTHOG_KEY', 'VITE_PUBLIC_POSTHOG_KEY'):
         value = os.environ.get(name, '').strip()
         if value:
             return value
@@ -96,7 +96,7 @@ def stored_distinct_id() -> str | None:
     stored = _read_id(_identity_path())
     if stored:
         return stored
-    value = os.getenv('AUTOCLIP_ANONYMOUS_DEVICE_ID', '')
+    value = os.getenv('AUTOVIDEOCLIP_ANONYMOUS_DEVICE_ID', '')
     return value if _ANONYMOUS_ID.fullmatch(value) else None
 
 

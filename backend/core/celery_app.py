@@ -17,7 +17,7 @@ install_celery_log_redaction()
 # os.environ.setdefault('CELERY_CONFIG_MODULE', 'backend.core.celery_app')
 
 # 创建Celery应用
-celery_app = Celery('autoclip')
+celery_app = Celery('autovideoclip')
 
 # 配置Celery
 class CeleryConfig:
@@ -78,7 +78,7 @@ celery_app.config_from_object(CeleryConfig)
 
 
 def _is_desktop_mode() -> bool:
-    return os.getenv("AUTOCLIP_DESKTOP_MODE", "").lower() in {"1", "true", "yes"}
+    return os.getenv("AUTOVIDEOCLIP_DESKTOP_MODE", "").lower() in {"1", "true", "yes"}
 
 
 class _LocalAsyncResult:

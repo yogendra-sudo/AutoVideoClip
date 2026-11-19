@@ -1,7 +1,7 @@
 # 线上看板登记（2026-09-30）
 
 - PostHog：[AutoVideoClip｜新用户到真实出片（Studio V2）](https://us.posthog.com/project/450605/dashboard/2152007)
-- Sentry：[AutoVideoClip｜出片稳定性与故障定位](https://autoclip-ts.sentry.io/dashboard/10252510/?statsPeriod=7d)
+- Sentry：[AutoVideoClip｜出片稳定性与故障定位](https://autovideoclip-ts.sentry.io/dashboard/10252510/?statsPeriod=7d)
 
 旧 PostHog Studio V1 与业务健康看板保留；新版单独建板，不改变历史图的统计口径。Sentry 既有 Studio 工程异常/配置警告 Issue View 保留。
 

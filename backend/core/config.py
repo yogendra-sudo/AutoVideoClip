@@ -18,7 +18,7 @@ class APISettings(BaseModel):
 
 class DatabaseSettings(BaseModel):
     """数据库配置"""
-    url: str = Field(default='sqlite:///./data/autoclip.db', validation_alias=AliasChoices('DATABASE_URL'))
+    url: str = Field(default='sqlite:///./data/autovideoclip.db', validation_alias=AliasChoices('DATABASE_URL'))
 
 class RedisSettings(BaseModel):
     """Redis配置"""
@@ -47,7 +47,7 @@ class Settings(BaseSettings):
     encryption_key: str = Field(default='', validation_alias=AliasChoices('ENCRYPTION_KEY'))
 
     # 直接定义字段，不使用嵌套的BaseModel
-    database_url: str = Field(default='sqlite:///./data/autoclip.db', validation_alias=AliasChoices('DATABASE_URL'))
+    database_url: str = Field(default='sqlite:///./data/autovideoclip.db', validation_alias=AliasChoices('DATABASE_URL'))
     redis_url: str = Field(default='redis://localhost:6379/0', validation_alias=AliasChoices('REDIS_URL'))
     api_dashscope_api_key: str = Field(default='', validation_alias=AliasChoices('API_DASHSCOPE_API_KEY'))
     api_model_name: str = Field(default='qwen-plus', validation_alias=AliasChoices('API_MODEL_NAME'))

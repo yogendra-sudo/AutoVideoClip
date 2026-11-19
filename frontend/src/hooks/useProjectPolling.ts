@@ -114,7 +114,7 @@ export const useProjectPolling = ({
     }
   }, [enabled, interval])
 
-  // #487/#502: after autoclip-backend respawns, do not wait for the 30s poll —
+  // #487/#502: after autovideoclip-backend respawns, do not wait for the 30s poll —
   // refresh so home cards pick up service_restarted / catalog copy immediately.
   useEffect(() => {
     if (!enabled || !subscribeRestart) return

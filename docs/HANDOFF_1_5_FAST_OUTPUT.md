@@ -7,7 +7,7 @@
 ## 现状一页纸
 
 - **目标**：贴一个视频链接、选平台 → 自动出可直接发布的成片，每条成片带「发布包」（视频 + 封面 + 各平台标题/简介/话题）。
-- **完成度**：后端链路、前端结果页 / 发布包卡片 / 设置页都已实现并有测试；17 条真实素材回归集跑过；demo 成品在 `/private/tmp/autoclip-e2e/demos`（本机临时目录，含测试 key，测完要删）。
+- **完成度**：后端链路、前端结果页 / 发布包卡片 / 设置页都已实现并有测试；17 条真实素材回归集跑过；demo 成品在 `/private/tmp/autovideoclip-e2e/demos`（本机临时目录，含测试 key，测完要删）。
 - **效果**（详见 [成本与时间](COST_PER_VIDEO.md)）：2 小时访谈从链接到成片 65 分钟 → 有作者字幕 7–8 分钟、云端语音识别 5–18 分钟；模型费用 ¥0.64 → ¥0.02–0.2。
 - **测试**：本轮全量与真实 CLI / MCP 结果见 [1.5 验收记录](RELEASE_1_5.md)。前端 198 passed，typecheck / lint / build 通过；Rust 下载回归 5 passed。
 - **发布入口**：PR #250 已合入 main，tag `v1.5.0` 固定为 `e940f5ae`，最终 PR / main CI 全绿，后端 1106 passed、2 skipped。双平台构建、签名、安装升级和 CLI/MCP 同源资产已核对，Release 已转为 latest，应用内更新返回 1.5.0。证据见 [验收记录](RELEASE_1_5.md#正式-tag-与交付入口) 与 [Release](https://github.com/yogendra-sudo/AutoVideoClip/releases/tag/v1.5.0)。Windows 缺人工界面验收及未完成观察期已在 Release 中明确；官网由负责人更新。
@@ -94,9 +94,9 @@
 
 ## 怎么复现 / 测试
 
-- **单测**：`/Users/zhoukk/autoclip/venv/bin/pytest backend/tests -q`；前端 `cd frontend && npm run typecheck && npm run lint && npm test && npm run build`。
+- **单测**：`/Users/zhoukk/autovideoclip/venv/bin/pytest backend/tests -q`；前端 `cd frontend && npm run typecheck && npm run lint && npm test && npm run build`。
 - **端到端**：按 [FAST_OUTPUT_BENCHMARK.md](FAST_OUTPUT_BENCHMARK.md)，用独立数据目录起后端（`nice -n 15`，端口 18765），跑 `scripts/fast_output_benchmark.py --cases ...`。
-- **本机 E2E 目录** `/private/tmp/autoclip-e2e`：
+- **本机 E2E 目录** `/private/tmp/autovideoclip-e2e`：
   - 数据：`ai-model-settings.json` 配好了百炼（分析 `qwen-plus`、ASR、视觉 `qwen3-vl-plus`）和封面（当前为 88API `gpt-image-2.5-flare`）。
   - 工具脚本：`collect_demos.py`（汇总 demo）、`cover_compare.py`（多模型封面对比）、`set_bailian_models.py` / `set_fal_cover.py` / `set_88api_cover.py`（切换配置）、`cost_report.py`、`try_88api.py`。
   - 日志：`bench1.log`、`bench3.log`。
@@ -155,7 +155,7 @@ CLI / MCP 新增完整一键出片入口；默认共享桌面设置、允许独�
 macOS 实际样片还暴露了 CoreText 中文字体匹配问题，已修字体家族名并增加真实 ASS 缺字检查；桌面正式 tag 构建也需要包含这个修复。
 Windows 桌面候选已完成覆盖升级，安装后视频测试因检查脚本误用返回字段中断，修正后需重跑；详见 [RELEASE_1_5.md](RELEASE_1_5.md) 的 wheel 阻塞项记录。
 复测收尾：代码 `ee73e594` 全量 CI 全绿（1101 passed、2 skipped）；Windows 完整覆盖升级 / 本地视频 / 新安装 wheel 的人物检测与中文字体检查全部通过。
-同事应更新到 `dist/autoclip-1.5.0-cli-mcp-test-ee73e594.zip`，同版本必须强制重装；原包记录保留，补测模型费用为零。macOS 桌面新候选的源码为 `e3e57236`，后续提交只把同样的字体名称应用到其他平台，macOS 行为一致；正式 tag 使用最终源码。
+同事应更新到 `dist/autovideoclip-1.5.0-cli-mcp-test-ee73e594.zip`，同版本必须强制重装；原包记录保留，补测模型费用为零。macOS 桌面新候选的源码为 `e3e57236`，后续提交只把同样的字体名称应用到其他平台，macOS 行为一致；正式 tag 使用最终源码。
 
 ## 待办（按顺序）
 
@@ -167,7 +167,7 @@ Windows 桌面候选已完成覆盖升级，安装后视频测试因检查脚本
 6. [x] 负责人决定的两件事已实现（见上节）。
 7. [x] 桌面 / Python / CLI / MCP 版本统一为 1.5.0，候选包与验收说明见 [RELEASE_1_5.md](RELEASE_1_5.md)。
 8. [ ] **先问负责人**，再打 tag 出 Pre-release；Windows + macOS 冒烟 → 观察期 → `promote-release.yml` 转正。
-9. [ ] 清理测试敏感配置前由负责人确认；本轮按负责人要求不删除 / 提交 `frontend/node_modules` 软链接和 `benchmarks/fast_output/reports/`。新增真实模型验收临时配置在 `/private/tmp/autoclip-1.5-cli-demo`，交付包不含密钥。
+9. [ ] 清理测试敏感配置前由负责人确认；本轮按负责人要求不删除 / 提交 `frontend/node_modules` 软链接和 `benchmarks/fast_output/reports/`。新增真实模型验收临时配置在 `/private/tmp/autovideoclip-1.5-cli-demo`，交付包不含密钥。
 10. 延后到下一版：Whisper 词级时间；讲解动画、录屏、分屏带货类模板。
 
 ## 2026-10-01 发版收口

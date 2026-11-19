@@ -17,8 +17,8 @@ from backend.tests.test_chunk_retry_budget import (
 
 @pytest.mark.parametrize("document", ["legacy", "model_settings"])
 def test_reload_detects_different_saves_with_identical_mtime(tmp_path, monkeypatch, document):
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(tmp_path))
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
     monkeypatch.setattr(LLMManager, "_sync_config_if_needed", lambda self: None)
     monkeypatch.setattr(LLMManager, "_initialize_provider", lambda self: None)
     settings_file = tmp_path / "settings.json"
@@ -50,8 +50,8 @@ def test_reload_detects_different_saves_with_identical_mtime(tmp_path, monkeypat
 
 def test_reload_after_two_model_settings_saves_with_identical_mtime(tmp_path, monkeypatch):
     """a second persisted save must reload even within one filesystem tick."""
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(tmp_path))
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
     monkeypatch.setattr(LLMManager, "_sync_config_if_needed", lambda self: None)
     monkeypatch.setattr(LLMManager, "_initialize_provider", lambda self: None)
     monkeypatch.setattr(ai_model_settings, "migrate_legacy", lambda: ai_model_settings.ModelSettings())

@@ -155,7 +155,7 @@ FEATURE_LABEL = {
 }
 
 EN_STOP = {
-    "the", "and", "for", "with", "this", "that", "auto", "clip", "autoclip",
+    "the", "and", "for", "with", "this", "that", "auto", "clip", "autovideoclip",
     "please", "would", "like", "want", "need", "from", "have", "just", "into",
     "feature", "support",
 }

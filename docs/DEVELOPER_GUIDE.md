@@ -8,7 +8,7 @@ For source-based web mode, prepare Python 3.11, Node.js 20, and Redis according 
 
 ```bash
 git clone https://github.com/yogendra-sudo/AutoVideoClip.git
-cd autoclip
+cd autovideoclip
 python3 -m venv venv
 source venv/bin/activate
 python -m pip install -r requirements.txt

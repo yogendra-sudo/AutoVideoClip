@@ -413,7 +413,7 @@ def extract_frame_jpeg(video_path: Path, at_sec: float = 0.5, *, max_width: int 
     ffmpeg_bin = get_ffmpeg_path() or "ffmpeg"
     import tempfile
 
-    with tempfile.TemporaryDirectory(prefix="autoclip-cover-frame-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="autovideoclip-cover-frame-") as tmp:
         out = Path(tmp) / "frame.jpg"
         cmd = [
             ffmpeg_bin, "-y",

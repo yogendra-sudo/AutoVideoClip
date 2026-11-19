@@ -2,15 +2,15 @@
 AutoClip MCP server（stdio）——让 Cursor / Claude Code / 任何 MCP 客户端直接调 AutoClip 出片。
 
 启动：
-    autoclip mcp                       # 装了包
+    autovideoclip mcp                       # 装了包
     python -m backend.mcp_server       # 仓库内
 
 客户端配置示例（Cursor `~/.cursor/mcp.json` / Claude `claude mcp add` / opencode）：
-    { "mcpServers": { "autoclip": { "command": "autoclip", "args": ["mcp"] } } }
-    或 { "command": "/path/to/autoclip/venv/bin/python", "args": ["-m", "backend.mcp_server"],
-         "env": { "PYTHONPATH": "/path/to/autoclip" } }
-    opencode（opencode.json；一条命令：`autoclip mcp install opencode`，见 docs/OPENCODE.md）：
-    { "mcp": { "autoclip": { "type": "local", "command": ["autoclip", "mcp"], "enabled": true } } }
+    { "mcpServers": { "autovideoclip": { "command": "autovideoclip", "args": ["mcp"] } } }
+    或 { "command": "/path/to/autovideoclip/venv/bin/python", "args": ["-m", "backend.mcp_server"],
+         "env": { "PYTHONPATH": "/path/to/autovideoclip" } }
+    opencode（opencode.json；一条命令：`autovideoclip mcp install opencode`，见 docs/OPENCODE.md）：
+    { "mcp": { "autovideoclip": { "type": "local", "command": ["autovideoclip", "mcp"], "enabled": true } } }
 
 工具：
     clip_video          同步出片（几分钟到几十分钟，带进度通知）
@@ -66,7 +66,7 @@ INSTRUCTIONS = """AutoClip 1.5 把长视频自动制作成适合指定平台的�
 切片为 0 通常是评分阈值过高，用 min_score=0.5 重试。"""
 
 server = _Server(
-    name="autoclip",
+    name="autovideoclip",
     instructions=INSTRUCTIONS,
     **({'version': __version__} if 'version' in inspect.signature(_Server).parameters else {}),
 )
@@ -192,7 +192,7 @@ def _make_request(video_path: str, srt_path: Optional[str], name: Optional[str],
 
 def _make_override(provider: Optional[str], model: Optional[str], base_url: Optional[str]) -> LLMOverride:
     # The key stays in the environment. It is not a tool argument, so it is not copied into the agent transcript.
-    return LLMOverride(provider=provider, model=model, base_url=base_url, api_key=os.getenv("AUTOCLIP_API_KEY"))
+    return LLMOverride(provider=provider, model=model, base_url=base_url, api_key=os.getenv("AUTOVIDEOCLIP_API_KEY"))
 
 
 # ---------------------------------------------------------------- tools ---
@@ -260,7 +260,7 @@ def start_clip_job(
     override = _make_override(provider, model, base_url)
     _job_update(req.project_id, status="queued", percent=0, stage="queued", video=str(req.video))
     record = mcp_jobs.read_job(req.project_id) or {}
-    t = threading.Thread(target=_run_job, args=(req, override, True), daemon=True, name=f"autoclip-{req.project_id[:8]}")
+    t = threading.Thread(target=_run_job, args=(req, override, True), daemon=True, name=f"autovideoclip-{req.project_id[:8]}")
     t.start()
     return {"ok": True, "project_id": req.project_id, "hint": "用 get_job_status 轮询，间隔见 poll_after_sec。",
             **mcp_jobs.progress_fields(status="queued", progress=0, stage="queued", started_at=record.get("started_at"))}
@@ -329,7 +329,7 @@ def export_clip(
         "把一条切片经 Upload-Post 发到海外平台（tiktok / instagram / youtube / facebook / linkedin / x / threads / "
         "pinterest / bluesky …），一次可发多个平台。内部先按预设渲成片（竖屏平台默认 shorts 9:16），再异步提交；"
         "返回 request_id，用 get_publish_status 查各平台结果。需要先配置 Upload-Post API Key"
-        "（环境变量 UPLOAD_POST_API_KEY，或 autoclip publish --api-key … --save）和 profile（user）。"
+        "（环境变量 UPLOAD_POST_API_KEY，或 autovideoclip publish --api-key … --save）和 profile（user）。"
         "extra 可透传平台字段，如 {\"privacy_level\": \"SELF_ONLY\", \"privacyStatus\": \"unlisted\"}；"
         "scheduled_date（ISO-8601）定时发布。"
     ),
@@ -383,7 +383,7 @@ def list_publish_profiles() -> Dict[str, Any]:
     cfg = up.load_config()
     out: Dict[str, Any] = {"configured": cfg.configured, "source": cfg.source, "default_user": cfg.user, "platforms": up.PLATFORMS}
     if not cfg.configured:
-        out["hint"] = "先设置 UPLOAD_POST_API_KEY 或 `autoclip publish --api-key … --user … --save`（https://app.upload-post.com/api-keys）"
+        out["hint"] = "先设置 UPLOAD_POST_API_KEY 或 `autovideoclip publish --api-key … --user … --save`（https://app.upload-post.com/api-keys）"
         return out
     try:
         out["profiles"] = up.list_profiles(cfg)

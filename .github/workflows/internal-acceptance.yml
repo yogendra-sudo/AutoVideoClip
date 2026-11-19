@@ -50,8 +50,8 @@ jobs:
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           gh api "repos/$GH_REPO/actions/runs/$BUILD_RUN_ID" > build-run.json
           gh api "repos/$GH_REPO/actions/runs/$BUILD_RUN_ID/jobs?per_page=100" > build-jobs.json
-          gh run download "$BUILD_RUN_ID" -n autoclip-desktop-macos-arm64 -D internal-assets
-          gh run download "$BUILD_RUN_ID" -n autoclip-desktop-windows-x64 -D internal-assets
+          gh run download "$BUILD_RUN_ID" -n autovideoclip-desktop-macos-arm64 -D internal-assets
+          gh run download "$BUILD_RUN_ID" -n autovideoclip-desktop-windows-x64 -D internal-assets
           gh run download "$BUILD_RUN_ID" -n internal-desktop-provenance -D internal-assets
       - name: Fetch every hash-bound original and current source
         run: |

@@ -20,8 +20,8 @@ def example(source='preset'):
 
 
 def test_old_assignment_without_source_is_user(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     path = tmp_path / 'ai-model-settings.json'
     path.write_text(json.dumps({
         'version': 1,
@@ -35,8 +35,8 @@ def test_old_assignment_without_source_is_user(tmp_path, monkeypatch):
 
 
 def test_preset_source_round_trips_and_cover_stays_optional(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     dumped = example('preset').model_dump()
     assert dumped['analysis']['model_source'] == 'preset'
     assert dumped['cover_enabled'] is False

@@ -302,9 +302,9 @@ WINDOW = {'date_from': "'2026-10-01 00:00:00'", 'date_to': "'2026-11-01 00:00:00
 @pytest.fixture
 def env__r25_419_receipt_chain_duckdb(tmp_path, monkeypatch):
     flow.setup_env(tmp_path, monkeypatch)
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
-    monkeypatch.setenv('AUTOCLIP_MODE', 'desktop')
-    monkeypatch.setenv('AUTOCLIP_BUILD_ENVIRONMENT', 'production')
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_MODE', 'desktop')
+    monkeypatch.setenv('AUTOVIDEOCLIP_BUILD_ENVIRONMENT', 'production')
     posted = []
 
     def fake(req, timeout=0):
@@ -459,9 +459,9 @@ def test_real_backend_receipt_carries_the_frozen_reason_through_the_real_entry(m
 
     monkeypatch.setattr('urllib.request.urlopen', fake)
     monkeypatch.setattr('backend.services.studio.terminal_outbox._RETRY_DELAYS', ())
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
-    monkeypatch.setenv('AUTOCLIP_MODE', 'desktop')
-    monkeypatch.setenv('AUTOCLIP_BUILD_ENVIRONMENT', 'production')
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_MODE', 'desktop')
+    monkeypatch.setenv('AUTOVIDEOCLIP_BUILD_ENVIRONMENT', 'production')
     pid = flow.new_project()
     run = flow.auto_import(pid)
     snapshots = [flow.workspace(pid)]
@@ -916,8 +916,8 @@ OUTPUTS = [{'id': 'v1', 'draft_id': 'd1', 'strategy_id': 'douyin', 'status': 'co
 
 @pytest.fixture
 def bridge(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     (tmp_path / 'privacy.json').write_text('{"crash_reports":false}')
     from backend.services.studio import attempts, store
     monkeypatch.setattr(store, '_read_failures', {})

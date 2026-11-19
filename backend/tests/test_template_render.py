@@ -25,7 +25,7 @@ def test_only_the_top_three_scored_clips_are_eligible():
     assert selected_template({'html_template': 'street', 'features': {'pkg_templates_v1': True}}) == 'street'
     assert selected_template({'html_template': 'editorial', 'features': {'pkg_templates_v1': False}}) is None
     assert selected_template({'html_template': 'classic', 'features': {'pkg_templates_v1': True}}) is None
-    assert selected_template({'html_template': 'editorial', 'features': {'pkg_templates_v1': True, 'autoclip_safe_mode': True}}) is None
+    assert selected_template({'html_template': 'editorial', 'features': {'pkg_templates_v1': True, 'autovideoclip_safe_mode': True}}) is None
     from backend.services.studio.template_choice import recorded_style, style_for_request, style_from_generation
     assert style_for_request('editorial', {'pkg_templates_v1': False}) == {'template': 'classic', 'requested_template': 'editorial'}
     assert style_for_request('street', {'pkg_templates_v1': True})['template'] == 'street'
@@ -130,7 +130,7 @@ def test_finished_clips_do_not_burn_the_cover_title():
 
 
 def test_missing_runtime_and_over_budget_downgrade_without_raising(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     monkeypatch.setattr('backend.services.studio.template_choice.runtime_is_ready', lambda: False)
     missed = html.prepare_overlay('p1', 'editorial', None, 1.0, features={'pkg_templates_v1': True})
     assert missed.path is None and missed.downgrade_reason == 'missing_runtime' and missed.downgraded is True
@@ -155,8 +155,8 @@ def test_missing_runtime_and_over_budget_downgrade_without_raising(tmp_path, mon
 def test_changed_frames_are_cached_and_reused(tmp_path, monkeypatch):
     if not subprocess.run(['ffmpeg', '-version'], capture_output=True).returncode == 0:
         pytest.skip('ffmpeg unavailable')
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_TEMPLATE_BUDGET_SEC', '90')
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_TEMPLATE_BUDGET_SEC', '90')
     png = tmp_path / 'frame.png'
     subprocess.run([
         'ffmpeg', '-hide_banner', '-y', '-f', 'lavfi', '-i', 'color=c=red@0.4:s=16x16:d=0.04,format=rgba',
@@ -182,7 +182,7 @@ def test_changed_frames_are_cached_and_reused(tmp_path, monkeypatch):
 def test_overlay_is_the_second_ffmpeg_input(tmp_path, monkeypatch):
     if subprocess.run(['ffmpeg', '-version'], capture_output=True).returncode != 0:
         pytest.skip('ffmpeg unavailable')
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     root = store.directory('p1')
     root.mkdir(parents=True)
     (root / 'raw').mkdir()
@@ -226,7 +226,7 @@ def test_overlay_is_the_second_ffmpeg_input(tmp_path, monkeypatch):
 def test_html_captions_off_does_not_burn_the_classic_title_over_the_face(tmp_path, monkeypatch):
     if subprocess.run(['ffmpeg', '-version'], capture_output=True).returncode != 0:
         pytest.skip('ffmpeg unavailable')
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     root = store.directory('p-title')
     root.mkdir(parents=True)
     source = _source(root)
@@ -294,8 +294,8 @@ def _source(root: Path) -> Path:
 
 
 def test_ffv1_uses_the_remaining_budget_instead_of_a_fixed_timeout(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_TEMPLATE_BUDGET_SEC', '40')
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_TEMPLATE_BUDGET_SEC', '40')
     seen = {}
 
     def capture(count, _fps):
@@ -314,8 +314,8 @@ def test_ffv1_uses_the_remaining_budget_instead_of_a_fixed_timeout(tmp_path, mon
 
 
 def test_a_hanging_capture_is_cut_by_the_whole_budget(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_TEMPLATE_BUDGET_SEC', '1')
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_TEMPLATE_BUDGET_SEC', '1')
 
     async def hang(_count, _fps):
         await asyncio.sleep(30)
@@ -330,8 +330,8 @@ def test_a_hanging_capture_is_cut_by_the_whole_budget(tmp_path, monkeypatch):
 
 
 def test_encode_failure_does_not_leave_a_reusable_cache(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_TEMPLATE_BUDGET_SEC', '30')
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_TEMPLATE_BUDGET_SEC', '30')
 
     def capture(count, _fps):
         return [{'index': 0, 'count': count, 'png': b'png'}]
@@ -351,8 +351,8 @@ def test_encode_failure_does_not_leave_a_reusable_cache(tmp_path, monkeypatch):
 def test_a_corrupt_cache_is_recaptured_and_old_files_respect_the_cap(tmp_path, monkeypatch):
     if subprocess.run(['ffmpeg', '-version'], capture_output=True).returncode != 0:
         pytest.skip('ffmpeg unavailable')
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_OVERLAY_CACHE_BYTES', '100')
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_OVERLAY_CACHE_BYTES', '100')
     png = tmp_path / 'frame.png'
     subprocess.run(['ffmpeg', '-hide_banner', '-y', '-f', 'lavfi', '-i', 'color=c=red@0.4:s=16x16:d=0.04,format=rgba', '-frames:v', '1', '-update', '1', str(png)], check=True, capture_output=True)
     blob = png.read_bytes()
@@ -379,7 +379,7 @@ def test_a_corrupt_cache_is_recaptured_and_old_files_respect_the_cap(tmp_path, m
 def test_flag_off_ffmpeg_command_has_no_overlay_input(tmp_path, monkeypatch):
     if subprocess.run(['ffmpeg', '-version'], capture_output=True).returncode != 0:
         pytest.skip('ffmpeg unavailable')
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     root = store.directory('p1')
     root.mkdir(parents=True)
     source = _source(root)
@@ -409,7 +409,7 @@ def test_flag_off_ffmpeg_command_has_no_overlay_input(tmp_path, monkeypatch):
 def test_an_html_failure_retries_classic_and_cancellation_still_aborts(tmp_path, monkeypatch):
     if subprocess.run(['ffmpeg', '-version'], capture_output=True).returncode != 0:
         pytest.skip('ffmpeg unavailable')
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     root = store.directory('p1')
     root.mkdir(parents=True)
     source = _source(root)
@@ -447,7 +447,7 @@ def test_an_html_failure_retries_classic_and_cancellation_still_aborts(tmp_path,
 
 
 def test_job_duration_stays_the_whole_render_and_the_event_keeps_overlay_time(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     store.directory('p1').mkdir(parents=True)
     store.write('p1', {'drafts': [], 'jobs': [{'job_id': 'j1', 'status': 'queued', 'instance': store.INSTANCE}], 'generation': {'features': {'pkg_templates_v1': True}}})
     from backend.services.studio import jobs

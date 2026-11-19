@@ -8,7 +8,7 @@ interface ThemeContextValue {
   setTheme: (theme: Theme) => void
 }
 
-const THEME_STORAGE_KEY = 'autoclip-theme'
+const THEME_STORAGE_KEY = 'autovideoclip-theme'
 
 const ThemeContext = createContext<ThemeContextValue | null>(null)
 

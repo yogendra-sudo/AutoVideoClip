@@ -1,11 +1,11 @@
-"""The autoclip skill tells an agent when to produce a publish kit."""
+"""The autovideoclip skill tells an agent when to produce a publish kit."""
 from pathlib import Path
 
 import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
-SKILL = ROOT / 'skills/autoclip/SKILL.md'
-LEGACY = ROOT / 'skills/autoclip/references/legacy.md'
+SKILL = ROOT / 'skills/autovideoclip/SKILL.md'
+LEGACY = ROOT / 'skills/autovideoclip/references/legacy.md'
 
 
 def _frontmatter(text: str) -> str:
@@ -17,7 +17,7 @@ def _frontmatter(text: str) -> str:
 def test_skill_triggers_on_publish_kits_and_keeps_three_flows():
     text = SKILL.read_text(encoding='utf-8')
     description = _frontmatter(text)
-    assert 'name: autoclip' in description
+    assert 'name: autovideoclip' in description
     for word in ('发布包', '封面', '文案', '链接', '本地'):
         assert word in description
     assert 'references/legacy.md' in description
@@ -32,7 +32,7 @@ def test_skill_triggers_on_publish_kits_and_keeps_three_flows():
     assert 'sources' in text and '不要自造' in text
     assert 'clip_video' not in text and 'start_clip_job' not in text
     assert '1.5.0' not in text
-    assert 'get_version' in text and 'autoclip --version' in text
+    assert 'get_version' in text and 'autovideoclip --version' in text
 
 
 @pytest.mark.stdlib_only
@@ -40,6 +40,6 @@ def test_legacy_reference_holds_the_old_slice_tools():
     text = LEGACY.read_text(encoding='utf-8')
     for name in ('clip_video', 'start_clip_job', 'get_job_status', 'export_clip', 'publish_clip'):
         assert name in text
-    assert 'api_key' in text and 'AUTOCLIP_API_KEY' in text
+    assert 'api_key' in text and 'AUTOVIDEOCLIP_API_KEY' in text
     assert '不要传 `api_key`' in text
     assert '1.5.0' not in text

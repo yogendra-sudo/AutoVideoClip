@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 from unittest.mock import patch
 
-ROOT = Path('/tmp/autoclip-render-golden')
+ROOT = Path('/tmp/autovideoclip-render-golden')
 FFMPEG = '/usr/bin/ffmpeg'
 FFPROBE = '/usr/bin/ffprobe'
 NICE = '/usr/bin/nice'

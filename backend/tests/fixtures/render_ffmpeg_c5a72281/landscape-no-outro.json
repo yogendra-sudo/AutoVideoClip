@@ -17,7 +17,7 @@
       "-ss",
       "0.0",
       "-i",
-      "/tmp/autoclip-render-golden/input.mp4",
+      "/tmp/autovideoclip-render-golden/input.mp4",
       "-f",
       "lavfi",
       "-i",
@@ -49,7 +49,7 @@
       "-threads",
       "2",
       "-y",
-      "/tmp/autoclip-render-golden/studio/0.mkv"
+      "/tmp/autovideoclip-render-golden/studio/0.mkv"
     ],
     [
       "/usr/bin/nice",
@@ -67,7 +67,7 @@
       "-ss",
       "2.0",
       "-i",
-      "/tmp/autoclip-render-golden/input.mp4",
+      "/tmp/autovideoclip-render-golden/input.mp4",
       "-f",
       "lavfi",
       "-i",
@@ -99,7 +99,7 @@
       "-threads",
       "2",
       "-y",
-      "/tmp/autoclip-render-golden/studio/1.mkv"
+      "/tmp/autovideoclip-render-golden/studio/1.mkv"
     ],
     [
       "/usr/bin/ffmpeg",
@@ -110,7 +110,7 @@
       "-safe",
       "0",
       "-i",
-      "/tmp/autoclip-render-golden/studio/parts.txt",
+      "/tmp/autovideoclip-render-golden/studio/parts.txt",
       "-map",
       "0:v:0",
       "-c:v",
@@ -128,7 +128,7 @@
       "-movflags",
       "+faststart",
       "-y",
-      "/tmp/autoclip-render-golden/project/output/studio/job.part.mp4"
+      "/tmp/autovideoclip-render-golden/project/output/studio/job.part.mp4"
     ]
   ],
   "brand_outro": false,
@@ -142,7 +142,7 @@
       "-safe",
       "0",
       "-i",
-      "/tmp/autoclip-render-golden/studio/parts.txt",
+      "/tmp/autovideoclip-render-golden/studio/parts.txt",
       "-map",
       "0:v:0",
       "-c:v",
@@ -160,10 +160,10 @@
       "-movflags",
       "+faststart",
       "-y",
-      "/tmp/autoclip-render-golden/project/output/studio/job.part.mp4"
+      "/tmp/autovideoclip-render-golden/project/output/studio/job.part.mp4"
     ]
   ],
-  "concat_script": "file /tmp/autoclip-render-golden/studio/0.mkv\nduration 1.000000000\nfile /tmp/autoclip-render-golden/studio/1.mkv\nduration 1.500000000\n",
+  "concat_script": "file /tmp/autovideoclip-render-golden/studio/0.mkv\nduration 1.000000000\nfile /tmp/autovideoclip-render-golden/studio/1.mkv\nduration 1.500000000\n",
   "encoder": "libx264",
   "outro": [],
   "outro_script": "",
@@ -184,7 +184,7 @@
       "-ss",
       "0.0",
       "-i",
-      "/tmp/autoclip-render-golden/input.mp4",
+      "/tmp/autovideoclip-render-golden/input.mp4",
       "-f",
       "lavfi",
       "-i",
@@ -216,7 +216,7 @@
       "-threads",
       "2",
       "-y",
-      "/tmp/autoclip-render-golden/studio/0.mkv"
+      "/tmp/autovideoclip-render-golden/studio/0.mkv"
     ],
     [
       "/usr/bin/nice",
@@ -234,7 +234,7 @@
       "-ss",
       "2.0",
       "-i",
-      "/tmp/autoclip-render-golden/input.mp4",
+      "/tmp/autovideoclip-render-golden/input.mp4",
       "-f",
       "lavfi",
       "-i",
@@ -266,7 +266,7 @@
       "-threads",
       "2",
       "-y",
-      "/tmp/autoclip-render-golden/studio/1.mkv"
+      "/tmp/autovideoclip-render-golden/studio/1.mkv"
     ]
   ]
 }

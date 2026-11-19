@@ -16,11 +16,11 @@ import os
 project_root = Path(__file__).parent.parent.parent
 sys.path.append(str(project_root))
 
-# 测试库放临时目录。默认的 sqlite:///./data/autoclip.db 相对 cwd，
+# 测试库放临时目录。默认的 sqlite:///./data/autovideoclip.db 相对 cwd，
 # test_repositories 的 reset_database() 会 drop_all 掉开发者本机的库。
 # 必须在任何 backend.core.database 导入之前设置。
-_TEST_DB_DIR = tempfile.mkdtemp(prefix="autoclip-tests-")
-os.environ.setdefault("DATABASE_URL", f"sqlite:///{Path(_TEST_DB_DIR) / 'autoclip.db'}")
+_TEST_DB_DIR = tempfile.mkdtemp(prefix="autovideoclip-tests-")
+os.environ.setdefault("DATABASE_URL", f"sqlite:///{Path(_TEST_DB_DIR) / 'autovideoclip.db'}")
 
 
 def pytest_configure(config):
@@ -43,7 +43,7 @@ class _FollowStudioExecutor:
 
 
 # Every env name the code reads for a Sentry DSN or a PostHog key/host (backend, frontend build, scripts).
-TELEMETRY_ENV = ('SENTRY_DSN', 'VITE_PUBLIC_SENTRY_DSN', 'SENTRY_AUTH_TOKEN', 'AUTOCLIP_POSTHOG_KEY', 'AUTOCLIP_POSTHOG_HOST',
+TELEMETRY_ENV = ('SENTRY_DSN', 'VITE_PUBLIC_SENTRY_DSN', 'SENTRY_AUTH_TOKEN', 'AUTOVIDEOCLIP_POSTHOG_KEY', 'AUTOVIDEOCLIP_POSTHOG_HOST',
                  'VITE_PUBLIC_POSTHOG_KEY', 'VITE_PUBLIC_POSTHOG_HOST', 'POSTHOG_KEY', 'POSTHOG_HOST', 'POSTHOG_PERSONAL_API_KEY')
 
 
@@ -54,7 +54,7 @@ def _no_ambient_telemetry(monkeypatch, request):
     # With a DSN in the developer's shell, any create_app test turned the SDK on for real
     # (sending test events) and left `_initialized` True and the SDK client bound, so later
     # "no DSN -> no-op" checks failed. : the same for PostHog the QA, LLM and MCP
-    # events post whenever AUTOCLIP_POSTHOG_KEY / VITE_PUBLIC_POSTHOG_KEY is set. Telemetry is
+    # events post whenever AUTOVIDEOCLIP_POSTHOG_KEY / VITE_PUBLIC_POSTHOG_KEY is set. Telemetry is
     # off under pytest: tests never inherit a DSN or a key; a test that wants one sets it with
     # monkeypatch (and stubs urlopen), and whatever init_sentry() bound is undone here.
     for name in TELEMETRY_ENV:
@@ -97,7 +97,7 @@ def _qa_stays_off_for_unrelated_renders(monkeypatch, request):
     if name.endswith("test_studio_qa"):
         yield
         return
-    monkeypatch.setenv("AUTOCLIP_QA_DISABLED", "1")
+    monkeypatch.setenv("AUTOVIDEOCLIP_QA_DISABLED", "1")
     yield
 
 

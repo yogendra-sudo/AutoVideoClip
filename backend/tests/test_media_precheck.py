@@ -225,7 +225,7 @@ def test_confirm_refuses_the_subtitle_route_for_a_short_source(client, monkeypat
 
 def test_content_pipeline_stops_before_llm_and_transcription(tmp_path, monkeypatch):
     from backend.services import simple_pipeline_adapter as adapter_module
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path / 'data'))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path / 'data'))
     adapter = adapter_module.SimplePipelineAdapter('p-pre', 't-pre')
     monkeypatch.setattr(adapter, '_preflight_llm', lambda: pytest.fail('no LLM preflight for this source'))
     async def no_transcription(*args, **kwargs):
@@ -267,7 +267,7 @@ def test_whisper_failure_text_never_names_the_exception():
 def test_source_input_failures_are_classified_and_never_sent(monkeypatch, tmp_path, code):
     import sentry_sdk
     from backend.core import sentry_setup
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     error = PipelineFailure('INGEST', 'x', code=code)
     assert code in sentry_setup.STUDIO_ERROR_CODES and code in sentry_setup.UNREPORTED_STUDIO_ERROR_CODES
     assert sentry_setup.studio_error_code(error) == code
@@ -283,7 +283,7 @@ def test_source_input_failures_are_classified_and_never_sent(monkeypatch, tmp_pa
 def test_legacy_source_input_import_failures_are_never_sent(monkeypatch, tmp_path):
     from backend.core import sentry_setup
     from backend.tasks.import_processing import ImportSourceUnusable
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     error = ImportSourceUnusable('x')
     event = {'exception': {'values': [{'type': 'ImportSourceUnusable', 'value': 'x'}]}}
     assert sentry_setup.before_send(event, {'exc_info': (type(error), error, None)}) is None

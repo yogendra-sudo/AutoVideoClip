@@ -95,7 +95,7 @@ test('unconnected presets stay visible and point at configure / compatible / gui
   assert.equal(view.connectKind(view.catalogPreset('deepseek')), 'legacy')
   assert.equal(view.connectKind(view.catalogPreset('apimart')), 'legacy')
   assert.equal(view.catalogPreset('apimart').base_url, 'https://api.apimart.ai/v1')
-  assert.equal(view.catalogPreset('apimart').docs_url, 'https://go.apimart.ai/tw-autoclip')
+  assert.equal(view.catalogPreset('apimart').docs_url, 'https://go.apimart.ai/tw-autovideoclip')
   assert.equal(view.connectKind(view.catalogPreset('siliconflow')), 'compatible')
   assert.equal(view.connectKind(view.catalogPreset('anthropic')), 'guide')
   assert.equal(view.connectKind(view.catalogPreset('whisper')), 'local_asr')

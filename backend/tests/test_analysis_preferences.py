@@ -9,7 +9,7 @@ from backend.services.studio import analysis_preferences as prefs, vision_settin
 
 @pytest.fixture(autouse=True)
 def isolated(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
 
 
 def test_missing_preference_defaults_to_smart_selection(tmp_path, monkeypatch):
@@ -113,7 +113,7 @@ def test_legacy_saved_vision_config_stays_custom(tmp_path, monkeypatch):
 
 
 def test_env_vision_config_still_wins_over_text_model(monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_VISION_BASE_URL', 'https://ark.example/v3')
+    monkeypatch.setenv('AUTOVIDEOCLIP_VISION_BASE_URL', 'https://ark.example/v3')
     _use_text_model(monkeypatch, {'base_url': 'https://infistar.cc/v1', 'api_key': 'sk-text', 'model': 'gpt-5-mini'})
     assert vision_settings.effective()['source'] == 'environment'
 

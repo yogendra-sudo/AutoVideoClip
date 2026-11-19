@@ -38,7 +38,7 @@ import urllib.parse
 import urllib.request
 from typing import Any
 
-REPO = os.environ.get("AUTOCLIP_REPO", "yogendra-sudo/AutoVideoClip")
+REPO = os.environ.get("AUTOVIDEOCLIP_REPO", "yogendra-sudo/AutoVideoClip")
 POSTHOG_HOST = os.environ.get("POSTHOG_HOST", "https://us.posthog.com").rstrip("/")
 
 CATEGORY_LABEL = {"bug": "Bug", "idea": "Feature request", "feature": "Feature request", "other": "Other"}

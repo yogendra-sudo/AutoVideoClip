@@ -54,7 +54,7 @@ class ProcessingParams:
 def resolve_project_directory(project_id: str) -> Path:
     """Resolve a project directory independent of the process cwd.
 
-    Desktop launches set AUTOCLIP_DATA_DIR / AUTOCLIP_APP_DIR and often have a
+    Desktop launches set AUTOVIDEOCLIP_DATA_DIR / AUTOVIDEOCLIP_APP_DIR and often have a
     cwd where a relative ``data/projects`` mkdir fails. Web and Docker keep
     using the shared data directory (project root ``data/`` unless overridden).
     An absolute path is used as-is so callers can pass an explicit directory.

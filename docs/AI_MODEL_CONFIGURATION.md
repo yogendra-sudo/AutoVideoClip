@@ -7,7 +7,7 @@
 - 封面生成：默认复用供应商和密钥，预选已适配的生图模型；没有适合的型号时使用视频截帧。高级设置中可以配置其他供应商。
 - 字幕转写：可选择 Whisper 或 SenseVoiceSmall 本地转写，也可单独绑定云端服务。一次“准备模型”操作完成必要组件安装及模型下载；安装下载即时执行，选择随设置保存。新导入任务使用所选型号，本地服务不自动回退到云端。
 
-从剪贴板或 `autoclip://` 填入密钥时先确认，再写入对应服务商。规则、New API「聊天应用」一行配置，以及 macOS / Windows 的协议注册差别见 [密钥引导](KEY_GUIDE.md)。
+从剪贴板或 `autovideoclip://` 填入密钥时先确认，再写入对应服务商。规则、New API「聊天应用」一行配置，以及 macOS / Windows 的协议注册差别见 [密钥引导](KEY_GUIDE.md)。
 
 普通配置不需要命名或创建连接，也不使用配置弹窗。内部通过连接引用共享地址和密钥，并保留各供应商已填写的配置。按用途提供封面供应商切换与可选的补充画面模型；预置服务不显示接口地址，地址仅在自定义或本地服务中出现。只有未知的自定义模型显示能力选择。分析方式自动判断，原有显式偏好保留，重新选择分析模型后恢复自动方式。改变服务地址时必须重新填写已保存的密钥，避免把旧密钥自动发送给新地址。空输入保留已保存密钥。
 
@@ -84,7 +84,7 @@
 
 Whisper 模型（Systran/faster-whisper-*）由 `whisper_model_manager.py` 下载到数据目录 `whisper-models/hub`，转写只加载已下载的本地快照，不再让 faster-whisper 按模型名自行联网。
 
-- 下载源由环境变量 `AUTOCLIP_WHISPER_MODEL_SOURCE` 决定，暂无界面选项：
+- 下载源由环境变量 `AUTOVIDEOCLIP_WHISPER_MODEL_SOURCE` 决定，暂无界面选项：
   - `auto`（默认）：先连 `https://huggingface.co`；失败（超时、连不上、xet 401 等）后**自动改用第三方镜像 `https://hf-mirror.com`**。hf-mirror 不是 HuggingFace 官方服务，只用于下载公开的模型文件，不发送音频、API Key 或其它用户数据。
   - `huggingface`：只用官方源，失败不回退。
   - `hf-mirror`：只用镜像。
@@ -103,7 +103,7 @@ Whisper 模型（Systran/faster-whisper-*）由 `whisper_model_manager.py` 下�
 
 显式请求 `output_timestamp=True`，严格配对 `words` 与毫秒 `timestamp`，先恢复原文空格和标点，再按标点、42 字符、8 秒上限以及停顿生成字幕。词级信息写入带 SRT 内容校验的 `.words.json`，用于已有字幕对齐流程。缺失、不完整、倒退、重叠或明显超出音频的时间戳会中断任务并显示 SenseVoice 的处理建议；不会按文字比例伪造时间轴，也不会把一条粗 VAD 段当作精确字幕。失败不会覆盖已存在的字幕。
 
-接入参考 [#67 讨论](https://github.com/yogendra-sudo/AutoVideoClip/issues/67)、[123mlly 的 feature/dev 分支](https://github.com/123mlly/autoclip/tree/feature/dev) 和 [LauraGPT 的时间戳修复 PR](https://github.com/123mlly/autoclip/pull/1)。词级聚合思路依据该 MIT 许可实现改写，保留项目 [MIT 许可证](../LICENSE)；不搬入 fork 的其他改动和比例铺字幕兜底。
+接入参考 [#67 讨论](https://github.com/yogendra-sudo/AutoVideoClip/issues/67)、[123mlly 的 feature/dev 分支](https://github.com/123mlly/autovideoclip/tree/feature/dev) 和 [LauraGPT 的时间戳修复 PR](https://github.com/123mlly/autovideoclip/pull/1)。词级聚合思路依据该 MIT 许可实现改写，保留项目 [MIT 许可证](../LICENSE)；不搬入 fork 的其他改动和比例铺字幕兜底。
 
 FunASR/SenseVoice 源码 MIT 与模型权重许可不同。权重使用前请阅读 [SenseVoiceSmall 模型卡及其许可链接](https://huggingface.co/FunAudioLLM/SenseVoiceSmall)；安装包不内置或重新分发这些权重。硅基流动的云端 SenseVoice 型号仍需独立的云端时间戳适配，不能与这个本地实现混用。
 

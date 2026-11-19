@@ -4,7 +4,7 @@ On Windows the Tauri shell puts the backend in a Job Object that kills the whole
 app dies. macOS has no equivalent: after `kill -9` of the app (or a crash) the bundled backend
 kept running as an orphan, holding the port, the database and any ffmpeg/Whisper children.
 
-The shell passes its own PID in `AUTOCLIP_PARENT_PID`. `start()` polls it and, once that
+The shell passes its own PID in `AUTOVIDEOCLIP_PARENT_PID`. `start()` polls it and, once that
 process is gone, runs the shutdown callback. Without the variable (CLI, MCP, Docker, dev runs,
 `python -m backend.desktop_main` by hand) nothing is watched. The variable is removed from
 `os.environ` so the backend's own children never inherit it.
@@ -18,7 +18,7 @@ from typing import Callable, Optional
 
 logger = logging.getLogger(__name__)
 
-ENV = 'AUTOCLIP_PARENT_PID'
+ENV = 'AUTOVIDEOCLIP_PARENT_PID'
 DEFAULT_INTERVAL = 2.0
 
 
@@ -68,7 +68,7 @@ class ParentProbe:
 
 def start(on_parent_gone: Callable[[int], None], *, pid: Optional[int] = None, interval: float = DEFAULT_INTERVAL,
           environ=None) -> Optional[threading.Thread]:
-    """Watch `pid` (default: AUTOCLIP_PARENT_PID) and call `on_parent_gone(pid)` once it exits."""
+    """Watch `pid` (default: AUTOVIDEOCLIP_PARENT_PID) and call `on_parent_gone(pid)` once it exits."""
     pid = parent_pid_from_env(environ) if pid is None else pid
     if pid is None:
         return None
@@ -92,7 +92,7 @@ def start(on_parent_gone: Callable[[int], None], *, pid: Optional[int] = None, i
             pass
         on_parent_gone(pid)
 
-    thread = threading.Thread(target=loop, name='autoclip-parent-watch', daemon=True)
+    thread = threading.Thread(target=loop, name='autovideoclip-parent-watch', daemon=True)
     thread.stop = stop  # type: ignore[attr-defined] - tests and shutdown can end the watch
     thread.start()
     logger.info('Watching desktop app pid %s', pid)

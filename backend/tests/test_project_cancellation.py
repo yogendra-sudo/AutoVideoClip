@@ -19,7 +19,7 @@ from backend.core import project_cancellation as cancel
 
 @pytest.fixture(autouse=True)
 def _isolation(monkeypatch, tmp_path):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path / 'data'))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path / 'data'))
     cancel._cancelled.clear()
     cancel._stopped.clear()
     cancel._processes.clear()
@@ -332,7 +332,7 @@ def test_another_process_can_change_state_after_cancel(tmp_path):
         'print(store.read("p-other")["drafts"][0]["id"])\n'
     )
     env = os.environ.copy()
-    env['AUTOCLIP_DATA_DIR'] = str(tmp_path / 'data')
+    env['AUTOVIDEOCLIP_DATA_DIR'] = str(tmp_path / 'data')
     root = str(Path(__file__).resolve().parents[2])
     env['PYTHONPATH'] = root + os.pathsep + env.get('PYTHONPATH', '')
     completed = subprocess.run(

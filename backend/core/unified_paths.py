@@ -122,7 +122,7 @@ class UnifiedPathManager:
     
     def get_database_path(self) -> Path:
         """获取数据库路径"""
-        return self.data_directory / "autoclip.db"
+        return self.data_directory / "autovideoclip.db"
     
     def get_settings_file_path(self) -> Path:
         """获取设置文件路径"""

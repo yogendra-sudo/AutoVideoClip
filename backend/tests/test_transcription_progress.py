@@ -36,7 +36,7 @@ def test_display_failure_never_stops_transcription_but_a_delete_does():
 
 
 def test_local_whisper_reports_each_decoded_segment_against_total_audio(tmp_path, monkeypatch):
-    monkeypatch.delenv("AUTOCLIP_WHISPER_DEVICE", raising=False)
+    monkeypatch.delenv("AUTOVIDEOCLIP_WHISPER_DEVICE", raising=False)
     total = 2125.0  # the 35:25 source from the acceptance run
 
     class FakeModel:
@@ -61,8 +61,8 @@ def test_local_whisper_reports_each_decoded_segment_against_total_audio(tmp_path
 
 @pytest.fixture
 def studio_project(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     (store.directory('p') / 'metadata').mkdir(parents=True)
     store.write('p', {'generation': {'status': 'production', 'auto_start': True}, 'drafts': [], 'jobs': [], 'output_variants': [],
                       'analysis': {'status': 'running', 'phase': 'production', 'message': adapter.STUDIO_PRODUCTION_MESSAGE, 'instance': store.INSTANCE}})
@@ -111,7 +111,7 @@ def test_updates_are_throttled_to_whole_percent_steps(studio_project, monkeypatc
 
 
 def test_legacy_project_without_studio_state_is_never_given_one(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     store.directory('legacy').mkdir(parents=True)
     monkeypatch.setattr(adapter, 'emit_progress', lambda *a, **k: None)
     adapter.TranscriptionProgress('legacy')(0.5)
@@ -123,8 +123,8 @@ def test_unmeasured_stage_eases_forward_and_never_claims_done(tmp_path, monkeypa
     from backend.services import simple_progress as progress
 
     clock = [1_000.0]
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     monkeypatch.setattr(progress.time, 'time', lambda: clock[0])
     monkeypatch.setattr(progress, 'store', progress.SqliteProgressStore(str(tmp_path / 'progress.db')))
     monkeypatch.setattr(progress, '_listeners', [])
@@ -153,8 +153,8 @@ def test_measured_subpercent_does_not_ease_and_done_is_not_one_hundred(tmp_path,
 
     clock = [2_000.0]
     monkeypatch.setattr(progress.time, 'time', lambda: clock[0])
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     monkeypatch.setattr(progress, 'store', progress.SqliteProgressStore(str(tmp_path / 'progress.db')))
     monkeypatch.setattr(progress, '_listeners', [])
     for key in ('measured', 'done-p'):

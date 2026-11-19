@@ -1,8 +1,8 @@
 """Release-launcher values for the macOS bundle smoke.
 
 `verify_macos_bundle.py` starts the bundled interpreter directly. The desktop
-app does not: `BackendManager::start` injects `AUTOCLIP_APP_VERSION` from the
-Cargo package version and `AUTOCLIP_BUILD_ENVIRONMENT=production` on a release
+app does not: `BackendManager::start` injects `AUTOVIDEOCLIP_APP_VERSION` from the
+Cargo package version and `AUTOVIDEOCLIP_BUILD_ENVIRONMENT=production` on a release
 build (debug builds get `development` and do not report). The smoke has to
 supply that same pair or the packaged backend correctly refuses to init.
 
@@ -28,8 +28,8 @@ def release_launcher_env(resources: Path) -> dict[str, str]:
     if not version or version.lower() == "unknown":
         raise SystemExit("Bundle version is missing; refusing to invent a Sentry release")
     return {
-        "AUTOCLIP_APP_VERSION": version,
-        "AUTOCLIP_BUILD_ENVIRONMENT": "production",
+        "AUTOVIDEOCLIP_APP_VERSION": version,
+        "AUTOVIDEOCLIP_BUILD_ENVIRONMENT": "production",
     }
 
 

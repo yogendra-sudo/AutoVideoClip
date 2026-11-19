@@ -5,7 +5,7 @@
 
 import os
 
-IS_DESKTOP = os.getenv("AUTOCLIP_DESKTOP_MODE") == "1"
+IS_DESKTOP = os.getenv("AUTOVIDEOCLIP_DESKTOP_MODE") == "1"
 
 if IS_DESKTOP:
     # 仅桌面模式才使用文件系统 broker / sqlite backend 的轻量 Celery

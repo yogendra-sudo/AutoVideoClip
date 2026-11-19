@@ -101,8 +101,8 @@ def test_a3_1_cache_and_skipped(monkeypatch):
 
 def test_a3_2_submit_production_exhausted_makes_no_llm_calls(tmp_path, monkeypatch):
     """Regression: before fix, exhausted keys still entered the worker; after, billable=0 at dispatch."""
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     from backend.core import quota_precheck as qp
     from backend.services.studio import jobs, store
 

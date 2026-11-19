@@ -34,25 +34,25 @@ def test_preinstall_checks_the_app_before_killing_the_backend_then_clears_old_so
     body = _macro('NSIS_HOOK_PREINSTALL')
     assert body == [
         '!insertmacro CheckIfAppIsRunning "$INSTDIR\\${MAINBINARYNAME}.exe" "${PRODUCTNAME}"',
-        '!insertmacro AUTOCLIP_KILL_BUNDLED_PROCESSES',
-        '!insertmacro AUTOCLIP_REMOVE_OLD_BACKEND',
+        '!insertmacro AUTOVIDEOCLIP_KILL_BUNDLED_PROCESSES',
+        '!insertmacro AUTOVIDEOCLIP_REMOVE_OLD_BACKEND',
     ]
 
 
 def test_preuninstall_checks_the_app_before_killing_the_backend():
     assert _macro('NSIS_HOOK_PREUNINSTALL') == [
         '!insertmacro CheckIfAppIsRunning "$INSTDIR\\${MAINBINARYNAME}.exe" "${PRODUCTNAME}"',
-        '!insertmacro AUTOCLIP_KILL_BUNDLED_PROCESSES',
+        '!insertmacro AUTOVIDEOCLIP_KILL_BUNDLED_PROCESSES',
     ]
 
 
 def test_only_the_installed_backend_sources_are_removed():
-    body = _macro('AUTOCLIP_REMOVE_OLD_BACKEND')
+    body = _macro('AUTOVIDEOCLIP_REMOVE_OLD_BACKEND')
     removals = [line for line in body if line.startswith(('RMDir', 'Delete'))]
     assert removals == ['RMDir /r "$INSTDIR\\resources\\backend"']
     assert '${If} "$INSTDIR" != ""' in body
     install_side = '\n'.join(
-        _macro('AUTOCLIP_REMOVE_OLD_BACKEND') + _macro('AUTOCLIP_KILL_BUNDLED_PROCESSES') + _macro('NSIS_HOOK_PREINSTALL')
+        _macro('AUTOVIDEOCLIP_REMOVE_OLD_BACKEND') + _macro('AUTOVIDEOCLIP_KILL_BUNDLED_PROCESSES') + _macro('NSIS_HOOK_PREINSTALL')
     )
     for user_location in ('$APPDATA', '$LOCALAPPDATA', '$PROFILE', '$DOCUMENTS', 'resources\\python"'):
         assert user_location not in install_side
@@ -98,8 +98,8 @@ def _lang_strings(lang):
 
 def test_post_uninstall_hook_only_runs_the_guarded_removals():
     assert _macro('NSIS_HOOK_POSTUNINSTALL') == [
-        '!insertmacro AUTOCLIP_DELETE_USER_DATA',
-        '!insertmacro AUTOCLIP_REMOVE_INSTALL_LEFTOVERS',
+        '!insertmacro AUTOVIDEOCLIP_DELETE_USER_DATA',
+        '!insertmacro AUTOVIDEOCLIP_REMOVE_INSTALL_LEFTOVERS',
     ]
 
 
@@ -111,7 +111,7 @@ USER_DATA_DIRS = ['$APPDATA\\AutoClip', '$APPDATA\\${BUNDLEID}', '$LOCALAPPDATA\
 
 
 def test_user_data_removal_deletes_exactly_the_gui_checkbox_directories():
-    body = _macro('AUTOCLIP_DELETE_USER_DATA')
+    body = _macro('AUTOVIDEOCLIP_DELETE_USER_DATA')
     removals = [line for line in body if line.startswith(('RMDir', 'RmDir', 'Delete'))]
     assert removals == [f'RMDir /r "{path}"' for path in USER_DATA_DIRS]
     code = _code(HOOKS.read_text(encoding='utf-8'))
@@ -133,7 +133,7 @@ def test_user_data_removal_deletes_exactly_the_gui_checkbox_directories():
 
 
 def test_silent_delete_appdata_and_gui_checkbox_share_one_removal_block():
-    body = _macro('AUTOCLIP_DELETE_USER_DATA')
+    body = _macro('AUTOVIDEOCLIP_DELETE_USER_DATA')
     block = body[body.index('${If} $R9 = 1'):body.index('Pop $R9')]
     # Both decisions only set $; the one removal block (all three directories) follows.
     assert sum(line == '${If} $R9 = 1' for line in body) == 1
@@ -141,7 +141,7 @@ def test_silent_delete_appdata_and_gui_checkbox_share_one_removal_block():
 
 
 def test_user_data_removal_is_never_done_on_update_or_installer_driven_uninstall():
-    body = _macro('AUTOCLIP_DELETE_USER_DATA')
+    body = _macro('AUTOVIDEOCLIP_DELETE_USER_DATA')
     # The outer guard wraps every way of setting the decision flag.
     assert body[:5] == ['Push $R8', 'Push $R9', 'StrCpy $R9 0', '${If} $UpdateMode <> 1', '${AndIf} "$EXEDIR" != "$INSTDIR"']
     decision = body[body.index('${AndIf} "$EXEDIR" != "$INSTDIR"'):body.index('${If} $R9 = 1')]
@@ -152,7 +152,7 @@ def test_user_data_removal_is_never_done_on_update_or_installer_driven_uninstall
 
 
 def test_silent_or_passive_uninstall_needs_the_explicit_flag_and_gui_needs_the_checkbox():
-    body = _macro('AUTOCLIP_DELETE_USER_DATA')
+    body = _macro('AUTOVIDEOCLIP_DELETE_USER_DATA')
     start = body.index('${If} ${Silent}')
     assert body[start:start + 9] == [
         '${If} ${Silent}',
@@ -179,10 +179,10 @@ def test_custom_language_files_keep_every_tauri_key_and_name_what_is_deleted():
         text = (LANG_DIR / f'{lang}.nsh').read_text(encoding='utf-8')
         assert '{{' not in text.split('\n', 5)[-1]  # the bundler never renders language files
         strings = _lang_strings(lang)
-        assert set(strings) == TAURI_LANG_KEYS | {'autoclipUninstallNote'}
+        assert set(strings) == TAURI_LANG_KEYS | {'autovideoclipUninstallNote'}
         assert strings['deleteAppData'] == CHECKBOX[lang]
-        assert '%APPDATA%\\AutoClip' in strings['autoclipUninstallNote']
-    assert '!define MUI_UNCONFIRMPAGE_TEXT_TOP "$(autoclipUninstallNote)"' in _code(HOOKS.read_text(encoding='utf-8'))
+        assert '%APPDATA%\\AutoClip' in strings['autovideoclipUninstallNote']
+    assert '!define MUI_UNCONFIRMPAGE_TEXT_TOP "$(autovideoclipUninstallNote)"' in _code(HOOKS.read_text(encoding='utf-8'))
 
 
 def test_privacy_docs_match_the_uninstaller():
@@ -208,7 +208,7 @@ LEFTOVER_REMOVALS = [
 
 
 def test_uninstall_removes_runtime_leftovers_in_the_bundled_resource_dirs_only():
-    body = _macro('AUTOCLIP_REMOVE_INSTALL_LEFTOVERS')
+    body = _macro('AUTOVIDEOCLIP_REMOVE_INSTALL_LEFTOVERS')
     removals = [line for line in body if line.startswith(('RMDir', 'RmDir', 'Delete'))]
     assert removals == LEFTOVER_REMOVALS
     # Recursive removal only for the directories the bundle installs (tauri.windows.conf.json),
@@ -222,7 +222,7 @@ def test_uninstall_removes_runtime_leftovers_in_the_bundled_resource_dirs_only()
 
 
 def test_install_leftovers_are_only_removed_on_a_real_uninstall():
-    body = _macro('AUTOCLIP_REMOVE_INSTALL_LEFTOVERS')
+    body = _macro('AUTOVIDEOCLIP_REMOVE_INSTALL_LEFTOVERS')
     first_removal = body.index(LEFTOVER_REMOVALS[0])
     guards = body[:first_removal]
     assert guards == [
@@ -233,5 +233,5 @@ def test_install_leftovers_are_only_removed_on_a_real_uninstall():
     ]
     assert body[-1] == '${EndIf}' and body.count('${EndIf}') == 1
     # Runs after the user-data decision, and never from the install side.
-    assert _macro('NSIS_HOOK_POSTUNINSTALL')[-1] == '!insertmacro AUTOCLIP_REMOVE_INSTALL_LEFTOVERS'
-    assert 'AUTOCLIP_REMOVE_INSTALL_LEFTOVERS' not in '\n'.join(_macro('NSIS_HOOK_PREINSTALL') + _macro('NSIS_HOOK_PREUNINSTALL'))
+    assert _macro('NSIS_HOOK_POSTUNINSTALL')[-1] == '!insertmacro AUTOVIDEOCLIP_REMOVE_INSTALL_LEFTOVERS'
+    assert 'AUTOVIDEOCLIP_REMOVE_INSTALL_LEFTOVERS' not in '\n'.join(_macro('NSIS_HOOK_PREINSTALL') + _macro('NSIS_HOOK_PREUNINSTALL'))

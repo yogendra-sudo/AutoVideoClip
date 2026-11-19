@@ -1,6 +1,6 @@
 """
 python -m backend.eval              # 跑 cases/ 下全部质量约束
-python -m backend.eval --live       # 预留：真调模型并录制到 AUTOCLIP_LLM_CACHE_DIR
+python -m backend.eval --live       # 预留：真调模型并录制到 AUTOVIDEOCLIP_LLM_CACHE_DIR
 
 首批 case 不进用户视频，只放合成字幕 + 模拟 LLM 时间线。
 """
@@ -36,7 +36,7 @@ def _run_case(case_dir: Path) -> dict:
 def main(argv: list[str] | None = None) -> int:
     argv = argv or sys.argv[1:]
     if "--live" in argv:
-        print("live 模式尚未接入完整流水线；请先用 AUTOCLIP_LLM_CACHE_DIR 录制后再回放。", file=sys.stderr)
+        print("live 模式尚未接入完整流水线；请先用 AUTOVIDEOCLIP_LLM_CACHE_DIR 录制后再回放。", file=sys.stderr)
         return 2
     rows = []
     for d in sorted(p for p in CASES.iterdir() if p.is_dir() and (p / "expect.json").exists()):

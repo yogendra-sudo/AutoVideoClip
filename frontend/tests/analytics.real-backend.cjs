@@ -51,7 +51,7 @@ test('native Mac architecture overrides the Intel webview UA before launch resol
     '@tauri-apps/api/app': { getVersion: () => new Promise(() => {}) },
     './posthog': {},
   }, {
-    window: { __AUTOCLIP_RUNTIME__: { os: 'macos', arch: 'aarch64' } },
+    window: { __AUTOVIDEOCLIP_RUNTIME__: { os: 'macos', arch: 'aarch64' } },
     navigator: { userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X)', language: 'en' },
     document: { documentElement: { lang: 'en' } },
   })
@@ -66,7 +66,7 @@ test('first capture has native os/arch without waiting for trackLaunch', () => {
     capture(name, props) { events.push({ ...registered, ...props }); return {} },
   }
   const ph = load('posthog', { 'posthog-js': sdk, './workflow': core }, {
-    localStorage: memory(), window: { __TAURI_INTERNALS__: {}, __AUTOCLIP_RUNTIME__: { os: 'macos', arch: 'arm64' } },
+    localStorage: memory(), window: { __TAURI_INTERNALS__: {}, __AUTOVIDEOCLIP_RUNTIME__: { os: 'macos', arch: 'arm64' } },
     navigator: { userAgent: 'Macintosh; Intel Mac OS X', language: 'en' },
   })
   ph.initAnalytics()
@@ -94,7 +94,7 @@ test('identity waits for the desktop port, retries failure and cancels retries o
     } },
   }, {
     localStorage: memory(),
-    window: { __TAURI_INTERNALS__: {}, __AUTOCLIP_RUNTIME__: { os: 'windows', arch: 'amd64', distinct_id: id } },
+    window: { __TAURI_INTERNALS__: {}, __AUTOVIDEOCLIP_RUNTIME__: { os: 'windows', arch: 'amd64', distinct_id: id } },
     setTimeout: fn => { timer = fn; return 1 }, clearTimeout: id => { cancelled.push(id); timer = undefined },
     fetch: (url, options) => { requests.push({ url, options }); return Promise.resolve({ ok: false }) },
   })
@@ -181,7 +181,7 @@ test('R10 P1: off→on written but response lost, then off again still reaches t
 
 test('R10 P2: re-enable write failed, restart syncs the persisted "on" to the backend', async () => {
   const storage = memory()
-  storage.setItem('autoclip.analytics.optOut', 'false')
+  storage.setItem('autovideoclip.analytics.optOut', 'false')
   const puts = []
   const ph = load('posthog', { 'posthog-js': { init() {}, capture() { return {} },
     get_distinct_id: () => '018f6b2a-7c3d-7b2a-8c11-111111111111',
@@ -277,7 +277,7 @@ test('X2r: rapid toggle serializes so the backend ends on the latest UI value', 
 
 test('X2: an opted-out launch reports the opt-out even without a PostHog key', async () => {
   const storage = memory()
-  storage.setItem('autoclip.analytics.optOut', 'true')
+  storage.setItem('autovideoclip.analytics.optOut', 'true')
   const puts = []
   const ph = load('posthog', { 'posthog-js': { init() { throw Error('must not init') } }, './workflow': core }, {
     localStorage: storage, window: {},
@@ -293,7 +293,7 @@ test('architecture aliases and untrusted native facts stay within the telemetry 
   for (const arch of ['arm64', 'aarch64', 'ARM64']) assert.equal(runtime.normalizeArch(arch), 'aarch64')
   for (const arch of ['amd64', 'x86_64', 'x64', 'AMD64']) assert.equal(runtime.normalizeArch(arch), 'x86_64')
   const untrusted = load('runtime', {}, {
-    window: { __AUTOCLIP_RUNTIME__: { os: 'private title', arch: 'sk-secret' } },
+    window: { __AUTOVIDEOCLIP_RUNTIME__: { os: 'private title', arch: 'sk-secret' } },
     navigator: { userAgent: 'Macintosh Intel Mac OS X' },
   })
   assert.equal(JSON.stringify(untrusted.runtimeProperties()), '{"os":"macos","arch":"unknown"}')
@@ -419,7 +419,7 @@ test('errors and routes contain no original secrets, paths or search parameters'
   assert.equal(core.errorCode({ message: 'secret' }), 'unknown')
 })
 test('persisted opt-out skips SDK initialization and can be enabled later without double init', () => {
-  const storage = memory(); storage.setItem('autoclip.analytics.optOut', 'true')
+  const storage = memory(); storage.setItem('autovideoclip.analytics.optOut', 'true')
   const calls = []; let config
   const sdk = {
     init(_key, cfg) { calls.push('init'); config = cfg },
@@ -438,7 +438,7 @@ test('persisted opt-out skips SDK initialization and can be enabled later withou
   ph.setAnalyticsEnabled(true); ph.initAnalytics()
   assert.equal(calls.filter(call => call === 'init').length, 1)
   assert.equal(calls.filter(call => call === 'capture').length, 1)
-  assert.equal(storage.getItem('autoclip.analytics.optOut'), 'false')
+  assert.equal(storage.getItem('autovideoclip.analytics.optOut'), 'false')
 })
 test('the anonymous distinct id is stored once for backend events', async () => {
   const storage = memory()
@@ -1255,7 +1255,7 @@ test('R11: an opt-out keeps retrying after the backoff is exhausted until the AP
   let up = false
   const timers = []
   const storage = memory()
-  storage.setItem('autoclip.analytics.optOut', 'true')
+  storage.setItem('autovideoclip.analytics.optOut', 'true')
   const ph = load('posthog', { 'posthog-js': { init() {}, capture() { return {} },
     get_distinct_id: () => '018f6b2a-7c3d-7b2a-8c11-111111111111',
     opt_in_capturing() {}, opt_out_capturing() {} }, './workflow': core }, {
@@ -1339,7 +1339,7 @@ test('R12 #19: two windows interleave — storage OFF from another window drops 
 })
 
 test('R13 #26: storage readable but write fails — session OFF is sent on close and every retry', async () => {
-  const store = { ['autoclip.analytics.optOut']: 'false' }
+  const store = { ['autovideoclip.analytics.optOut']: 'false' }
   const readable = { getItem: (k) => (k in store ? store[k] : null), setItem() { throw new Error('quota') }, removeItem() {} }
   const puts = []
   const timers = []
@@ -1380,7 +1380,7 @@ test('R13 #26: shared storage OFF still vetoes a stale session ON', async () => 
     fetch: (url, opts) => { if (String(url).includes('analytics-consent')) puts.push(JSON.parse(opts.body).enabled); return Promise.resolve({ ok: false }) },
   })
   ph.setAnalyticsEnabled(true); await new Promise(r => setImmediate(r))
-  shared.setItem('autoclip.analytics.optOut', 'true') // another window turned it off
+  shared.setItem('autovideoclip.analytics.optOut', 'true') // another window turned it off
   assert.ok(timers.length)
   timers.shift()(); await new Promise(r => setImmediate(r)) // queued retry of the stale session ON
   assert.equal(puts.at(-1), false)
@@ -1445,7 +1445,7 @@ test('implicit on adopts a backend analytics opt-out and does not PUT enabled tr
   await new Promise(resolve => setImmediate(resolve))
   assert.ok(!puts.includes(true), JSON.stringify(puts))
   assert.deepEqual(puts, [false])
-  assert.equal(storage.getItem('autoclip.analytics.optOut'), 'true')
+  assert.equal(storage.getItem('autovideoclip.analytics.optOut'), 'true')
   assert.equal(ph.isAnalyticsEnabled(), false)
   assert.equal(ph.captureBusinessEvent('studio_import_started', {}), false)
 })
@@ -1461,7 +1461,7 @@ test('a launch-frozen distinct id does not overwrite a newer backend id', async 
   }
   const ph = load('posthog', { 'posthog-js': sdk, './workflow': core }, {
     localStorage: memory(),
-    window: { __AUTOCLIP_RUNTIME__: { os: 'macos', arch: 'arm64', distinct_id: launch } },
+    window: { __AUTOVIDEOCLIP_RUNTIME__: { os: 'macos', arch: 'arm64', distinct_id: launch } },
     fetch: (url, opts) => {
       if (String(url).includes('/settings/privacy')) {
         return Promise.resolve({ ok: true, json: async () => ({ analytics: true, distinct_id: newer, crash_reports: true }) })

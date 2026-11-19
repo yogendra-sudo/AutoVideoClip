@@ -8,7 +8,7 @@ Use Docker for Linux, Intel Mac, servers, or a web interface. Install Docker and
 
 ```bash
 git clone https://github.com/yogendra-sudo/AutoVideoClip.git
-cd autoclip
+cd autovideoclip
 cp env.example .env
 ```
 
@@ -25,12 +25,12 @@ Model availability depends on your provider and account. Model settings saved in
 ```bash
 mkdir -p data logs uploads
 docker compose build
-docker compose run --rm --no-deps --user root --entrypoint sh autoclip -c 'chown -R autoclip:autoclip /app/data /app/logs /app/uploads'
+docker compose run --rm --no-deps --user root --entrypoint sh autovideoclip -c 'chown -R autovideoclip:autovideoclip /app/data /app/logs /app/uploads'
 docker compose up -d
 docker compose ps
 ```
 
-The ownership command makes the three project bind mounts writable by the image’s `autoclip` user, particularly on Linux. It changes ownership of these directories and their contents; use empty directories for a new deployment. World-writable `777` permissions are unnecessary.
+The ownership command makes the three project bind mounts writable by the image’s `autovideoclip` user, particularly on Linux. It changes ownership of these directories and their contents; use empty directories for a new deployment. World-writable `777` permissions are unnecessary.
 
 | Entry point | Default address |
 | --- | --- |
@@ -53,7 +53,7 @@ OPENAI_BASE_URL=http://host.docker.internal:11434/v1
 API_MODEL_NAME=qwen2.5:7b
 ```
 
-Linux Docker Engine may require this under both the `autoclip` and `celery-worker` services:
+Linux Docker Engine may require this under both the `autovideoclip` and `celery-worker` services:
 
 ```yaml
 extra_hosts:
@@ -68,7 +68,7 @@ Videos without subtitles need speech components and model files. Initial setup m
 
 ```bash
 docker compose ps
-docker compose logs --tail=100 autoclip celery-worker
+docker compose logs --tail=100 autovideoclip celery-worker
 curl -f http://localhost:8000/api/v1/health/
 ```
 
@@ -84,7 +84,7 @@ To change a host port, change only the left side of the mapping, for example `"3
 
 ## Data and backups
 
-The supplied Compose file uses bind mounts, not a video data volume named `autoclip_data`:
+The supplied Compose file uses bind mounts, not a video data volume named `autovideoclip_data`:
 
 | Host | Container | Contents |
 | --- | --- | --- |
@@ -96,7 +96,7 @@ The supplied Compose file uses bind mounts, not a video data volume named `autoc
 
 ```bash
 docker compose stop
-tar -czf "../autoclip-backup-$(date +%Y%m%d-%H%M%S).tar.gz" data logs uploads .env
+tar -czf "../autovideoclip-backup-$(date +%Y%m%d-%H%M%S).tar.gz" data logs uploads .env
 docker compose start
 ```
 

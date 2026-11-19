@@ -10,8 +10,8 @@ CID = 'studio-' + JID
 
 @pytest.fixture
 def completed(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     root = store.directory('p1')
     output = root / 'output' / 'studio' / f'{JID}.mp4'
     output.parent.mkdir(parents=True)

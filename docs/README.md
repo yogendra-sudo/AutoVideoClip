@@ -29,7 +29,7 @@
 - [CLI, MCP, and local models](CLI_AND_MCP.md)
 - [Connect opencode CLI with one-click MCP registration](OPENCODE.en.md)
 - [AI models and local transcription configuration](AI_MODEL_CONFIGURATION.md)
-- [API key guide and autoclip://](KEY_GUIDE.md)
+- [API key guide and autovideoclip://](KEY_GUIDE.md)
 - [Pre-release provider end-to-end gate](PROVIDER_E2E_GATE.md)
 - [Contributing guide](../CONTRIBUTING.md)
 - [Build guide](../BUILD_GUIDE.md)

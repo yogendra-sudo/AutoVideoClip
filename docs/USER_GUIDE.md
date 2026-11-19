@@ -355,7 +355,7 @@
 
 ### 手动更新
 
-1. 访问 [Releases页面](https://github.com/autoclip/autoclip/releases)
+1. 访问 [Releases页面](https://github.com/autovideoclip/autovideoclip/releases)
 2. 下载最新版本的安装包
 3. 按照安装步骤重新安装
 
@@ -372,9 +372,9 @@
 
 ## 📞 联系我们
 
-- **官方网站**：https://autoclip.ai
-- **GitHub仓库**：https://github.com/autoclip/autoclip
-- **用户社区**：https://community.autoclip.ai
-- **技术支持**：support@autoclip.ai
+- **官方网站**：https://autovideoclip.ai
+- **GitHub仓库**：https://github.com/autovideoclip/autovideoclip
+- **用户社区**：https://community.autovideoclip.ai
+- **技术支持**：support@autovideoclip.ai
 
 感谢您使用 AutoVideoClip Desktop！🎉

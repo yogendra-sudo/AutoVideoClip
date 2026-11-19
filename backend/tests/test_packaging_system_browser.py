@@ -39,7 +39,7 @@ def test_mac_detects_chrome_in_user_applications(monkeypatch, tmp_path):
 
 
 def test_bundled_playwright_counts_as_installed_without_the_on_demand_dir(monkeypatch, tmp_path):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     monkeypatch.setattr(runtime, '_data_dir', lambda: tmp_path)
     bundled = tmp_path / 'bundle' / 'site-packages' / 'playwright' / '__init__.py'
     monkeypatch.setattr(importlib.util, 'find_spec', lambda name: type('S', (), {'origin': str(bundled)})())
@@ -96,7 +96,7 @@ def _real_browser():
                     reason='needs playwright + a system Chrome/Edge + ffmpeg')
 def test_real_render_produces_the_editorial_overlay_not_classic(monkeypatch, tmp_path):
     """Asserts what was rendered, not just what was requested."""
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     monkeypatch.setattr(runtime, '_data_dir', lambda: tmp_path)
     (tmp_path / 'overlays').mkdir()
     monkeypatch.setattr(html, 'overlay_cache_path', lambda pid, tpl, fill, *, frames: tmp_path / 'overlays' / f'{tpl}.mkv')

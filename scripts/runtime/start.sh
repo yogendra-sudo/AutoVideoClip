@@ -12,15 +12,15 @@ DETACH=false
 STARTUP_COMPLETE=false
 case "${1:-}" in
     --detach) DETACH=true ;;
-    --help|-h) echo 'Usage: ./start_autoclip.sh [--detach]'; exit 0 ;;
+    --help|-h) echo 'Usage: ./start_autovideoclip.sh [--detach]'; exit 0 ;;
     '') ;;
     *) echo "Unknown argument: $1" >&2; exit 2 ;;
 esac
 manage_service() { bash "$ROOT/scripts/runtime/local.sh" "$@"; }
 # Parse .env as dotenv data (env.example contains an unquoted logging format).
 # Re-exec once so all child services inherit the same configuration.
-if [[ "${_AUTOCLIP_ENV_LOADED:-}" != 1 && -x venv/bin/python ]]; then
-    export _AUTOCLIP_ENV_LOADED=1
+if [[ "${_AUTOVIDEOCLIP_ENV_LOADED:-}" != 1 && -x venv/bin/python ]]; then
+    export _AUTOVIDEOCLIP_ENV_LOADED=1
     exec venv/bin/python -c 'import os, sys; from dotenv import load_dotenv; load_dotenv(".env", override=False); os.execvpe("bash", ["bash", sys.argv[1], *sys.argv[2:]], os.environ)' "${BASH_SOURCE[0]}" "$@"
 fi
 
@@ -473,7 +473,7 @@ show_system_info() {
     echo -e "  Celery: tail -f $CELERY_LOG"
     echo ""
     echo -e "${CYAN}🛑 Stop the system:${NC}"
-    echo -e "  ./stop_autoclip.sh or press Ctrl+C"
+    echo -e "  ./stop_autovideoclip.sh or press Ctrl+C"
     echo ""
     echo -e "${YELLOW}💡 How to use:${NC}"
     echo -e "  1. Open http://localhost:$FRONTEND_PORT to use the frontend"
@@ -507,7 +507,7 @@ main() {
     for role in backend frontend celery; do
         if [[ -f "$role.pid" ]]; then
             if manage_service check "$role"; then
-                log_error "$role is already running; run ./stop_autoclip.sh first"
+                log_error "$role is already running; run ./stop_autovideoclip.sh first"
                 exit 1
             fi
             # A stale record is harmless; a live foreign PID is refused by stop.
@@ -528,7 +528,7 @@ main() {
         
         # Keep the script running (without periodic checks).
         log_info "System is running... Press Ctrl+C to stop"
-        log_info "To check system status, run: ./status_autoclip.sh"
+        log_info "To check system status, run: ./status_autovideoclip.sh"
         while true; do
             sleep 3600  # Sleep for an hour between checks to reduce frequency.
         done

@@ -1,12 +1,12 @@
 /** AutoThrottle for checks、Reminder frequency limit，andDownloadProgress、Update Description Summary。Not dependent Tauri。 */
 
 export const UPDATE_CHECK_INTERVAL_MS = 24 * 60 * 60 * 1000
-export const LAST_CHECK_KEY = 'autoclip.updater.lastCheckAt'
-export const LAST_RESULT_KEY = 'autoclip.updater.lastResult'
-export const SNOOZE_KEY = 'autoclip.updater.snoozeVersion'
-export const REMINDERS_ENABLED_KEY = 'autoclip.updater.remindersEnabled'
-export const LAST_REMINDED_VERSION_KEY = 'autoclip.updater.lastRemindedVersion'
-export const LAST_REMINDED_AT_KEY = 'autoclip.updater.lastRemindedAt'
+export const LAST_CHECK_KEY = 'autovideoclip.updater.lastCheckAt'
+export const LAST_RESULT_KEY = 'autovideoclip.updater.lastResult'
+export const SNOOZE_KEY = 'autovideoclip.updater.snoozeVersion'
+export const REMINDERS_ENABLED_KEY = 'autovideoclip.updater.remindersEnabled'
+export const LAST_REMINDED_VERSION_KEY = 'autovideoclip.updater.lastRemindedVersion'
+export const LAST_REMINDED_AT_KEY = 'autovideoclip.updater.lastRemindedAt'
 
 export type CheckResult = 'current' | 'available'
 

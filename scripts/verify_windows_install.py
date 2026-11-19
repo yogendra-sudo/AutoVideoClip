@@ -59,14 +59,14 @@ for required in (resources / "backend" / "desktop_main.py", resources / "backend
     if not required.is_file():
         raise SystemExit(f"Required file is missing from the install directory: {required}")
 
-root = Path(tempfile.mkdtemp(prefix="autoclip-win-smoke-"))
+root = Path(tempfile.mkdtemp(prefix="autovideoclip-win-smoke-"))
 os.environ.update(
-    AUTOCLIP_APP_DIR=str(root / "data"), AUTOCLIP_DATA_DIR=str(root / "data"),
-    AUTOCLIP_DESKTOP_MODE="true", AUTOCLIP_MODE="desktop",
-    AUTOCLIP_BUILD_ENVIRONMENT="production",
+    AUTOVIDEOCLIP_APP_DIR=str(root / "data"), AUTOVIDEOCLIP_DATA_DIR=str(root / "data"),
+    AUTOVIDEOCLIP_DESKTOP_MODE="true", AUTOVIDEOCLIP_MODE="desktop",
+    AUTOVIDEOCLIP_BUILD_ENVIRONMENT="production",
     DATABASE_URL="sqlite:///" + str(root / "smoke.sqlite").replace("\\", "/"),
     SENTRY_DSN="", PYTHONUTF8="1", PYTHONIOENCODING="utf-8",
-    AUTOCLIP_FFMPEG_PATH=str(ffmpeg), AUTOCLIP_FFPROBE_PATH=str(ffprobe),
+    AUTOVIDEOCLIP_FFMPEG_PATH=str(ffmpeg), AUTOVIDEOCLIP_FFPROBE_PATH=str(ffprobe),
 )
 (root / "data").mkdir()
 (root / "data" / "privacy.json").write_text('{"crash_reports":false,"analytics":false}', encoding="utf-8")

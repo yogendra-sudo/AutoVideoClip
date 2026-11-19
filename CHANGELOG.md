@@ -24,7 +24,7 @@
 - 单次制作有时间上限。超时会停下来并可以重试，不再一直停在「正在制作」。长思考改为边生成边读取，中途不容易被掐断。
 - 制作过程有阶段进度条。失败时会说明停在哪一步；如果这次请求可能已经计费，会提示先核对余额并测试连接。
 - 视频不存在、受到限制，或模型服务暂时不可用时，用一句中文说明原因和下一步。桌面服务被意外结束时会自动再启动。
-- 复制 API 密钥后可以识别剪贴板；支持 New API 的中转站也可以选配 `autoclip://` 链接。确认后才保存，不会默认写到某一家。
+- 复制 API 密钥后可以识别剪贴板；支持 New API 的中转站也可以选配 `autovideoclip://` 链接。确认后才保存，不会默认写到某一家。
 - 字幕不再断在虚词上，标点也不会落到行首或行尾；成片按标准响度导出。短的画面叠加不再把成片截断。
 
 ### 新增
@@ -33,7 +33,7 @@
 
 - 服务商卡片标出实测成功率（高 / 中 / 低）和典型耗时。推荐里赞助服务商仍排在最前，其后按成功率从高到低；成功率偏低的留在热门，不进推荐。首次设置选「其他」时，会建议先连接 DeepSeek（中文界面在 DeepSeek 与通义里取更高一档）。
 - 从任意网站复制 API 密钥后，回到窗口，或在设置里点「识别剪贴板中的密钥」，会判断剪贴板像不像密钥。像的话底部出现提示，确认后才写入。前缀或接口地址能对上唯一一家预置服务商时预选它；对不上、互相矛盾，或只是普通 `sk-` 时由你自己选，不会落到赞助服务商。已有密钥时是替换，取消则保留原来的。无效密钥、没有权限或额度不足会说明没有通过校验，生成仍会被拦住。（#493）
-- 支持 New API 一类中转站选配一行 `autoclip://` 链接（`key` 与地址占位符）。点开后只出现确认框，确认才保存密钥。不配这条链接也能照常填写。（#493）
+- 支持 New API 一类中转站选配一行 `autovideoclip://` 链接（`key` 与地址占位符）。点开后只出现确认框，确认才保存密钥。不配这条链接也能照常填写。（#493）
 
 ### 修复
 
@@ -146,7 +146,7 @@
 - 重试与付费前预检引用 `classify_upstream_error`：只对 `rate_limited` / `upstream_unavailable` / `timeout` / `connection` 重试，每种最多再试 2 次（不含首次请求）；401/402/403/404 及余额、权限、模型不存在不再重试，按分类提示。429 遵守 Retry-After，否则按 2/4/8/16/32 秒加抖动退避，并把并发减半；单块失败等其余块跑完，不拖垮整单。后端在付费调用（含画面初筛）之前检查转写是否就绪，未就绪直接拦下；API / MCP / CLI 同一条闸门。（1.5.7 线 C）
 - `model_source=preset` 时，同服务商候选按固定顺序（赞助商 → 热门 → 其他）在频率限制（`limit_requests` / `rate_limit_exceeded`）后换下一个型号；额度不足不换；手选与缺省 `source` 不自动降级。候选型号只作用于当次调用，不改共享 `settings` / `current_provider`。#358 每种可重试错误最多再试 2 次的预算跨候选共用，不按候选重置；每个分块最多 6 次 HTTP（含 `LLM_SDK_MAX_RETRIES`）。不改用户配置，不换服务商。（1.5.7 R1）
 
-- 发布 autoclip-mcp 时推送标签 `mcp-v<version>`。该标签走 pypi environment，只允许从 `mcp-v*` 部署。
+- 发布 autovideoclip-mcp 时推送标签 `mcp-v<version>`。该标签走 pypi environment，只允许从 `mcp-v*` 部署。
 - 设置页保存前做接入校验：识别控制台域名、截掉误贴的 `/chat/completions`；88API / Infistar / DeepSeek / Gemini / 百炼 / OpenAI 锁定预设地址，只有「自定义兼容」和本机可改。地址规范化复用已合入的 `provider_url`（只改写、不拦截保存）；Key strip 已由 #360 落地，本分支不再重复实现。保存前 `GET /models` 再对所选模型发约 16 token 的真实小请求，按第 0 步 `upstream_errors` 分类提示（地址错、密钥无效、无权限/分组、余额不足、模型不存在）。校验失败仍可保存但标红，生成前拦住；通过后用 `/models` 回填模型下拉。埋点 `provider_validation_finished`（`provider`、`base_url_host`、`result` 为 success/failed/skipped、`upstream_error_type`，不上报密钥或完整 URL）。
 
 - Whisper 模型下载完成后，导入前检查立刻显示转写就绪：下载线程已校验完整快照时直接采用这个结果，不再等磁盘重扫。Windows 验收里看到的「下载完仍提示缺模型」主要是验收脚本在下载前就读了检查结果（仓库脚本已改为下载后再读）；检查与下载用的是同一缓存目录（含 hf-mirror 回退）。（1.5.7 Windows 验收）
@@ -167,7 +167,7 @@
 
 - 读不到素材时长和素材不足 1 秒分成两种提示、两个错误码（`source_unreadable` / `source_too_short`）。ffprobe 读不到时长时先用 ffmpeg 解码再读一次；仍读不到时把去掉路径的 ffprobe 报错写进日志和失败记录，并上报。（#345）
 
-- 导入页读取导入前检查结果时逐层做空值判断，返回值缺少 `checks` 或单项检查时不再报 TypeError。（AUTOCLIP-FRONTEND-C）
+- 导入页读取导入前检查结果时逐层做空值判断，返回值缺少 `checks` 或单项检查时不再报 TypeError。（AUTOVIDEOCLIP-FRONTEND-C）
 
 - 新增杂志风和街头快剪两种 HTML 剪辑风格。得分靠前的竖版成片可以用所选风格，其余仍走经典包装；风格组件没装好或叠加失败时回到经典，不挡住出片。硬件编码不可用时改用原来的软件编码。开关 `pkg_templates_v1` 默认打开（#335），关掉后出片方式与上一版相同。（#314 #315 #316 #317）
 
@@ -187,7 +187,7 @@
 
 - 分析模式为自动时，gpt-6.x 能被认出是能看图的模型，不再按仅文字处理；gpt-5.x 照旧。o 系列按 OpenAI 文档区分：o1、o1-pro、o3、o3-pro、o4-mini 能看图，o1-mini、o1-preview、o3-mini 只收文字；语音、实时、转写、搜索型号也不再被当成视觉模型（1.5.7 Windows 验收，#340）。
 
-- 导入前检查的「画面分析」一项和制作流程用同一套能力判断。模型能力选「自动识别」时，gpt-6.x、gpt-4o-mini 这类能看图的模型不再显示「未配置画面理解模型」；o3-mini 这类只收文字的模型仍提示去设置。设置页的模型列表和 `autoclip doctor` / MCP `check_environment` 也按同样的规则标注。通用 OpenAI 兼容网关仍需在设置里明确选择能力（1.5.7 Windows 验收，#341）。
+- 导入前检查的「画面分析」一项和制作流程用同一套能力判断。模型能力选「自动识别」时，gpt-6.x、gpt-4o-mini 这类能看图的模型不再显示「未配置画面理解模型」；o3-mini 这类只收文字的模型仍提示去设置。设置页的模型列表和 `autovideoclip doctor` / MCP `check_environment` 也按同样的规则标注。通用 OpenAI 兼容网关仍需在设置里明确选择能力（1.5.7 Windows 验收，#341）。
 
 - 自动安装人物识别组件时，同一时间只装一次。此前每条竖屏任务都会启动安装，两个线程会互相清掉对方正在写的目录。安装超时或旧文件被占用时，只记一条带原因的警告，不再打异常堆栈（1.5.7 Windows 验收，#340）。
 
@@ -207,11 +207,11 @@
 
 - 给助手用的说明改为按成片、封面、文案和发布包来使用；只要旧切片时改读参考说明。文档里的版本号改为读取已安装的包，不再写死。（#321 #322）
 
-- autoclip-mcp 随 1.5.7 发布到 PyPI，发布后可用 uvx。（#324）
+- autovideoclip-mcp 随 1.5.7 发布到 PyPI，发布后可用 uvx。（#324）
 
-- autoclip-mcp 已发布到 PyPI，`uvx autoclip-mcp` 可以直接安装并启动 MCP server。文档补上 Claude Code、Cursor、Codex 的 uvx 配置，模型密钥都从环境变量 `AUTOCLIP_API_KEY` 读取，配置里不写明文。（#328）
+- autovideoclip-mcp 已发布到 PyPI，`uvx autovideoclip-mcp` 可以直接安装并启动 MCP server。文档补上 Claude Code、Cursor、Codex 的 uvx 配置，模型密钥都从环境变量 `AUTOVIDEOCLIP_API_KEY` 读取，配置里不写明文。（#328）
 
-- 剪辑风格默认打开：`pkg_templates_v1`、`pkg_template_picker_visual` 和 `mcp_v2_tools` 默认打开，关闭匿名统计或没拉到远程开关时也是打开。PostHog 远程值（含 `false`）、本机覆盖或 `AUTOCLIP_FLAGS=...=off` 可以关回去，安全模式 `autoclip_safe_mode` 会把它们关掉。导入页默认用风格卡片选风格。`qa_gate_blocking` 默认 shadow，只记录、不拦截。导入页默认选杂志风；CLI 不带 `--template`、MCP 不传 `template` 时默认经典，两边默认值有意不同，见 docs/CLI_AND_MCP.md。（#335）
+- 剪辑风格默认打开：`pkg_templates_v1`、`pkg_template_picker_visual` 和 `mcp_v2_tools` 默认打开，关闭匿名统计或没拉到远程开关时也是打开。PostHog 远程值（含 `false`）、本机覆盖或 `AUTOVIDEOCLIP_FLAGS=...=off` 可以关回去，安全模式 `autovideoclip_safe_mode` 会把它们关掉。导入页默认用风格卡片选风格。`qa_gate_blocking` 默认 shadow，只记录、不拦截。导入页默认选杂志风；CLI 不带 `--template`、MCP 不传 `template` 时默认经典，两边默认值有意不同，见 docs/CLI_AND_MCP.md。（#335）
 
 - 杂志风和街头快剪的标题、字幕在任何画面上都看得清：文字改成浅色，加细描边和短投影（不发光）；有标题或字幕时，背后垫一层深色渐变。未念到的字幕词保持 0.82 的不透明度，不再发暗。模板金样和对比度测试同步更新。杂志风标题按行换行，不再把两行标题拼成一句。（#335）
 
@@ -389,12 +389,12 @@
 - 保留的旧导入组件支持更多 YouTube 分享链接格式；当前 Studio 入口增加独立链接回归覆盖。
 - Windows 覆盖安装前会结束旧版本残留的后端进程，不再报「无法打开要写入的文件 _asyncio.pyd」；应用内更新先停后端再安装。
 - 链接导入把内置 ffmpeg 交给下载器，Windows 上合并音视频不再失败；下载阶段显示真实百分比，不再长时间停在同一个进度。
-- 测试使用临时数据库，不再清空开发者本机的 `data/autoclip.db`。
+- 测试使用临时数据库，不再清空开发者本机的 `data/autovideoclip.db`。
 
 ### 安全
 - 本地后端只接受 AutoVideoClip 自己界面的跨域请求，其他网页不能再读取设置里的 API Key 或发起导入、发布；桌面端拒绝非本机 Host，防 DNS 重绑定。
-- 调试路由默认不再挂载（`AUTOCLIP_ENABLE_DEBUG_ROUTES=1` 开启）；`python -m backend.main` 默认只监听 127.0.0.1。
-- Docker 从局域网 IP 或自定义域名打开前端时，需要在 `AUTOCLIP_ALLOWED_ORIGINS` 里加上前端地址（逗号分隔）。
+- 调试路由默认不再挂载（`AUTOVIDEOCLIP_ENABLE_DEBUG_ROUTES=1` 开启）；`python -m backend.main` 默认只监听 127.0.0.1。
+- Docker 从局域网 IP 或自定义域名打开前端时，需要在 `AUTOVIDEOCLIP_ALLOWED_ORIGINS` 里加上前端地址（逗号分隔）。
 
 ## [1.4.0] - 2026-09-27
 
@@ -457,8 +457,8 @@
 ### 新增
 - **发布到海外平台（Upload-Post）**：切片可经 [Upload-Post](https://www.upload-post.com) 一次发到 TikTok / Instagram / YouTube Shorts / Facebook / LinkedIn / X / Threads / Pinterest / Bluesky 等，
   与 B 站投稿并列；先按预设渲成片（竖屏平台默认 `shorts`），再异步提交并轮询各平台结果。视频处理仍全部在本地。
-  入口：`autoclip publish`、MCP `publish_clip` / `get_publish_status` / `list_publish_profiles`、API `/api/v1/publish/upload-post/*`；
-  配置用 `UPLOAD_POST_API_KEY` / `UPLOAD_POST_USER`、`autoclip publish --api-key … --user … --save`，或设置页「发布」。
+  入口：`autovideoclip publish`、MCP `publish_clip` / `get_publish_status` / `list_publish_profiles`、API `/api/v1/publish/upload-post/*`；
+  配置用 `UPLOAD_POST_API_KEY` / `UPLOAD_POST_USER`、`autovideoclip publish --api-key … --user … --save`，或设置页「发布」。
   切片的「发布导出」里可以「发到海外平台」：勾选已连接的平台，默认先私密试发（`docs/PUBLISH_UPLOAD_POST.md`）。
   发布客户端按当前 Upload-Post 文档和 OpenAPI 重写：过期账号不拿来发，Reddit 暂不发送，超长 YouTube 标题单独截短，提交后每 10 秒查一次结果。无效 key 打线上接口会得到 401。进程中断后未提交的任务会标成失败，而不是一直停在排队。
   应用里的发布收成一条：切片上打开发布，现在发或定时，成片画幅跟着账号走。项目里看记录并取消还没发出的排期。记录可以换成月历；「排这一周」把还没发的切片按分数填进周一、三、五的 09:00，确认后才提交。
@@ -497,12 +497,12 @@
 ## [1.3.0] - 2026-09-20
 
 ### 新增
-- **`autoclip` 命令行**：`autoclip run video.mp4 --provider ollama` 一条命令出片，`list / show / providers / doctor` 子命令，`--json` 给脚本与 agent；与桌面应用共用数据目录与 SQLite（`pip install -e .`；`docs/CLI_AND_MCP.md`）
-- **MCP server**（`autoclip mcp`，stdio）：`clip_video`、`start_clip_job` / `get_job_status`、`get_project`、`list_projects`、`list_providers`、`check_environment`，Cursor / Claude 可直接调用；Agent skill `skills/autoclip/SKILL.md`
+- **`autovideoclip` 命令行**：`autovideoclip run video.mp4 --provider ollama` 一条命令出片，`list / show / providers / doctor` 子命令，`--json` 给脚本与 agent；与桌面应用共用数据目录与 SQLite（`pip install -e .`；`docs/CLI_AND_MCP.md`）
+- **MCP server**（`autovideoclip mcp`，stdio）：`clip_video`、`start_clip_job` / `get_job_status`、`get_project`、`list_projects`、`list_providers`、`check_environment`，Cursor / Claude 可直接调用；Agent skill `skills/autovideoclip/SKILL.md`
 - **本地模型预设 Ollama / LM Studio**：设置页提供商下拉直接可选，自动列出服务端模型，无需 API Key；Docker / CLI 可用 `LLM_PROVIDER=ollama`
 - `GET /settings/local-presets`、`GET /settings/compatible-models?base_url=`；`POST /settings/test-api` 接受 `ollama` / `lmstudio`
 - **出片质量工程化**：按时长分档（短/中/长）覆盖提示词里写死的 90 秒规则；时间线对齐字幕边界并去重；评分数量不匹配不再整块丢、低于阈值保底 top-K。回归入口 `python -m backend.eval`
-- **发布导出**：切片可渲成抖音/小红书/Shorts 9:16 或 B 站横屏（烧字幕 + 标题卡）。入口：详情页「导出」、`autoclip export`、MCP `export_clip`
+- **发布导出**：切片可渲成抖音/小红书/Shorts 9:16 或 B 站横屏（烧字幕 + 标题卡）。入口：详情页「导出」、`autovideoclip export`、MCP `export_clip`
 - **Docker / 本地脚本模式可用设置页**：`GET/PUT /settings`、`/test-api`、`/current-provider`、`/compatible-models` 等配置端点不再要求桌面模式；Web 端设置页可直接保存 LLM 提供商与密钥到数据目录的 `settings.json`，api 与 worker 自动热重载。首屏如实显示 `.env` 里的 `LLM_PROVIDER` / `API_MODEL_NAME`（#100）
 - **失败要像失败**：LLM 未配置 / 字幕缺失或为空 / 大纲提取全部失败或不可解析 / 时间线为空 / 没有片段过评分 / ffmpeg 没产出切片——
   流水线一律进 `failed`，带阶段（SUBTITLE / ANALYZE / EXPORT）和一句可执行的提示（去哪个设置项、装什么）。不再出现 `Completed · 0 切片`
@@ -538,18 +538,18 @@
 - 模型选择框（`mode="tags"`）手动输入后会把数组发给后端导致保存失败，已归一为字符串
 - Docker 镜像无法构建：`.dockerignore` 误排除 `docker-entrypoint.sh` / `docker-dev-entrypoint.sh`（#1 #4 #9 #47 #50 #88）
 - Windows 克隆后容器无法启动：新增 `.gitattributes`，shell 脚本强制 LF 行尾（#73 #88）
-- Docker 下任何任务都不执行：compose / dev compose 的 Celery worker 未指定 `-Q`，只监听默认队列；现在消费 `celery,processing,video,notification,upload`。本地脚本 `start_autoclip.sh` 同步补齐 `celery` 与 `video` 队列（#88）
+- Docker 下任何任务都不执行：compose / dev compose 的 Celery worker 未指定 `-Q`，只监听默认队列；现在消费 `celery,processing,video,notification,upload`。本地脚本 `start_autovideoclip.sh` 同步补齐 `celery` 与 `video` 队列（#88）
 - Docker 下项目提交后立刻被标记失败：`task_submission_utils` 里一段仅用于诊断的 `redis.Redis(host='localhost')` 位于 `try` 内并向上抛异常；改为走 `REDIS_URL` 且失败仅记 warning（#88）
 - YouTube 解析在作者机器以外 500：`youtube.py` 中硬编码的 `/Users/zhoukk/...` yt-dlp 路径与 `cwd` 改为 `sys.executable -m yt_dlp` + 数据目录；同步清理 `fix_project_thumbnails.py` 与设置页里的硬编码路径（#88）
 - LLM 评分步骤对 list 输入未做 JSON 序列化（`_build_full_input`）（#53）
-- 一次请求 5 种字幕语言触发 YouTube 429：默认改为 `zh-Hans,zh,en`，可用 `AUTOCLIP_YT_SUBTITLE_LANGS` 覆盖（#88）
+- 一次请求 5 种字幕语言触发 YouTube 429：默认改为 `zh-Hans,zh,en`，可用 `AUTOVIDEOCLIP_YT_SUBTITLE_LANGS` 覆盖（#88）
 
 ### 改进
 - Docker 基础镜像 `python:3.9-slim` → `python:3.11-slim`（当前 yt-dlp 已不支持 3.9，且 3.9 下只能拿到 360p）
-- `docker-compose.yml` 四个服务共用 `autoclip:local` 镜像，只需构建一次
+- `docker-compose.yml` 四个服务共用 `autovideoclip:local` 镜像，只需构建一次
 - CI 新增 `docker-smoke` job：构建镜像、拉起 redis + api + worker、校验健康检查、yt-dlp 可用、REDIS_URL 连通、worker 监听了全部路由队列
-- 桌面壳启动后端时注入 `AUTOCLIP_APP_VERSION`，后端 `/settings` 不再固定返回 `1.0.0`
-- 桌面壳按平台设置数据目录 `AUTOCLIP_APP_DIR`（macOS 路径不变；Windows 为 `%APPDATA%\AutoVideoClip`），Windows 下强制 `PYTHONUTF8=1` 且不弹控制台窗口
+- 桌面壳启动后端时注入 `AUTOVIDEOCLIP_APP_VERSION`，后端 `/settings` 不再固定返回 `1.0.0`
+- 桌面壳按平台设置数据目录 `AUTOVIDEOCLIP_APP_DIR`（macOS 路径不变；Windows 为 `%APPDATA%\AutoVideoClip`），Windows 下强制 `PYTHONUTF8=1` 且不弹控制台窗口
 - `src-tauri/Cargo.toml` 版本与 `tauri.conf.json` 对齐
 - `desktop-build.yml` 改为 macOS + Windows 并行构建，`release` job 汇总产物，单一平台失败不阻塞另一平台上传
 

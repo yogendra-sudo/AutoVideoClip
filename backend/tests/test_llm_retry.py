@@ -25,7 +25,7 @@ def _http(status, message, retry_after=None):
 
 def test_retries_429_using_retry_after(monkeypatch):
     concurrency.reset_limiter()
-    monkeypatch.setenv('AUTOCLIP_LLM_CONCURRENCY', '4')
+    monkeypatch.setenv('AUTOVIDEOCLIP_LLM_CONCURRENCY', '4')
     sleeps = []
     monkeypatch.setattr('time.sleep', sleeps.append)
     n = {'i': 0}

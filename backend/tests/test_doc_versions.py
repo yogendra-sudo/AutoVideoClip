@@ -6,7 +6,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 SURFACES = (
-    'skills/autoclip/SKILL.md',
+    'skills/autovideoclip/SKILL.md',
     'docs/CLI_AND_MCP.md',
     'README.md',
     'README-EN.md',
@@ -18,9 +18,9 @@ SURFACES = (
     'README-FR.md',
 )
 RELEASE_URL = re.compile(r'releases/(?:tag|download)/v\d+\.\d+\.\d+')
-WHEEL_PIN = re.compile(r'autoclip-\d+\.\d+\.\d+-')
-OLD_WHEEL = 'autoclip-*-py3-none-any.whl'
-WHEEL_GLOB = 'autoclip_mcp-*-py3-none-any.whl'
+WHEEL_PIN = re.compile(r'autovideoclip-\d+\.\d+\.\d+-')
+OLD_WHEEL = 'autovideoclip-*-py3-none-any.whl'
+WHEEL_GLOB = 'autovideoclip_mcp-*-py3-none-any.whl'
 STATED_VERSION = re.compile(r'(?:核对为|统一为|都为)\s*\d+\.\d+\.\d+')
 
 
@@ -50,9 +50,9 @@ def test_agent_docs_do_not_hardcode_a_product_version():
         assert STATED_VERSION.search(text) is None, relative
         if relative.startswith('README'):
             assert WHEEL_GLOB in text, relative
-    skill = (ROOT / 'skills/autoclip/SKILL.md').read_text(encoding='utf-8')
+    skill = (ROOT / 'skills/autovideoclip/SKILL.md').read_text(encoding='utf-8')
     guide = (ROOT / 'docs/CLI_AND_MCP.md').read_text(encoding='utf-8')
     readme = (ROOT / 'README.md').read_text(encoding='utf-8')
-    assert 'get_version' in skill and 'autoclip --version' in skill
-    assert 'get_version' in guide and 'autoclip --version' in guide
-    assert 'autoclip --version' in readme and 'releases/latest' in readme
+    assert 'get_version' in skill and 'autovideoclip --version' in skill
+    assert 'get_version' in guide and 'autovideoclip --version' in guide
+    assert 'autovideoclip --version' in readme and 'releases/latest' in readme

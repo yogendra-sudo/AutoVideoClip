@@ -70,7 +70,7 @@ class ProviderE2EContractTests(unittest.TestCase):
             path = Path(tmp) / 'provider_presets.json'
             path.write_text(json.dumps(raw), encoding='utf-8')
             before = path.read_bytes()
-            with patch.dict(os.environ, {'AUTOCLIP_PROVIDER_PRESETS': str(path)}):
+            with patch.dict(os.environ, {'AUTOVIDEOCLIP_PROVIDER_PRESETS': str(path)}):
                 matrix.reset_live_catalog()
                 try:
                     providers = {item['id']: item for item in matrix.live_providers()}
@@ -196,19 +196,19 @@ class ProviderE2EContractTests(unittest.TestCase):
         raw['providers']['deepseek']['api_key'] = 'sk-should-never-appear'
         raw['providers']['api88']['default_model'] = ''
         raw['providers']['api88']['candidates']['analysis'] = []
-        old = os.environ.get('AUTOCLIP_PROVIDER_PRESETS')
+        old = os.environ.get('AUTOVIDEOCLIP_PROVIDER_PRESETS')
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / 'provider_presets.json'
             path.write_text(json.dumps(raw), encoding='utf-8')
-            os.environ['AUTOCLIP_PROVIDER_PRESETS'] = str(path)
+            os.environ['AUTOVIDEOCLIP_PROVIDER_PRESETS'] = str(path)
             matrix.reset_live_catalog()
             try:
                 providers = {item['id']: item for item in matrix.live_providers()}
             finally:
                 if old is None:
-                    os.environ.pop('AUTOCLIP_PROVIDER_PRESETS', None)
+                    os.environ.pop('AUTOVIDEOCLIP_PROVIDER_PRESETS', None)
                 else:
-                    os.environ['AUTOCLIP_PROVIDER_PRESETS'] = old
+                    os.environ['AUTOVIDEOCLIP_PROVIDER_PRESETS'] = old
                 matrix.reset_live_catalog()
         self.assertEqual(providers['deepseek']['base_url'], 'https://api.deepseek.com')
         self.assertEqual(providers['deepseek']['default_model'], 'deepseek-flash')
@@ -226,72 +226,72 @@ class ProviderE2EContractTests(unittest.TestCase):
             default_model='',
             analysis=['gemini-from-candidates'],
         ))
-        old = os.environ.get('AUTOCLIP_PROVIDER_PRESETS')
+        old = os.environ.get('AUTOVIDEOCLIP_PROVIDER_PRESETS')
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / 'provider_presets.json'
             path.write_text(json.dumps(raw), encoding='utf-8')
-            os.environ['AUTOCLIP_PROVIDER_PRESETS'] = str(path)
+            os.environ['AUTOVIDEOCLIP_PROVIDER_PRESETS'] = str(path)
             matrix.reset_live_catalog()
             try:
                 providers = {item['id']: item for item in matrix.live_providers()}
             finally:
                 if old is None:
-                    os.environ.pop('AUTOCLIP_PROVIDER_PRESETS', None)
+                    os.environ.pop('AUTOVIDEOCLIP_PROVIDER_PRESETS', None)
                 else:
-                    os.environ['AUTOCLIP_PROVIDER_PRESETS'] = old
+                    os.environ['AUTOVIDEOCLIP_PROVIDER_PRESETS'] = old
                 matrix.reset_live_catalog()
         self.assertEqual(providers['gemini']['default_model'], 'gemini-3.5-flash-lite')
 
     def test_unknown_schema_is_rejected(self):
         raw = _full_live_catalog()
         raw['schema_version'] = 99
-        old = os.environ.get('AUTOCLIP_PROVIDER_PRESETS')
+        old = os.environ.get('AUTOVIDEOCLIP_PROVIDER_PRESETS')
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / 'bad.json'
             path.write_text(json.dumps(raw), encoding='utf-8')
-            os.environ['AUTOCLIP_PROVIDER_PRESETS'] = str(path)
+            os.environ['AUTOVIDEOCLIP_PROVIDER_PRESETS'] = str(path)
             matrix.reset_live_catalog()
             try:
                 with self.assertRaises(ValueError):
                     matrix.live_providers()
             finally:
                 if old is None:
-                    os.environ.pop('AUTOCLIP_PROVIDER_PRESETS', None)
+                    os.environ.pop('AUTOVIDEOCLIP_PROVIDER_PRESETS', None)
                 else:
-                    os.environ['AUTOCLIP_PROVIDER_PRESETS'] = old
+                    os.environ['AUTOVIDEOCLIP_PROVIDER_PRESETS'] = old
                 matrix.reset_live_catalog()
 
     def test_missing_live_entry_is_fail_closed(self):
         raw = _full_live_catalog()
         del raw['providers']['dashscope']
-        old = os.environ.get('AUTOCLIP_PROVIDER_PRESETS')
+        old = os.environ.get('AUTOVIDEOCLIP_PROVIDER_PRESETS')
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / 'partial.json'
             path.write_text(json.dumps(raw), encoding='utf-8')
-            os.environ['AUTOCLIP_PROVIDER_PRESETS'] = str(path)
+            os.environ['AUTOVIDEOCLIP_PROVIDER_PRESETS'] = str(path)
             matrix.reset_live_catalog()
             try:
                 with self.assertRaises(KeyError):
                     matrix.live_providers()
             finally:
                 if old is None:
-                    os.environ.pop('AUTOCLIP_PROVIDER_PRESETS', None)
+                    os.environ.pop('AUTOVIDEOCLIP_PROVIDER_PRESETS', None)
                 else:
-                    os.environ['AUTOCLIP_PROVIDER_PRESETS'] = old
+                    os.environ['AUTOVIDEOCLIP_PROVIDER_PRESETS'] = old
                 matrix.reset_live_catalog()
 
     def test_missing_presets_env_is_fail_closed(self):
-        old = os.environ.get('AUTOCLIP_PROVIDER_PRESETS')
-        os.environ['AUTOCLIP_PROVIDER_PRESETS'] = '/tmp/autoclip-missing-provider-presets.json'
+        old = os.environ.get('AUTOVIDEOCLIP_PROVIDER_PRESETS')
+        os.environ['AUTOVIDEOCLIP_PROVIDER_PRESETS'] = '/tmp/autovideoclip-missing-provider-presets.json'
         matrix.reset_live_catalog()
         try:
             with self.assertRaises(FileNotFoundError):
                 matrix.live_providers()
         finally:
             if old is None:
-                os.environ.pop('AUTOCLIP_PROVIDER_PRESETS', None)
+                os.environ.pop('AUTOVIDEOCLIP_PROVIDER_PRESETS', None)
             else:
-                os.environ['AUTOCLIP_PROVIDER_PRESETS'] = old
+                os.environ['AUTOVIDEOCLIP_PROVIDER_PRESETS'] = old
             matrix.reset_live_catalog()
 
     def test_product_gemini_38_flash_gets_openai_compat_url(self):
@@ -301,19 +301,19 @@ class ProviderE2EContractTests(unittest.TestCase):
             base_url='https://generativelanguage.googleapis.com/v1beta',
             default_model='gemini-3.8-flash',
         ))
-        old = os.environ.get('AUTOCLIP_PROVIDER_PRESETS')
+        old = os.environ.get('AUTOVIDEOCLIP_PROVIDER_PRESETS')
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / 'provider_presets.json'
             path.write_text(json.dumps(raw), encoding='utf-8')
-            os.environ['AUTOCLIP_PROVIDER_PRESETS'] = str(path)
+            os.environ['AUTOVIDEOCLIP_PROVIDER_PRESETS'] = str(path)
             matrix.reset_live_catalog()
             try:
                 providers = {item['id']: item for item in matrix.live_providers()}
             finally:
                 if old is None:
-                    os.environ.pop('AUTOCLIP_PROVIDER_PRESETS', None)
+                    os.environ.pop('AUTOVIDEOCLIP_PROVIDER_PRESETS', None)
                 else:
-                    os.environ['AUTOCLIP_PROVIDER_PRESETS'] = old
+                    os.environ['AUTOVIDEOCLIP_PROVIDER_PRESETS'] = old
                 matrix.reset_live_catalog()
         self.assertEqual(providers['gemini']['default_model'], 'gemini-3.5-flash-lite')
         self.assertEqual(
@@ -342,9 +342,9 @@ class ProviderE2EContractTests(unittest.TestCase):
             self.assertFalse(shipped.exists())
 
     def test_catalog_path_prefers_shipped_json_then_live_defaults(self):
-        old = os.environ.get('AUTOCLIP_PROVIDER_PRESETS')
+        old = os.environ.get('AUTOVIDEOCLIP_PROVIDER_PRESETS')
         if old is not None:
-            os.environ.pop('AUTOCLIP_PROVIDER_PRESETS', None)
+            os.environ.pop('AUTOVIDEOCLIP_PROVIDER_PRESETS', None)
         matrix.reset_live_catalog()
         try:
             shipped = ROOT / 'backend' / 'presets' / 'provider_presets.json'
@@ -362,7 +362,7 @@ class ProviderE2EContractTests(unittest.TestCase):
                 self.assertEqual(set(load_catalog_providers()), set())
         finally:
             if old is not None:
-                os.environ['AUTOCLIP_PROVIDER_PRESETS'] = old
+                os.environ['AUTOVIDEOCLIP_PROVIDER_PRESETS'] = old
             matrix.reset_live_catalog()
 
     def test_judge_thresholds(self):

@@ -3,13 +3,13 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "autoclip-mcp"
+name = "autovideoclip-mcp"
 version = "1.5.8"
 description = "AutoVideoClip — AI long-video auto-clipping: CLI and MCP server entry point"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-# The autoclip-mcp distribution name lets `uvx autoclip-mcp` install this package and run its matching entry point.
+# The autovideoclip-mcp distribution name lets `uvx autovideoclip-mcp` install this package and run its matching entry point.
 # These pins match runtime dependencies in requirements.txt; pytest remains only in requirements.txt.
 # The desktop app, Docker, and CI still install requirements.txt.
 dependencies = [
@@ -44,8 +44,6 @@ dependencies = [
 ]
 
 [project.scripts]
-autoclip = "backend.cli:main"
-autoclip-mcp = "backend.mcp_server:main"
 autovideoclip = "backend.cli:main"
 autovideoclip-mcp = "backend.mcp_server:main"
 

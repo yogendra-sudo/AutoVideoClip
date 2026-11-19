@@ -210,7 +210,7 @@ def test_write_job_file_lock_blocks_another_process(data_dir):
     env['LOCK_TARGET'] = str(target)
     env['HELD'] = str(held)
     env['PYTHONPATH'] = os.getcwd()
-    env['AUTOCLIP_DATA_DIR'] = str(data_dir)
+    env['AUTOVIDEOCLIP_DATA_DIR'] = str(data_dir)
     proc = subprocess.Popen([sys.executable, '-c', script], env=env)
     try:
         deadline = time.time() + 10
@@ -250,17 +250,17 @@ def test_new_tools_stay_hidden_when_the_flag_is_off(data_dir, monkeypatch):
     pytest.importorskip('mcp')
     from backend import mcp_server
 
-    monkeypatch.delenv('AUTOCLIP_FLAGS', raising=False)
+    monkeypatch.delenv('AUTOVIDEOCLIP_FLAGS', raising=False)
     default = {tool.name for tool in asyncio.run(mcp_server.server.list_tools())}
     assert 'list_styles' in default and 'cancel_job' in default  # 1.5.7 default on
 
-    monkeypatch.setenv('AUTOCLIP_FLAGS', 'mcp_v2_tools=off')
+    monkeypatch.setenv('AUTOVIDEOCLIP_FLAGS', 'mcp_v2_tools=off')
     assert mcp_server.list_styles()['error_code'] == 'disabled'
     assert mcp_server.cancel_job('p3')['error_code'] == 'disabled'
     hidden = {tool.name for tool in asyncio.run(mcp_server.server.list_tools())}
     assert 'list_styles' not in hidden and 'cancel_job' not in hidden
 
-    monkeypatch.setenv('AUTOCLIP_FLAGS', 'mcp_v2_tools=on')
+    monkeypatch.setenv('AUTOVIDEOCLIP_FLAGS', 'mcp_v2_tools=on')
     visible = {tool.name: tool for tool in asyncio.run(mcp_server.server.list_tools())}
     assert 'list_styles' in visible and 'cancel_job' in visible
     styles = mcp_server.list_styles()
@@ -272,7 +272,7 @@ def test_legacy_tools_are_deprecated_and_do_not_take_api_key(data_dir, monkeypat
     pytest.importorskip('mcp')
     from backend import mcp_server
 
-    monkeypatch.delenv('AUTOCLIP_FLAGS', raising=False)
+    monkeypatch.delenv('AUTOVIDEOCLIP_FLAGS', raising=False)
     for name in ('clip_video', 'start_clip_job', 'check_environment'):
         assert 'api_key' not in inspect.signature(getattr(mcp_server, name)).parameters
     tools = {tool.name: tool for tool in asyncio.run(mcp_server.server.list_tools())}
@@ -282,6 +282,6 @@ def test_legacy_tools_are_deprecated_and_do_not_take_api_key(data_dir, monkeypat
     assert 'api_key' not in clip.input_schema['properties']
     assert 'video_path' in clip.input_schema['properties']
     assert not (tools['get_version'].description or '').startswith('deprecated:')
-    monkeypatch.setenv('AUTOCLIP_API_KEY', 'env-secret')
+    monkeypatch.setenv('AUTOVIDEOCLIP_API_KEY', 'env-secret')
     override = mcp_server._make_override('openai', 'gpt-4o-mini', None)
     assert override.api_key == 'env-secret'

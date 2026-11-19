@@ -7,7 +7,7 @@ import os
 from celery import Celery
 
 # 创建Celery应用
-celery_app = Celery('autoclip')
+celery_app = Celery('autovideoclip')
 
 # 基本配置
 celery_app.conf.update(

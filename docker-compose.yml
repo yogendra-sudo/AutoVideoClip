@@ -2,7 +2,7 @@ services:
   # Redis service
   redis:
     image: redis:7-alpine
-    container_name: autoclip-redis
+    container_name: autovideoclip-redis
     restart: unless-stopped
     ports:
       - "6379:6379"
@@ -16,13 +16,13 @@ services:
       retries: 5
 
   # Main application service
-  autoclip:
+  autovideoclip:
     build:
       context: .
       dockerfile: Dockerfile
     # All four services share one image; using the same image name builds it only once.
-    image: autoclip:local
-    container_name: autoclip-app
+    image: autovideoclip:local
+    container_name: autovideoclip-app
     restart: unless-stopped
     ports:
       - "8000:8000"  # Backend API
@@ -33,7 +33,7 @@ services:
       - ./uploads:/app/uploads
     environment:
       - REDIS_URL=redis://redis:6379/0
-      - DATABASE_URL=sqlite:///./data/autoclip.db
+      - DATABASE_URL=sqlite:///./data/autovideoclip.db
       - ENVIRONMENT=production
       - DEBUG=false
       - LOG_LEVEL=INFO
@@ -48,9 +48,9 @@ services:
       - API_GEMINI_API_KEY=${API_GEMINI_API_KEY:-}
       - API_SILICONFLOW_API_KEY=${API_SILICONFLOW_API_KEY:-}
       - UPLOAD_POST_API_KEY=${UPLOAD_POST_API_KEY:-}
-      - AUTOCLIP_ALLOWED_ORIGINS=${AUTOCLIP_ALLOWED_ORIGINS:-}
+      - AUTOVIDEOCLIP_ALLOWED_ORIGINS=${AUTOVIDEOCLIP_ALLOWED_ORIGINS:-}
       - UPLOAD_POST_USER=${UPLOAD_POST_USER:-}
-      - AUTOCLIP_YT_SUBTITLE_LANGS=${AUTOCLIP_YT_SUBTITLE_LANGS:-}
+      - AUTOVIDEOCLIP_YT_SUBTITLE_LANGS=${AUTOVIDEOCLIP_YT_SUBTITLE_LANGS:-}
     depends_on:
       redis:
         condition: service_healthy
@@ -66,8 +66,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: autoclip:local
-    container_name: autoclip-celery-worker
+    image: autovideoclip:local
+    container_name: autovideoclip-celery-worker
     restart: unless-stopped
     volumes:
       - ./data:/app/data
@@ -75,7 +75,7 @@ services:
       - ./uploads:/app/uploads
     environment:
       - REDIS_URL=redis://redis:6379/0
-      - DATABASE_URL=sqlite:///./data/autoclip.db
+      - DATABASE_URL=sqlite:///./data/autovideoclip.db
       - ENVIRONMENT=production
       - DEBUG=false
       - LOG_LEVEL=INFO
@@ -91,14 +91,14 @@ services:
       - API_SILICONFLOW_API_KEY=${API_SILICONFLOW_API_KEY:-}
       - UPLOAD_POST_API_KEY=${UPLOAD_POST_API_KEY:-}
       - UPLOAD_POST_USER=${UPLOAD_POST_USER:-}
-      - AUTOCLIP_YT_SUBTITLE_LANGS=${AUTOCLIP_YT_SUBTITLE_LANGS:-}
+      - AUTOVIDEOCLIP_YT_SUBTITLE_LANGS=${AUTOVIDEOCLIP_YT_SUBTITLE_LANGS:-}
     # celery_app.task_routes sends tasks to dedicated queues; a worker without -Q consumes only the default
     # `celery` queue, leaving pipeline tasks in `processing` indefinitely.
     command: celery -A backend.core.celery_app worker --loglevel=info --concurrency=2 -Q celery,processing,video,notification,upload
     depends_on:
       redis:
         condition: service_healthy
-      autoclip:
+      autovideoclip:
         condition: service_healthy
 
   # Celery Beat scheduler
@@ -106,15 +106,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: autoclip:local
-    container_name: autoclip-celery-beat
+    image: autovideoclip:local
+    container_name: autovideoclip-celery-beat
     restart: unless-stopped
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
     environment:
       - REDIS_URL=redis://redis:6379/0
-      - DATABASE_URL=sqlite:///./data/autoclip.db
+      - DATABASE_URL=sqlite:///./data/autovideoclip.db
       - ENVIRONMENT=production
       - DEBUG=false
       - LOG_LEVEL=INFO
@@ -122,7 +122,7 @@ services:
     depends_on:
       redis:
         condition: service_healthy
-      autoclip:
+      autovideoclip:
         condition: service_healthy
 
   # Flower monitoring service (optional)
@@ -130,14 +130,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: autoclip:local
-    container_name: autoclip-flower
+    image: autovideoclip:local
+    container_name: autovideoclip-flower
     restart: unless-stopped
     ports:
       - "5555:5555"
     environment:
       - REDIS_URL=redis://redis:6379/0
-      - DATABASE_URL=sqlite:///./data/autoclip.db
+      - DATABASE_URL=sqlite:///./data/autovideoclip.db
       - ENVIRONMENT=production
     command: celery -A backend.core.celery_app flower --port=5555
     depends_on:
@@ -152,4 +152,4 @@ volumes:
 
 networks:
   default:
-    name: autoclip-network
+    name: autovideoclip-network

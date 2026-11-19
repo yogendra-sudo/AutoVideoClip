@@ -22,6 +22,6 @@
 
 ## 开关
 
-`mcp_v2_tools` 默认关闭。`cancel_job` 和 `list_styles` 只在它打开时注册。打开 `autoclip_safe_mode` 后它回到关闭，除非 `AUTOCLIP_FLAGS=mcp_v2_tools=on`。这个开关不改变桌面导入页。
+`mcp_v2_tools` 默认关闭。`cancel_job` 和 `list_styles` 只在它打开时注册。打开 `autovideoclip_safe_mode` 后它回到关闭，除非 `AUTOVIDEOCLIP_FLAGS=mcp_v2_tools=on`。这个开关不改变桌面导入页。
 
 PostHog 项目里还没有创建这个开关，也没有为这两条事件建看板。

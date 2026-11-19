@@ -1,7 +1,7 @@
 """
 本地运行器：不起 FastAPI、不起 Celery，在当前进程里把一条视频跑完整条流水线。
 
-给 `autoclip` CLI（backend/cli.py）和 MCP server（backend/mcp_server.py）共用。
+给 `autovideoclip` CLI（backend/cli.py）和 MCP server（backend/mcp_server.py）共用。
 复用的是桌面端真正在用的 `SimplePipelineAdapter`，产物目录、metadata、SQLite 记录
 都和桌面应用一致——CLI 出的片，打开桌面应用也能看到。
 
@@ -31,7 +31,7 @@ PROVIDER_CHOICES = ("dashscope", "openai", "gemini", "deepseek", "seed", "kimi",
 # ---------------------------------------------------------------- environment ---
 def default_app_dir() -> Path:
     """与桌面应用一致的数据目录：mac 为 ~/Library/Application Support/AutoClip。"""
-    env = os.getenv("AUTOCLIP_DATA_DIR") or os.getenv("AUTOCLIP_APP_DIR")
+    env = os.getenv("AUTOVIDEOCLIP_DATA_DIR") or os.getenv("AUTOVIDEOCLIP_APP_DIR")
     if env:
         return Path(env).expanduser()
     system = platform.system()
@@ -56,13 +56,13 @@ def configure_environment(data_dir: Optional[Path] = None, quiet: bool = True) -
     target = (data_dir or default_app_dir()).expanduser()
     target.mkdir(parents=True, exist_ok=True)
     (target / "logs").mkdir(parents=True, exist_ok=True)
-    os.environ["AUTOCLIP_APP_DIR"] = str(target)
-    os.environ["AUTOCLIP_DATA_DIR"] = str(target)
-    os.environ.setdefault("DATABASE_URL", f"sqlite:///{target / 'autoclip.db'}")
+    os.environ["AUTOVIDEOCLIP_APP_DIR"] = str(target)
+    os.environ["AUTOVIDEOCLIP_DATA_DIR"] = str(target)
+    os.environ.setdefault("DATABASE_URL", f"sqlite:///{target / 'autovideoclip.db'}")
     os.environ.setdefault("LOG_FILE", str(target / "logs" / "cli.log"))
     # 流水线内部日志很吵；CLI 默认只看进度，日志落文件
     if quiet:
-        os.environ.setdefault("AUTOCLIP_CLI_QUIET", "1")
+        os.environ.setdefault("AUTOVIDEOCLIP_CLI_QUIET", "1")
     # 让 `backend.*` 可 import（从任意 cwd 运行 `python -m backend.cli`）
     root = str(Path(__file__).resolve().parent.parent.parent)
     if root not in sys.path:
@@ -224,7 +224,7 @@ def _write_project_json(project_dir: Path, req: RunRequest, extra: Optional[Dict
     """`DataSyncService` 会读 project.json 拿名字；顺手把来源记下来。"""
     meta = {
         "project_name": req.name or req.video.stem,
-        "description": f"由 autoclip CLI 从 {req.video} 创建",
+        "description": f"由 autovideoclip CLI 从 {req.video} 创建",
         "created_at": datetime.now().isoformat(),
         "source": {"video": str(req.video), "srt": str(req.srt) if req.srt else None, "via": "cli"},
         "video_category": req.category,
@@ -257,7 +257,7 @@ def _register_project(req: RunRequest, video_path: Path) -> None:
         project = Project(
             id=req.project_id,
             name=req.name or req.video.stem,
-            description=f"由 autoclip CLI 从 {req.video.name} 创建",
+            description=f"由 autovideoclip CLI 从 {req.video.name} 创建",
             project_type=ptype,
             status=ProjectStatus.PROCESSING,
             video_path=str(video_path),
@@ -528,7 +528,7 @@ def list_projects(limit: int = 50) -> List[Dict[str, Any]]:
 
 # ---------------------------------------------------------------- doctor ---
 def environment_report() -> Dict[str, Any]:
-    """ffmpeg / whisper 运行时 / LLM 配置 / 数据目录一览，给 `autoclip doctor` 和 MCP 用。"""
+    """ffmpeg / whisper 运行时 / LLM 配置 / 数据目录一览，给 `autovideoclip doctor` 和 MCP 用。"""
     from backend.core.path_utils import get_data_directory
     from backend.services import whisper_runtime
 

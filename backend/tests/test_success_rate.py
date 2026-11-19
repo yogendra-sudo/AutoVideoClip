@@ -645,7 +645,7 @@ IDENTITY = {'provider': 'gemini', 'config_source': 'customized', 'upstream_error
 
 @pytest.fixture
 def project(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     store.directory('p').mkdir(parents=True)
     return 'p'
 
@@ -677,10 +677,10 @@ def test_identity_survives_history_to_terminal(project, phase, kind, watch_id, m
     identity = {**IDENTITY, 'failure_stage': phase}
     posted = _posted(monkeypatch)
     if phase == 'production':
-        monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
-        monkeypatch.setenv('AUTOCLIP_MODE', 'desktop')
-        monkeypatch.setenv('AUTOCLIP_BUILD_ENVIRONMENT', 'production')
-        monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
+        monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
+        monkeypatch.setenv('AUTOVIDEOCLIP_MODE', 'desktop')
+        monkeypatch.setenv('AUTOVIDEOCLIP_BUILD_ENVIRONMENT', 'production')
+        monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
     state = {'plan': {'id': 'plan', 'mode': 'local'},
              'analysis': {'status': 'failed', 'phase': phase, 'run_id': 'run', 'error_code': 'service_restarted', **identity}}
     if phase == 'production':
@@ -782,10 +782,10 @@ def test_degrade_reason_reaches_terminal_event_from_stored_record(project, reaso
         if auto:
             data['generation']['attempt_id'] = opened['attempt_id']
         return data
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_MODE', 'desktop')
-    monkeypatch.setenv('AUTOCLIP_BUILD_ENVIRONMENT', 'production')
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_MODE', 'desktop')
+    monkeypatch.setenv('AUTOVIDEOCLIP_BUILD_ENVIRONMENT', 'production')
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
     posted = _posted(monkeypatch)
     store.write(project, start(store.read(project)))
     assert posted == []  # 还没到终态

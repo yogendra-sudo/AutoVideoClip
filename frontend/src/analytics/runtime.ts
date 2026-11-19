@@ -3,7 +3,7 @@ type NativeRuntime = { os?: string; arch?: string; distinct_id?: string }
 
 export function nativeRuntime(): NativeRuntime {
   if (typeof window === 'undefined') return {}
-  return (window as Window & { __AUTOCLIP_RUNTIME__?: NativeRuntime }).__AUTOCLIP_RUNTIME__ || {}
+  return (window as Window & { __AUTOVIDEOCLIP_RUNTIME__?: NativeRuntime }).__AUTOVIDEOCLIP_RUNTIME__ || {}
 }
 
 export function normalizeArch(value?: string): string {

@@ -8,7 +8,7 @@
 
 ```bash
 git clone https://github.com/yogendra-sudo/AutoVideoClip.git
-cd autoclip
+cd autovideoclip
 cp env.example .env
 ```
 
@@ -25,12 +25,12 @@ API_DASHSCOPE_API_KEY=your_api_key
 ```bash
 mkdir -p data logs uploads
 docker compose build
-docker compose run --rm --no-deps --user root --entrypoint sh autoclip -c 'chown -R autoclip:autoclip /app/data /app/logs /app/uploads'
+docker compose run --rm --no-deps --user root --entrypoint sh autovideoclip -c 'chown -R autovideoclip:autovideoclip /app/data /app/logs /app/uploads'
 docker compose up -d
 docker compose ps
 ```
 
-目录归属命令让镜像中的 `autoclip` 用户能够写入三个项目绑定目录，尤其适用于 Linux。它会修改这些目录及其内容的文件归属；新部署可先在空目录中完成。无需将权限设为 `777`。
+目录归属命令让镜像中的 `autovideoclip` 用户能够写入三个项目绑定目录，尤其适用于 Linux。它会修改这些目录及其内容的文件归属；新部署可先在空目录中完成。无需将权限设为 `777`。
 
 | 入口 | 默认地址 |
 | --- | --- |
@@ -53,7 +53,7 @@ OPENAI_BASE_URL=http://host.docker.internal:11434/v1
 API_MODEL_NAME=qwen2.5:7b
 ```
 
-Linux Docker Engine 可能需要在 `autoclip` 和 `celery-worker` 两个服务下加入：
+Linux Docker Engine 可能需要在 `autovideoclip` 和 `celery-worker` 两个服务下加入：
 
 ```yaml
 extra_hosts:
@@ -68,13 +68,13 @@ extra_hosts:
 
 ```bash
 docker compose ps
-docker compose logs --tail=100 autoclip celery-worker
+docker compose logs --tail=100 autovideoclip celery-worker
 curl -f http://localhost:8000/api/v1/health/
 ```
 
 | 现象 | 检查项 |
 | --- | --- |
-| 页面打不开 | `autoclip` 是否运行，3000 / 8000 端口是否被其他进程占用 |
+| 页面打不开 | `autovideoclip` 是否运行，3000 / 8000 端口是否被其他进程占用 |
 | 项目一直排队 | `celery-worker` 与 Redis 是否健康，是否保留了编排中的专用队列参数 |
 | Permission denied / 数据库只读 | `data/`、`logs/`、`uploads/` 是否对容器用户可写 |
 | 模型测试失败 | 提供商、模型名、API Key 和保存的 Base URL；本地模型是否能从容器访问 |
@@ -84,7 +84,7 @@ curl -f http://localhost:8000/api/v1/health/
 
 ## 数据与备份
 
-默认 Compose 使用绑定目录，而不是名为 `autoclip_data` 的视频数据卷：
+默认 Compose 使用绑定目录，而不是名为 `autovideoclip_data` 的视频数据卷：
 
 | 宿主机 | 容器 | 内容 |
 | --- | --- | --- |
@@ -96,7 +96,7 @@ curl -f http://localhost:8000/api/v1/health/
 
 ```bash
 docker compose stop
-tar -czf "../autoclip-backup-$(date +%Y%m%d-%H%M%S).tar.gz" data logs uploads .env
+tar -czf "../autovideoclip-backup-$(date +%Y%m%d-%H%M%S).tar.gz" data logs uploads .env
 docker compose start
 ```
 

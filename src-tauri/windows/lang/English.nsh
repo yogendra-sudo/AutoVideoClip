@@ -2,7 +2,7 @@
 ; A custom file replaces the built-in one, so every key of the built-in file must stay here
 ; (backend/tests/test_windows_installer_hooks.py checks the key set).
 ; Changed: deleteAppData names what is deleted (RC156 Win QA #15); {{product_name}} (never rendered
-; by the bundler for language files) -> ${PRODUCTNAME}; added autoclipUninstallNote.
+; by the bundler for language files) -> ${PRODUCTNAME}; added autovideoclipUninstallNote.
 LangString addOrReinstall ${LANG_ENGLISH} "Add/Reinstall components"
 LangString alreadyInstalled ${LANG_ENGLISH} "Already Installed"
 LangString alreadyInstalledLong ${LANG_ENGLISH} "${PRODUCTNAME} ${VERSION} is already installed. Select the operation you want to perform and click Next to continue."
@@ -30,4 +30,4 @@ LangString webview2Downloading ${LANG_ENGLISH} "Downloading WebView2 bootstrappe
 LangString webview2InstallError ${LANG_ENGLISH} "Error: Installing WebView2 failed with exit code $1"
 LangString webview2InstallSuccess ${LANG_ENGLISH} "WebView2 installed successfully"
 LangString deleteAppData ${LANG_ENGLISH} "Also delete my AutoClip data (projects, settings, API keys)"
-LangString autoclipUninstallNote ${LANG_ENGLISH} "Your projects, settings and API keys in %APPDATA%\AutoClip are kept by default. Tick the box below to delete them permanently."
+LangString autovideoclipUninstallNote ${LANG_ENGLISH} "Your projects, settings and API keys in %APPDATA%\AutoClip are kept by default. Tick the box below to delete them permanently."

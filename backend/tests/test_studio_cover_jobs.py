@@ -11,8 +11,8 @@ from backend.tests.test_studio import client, root, source  # noqa: F401 - share
 
 @pytest.fixture
 def cover_state(monkeypatch, tmp_path):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     (tmp_path / 'privacy.json').write_text('{"crash_reports":false}')
     state = {'drafts': [], 'jobs': [], 'output_variants': [
         {'id': 'v', 'strategy_id': 'xiaohongshu', 'render_job_id': 'render', 'cover': 'design'}]}

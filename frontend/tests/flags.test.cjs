@@ -57,12 +57,12 @@ test('build defaults: off except the 1.5.7 default-on features', () => {
 
 test('analytics off never reads remote flags or a stale cache', () => {
   const storage = memory()
-  storage.setItem('autoclip.flags.cache.v1', JSON.stringify({ savedAt: Date.now(), values: { remember_platforms: true, render_top_first: 'top3' } }))
+  storage.setItem('autovideoclip.flags.cache.v1', JSON.stringify({ savedAt: Date.now(), values: { remember_platforms: true, render_top_first: 'top3' } }))
   const { flags, calls } = load({ analytics: false, remote: { remember_platforms: true }, storage })
   assert.equal(flags.flagValue('remember_platforms'), false)
   assert.equal(flags.flagValue('render_top_first'), 'limit10')
   assert.deepEqual(calls, [])
-  assert.equal(storage.getItem('autoclip.flags.cache.v1').includes('top3'), true)
+  assert.equal(storage.getItem('autovideoclip.flags.cache.v1').includes('top3'), true)
 })
 
 test('analytics on uses the loaded remote value and writes a cache', () => {
@@ -72,7 +72,7 @@ test('analytics on uses the loaded remote value and writes a cache', () => {
   assert.equal(flags.flagValue('render_top_first'), 'top3')
   assert.equal(flags.flagValue('clip_reasons'), false)
   assert.ok(calls.includes('remember_platforms'))
-  const cache = JSON.parse(storage.getItem('autoclip.flags.cache.v1'))
+  const cache = JSON.parse(storage.getItem('autovideoclip.flags.cache.v1'))
   assert.equal(cache.values.remember_platforms, true)
   assert.equal(cache.values.render_top_first, 'top3')
   assert.equal(cache.values.clip_reasons, undefined)
@@ -81,7 +81,7 @@ test('analytics on uses the loaded remote value and writes a cache', () => {
 test('a fresh cache is used only while analytics stays on and expires after seven days', () => {
   let time = 1_700_000_000_000
   const storage = memory()
-  storage.setItem('autoclip.flags.cache.v1', JSON.stringify({ savedAt: time, appVersion: '1.5.7', values: { notify_on_done: true } }))
+  storage.setItem('autovideoclip.flags.cache.v1', JSON.stringify({ savedAt: time, appVersion: '1.5.7', values: { notify_on_done: true } }))
   const on = load({ analytics: true, storage, now: () => time })
   assert.equal(on.flags.flagEnabled('notify_on_done'), true)
   time += WEEK + 1
@@ -91,20 +91,20 @@ test('a fresh cache is used only while analytics stays on and expires after seve
 })
 
 test('local override beats remote values and safe mode, and safe mode forces the rest off', () => {
-  const { flags } = load({ analytics: true, remote: { remember_platforms: true, clip_reasons: true, autoclip_safe_mode: false } })
-  flags.setFlagOverride('autoclip_safe_mode', true)
+  const { flags } = load({ analytics: true, remote: { remember_platforms: true, clip_reasons: true, autovideoclip_safe_mode: false } })
+  flags.setFlagOverride('autovideoclip_safe_mode', true)
   flags.setFlagOverride('clip_reasons', true)
-  assert.equal(flags.flagEnabled('autoclip_safe_mode'), true)
+  assert.equal(flags.flagEnabled('autovideoclip_safe_mode'), true)
   assert.equal(flags.flagEnabled('clip_reasons'), true)
   assert.equal(flags.flagEnabled('remember_platforms'), false)
-  flags.setFlagOverride('autoclip_safe_mode', null)
+  flags.setFlagOverride('autovideoclip_safe_mode', null)
   flags.setFlagOverride('clip_reasons', null)
   assert.equal(flags.flagEnabled('remember_platforms'), true)
 })
 
 test('remote safe mode closes every flag that has no local override', () => {
-  const { flags, calls } = load({ analytics: true, remote: { autoclip_safe_mode: true, remember_platforms: true, qa_gate_blocking: 'block' } })
-  assert.equal(flags.flagEnabled('autoclip_safe_mode'), true)
+  const { flags, calls } = load({ analytics: true, remote: { autovideoclip_safe_mode: true, remember_platforms: true, qa_gate_blocking: 'block' } })
+  assert.equal(flags.flagEnabled('autovideoclip_safe_mode'), true)
   assert.equal(flags.flagEnabled('remember_platforms'), false)
   assert.equal(flags.flagValue('qa_gate_blocking'), 'off')
   assert.equal(calls.includes('remember_platforms'), false)
@@ -130,7 +130,7 @@ test('an unassigned default does not count as an experiment assignment', () => {
   assert.equal(remote.flags.flagAssigned('one_click_paste_start'), true)
   assert.equal(remote.flags.flagEnabled('one_click_paste_start'), false)
   assert.equal(remote.flags.flagAssigned('remember_platforms'), true)
-  const safe = load({ analytics: true, remote: { autoclip_safe_mode: true, remember_platforms: true } })
+  const safe = load({ analytics: true, remote: { autovideoclip_safe_mode: true, remember_platforms: true } })
   assert.equal(safe.flags.flagOrigin('remember_platforms'), 'safe_mode')
   assert.equal(safe.flags.flagAssigned('remember_platforms'), false)
 })
@@ -140,7 +140,7 @@ test('quality gate defaults to shadow and block is not the safe value', () => {
   assert.equal(flags.flagEnabled('qa_gate_blocking'), false)
   flags.setFlagOverride('qa_gate_blocking', 'block')
   assert.equal(flags.flagValue('qa_gate_blocking'), 'block')
-  flags.setFlagOverride('autoclip_safe_mode', true)
+  flags.setFlagOverride('autovideoclip_safe_mode', true)
   assert.equal(flags.flagValue('qa_gate_blocking'), 'off')
   assert.equal(flags.flagOrigin('qa_gate_blocking'), 'safe_mode')
   flags.setFlagOverride('qa_gate_blocking', null)
@@ -153,10 +153,10 @@ test('invalid overrides are dropped and the snapshot stays enumerable', () => {
   flags.setFlagOverride('one_click_paste_start', 'sometimes')
   assert.equal(flags.flagValue('publish_pack_v2'), 'combined')
   assert.equal(flags.flagValue('one_click_paste_start'), 'button')
-  const stored = JSON.parse(storage.getItem('autoclip.flags.overrides.v1'))
+  const stored = JSON.parse(storage.getItem('autovideoclip.flags.overrides.v1'))
   assert.deepEqual(Object.keys(stored), ['publish_pack_v2'])
   flags.setFlagOverride('publish_pack_v2', null)
-  assert.equal(storage.getItem('autoclip.flags.overrides.v1'), null)
+  assert.equal(storage.getItem('autovideoclip.flags.overrides.v1'), null)
 })
 
 test('default-on styles stay on with analytics off and turn off remotely, locally or in safe mode', () => {
@@ -175,7 +175,7 @@ test('default-on styles stay on with analytics off and turn off remotely, locall
   local.flags.setFlagOverride('pkg_templates_v1', false)
   assert.equal(local.flags.flagEnabled('pkg_templates_v1'), false)
   const safe = load({ analytics: false })
-  safe.flags.setFlagOverride('autoclip_safe_mode', true)
+  safe.flags.setFlagOverride('autovideoclip_safe_mode', true)
   assert.equal(safe.flags.flagEnabled('pkg_templates_v1'), false)
   assert.equal(safe.flags.flagEnabled('mcp_v2_tools'), false)
   assert.equal(safe.flags.flagOrigin('pkg_templates_v1'), 'safe_mode')
@@ -185,12 +185,12 @@ test('visual style picker ships on by default and remote, cache, override or saf
   const t = 1_700_000_000_000
   assert.equal(load({ analytics: true, remote: {} }).flags.flagEnabled('pkg_template_picker_visual'), true)
   const storage = memory()
-  storage.setItem('autoclip.flags.cache.v1', JSON.stringify({ savedAt: t - 1000, appVersion: '1.5.7', values: { pkg_template_picker_visual: false } }))
+  storage.setItem('autovideoclip.flags.cache.v1', JSON.stringify({ savedAt: t - 1000, appVersion: '1.5.7', values: { pkg_template_picker_visual: false } }))
   assert.equal(load({ analytics: true, remote: {}, storage, now: () => t }).flags.flagEnabled('pkg_template_picker_visual'), false)
   const remote = load({ analytics: true, remote: { pkg_template_picker_visual: false } })
   assert.equal(remote.flags.flagEnabled('pkg_template_picker_visual'), false)
   assert.equal(remote.flags.flagOrigin('pkg_template_picker_visual'), 'remote')
-  assert.equal(load({ analytics: true, remote: { autoclip_safe_mode: true } }).flags.flagEnabled('pkg_template_picker_visual'), false)
+  assert.equal(load({ analytics: true, remote: { autovideoclip_safe_mode: true } }).flags.flagEnabled('pkg_template_picker_visual'), false)
   const local = load({ analytics: false })
   local.flags.setFlagOverride('pkg_template_picker_visual', false)
   assert.equal(local.flags.flagEnabled('pkg_template_picker_visual'), false)
@@ -200,12 +200,12 @@ test('W157-N3: a flag cache written by another app version is ignored after upgr
   const t = 1_700_000_000_000
   const storage = memory()
   // 1.5.6 wrote pkg_templates_v1=false (cohort-only targeting) and never knew picker_visual.
-  storage.setItem('autoclip.flags.cache.v1', JSON.stringify({ savedAt: t - 1000, values: { pkg_templates_v1: false } }))
+  storage.setItem('autovideoclip.flags.cache.v1', JSON.stringify({ savedAt: t - 1000, values: { pkg_templates_v1: false } }))
   const { flags } = load({ analytics: true, storage, now: () => t, version: '1.5.7' })
   assert.equal(flags.flagEnabled('pkg_templates_v1'), true)
   assert.equal(flags.flagEnabled('pkg_template_picker_visual'), true)
   assert.equal(flags.flagOrigin('pkg_templates_v1'), 'default')
-  storage.setItem('autoclip.flags.cache.v1', JSON.stringify({ savedAt: t - 1000, appVersion: '1.5.6', values: { pkg_templates_v1: false } }))
+  storage.setItem('autovideoclip.flags.cache.v1', JSON.stringify({ savedAt: t - 1000, appVersion: '1.5.6', values: { pkg_templates_v1: false } }))
   assert.equal(flags.flagEnabled('pkg_templates_v1'), true)
 })
 
@@ -213,7 +213,7 @@ test('W157-N3: cache is stamped with the app version and a remote false still wi
   const t = 1_700_000_000_000
   const { flags, storage } = load({ analytics: true, now: () => t, version: '1.5.7', remote: { pkg_templates_v1: false } })
   assert.equal(flags.flagEnabled('pkg_templates_v1'), false)
-  const cache = JSON.parse(storage.getItem('autoclip.flags.cache.v1'))
+  const cache = JSON.parse(storage.getItem('autovideoclip.flags.cache.v1'))
   assert.equal(cache.appVersion, '1.5.7')
   assert.equal(cache.values.pkg_templates_v1, false)
   const again = load({ analytics: true, now: () => t + 1000, version: '1.5.7', storage })

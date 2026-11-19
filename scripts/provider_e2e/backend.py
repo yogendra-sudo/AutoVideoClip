@@ -32,12 +32,12 @@ def backend_env(data_dir: Path, extra: dict[str, str] | None = None) -> dict[str
         }:
             env[key] = ''
     env.update({
-        'AUTOCLIP_DESKTOP_MODE': 'true',
-        'AUTOCLIP_MODE': 'desktop',
-        'AUTOCLIP_DATA_DIR': str(data_dir),
-        'AUTOCLIP_APP_DIR': str(data_dir),
-        'AUTOCLIP_HOST': '127.0.0.1',
-        'DATABASE_URL': 'sqlite:///' + str(data_dir / 'autoclip.db').replace('\\', '/'),
+        'AUTOVIDEOCLIP_DESKTOP_MODE': 'true',
+        'AUTOVIDEOCLIP_MODE': 'desktop',
+        'AUTOVIDEOCLIP_DATA_DIR': str(data_dir),
+        'AUTOVIDEOCLIP_APP_DIR': str(data_dir),
+        'AUTOVIDEOCLIP_HOST': '127.0.0.1',
+        'DATABASE_URL': 'sqlite:///' + str(data_dir / 'autovideoclip.db').replace('\\', '/'),
         'SENTRY_DSN': '',
         'VITE_PUBLIC_SENTRY_DSN': '',
         'VITE_PUBLIC_POSTHOG_KEY': '',

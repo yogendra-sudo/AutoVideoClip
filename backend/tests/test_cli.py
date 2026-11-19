@@ -1,4 +1,4 @@
-"""autoclip CLI / local_runner：参数解析、项目目录准备、结果汇总、进度监听（不跑真流水线、不联网）"""
+"""autovideoclip CLI / local_runner：参数解析、项目目录准备、结果汇总、进度监听（不跑真流水线、不联网）"""
 import json
 import os
 import subprocess
@@ -15,8 +15,8 @@ sys.path.insert(0, str(ROOT))
 def data_dir(tmp_path, monkeypatch):
     """独立数据目录 + 独立 SQLite，避免碰用户真实目录"""
     d = tmp_path / "data"
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(d))
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(d))
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(d))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(d))
     monkeypatch.setenv("DATABASE_URL", f"sqlite:///{d / 'test.db'}")
     d.mkdir()
     return d
@@ -48,7 +48,7 @@ def test_cli_and_mcp_report_the_package_version(capsys):
     from backend.mcp_server import get_version
     with pytest.raises(SystemExit) as result:
         main(['--version'])
-    assert result.value.code == 0 and capsys.readouterr().out.strip() == f'autoclip {__version__}'
+    assert result.value.code == 0 and capsys.readouterr().out.strip() == f'autovideoclip {__version__}'
     assert get_version() == {'version': __version__}
 
 
@@ -56,19 +56,19 @@ def test_api_key_flag_warns_and_env_is_the_default(capsys, monkeypatch):
     from argparse import Namespace
     from backend.cli import _llm_override, build_parser
 
-    monkeypatch.setenv('AUTOCLIP_API_KEY', 'env-secret')
+    monkeypatch.setenv('AUTOVIDEOCLIP_API_KEY', 'env-secret')
     quiet = _llm_override(Namespace(provider=None, model=None, base_url=None, api_key=None))
     assert quiet.api_key == 'env-secret'
     assert '弃用' not in capsys.readouterr().err
     flagged = _llm_override(Namespace(provider=None, model=None, base_url=None, api_key='flag-secret'))
     err = capsys.readouterr().err
     assert flagged.api_key == 'flag-secret'
-    assert '弃用' in err and 'AUTOCLIP_API_KEY' in err
+    assert '弃用' in err and 'AUTOVIDEOCLIP_API_KEY' in err
     with pytest.raises(SystemExit) as result:
         build_parser().parse_args(['run', '--help'])
     assert result.value.code == 0
     help_text = capsys.readouterr().out
-    assert '弃用' in help_text and 'AUTOCLIP_API_KEY' in help_text
+    assert '弃用' in help_text and 'AUTOVIDEOCLIP_API_KEY' in help_text
 
 
 def test_parser_run_accepts_provider_presets():
@@ -87,7 +87,7 @@ def test_parser_run_accepts_provider_presets():
 def test_cli_help_runs_without_backend(data_dir):
     p = subprocess.run([sys.executable, "-m", "backend.cli", "--help"], cwd=ROOT, capture_output=True, text=True, timeout=60)
     assert p.returncode == 0
-    assert "autoclip" in p.stdout and "--provider ollama" in p.stdout
+    assert "autovideoclip" in p.stdout and "--provider ollama" in p.stdout
 
 
 # ---------------------------------------------------------------- runner ---
@@ -206,10 +206,10 @@ def test_progress_listener_receives_payload(data_dir):
 def test_default_app_dir_follows_env(monkeypatch, tmp_path):
     from backend.services.local_runner import default_app_dir
 
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(tmp_path / "x"))
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(tmp_path / "x"))
     assert default_app_dir() == tmp_path / "x"
-    monkeypatch.delenv("AUTOCLIP_DATA_DIR")
-    monkeypatch.delenv("AUTOCLIP_APP_DIR", raising=False)
+    monkeypatch.delenv("AUTOVIDEOCLIP_DATA_DIR")
+    monkeypatch.delenv("AUTOVIDEOCLIP_APP_DIR", raising=False)
     assert default_app_dir().name == "AutoClip"
 
 

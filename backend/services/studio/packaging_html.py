@@ -126,8 +126,8 @@ async def capture_changed(frame_count: int, fps: int, render, shoot, pages: int 
 
 
 def budget_seconds() -> float:
-    """Per-clip overlay budget. ``AUTOCLIP_TEMPLATE_BUDGET_SEC`` overrides the 90s default."""
-    raw = os.getenv('AUTOCLIP_TEMPLATE_BUDGET_SEC', '90').strip()
+    """Per-clip overlay budget. ``AUTOVIDEOCLIP_TEMPLATE_BUDGET_SEC`` overrides the 90s default."""
+    raw = os.getenv('AUTOVIDEOCLIP_TEMPLATE_BUDGET_SEC', '90').strip()
     try:
         value = float(raw)
     except ValueError:
@@ -139,7 +139,7 @@ def budget_seconds() -> float:
 
 def overlay_cache_limit() -> int:
     """Bytes kept under one project's overlay folder. The file just written stays."""
-    raw = os.getenv('AUTOCLIP_OVERLAY_CACHE_BYTES', '').strip()
+    raw = os.getenv('AUTOVIDEOCLIP_OVERLAY_CACHE_BYTES', '').strip()
     if not raw:
         return OVERLAY_CACHE_BYTES
     try:

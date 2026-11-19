@@ -57,7 +57,7 @@
 - `SimplePipelineAdapter` 读项目 `video_category` → `get_prompt_files(category)` 传给各步
 
 **D. 回归集与指标** — `backend/eval/`
-- `LLMClient` 增加录制 / 回放：`AUTOCLIP_LLM_CACHE_DIR` 设了就按 `sha1(prompt+input)` 落盘 / 读盘；CI 里只回放，零 API 费用、结果可复现
+- `LLMClient` 增加录制 / 回放：`AUTOVIDEOCLIP_LLM_CACHE_DIR` 设了就按 `sha1(prompt+input)` 落盘 / 读盘；CI 里只回放，零 API 费用、结果可复现
 - `eval/cases/<name>/{input.srt, expect.json}`：`expect.json` 写约束而不是标准答案——片数区间、时长区间、最小覆盖率、`must_not_zero`、（可选）人工标的黄金区间
 - `eval/metrics.py`：片数 / 时长分布 / 覆盖率 / 边界与黄金区间的平均偏移 / 零片率 / 兜底触发率
 - `python -m backend.eval` 跑全部 case，打印表格 + 写 `eval/reports/<date>.json`；`--live` 真调模型并录制
@@ -90,7 +90,7 @@
 
 **B. 入口**
 - API：`POST /projects/{id}/clips/{clip_id}/export`（后台线程，返回 job）、`GET /projects/{id}/exports/{job_id}`、`GET /projects/{id}/exports/{job_id}/download`
-- CLI：`autoclip export <project_id> --preset douyin [--clip 2 --clip 5] [--no-subtitles] [--no-title]`
+- CLI：`autovideoclip export <project_id> --preset douyin [--clip 2 --clip 5] [--no-subtitles] [--no-title]`
 - MCP：`export_clip(project_id, clip_id, preset, ...)`
 
 **C. 桌面端** — `ClipCard` 的占位「投稿」换成「发布导出」：`Dialog` 里 `Segmented` 选预设、开关字幕 / 标题卡，`ProgressLine` 显示进度，完成后一个 `Btn` 下载。全部用 `frontend/src/ui` 原语，按 `DESIGN.md`。

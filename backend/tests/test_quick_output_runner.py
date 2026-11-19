@@ -161,7 +161,7 @@ def test_stopped_producer_is_reported_without_erasing_completed_outputs(data_dir
 def test_template_is_stored_and_unknown_styles_are_rejected(imported, monkeypatch):
     from backend import cli, mcp_server
     source, srt, calls = imported
-    monkeypatch.setenv('AUTOCLIP_FLAGS', 'mcp_v2_tools=on,pkg_templates_v1=off')
+    monkeypatch.setenv('AUTOVIDEOCLIP_FLAGS', 'mcp_v2_tools=on,pkg_templates_v1=off')
     monkeypatch.setattr(quick, 'wait', lambda pid, **kw: {'status': 'completed', 'outputs': [], 'template': 'classic', 'requested_template': 'street'})
     args = cli.build_parser().parse_args(
         ['produce', str(source), '--platform', 'youtube_long', '--srt', str(srt), '--template', 'street', '--json'])
@@ -179,7 +179,7 @@ def test_template_is_stored_and_unknown_styles_are_rejected(imported, monkeypatc
 def test_template_stays_behind_mcp_v2_tools(imported, monkeypatch, capsys):
     from backend import cli, mcp_server
     source, srt, calls = imported
-    monkeypatch.setenv('AUTOCLIP_FLAGS', 'mcp_v2_tools=off,pkg_templates_v1=off')
+    monkeypatch.setenv('AUTOVIDEOCLIP_FLAGS', 'mcp_v2_tools=off,pkg_templates_v1=off')
     args = cli.build_parser().parse_args(
         ['produce', str(source), '--platform', 'youtube_long', '--srt', str(srt), '--template', 'street', '--json'])
     assert cli.cmd_produce(args) == 2
@@ -196,7 +196,7 @@ def test_template_stays_behind_mcp_v2_tools(imported, monkeypatch, capsys):
 def test_export_states_classic_when_the_template_flag_is_off(data_dir, monkeypatch):
     from types import SimpleNamespace
     from backend.services.studio.models import Draft, Scene
-    monkeypatch.setenv('AUTOCLIP_FLAGS', 'pkg_templates_v1=off')
+    monkeypatch.setenv('AUTOVIDEOCLIP_FLAGS', 'pkg_templates_v1=off')
     monkeypatch.setattr(jobs, 'render_executor', SimpleNamespace(submit=lambda *args, **kwargs: None))
     root = store.directory('p-style')
     root.mkdir(parents=True)
@@ -205,7 +205,7 @@ def test_export_states_classic_when_the_template_flag_is_off(data_dir, monkeypat
     job = jobs.export('p-style', draft, html_template='editorial', requested_template='editorial')
     assert job['template'] == 'classic' and job['requested_template'] == 'editorial'
     assert 'html_template' not in job
-    monkeypatch.setenv('AUTOCLIP_FLAGS', 'pkg_templates_v1=on')
+    monkeypatch.setenv('AUTOVIDEOCLIP_FLAGS', 'pkg_templates_v1=on')
     other = Draft(id='d2', title='y', scenes=[Scene(id='s2', start=0, end=1)], subtitles=False)
     html = jobs.export('p-style', other, html_template='street')
     assert html['template'] == 'street' and html['html_template'] == 'street'

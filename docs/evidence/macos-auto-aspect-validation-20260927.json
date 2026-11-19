@@ -61,7 +61,7 @@
     "ruff": "5 existing F821 diagnostics unchanged in jobs.py compared with base; not a clean Ruff claim"
   },
   "screenshots": [
-    "/tmp/autoclip-native-rc213/confirmation.png",
-    "/tmp/autoclip-native-rc213/export.png"
+    "/tmp/autovideoclip-native-rc213/confirmation.png",
+    "/tmp/autovideoclip-native-rc213/export.png"
   ]
 }

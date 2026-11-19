@@ -21,7 +21,7 @@ def test_frontend_and_backend_defaults_match_and_are_off():
     assert flag_enabled(DEFAULTS, 'pkg_templates_v1') is True
     assert flag_enabled(DEFAULTS, 'pkg_template_picker_visual') is True
     assert flag_enabled(DEFAULTS, 'mcp_v2_tools') is True
-    assert resolve_features({'pkg_template_picker_visual': True, 'autoclip_safe_mode': True}, env='')['pkg_template_picker_visual'] is False
+    assert resolve_features({'pkg_template_picker_visual': True, 'autovideoclip_safe_mode': True}, env='')['pkg_template_picker_visual'] is False
 
 
 def test_qa_and_template_defaults_and_safe_mode():
@@ -33,14 +33,14 @@ def test_qa_and_template_defaults_and_safe_mode():
     # No snapshot (analytics off / flags never fetched) still means on.
     assert resolve_features(None, env='')['pkg_templates_v1'] is True
     assert resolve_features({}, env='')['mcp_v2_tools'] is True
-    # The switches stay: remote / local snapshot or AUTOCLIP_FLAGS can turn them off.
+    # The switches stay: remote / local snapshot or AUTOVIDEOCLIP_FLAGS can turn them off.
     assert resolve_features({'pkg_templates_v1': False, 'mcp_v2_tools': False}, env='') == {
         **resolve_features(None, env=''), 'pkg_templates_v1': False, 'mcp_v2_tools': False}
     assert resolve_features(None, env='pkg_templates_v1=off,mcp_v2_tools=off')['pkg_templates_v1'] is False
-    assert resolve_features({'autoclip_safe_mode': True}, env='')['pkg_templates_v1'] is False
-    assert resolve_features({'autoclip_safe_mode': True}, env='')['mcp_v2_tools'] is False
+    assert resolve_features({'autovideoclip_safe_mode': True}, env='')['pkg_templates_v1'] is False
+    assert resolve_features({'autovideoclip_safe_mode': True}, env='')['mcp_v2_tools'] is False
     killed = resolve_features({
-        'autoclip_safe_mode': True,
+        'autovideoclip_safe_mode': True,
         'qa_gate_blocking': 'block',
         'pkg_templates_v1': True,
         'mcp_v2_tools': True,
@@ -48,9 +48,9 @@ def test_qa_and_template_defaults_and_safe_mode():
     assert killed['qa_gate_blocking'] == 'off'
     assert killed['pkg_templates_v1'] is False
     assert killed['mcp_v2_tools'] is False
-    assert resolve_features({'autoclip_safe_mode': True}, env='mcp_v2_tools=on')['mcp_v2_tools'] is True
+    assert resolve_features({'autovideoclip_safe_mode': True}, env='mcp_v2_tools=on')['mcp_v2_tools'] is True
     operator = resolve_features(
-        {'autoclip_safe_mode': True, 'qa_gate_blocking': 'shadow', 'pkg_templates_v1': True},
+        {'autovideoclip_safe_mode': True, 'qa_gate_blocking': 'shadow', 'pkg_templates_v1': True},
         env='qa_gate_blocking=block,pkg_templates_v1=on',
     )
     assert operator['qa_gate_blocking'] == 'off'
@@ -64,9 +64,9 @@ def test_unknown_values_are_dropped_and_safe_mode_forces_the_safe_off_value():
         'one_click_paste_start': 'sometimes',
         'clip_reasons': 'true',
         'title': 'private title',
-        'autoclip_safe_mode': True,
+        'autovideoclip_safe_mode': True,
     })
-    assert resolved['autoclip_safe_mode'] is True
+    assert resolved['autovideoclip_safe_mode'] is True
     assert resolved['remember_platforms'] is False
     assert resolved['render_top_first'] == 'limit10'
     assert resolved['clip_reasons'] is False
@@ -75,27 +75,27 @@ def test_unknown_values_are_dropped_and_safe_mode_forces_the_safe_off_value():
 
 
 def test_operator_env_overrides_the_client_snapshot(monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_FLAGS', 'render_top_first=top3,not_a_flag=on,notify_on_done=on')
+    monkeypatch.setenv('AUTOVIDEOCLIP_FLAGS', 'render_top_first=top3,not_a_flag=on,notify_on_done=on')
     resolved = resolve_features({'render_top_first': 'limit10', 'remember_platforms': True})
     assert resolved['render_top_first'] == 'top3'
     assert resolved['notify_on_done'] is True
     assert resolved['remember_platforms'] is True
-    forced = resolve_features({'autoclip_safe_mode': True, 'remember_platforms': True}, env='clip_reasons=on')
-    assert forced['autoclip_safe_mode'] is True
+    forced = resolve_features({'autovideoclip_safe_mode': True, 'remember_platforms': True}, env='clip_reasons=on')
+    assert forced['autovideoclip_safe_mode'] is True
     assert forced['remember_platforms'] is False
     assert forced['clip_reasons'] is True
-    monkeypatch.setenv('AUTOCLIP_FLAGS', 'pkg_templates_v1=on')
+    monkeypatch.setenv('AUTOVIDEOCLIP_FLAGS', 'pkg_templates_v1=on')
     enabled = resolve_features({'pkg_templates_v1': False})
     assert enabled['pkg_templates_v1'] is True
-    killed = resolve_features({'pkg_templates_v1': True, 'autoclip_safe_mode': True}, env='')
+    killed = resolve_features({'pkg_templates_v1': True, 'autovideoclip_safe_mode': True}, env='')
     assert killed['pkg_templates_v1'] is False
-    operator = resolve_features({'autoclip_safe_mode': True}, env='pkg_templates_v1=on')
+    operator = resolve_features({'autovideoclip_safe_mode': True}, env='pkg_templates_v1=on')
     assert operator['pkg_templates_v1'] is True
 
 
 def test_import_records_the_resolved_snapshot_and_drops_text(monkeypatch):
     saved = {}
-    monkeypatch.delenv('AUTOCLIP_FLAGS', raising=False)
+    monkeypatch.delenv('AUTOVIDEOCLIP_FLAGS', raising=False)
     monkeypatch.setattr(store, 'read', lambda *_args, **_kwargs: {})
     monkeypatch.setattr(store, 'write', lambda _pid, data, **_kwargs: saved.update(generation=data['generation']))
     monkeypatch.setattr(jobs.executor, 'submit', lambda *_args, **_kwargs: None)

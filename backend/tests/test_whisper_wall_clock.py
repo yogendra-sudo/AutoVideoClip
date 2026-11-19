@@ -50,7 +50,7 @@ def test_timeout_phrase_is_a_studio_timeout_and_not_a_setup_error():
 
 
 def _video(tmp_path, monkeypatch, model, *, probe=10.0):
-    monkeypatch.delenv("AUTOCLIP_WHISPER_DEVICE", raising=False)
+    monkeypatch.delenv("AUTOVIDEOCLIP_WHISPER_DEVICE", raising=False)
     _install_fake_whisper(monkeypatch, model)
     monkeypatch.setattr(speech_recognizer, "probe_media_duration", lambda _path: probe)
     video = tmp_path / "clip.mp4"

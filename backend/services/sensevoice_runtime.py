@@ -252,7 +252,7 @@ def transcribe(video, output=None, language='auto', timeout=0, *, deny_network=F
         raise SpeechRecognitionError('SenseVoiceSmall 支持中文、粤语、英语、日语和韩语，请选择支持的语言或自动检测')
     output = Path(output) if output else Path(video).with_suffix('.srt')
     try:
-        with operation(), tempfile.TemporaryDirectory(prefix='autoclip-sensevoice-') as temporary:
+        with operation(), tempfile.TemporaryDirectory(prefix='autovideoclip-sensevoice-') as temporary:
             if status()['status'] != 'ready':
                 raise RuntimeError('SenseVoice 尚未就绪，请到「设置 → 默认模型 → 语音转字幕」准备 SenseVoiceSmall 模型')
             audio, result = Path(temporary) / 'audio.wav', Path(temporary) / 'result.json'

@@ -11,7 +11,7 @@
  * persisted by an earlier session are ignored until this session's flag response
  * arrives, so the first launch after an upgrade uses build defaults (W157-N3).
  *
- * Priority: local override → autoclip_safe_mode → PostHog (analytics on) →
+ * Priority: local override → autovideoclip_safe_mode → PostHog (analytics on) →
  * dev VITE_FLAGS → 7-day cache (analytics on) → build default.
  */
 import { useSyncExternalStore } from 'react'
@@ -19,7 +19,7 @@ import defaultsJson from './flags.defaults.json'
 import { isAnalyticsEnabled, onAnalyticsPreferenceChange, readLoadedFlag, subscribeRemoteFlags } from './posthog'
 
 export const FLAG_NAMES = [
-  'autoclip_safe_mode',
+  'autovideoclip_safe_mode',
   'remember_platforms',
   'one_click_paste_start',
   'link_import_without_whisper',
@@ -42,7 +42,7 @@ export type FlagValue = boolean | string
 type FlagSpec = { kind: 'boolean' } | { kind: 'variant'; variants: readonly string[]; treatment: string }
 
 export const FLAG_SPEC: Record<FlagName, FlagSpec> = {
-  autoclip_safe_mode: { kind: 'boolean' },
+  autovideoclip_safe_mode: { kind: 'boolean' },
   remember_platforms: { kind: 'boolean' },
   one_click_paste_start: { kind: 'variant', variants: ['button', 'autostart'], treatment: 'autostart' },
   link_import_without_whisper: { kind: 'boolean' },
@@ -61,8 +61,8 @@ export const FLAG_SPEC: Record<FlagName, FlagSpec> = {
 
 export const FLAG_DEFAULTS = defaultsJson as { [K in FlagName]: FlagValue }
 
-const OVERRIDE_KEY = 'autoclip.flags.overrides.v1'
-const CACHE_KEY = 'autoclip.flags.cache.v1'
+const OVERRIDE_KEY = 'autovideoclip.flags.overrides.v1'
+const CACHE_KEY = 'autovideoclip.flags.cache.v1'
 const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000
 
 function currentAppVersion(): string {
@@ -199,9 +199,9 @@ export type FlagOrigin = 'local' | 'safe_mode' | 'remote' | 'vite' | 'cache' | '
 /** Where the current value came from. Later PRs emit experiment events only after a real assignment. */
 export function flagOrigin(name: FlagName): FlagOrigin {
   // The quality gate's local override must not keep running during safe mode.
-  if (name === 'qa_gate_blocking' && flagValue('autoclip_safe_mode') === true) return 'safe_mode'
+  if (name === 'qa_gate_blocking' && flagValue('autovideoclip_safe_mode') === true) return 'safe_mode'
   if (readOverride(name) !== undefined) return 'local'
-  if (name !== 'autoclip_safe_mode' && flagValue('autoclip_safe_mode') === true) return 'safe_mode'
+  if (name !== 'autovideoclip_safe_mode' && flagValue('autovideoclip_safe_mode') === true) return 'safe_mode'
   if (remoteValue(name) !== undefined) return 'remote'
   if (viteValue(name) !== undefined) return 'vite'
   if (isAnalyticsEnabled() && readCache(name) !== undefined) return 'cache'
@@ -214,10 +214,10 @@ export function flagAssigned(name: FlagName): boolean {
 }
 
 export function flagValue(name: FlagName): FlagValue {
-  if (name === 'qa_gate_blocking' && flagValue('autoclip_safe_mode') === true) return 'off'
+  if (name === 'qa_gate_blocking' && flagValue('autovideoclip_safe_mode') === true) return 'off'
   const local = readOverride(name)
   if (local !== undefined) return local
-  if (name !== 'autoclip_safe_mode' && flagValue('autoclip_safe_mode') === true) return safeOff(name)
+  if (name !== 'autovideoclip_safe_mode' && flagValue('autovideoclip_safe_mode') === true) return safeOff(name)
   const remote = remoteValue(name)
   if (remote !== undefined) return remote
   const vite = viteValue(name)

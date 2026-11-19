@@ -10,8 +10,8 @@ export type OverrideDraft = {
   scenes: { id: string; start: number; end: number }[]
 }
 
-const TAKEN_KEY = 'autoclip.output-taken.v1'
-const MISSED_KEY = 'autoclip.output-missed.v1'
+const TAKEN_KEY = 'autovideoclip.output-taken.v1'
+const MISSED_KEY = 'autovideoclip.output-missed.v1'
 
 export function savedDraftOverrides(before: OverrideDraft, after: OverrideDraft): OverrideField[] {
   const fields: OverrideField[] = []

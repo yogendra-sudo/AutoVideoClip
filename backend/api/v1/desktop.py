@@ -93,7 +93,7 @@ async def get_logs(lines: int = 100):
     
     try:
         config = get_desktop_config()
-        log_file = config.data_dir / "logs" / "autoclip.log"
+        log_file = config.data_dir / "logs" / "autovideoclip.log"
         
         if not log_file.exists():
             return {"logs": [], "message": "日志文件不存在"}

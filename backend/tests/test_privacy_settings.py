@@ -16,7 +16,7 @@ from backend.api.v1 import settings as settings_api
 
 
 def test_concurrent_reader_never_sees_collection_allowed_while_opted_out(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     sentry_setup.write_privacy(analytics=False)
     stop = threading.Event()
     allowed = []
@@ -46,7 +46,7 @@ def test_concurrent_reader_never_sees_collection_allowed_while_opted_out(tmp_pat
 
 
 def test_unreadable_privacy_file_defaults_to_not_collecting(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     (tmp_path / 'privacy.json').write_text('{"analytics": tr', encoding='utf-8')
     assert telemetry._analytics_allowed() is False
     (tmp_path / 'privacy.json').write_text('[]', encoding='utf-8')
@@ -54,12 +54,12 @@ def test_unreadable_privacy_file_defaults_to_not_collecting(tmp_path, monkeypatc
 
 
 def test_missing_privacy_file_keeps_product_default(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     assert telemetry._analytics_allowed() is True
 
 
 def test_corrupt_file_rewritten_for_crash_reports_stays_opted_out(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     (tmp_path / 'privacy.json').write_text('{oops', encoding='utf-8')
     sentry_setup.write_privacy(crash_reports=True)
     assert telemetry._analytics_allowed() is False
@@ -70,7 +70,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 @pytest.fixture(autouse=True)
 def _reset(monkeypatch, tmp_path):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     telemetry.set_runtime_analytics_off(False)
     yield
     telemetry.set_runtime_analytics_off(False)

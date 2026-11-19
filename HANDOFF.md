@@ -71,7 +71,7 @@ Studio 入口已能接受 HTTPS 的 watch、youtu.be、Shorts、live、移动端
 | CLI / MCP |It's 10,000, 0001, 0001, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000.| `backend/cli.py`、`mcp_server.py`、`services/local_runner.py` |
 
 四种交付形态：**桌面客户端**（当前包是 v1.3.3 的 macOS arm64 DMG 与 Windows x64 安装包；Windows 包从 v1.2.1 起就有，干净机器上的完整出片仍没有记录）、**Docker 部署**（README 推荐路径）、
-**本地脚本启动**（`start_autoclip.sh`）、**CLI / MCP**（`pip install -e .`，面向开发者与 agent，`docs/CLI_AND_MCP.md`）。
+**本地脚本启动**（`start_autovideoclip.sh`）、**CLI / MCP**（`pip install -e .`，面向开发者与 agent，`docs/CLI_AND_MCP.md`）。
 
 ---
 
@@ -88,20 +88,20 @@ Studio 入口已能接受 HTTPS 的 watch、youtu.be、Shorts、live、移动端
 - **Calm Premium 视觉系统**落地（`DESIGN.md`）。
 - Nightly 后端冒烟（`nightly-desktop-smoke.yml`）持续全绿。
 - **开发者形态（2026-09-07）**：
-  - `autoclip run video.mp4 --provider ollama` 一条命令出片；`list / show / providers / doctor / mcp` 子命令；`--json` 给脚本 / agent。
+  - `autovideoclip run video.mp4 --provider ollama` 一条命令出片；`list / show / providers / doctor / mcp` 子命令；`--json` 给脚本 / agent。
     与桌面应用共用数据目录和 SQLite，CLI 出的项目桌面首页直接可见。
-  - MCP server（`autoclip mcp`）7 个工具：`clip_video`（同步 + 进度通知）、`start_clip_job` / `get_job_status`、`get_project`、`list_projects`、`list_providers`、`check_environment`；
-    已用 `mcp` 2.x stdio 客户端实测。Agent skill 在 `skills/autoclip/SKILL.md`。
+  - MCP server（`autovideoclip mcp`）7 个工具：`clip_video`（同步 + 进度通知）、`start_clip_job` / `get_job_status`、`get_project`、`list_projects`、`list_providers`、`check_environment`；
+    已用 `mcp` 2.x stdio 客户端实测。Agent skill 在 `skills/autovideoclip/SKILL.md`。
   - 本地模型预设 Ollama / LM Studio：设置页下拉可选、自动列出 `/v1/models`、隐藏 key；后端 `local_presets.py` 把预设解析为 `openai` + `base_url`。
   - 顺带修复：`httpx` 对 localhost 走系统代理（Clash）导致 502 → `is_local_url()` 对本地地址 `trust_env=False`；
     `apiConfig.notifyListeners` 遍历时被 listener 自删导致设置页首屏偶发不请求 `getCurrentProvider`。
-  - 单测 `tests/test_local_presets.py`、`tests/test_cli.py`（共 24 条）；**尚未用真实视频端到端跑过 `autoclip run`**（见 v1.3 todo）。
+  - 单测 `tests/test_local_presets.py`、`tests/test_cli.py`（共 24 条）；**尚未用真实视频端到端跑过 `autovideoclip run`**（见 v1.3 todo）。
 - **出片质量 + 可发布成片（2026-09-07）**：方案 `docs/QUALITY_AND_PUBLISH_PLAN.md`。
   - 时长画像 `DurationProfile`（短/中/长）注入 step1/2 提示词，短视频不再套「最小 90 秒 / 目标 3–6 分钟」。
   - `refine_timeline`：对齐字幕 cue、时长上下限、重叠合并；`quality_report.json` 落盘。
   - 评分兜底：数量不匹配按 outline 对齐；低于阈值时保底 top-K（#11 切片为 0）。
-  - 桌面 adapter 终于传入 `prompt/<category>/`。`AUTOCLIP_LLM_CACHE_DIR` 录制/回放。`python -m backend.eval` 约束回归（`backend/eval/cases/short-synthetic` 已过）。
-  - 发布导出：`publish_export.py`（9:16 blur/crop、烧字幕、标题卡）；API `POST .../clips/{id}/export`；`autoclip export`；MCP `export_clip`；切片卡片「导出」Dialog。默认流水线仍是 16:9 copy。
+  - 桌面 adapter 终于传入 `prompt/<category>/`。`AUTOVIDEOCLIP_LLM_CACHE_DIR` 录制/回放。`python -m backend.eval` 约束回归（`backend/eval/cases/short-synthetic` 已过）。
+  - 发布导出：`publish_export.py`（9:16 blur/crop、烧字幕、标题卡）；API `POST .../clips/{id}/export`；`autovideoclip export`；MCP `export_clip`；切片卡片「导出」Dialog。默认流水线仍是 16:9 copy。
   - **尚未用真实 5 分钟视频跑完整流水线对照**；竖屏预设只单测了 `original` 重编码。
 - **#100 修复（2026-09-20）**：Docker Web 模式设置页崩溃 + 不能保存。复现结论：崩溃是 **Chrome「翻译此页」** 改写 DOM（文本节点 → `<font>`）
   导致 React `removeChild NotFoundError`，与 Gemini 无关；用户截图 UI 全英文即证据。修法：`utils/domTranslationGuard.ts` 在挂载前守卫
@@ -117,9 +117,9 @@ Studio 入口已能接受 HTTPS 的 watch、youtu.be、Shorts、live、移动端
 2. 新增 `.gitattributes`，shell 脚本强制 LF（Windows 克隆后容器起不来）
 3. 清理 `youtube.py` / `fix_project_thumbnails.py` / `SettingsPage.tsx` 里的 `/Users/zhoukk` 硬编码
 4. Docker 基础镜像 3.9 → 3.11（yt-dlp 要求）
-5. 字幕语言默认 `zh-Hans,zh,en`，`AUTOCLIP_YT_SUBTITLE_LANGS` 可覆盖（避免 429）
+5. 字幕语言默认 `zh-Hans,zh,en`，`AUTOVIDEOCLIP_YT_SUBTITLE_LANGS` 可覆盖（避免 429）
 6. `task_submission_utils` 去掉硬编码 localhost 的 Redis 诊断（Docker 下项目提交即失败）
-7. compose / dev compose / `start_autoclip.sh` 的 worker 统一 `-Q celery,processing,video,notification,upload`
+7. compose / dev compose / `start_autovideoclip.sh` 的 worker 统一 `-Q celery,processing,video,notification,upload`
    （之前 Docker 下任务永远无人消费）
 8. `_build_full_input` list 输入 JSON 序列化（#53）
 9. CI 新增 `docker-smoke` job 守住以上路径；版本号对齐到 1.2.1；删除死代码 `youtube_improved.py`
@@ -197,7 +197,7 @@ label 体系：默认 9 个 + 新增 `docker` / `windows` / `feature`。**置顶
 |------|------|------|--------|
 | **飞书表单** | 已停用（2026-09-21） | 八语界面之后不再用多维表格收反馈。旧表 `EuYLb3lQ2awwDFsTkDXchabsnbd` 留作历史，应用和周报都不再写入或读取 | — |
 | **GitHub Issue Forms** | 开发者 | `.github/ISSUE_TEMPLATE/`：bug（版本 / 平台 / 模型必填）。功能想法走 Discussions。config.yml 联系链接（#96 / Ideas / Q&A） | `.github/workflows/issue-hygiene.yml`：新 issue 自动回复节奏；`needs-info` 14+7 天自动关；60+14 天 stale；`pinned` / `feature` 不自动关 |
-| **官网 `#feedback`** | 待改 | `autoclip_intro` 若仍链到飞书表单，要在那个仓库改掉。本仓库不再把人送去那张表 | — |
+| **官网 `#feedback`** | 待改 | `autovideoclip_intro` 若仍链到飞书表单，要在那个仓库改掉。本仓库不再把人送去那张表 | — |
 
 - 新 label：`needs-triage`（模板自动打）/ `needs-info` / `stale` / `pinned`（#96 已打）。
 - #96 已加「怎么反馈」小节。
@@ -253,8 +253,8 @@ label 体系：默认 9 个 + 新增 `docker` / `windows` / `feature`。**置顶
 - [ ] `chunk_size` / `max_clips_per_collection` 已进 settings，step1 / step5 尚未读取
 - [ ] `DESIGN.md` 欠账清单（`ErrorBoundary` 已改）：`index.css:704-712`、`assets/background.svg`、`FileUpload.tsx`、`BilibiliDownload.tsx`、
       `BilibiliManager.css`、`CreateCollectionModal.css`、`CollectionPreviewModal_fixed.tsx` 仍有渐变 / 撞色
-- [ ] CLI / MCP 端到端：用一条真实视频跑 `autoclip run --provider ollama --json` 和 MCP `start_clip_job` 轮询到 completed；
-      `autoclip` 装进 Homebrew tap / PyPI（现在只有 `pip install -e .`）；README 首屏放一段 CLI 演示
+- [ ] CLI / MCP 端到端：用一条真实视频跑 `autovideoclip run --provider ollama --json` 和 MCP `start_clip_job` 轮询到 completed；
+      `autovideoclip` 装进 Homebrew tap / PyPI（现在只有 `pip install -e .`）；README 首屏放一段 CLI 演示
 - [ ] 桌面应用设置页加「Ollama 未运行」的就地提示（现在只在模型下拉里显示「未检测到模型」）。`min_score` 已在 v1.3.0 接到 step3
 - [ ] 质量对照：拿一条 5 分钟、一条 60 分钟真视频，对比改前提示词口径 vs 现在的 duration profile；把结果补进 `backend/eval/cases/`
 - [ ] 发布导出：抖音 / Shorts / B 站三预设各导一条人工看字幕与标题卡；说话人居中裁切仍未做。自动封面已在 v1.3.2
@@ -273,15 +273,15 @@ label 体系：默认 9 个 + 新增 `docker` / `windows` / `feature`。**置顶
 ## 五、关键文件
 
 - 打包脚本：`scripts/build_macos_arm.sh`、`scripts/build_windows_x64.sh`，共用 `scripts/lib/desktop_build_common.sh`（说明见 `scripts/README.md`）；Windows 资源声明在 `src-tauri/tauri.windows.conf.json`
-- 后端启动器（Rust）：`src-tauri/src/backend_manager.rs`（注入 `AUTOCLIP_DESKTOP_MODE` / `AUTOCLIP_APP_DIR` / ffmpeg 路径 / `AUTOCLIP_APP_VERSION`；Windows 下 `PYTHONUTF8=1`）
+- 后端启动器（Rust）：`src-tauri/src/backend_manager.rs`（注入 `AUTOVIDEOCLIP_DESKTOP_MODE` / `AUTOVIDEOCLIP_APP_DIR` / ffmpeg 路径 / `AUTOVIDEOCLIP_APP_VERSION`；Windows 下 `PYTHONUTF8=1`）
 - 桌面后端入口：`backend/desktop_main.py`
 - 任务提交（桌面本地线程 vs Celery）：`backend/utils/task_submission_utils.py`、`backend/core/celery_app.py`（DesktopAwareTask、task_routes）
 - ffmpeg 路径解析：`backend/utils/ffmpeg_utils.py`
 - LLM 提供商：`backend/core/llm_providers.py`（含 `is_local_url` / `make_openai_http_client` 绕过系统代理）；provider / base_url 选择与热重载：`backend/core/llm_manager.py`；本地预设：`backend/core/local_presets.py`；设置 API：`backend/api/v1/settings.py`（`/local-presets`、`/compatible-models`）
-- CLI / MCP：`backend/cli.py`、`backend/mcp_server.py`，共用 `backend/services/local_runner.py`（环境 / LLM 覆盖 / 项目准备 / 跑流水线 / 结果汇总）；进度监听 `services/simple_progress.py#add_progress_listener`；打包 `pyproject.toml`；Agent skill `skills/autoclip/SKILL.md`；文档 `docs/CLI_AND_MCP.md`
+- CLI / MCP：`backend/cli.py`、`backend/mcp_server.py`，共用 `backend/services/local_runner.py`（环境 / LLM 覆盖 / 项目准备 / 跑流水线 / 结果汇总）；进度监听 `services/simple_progress.py#add_progress_listener`；打包 `pyproject.toml`；Agent skill `skills/autovideoclip/SKILL.md`；文档 `docs/CLI_AND_MCP.md`
 - 出片质量：`backend/pipeline/quality.py`（时长画像 / refine / 评分兜底），接入 step1–3；回归 `backend/eval/`；方案 `docs/QUALITY_AND_PUBLISH_PLAN.md`
-- 发布导出：`backend/services/publish_export.py`；API `POST /projects/{id}/clips/{id}/export`；CLI `autoclip export`；MCP `export_clip`；前端 `ClipCard` Dialog
-- YouTube 导入：`backend/api/v1/youtube.py`（`AUTOCLIP_YT_SUBTITLE_LANGS`、`AUTOCLIP_YT_CLIENT`）
+- 发布导出：`backend/services/publish_export.py`；API `POST /projects/{id}/clips/{id}/export`；CLI `autovideoclip export`；MCP `export_clip`；前端 `ClipCard` Dialog
+- YouTube 导入：`backend/api/v1/youtube.py`（`AUTOVIDEOCLIP_YT_SUBTITLE_LANGS`、`AUTOVIDEOCLIP_YT_CLIENT`）
 - Whisper 运行时（按需安装）：`backend/services/whisper_runtime.py`、`whisper_model_manager.py`、
   前端 `frontend/src/components/SpeechRecognitionConfig.tsx`
 - 前端 UI 原语（`DESIGN.md` App Layer）：`frontend/src/ui/index.tsx` + `ui/ac.css`；已迁移页面：`pages/ProjectDetailPage.tsx`、`pages/SettingsPage.tsx`、`components/ClipCard.tsx`、`CollectionCard.tsx`、`SpeechRecognitionConfig.tsx`
@@ -292,7 +292,7 @@ label 体系：默认 9 个 + 新增 `docker` / `windows` / `feature`。**置顶
   Web 模式设置端点回归：`backend/tests/test_settings_web_mode.py`
 - 周报：`scripts/weekly_digest.py`
 - 本地联调（后端随机端口时）：`BACKEND_URL=http://127.0.0.1:PORT npm run dev`（`vite.config.ts` 代理可被覆盖）
-- Docker：`Dockerfile`、`docker-compose.yml`（四服务共用 `autoclip:local`）、`docker-entrypoint.sh`
+- Docker：`Dockerfile`、`docker-compose.yml`（四服务共用 `autovideoclip:local`）、`docker-entrypoint.sh`
 - CI：`.github/workflows/ci.yml`（backend / frontend / docker-smoke）、`desktop-build.yml`（tag 触发）
 
 ## 六、安装（给用户）
@@ -313,6 +313,6 @@ Linux 宿主机首次启动前先 `mkdir -p data logs uploads && chmod -R 777 da
 
 命令行排查桌面后端：
 ```bash
-'/Applications/AutoVideoClip Desktop.app/Contents/MacOS/autoclip-desktop'
+'/Applications/AutoVideoClip Desktop.app/Contents/MacOS/autovideoclip-desktop'
 # 应看到 Backend started on port: XXXXX / Application startup complete
 ```

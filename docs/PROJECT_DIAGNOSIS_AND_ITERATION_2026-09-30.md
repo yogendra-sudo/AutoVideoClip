@@ -32,17 +32,17 @@ GitHub 流量只保留近 14 天窗口；下载计数含重复下载与 updater 
 
 ### 已经做对的部分
 
-1. **Studio 的交互方向正确。** 当前入口是统一的 `CreativeImport → /studio/import → 推荐/确认 → 制作 → 草稿编辑 → 导出`，并在确认前不启动正式制作，见 [HANDOFF.md](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/HANDOFF.md:8) 和 [CreativeImport.tsx](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/frontend/src/features/studio/CreativeImport.tsx:24)。这比旧的“一键处理后才发现结果不对”更接近真实剪辑流程。
+1. **Studio 的交互方向正确。** 当前入口是统一的 `CreativeImport → /studio/import → 推荐/确认 → 制作 → 草稿编辑 → 导出`，并在确认前不启动正式制作，见 [HANDOFF.md](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/HANDOFF.md:8) 和 [CreativeImport.tsx](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/frontend/src/features/studio/CreativeImport.tsx:24)。这比旧的“一键处理后才发现结果不对”更接近真实剪辑流程。
 2. **新手的空白页被填上了。** 首次配置弹窗与可编辑的示例工程降低了“我下一步做什么”的不确定性。示例工程是体验入口，不该作为真实激活证据。
-3. **对近期 Windows 故障已有针对性修复。** 已补 ffprobe timeout、缩略图提取、本地导入缩略图、兼容预览、子进程清理，详见 [反馈排查](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/docs/FEEDBACK_TRIAGE_2026-09-28.md:7)。方向正确，但这些修复尚未被 Windows 实机的端到端路径验证。
-4. **Auto-frame 的产品判断合理。** 新实现按镜头切换、人脸与说话嘴部活动选择 crop，未识别到人物时回退完整画面 + 模糊背景，而不是强行把屏幕/课件裁掉，见 [framing.py](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/backend/services/studio/framing.py:1)。这是质量提升，不是当前可靠性问题的替代品。
-5. **隐私边界总体谨慎。** PostHog 不自动抓 DOM、不录屏、禁用 URL/referrer；Studio 对外字段采用白名单，见 [posthog.ts](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/frontend/src/analytics/posthog.ts:73) 与 [workflow.ts](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/frontend/src/analytics/workflow.ts:8)。后续扩埋点应继续保持这条边界。
+3. **对近期 Windows 故障已有针对性修复。** 已补 ffprobe timeout、缩略图提取、本地导入缩略图、兼容预览、子进程清理，详见 [反馈排查](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/docs/FEEDBACK_TRIAGE_2026-09-28.md:7)。方向正确，但这些修复尚未被 Windows 实机的端到端路径验证。
+4. **Auto-frame 的产品判断合理。** 新实现按镜头切换、人脸与说话嘴部活动选择 crop，未识别到人物时回退完整画面 + 模糊背景，而不是强行把屏幕/课件裁掉，见 [framing.py](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/backend/services/studio/framing.py:1)。这是质量提升，不是当前可靠性问题的替代品。
+5. **隐私边界总体谨慎。** PostHog 不自动抓 DOM、不录屏、禁用 URL/referrer；Studio 对外字段采用白名单，见 [posthog.ts](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/frontend/src/analytics/posthog.ts:73) 与 [workflow.ts](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/frontend/src/analytics/workflow.ts:8)。后续扩埋点应继续保持这条边界。
 
 ## 关键诊断
 
 ### P0：发布纪律与实际发布脱节
 
-`RELEASE_CHECKLIST.md` 要求 tag 先成为 Pre-release、Windows 与 macOS 均完成安装/导入/出片/保存、观察 24 小时后才 promote，见 [RELEASE_CHECKLIST.md](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/RELEASE_CHECKLIST.md:40) 和 [RELEASE_CHECKLIST.md](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/RELEASE_CHECKLIST.md:47)。但 v1.4.0 已是 latest；其后仍出现 #224、#225、#230、#231 等 from-app 的主流程失败反馈。
+`RELEASE_CHECKLIST.md` 要求 tag 先成为 Pre-release、Windows 与 macOS 均完成安装/导入/出片/保存、观察 24 小时后才 promote，见 [RELEASE_CHECKLIST.md](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/RELEASE_CHECKLIST.md:40) 和 [RELEASE_CHECKLIST.md](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/RELEASE_CHECKLIST.md:47)。但 v1.4.0 已是 latest；其后仍出现 #224、#225、#230、#231 等 from-app 的主流程失败反馈。
 
 这不代表 v1.4.0 必然有同一根因，但说明“构建与 CI 通过”仍在替代“真实用户设备可完成任务”的发布判断。Windows 约占 82% 已知安装包下载，Windows 不是次要平台。
 
@@ -50,9 +50,9 @@ GitHub 流量只保留近 14 天窗口；下载计数含重复下载与 updater 
 
 ### P0：用户主流程没有可解释的失败闭环
 
-首页阻止未配置用户导入时，只显示“请先连接 AI 服务，再导入视频”，见 [CreativeImport.tsx](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/frontend/src/features/studio/CreativeImport.tsx:24)。首次配置弹窗里的“连接并保存”只调用保存，不做连接测试；错误 Key 往往到实际制作才暴露，见 [FirstRunSetup.tsx](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/frontend/src/features/settings/FirstRunSetup.tsx:46) 与 [useModelSettings.ts](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/frontend/src/features/settings/useModelSettings.ts:108)。
+首页阻止未配置用户导入时，只显示“请先连接 AI 服务，再导入视频”，见 [CreativeImport.tsx](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/frontend/src/features/studio/CreativeImport.tsx:24)。首次配置弹窗里的“连接并保存”只调用保存，不做连接测试；错误 Key 往往到实际制作才暴露，见 [FirstRunSetup.tsx](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/frontend/src/features/settings/FirstRunSetup.tsx:46) 与 [useModelSettings.ts](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/frontend/src/features/settings/useModelSettings.ts:108)。
 
-这与 README 所写“测试连接后保存”也不一致，见 [README.md](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/README.md:156)。用户自然会把“已保存”理解成“已可用”。
+这与 README 所写“测试连接后保存”也不一致，见 [README.md](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/README.md:156)。用户自然会把“已保存”理解成“已可用”。
 
 当前常见失败路径至少有：后端未启动、模型凭据无效、模型不支持所选能力、Whisper 未安装、下载受 Cookie/地区/站点限制、ffprobe 或编码卡住、原始素材无法由 WebView 解码、LLM 结构化响应失败、渲染失败、系统下载未保存。它们不能继续被压成“处理失败”。
 
@@ -62,13 +62,13 @@ GitHub 流量只保留近 14 天窗口；下载计数含重复下载与 updater 
 
 main 新增 `example_project_opened`，但事件只在 create API 成功后、页面跳转前发出；无法区分创建/复用，也不表示页面真实可见。更重要的是，示例工程可编辑、渲染、下载，却没有把 `sample/user/unknown` 贯穿到 Studio 草稿、导出和保存事件。
 
-已有 Studio 工作流为了隐私不上传项目/任务 ID；这使并发制作、重试、再次导出与终态恢复无法可靠关联。`workflow.ts` 还会把当前 `analysis.status=failed` 直接记为筛选失败，未校验它是否属于 production，见 [workflow.ts](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/frontend/src/analytics/workflow.ts:144)。
+已有 Studio 工作流为了隐私不上传项目/任务 ID；这使并发制作、重试、再次导出与终态恢复无法可靠关联。`workflow.ts` 还会把当前 `analysis.status=failed` 直接记为筛选失败，未校验它是否属于 production，见 [workflow.ts](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/frontend/src/analytics/workflow.ts:144)。
 
 **判断：埋点不是“再加按钮点击”。** 必须先修数据契约：本地随机 `flow_id / attempt_id / artifact_id`，受控 `material_origin`，不可变终态摘要，和明确的 `unknown`。不上传文件名、URL、字幕、模型自由文本或项目内部 ID。
 
 ### P1：产品战略文档发生冲突，容易消耗仅有的维护时间
 
-`ROADMAP.md` 顶部仍将游戏买量、Seed、Jev 和六周样片视为“当前方向”，见 [ROADMAP.md](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/ROADMAP.md:3) 与 [PRODUCT_PLAN_2026_Q4.md](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/docs/PRODUCT_PLAN_2026_Q4.md:1)。但负责人后续已明确：目标是开源影响力、万星与赞助；每周仅 5–10 小时；游戏买量暂缓；优先让更多人第一次切出可用片子。
+`ROADMAP.md` 顶部仍将游戏买量、Seed、Jev 和六周样片视为“当前方向”，见 [ROADMAP.md](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/ROADMAP.md:3) 与 [PRODUCT_PLAN_2026_Q4.md](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/docs/PRODUCT_PLAN_2026_Q4.md:1)。但负责人后续已明确：目标是开源影响力、万星与赞助；每周仅 5–10 小时；游戏买量暂缓；优先让更多人第一次切出可用片子。
 
 这两条路线服务不同用户、不同质量标准和不同商业路径。当前公开流量与 Issue 也指向内容创作者的桌面首用问题，不是缺少游戏投放编排。
 
@@ -81,13 +81,13 @@ main 新增 `example_project_opened`，但事件只在 create API 成功后、�
 
 代码约 78,921 行，其中后端约 63,317 行、前端约 14,327 行、Rust 约 1,047 行。主线入口已转为 Studio，但旧 `BilibiliDownload.tsx`（506 行）、`FileUpload.tsx`（493 行）、复杂的旧 `ProjectCard.tsx`（692 行）以及多处发布/合集模态仍保留大量 Ant Design 默认界面和重复逻辑。
 
-`HANDOFF.md` 已承认旧导入组件没有前端引用，见 [HANDOFF.md](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/HANDOFF.md:23)。设计系统则明确要求避免渐变、彩色 chip 与多色状态，见 [DESIGN.md](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/DESIGN.md:13)。当前 `CreateCollectionModal.css`、`AddClipToCollectionModal.css`、旧 `index.css` 仍有渐变、青色和按分数变色的 UI。
+`HANDOFF.md` 已承认旧导入组件没有前端引用，见 [HANDOFF.md](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/HANDOFF.md:23)。设计系统则明确要求避免渐变、彩色 chip 与多色状态，见 [DESIGN.md](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/DESIGN.md:13)。当前 `CreateCollectionModal.css`、`AddClipToCollectionModal.css`、旧 `index.css` 仍有渐变、青色和按分数变色的 UI。
 
 **判断：不要全面重构。** 先在可靠性批次结束后，用一次受控清理移除不可达旧前端入口，并把首页、项目卡与高频错误/进度组件迁到 `ui/` 原语。移除前必须核对 API/CLI/深链接依赖，不能仅凭“组件没有 import”删除后端路径。
 
 ### P2：静态质量债务真实存在，但不能抢占用户主流程
 
-`ruff check backend` 当前报 3,943 项，CI 以 `continue-on-error` 运行 Ruff，见 [.github/workflows/ci.yml](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/.github/workflows/ci.yml:37)。其中大量是可机械修复的 import、typing modernization 和格式问题，也夹有 blind exception、未使用变量、潜在错误闭包等。
+`ruff check backend` 当前报 3,943 项，CI 以 `continue-on-error` 运行 Ruff，见 [.github/workflows/ci.yml](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/.github/workflows/ci.yml:37)。其中大量是可机械修复的 import、typing modernization 和格式问题，也夹有 blind exception、未使用变量、潜在错误闭包等。
 
 **判断：不要全仓 `ruff --fix`。** 单开一个低风险清理批次：
 
@@ -97,7 +97,7 @@ main 新增 `example_project_opened`，但事件只在 create API 成功后、�
 
 ### P2：auto-frame 是有价值的实验，但现在的运行时与可观测性还不完整
 
-auto-frame 在用户机器上按需 `pip install opencv-python-headless`，标称约 45 MB，见 [framing.py](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/backend/services/studio/framing.py:12)。这增加了新的网络、代理、磁盘与安装失败面。API 已用 `auto_frame` 调 Sentry，见 [studio.py](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/backend/api/v1/studio.py:352)，但提交版本的 Sentry phase 白名单不含该值，见 [sentry_setup.py](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/backend/core/sentry_setup.py:131)，因此 phase 会被剥离。
+auto-frame 在用户机器上按需 `pip install opencv-python-headless`，标称约 45 MB，见 [framing.py](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/backend/services/studio/framing.py:12)。这增加了新的网络、代理、磁盘与安装失败面。API 已用 `auto_frame` 调 Sentry，见 [studio.py](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/backend/api/v1/studio.py:352)，但提交版本的 Sentry phase 白名单不含该值，见 [sentry_setup.py](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/backend/core/sentry_setup.py:131)，因此 phase 会被剥离。
 
 前端也没有区分自动触发、用户手动触发、无人物检测、成功取景、手动修正、最终保留或导出的行为。
 
@@ -138,7 +138,7 @@ auto-frame 在用户机器上按需 `pip install opencv-python-headless`，标�
 
 ## 当前建议的决策
 
-1. 将主线对外定位锁回“让长视频快速变成可用高光”的创作者工具。README 当前定位与此一致，见 [README.md](/Users/zhoukk/autoclip/.claude/worktrees/project-diagnosis/README.md:7)；不要让游戏买量实验占据主产品叙事。
+1. 将主线对外定位锁回“让长视频快速变成可用高光”的创作者工具。README 当前定位与此一致，见 [README.md](/Users/zhoukk/autovideoclip/.claude/worktrees/project-diagnosis/README.md:7)；不要让游戏买量实验占据主产品叙事。
 2. 把 PR #221 的反馈修复作为可靠性批次候选，先 code review，再在 Windows 实机/VM 验收，之后才决定是否进入 `1.4.x` Pre-release。
 3. 将 v1.4.0 之后的反馈按阶段聚合，先拿到 #230/#231 的诊断材料。没有素材、日志、版本与步骤，就不要把它们当成同一个 bug，也不要关闭。
 4. 下一次完整产品规划以本报告的六个工作包为入口，替换或显式归档旧的游戏买量“当前方向”文档。保证 README、ROADMAP、HANDOFF、社区看板只保留一个当前优先级。
@@ -146,7 +146,7 @@ auto-frame 在用户机器上按需 `pip install opencv-python-headless`，标�
 ## 验证记录与局限
 
 - 本 worktree 基线为 `c2625752`，工作区在写入本报告前无产品代码改动。
-- 本地运行：`/Users/zhoukk/autoclip/venv/bin/pytest backend/tests -q`，结果 `721 passed, 1 skipped in 92.05s`。
+- 本地运行：`/Users/zhoukk/autovideoclip/venv/bin/pytest backend/tests -q`，结果 `721 passed, 1 skipped in 92.05s`。
 - 前端 `tsc`、ESLint 与 `node --test` 未能在本 worktree 独立运行，因为 worktree 没有 `frontend/node_modules`；尝试复用主目录二进制时，Node 模块解析仍从 worktree 查找依赖，因此出现缺包错误。这不作为源码失败结论。GitHub 的 #232 前端检查为成功。
 - 未在真实 Windows、真实用户网络、付费模型或 PostHog/Sentry 线上数据上执行写操作。GitHub traffic/release/issue 数据是查询时点快照。
 - 本报告不主张 v1.4.0 某个具体反馈一定由某段代码造成。对具体故障应先取得可复现输入与日志，再做根因修复。

@@ -32,9 +32,9 @@ SRT = "1\n00:00:00,000 --> 00:00:05,000\n第一句\n\n2\n00:00:05,000 --> 00:00:
 
 @pytest.fixture
 def app_path(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
-    monkeypatch.delenv('AUTOCLIP_LLM_CACHE_DIR', raising=False)
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.delenv('AUTOVIDEOCLIP_LLM_CACHE_DIR', raising=False)
     monkeypatch.setattr(
         'backend.services.studio.readiness.transcription_check',
         lambda: {'ok': True, 'code': 'whisper_installed', 'repair': 'none'},

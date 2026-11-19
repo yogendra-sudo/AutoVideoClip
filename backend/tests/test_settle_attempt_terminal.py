@@ -14,11 +14,11 @@ from backend.services.studio.terminal_outbox import pending_ids, replay_unsent, 
 
 
 def _project(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_MODE', 'desktop')
-    monkeypatch.setenv('AUTOCLIP_BUILD_ENVIRONMENT', 'production')
-    monkeypatch.delenv('AUTOCLIP_POSTHOG_KEY', raising=False)
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_MODE', 'desktop')
+    monkeypatch.setenv('AUTOVIDEOCLIP_BUILD_ENVIRONMENT', 'production')
+    monkeypatch.delenv('AUTOVIDEOCLIP_POSTHOG_KEY', raising=False)
     monkeypatch.delenv('VITE_PUBLIC_POSTHOG_KEY', raising=False)
     store.directory('p').mkdir(parents=True)
     (tmp_path / 'analytics.json').write_text('{"distinct_id":"018f6b2a-7c3d-7b2a-8c11-111111111111"}', encoding='utf-8')
@@ -52,7 +52,7 @@ def _open(pid='p'):
 def test_frontend_disconnect_still_emits_one_terminal(tmp_path, monkeypatch):
     """制作已开始、前端不再连接：任务跑完后终态事件仍只发一次，再结算一次也不加一条。"""
     _project(tmp_path, monkeypatch)
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
     posted = _capture(monkeypatch)
     _open()
     assert posted == []  # 还在跑，没有终态
@@ -92,7 +92,7 @@ def test_failure_terminal_is_idempotent_and_off_when_telemetry_is_off(tmp_path, 
     assert not (tmp_path / 'terminal-outbox.json').exists()
     assert store.read('p')['generation']['error'] == '服务商原始报错 sk-secret'
     assert store.read('p')['generation']['error_code'] == 'timeout'
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
     (tmp_path / 'privacy.json').write_text('{"analytics": false}', encoding='utf-8')
     store.directory('q').mkdir(parents=True)
 
@@ -136,7 +136,7 @@ def test_read_does_not_persist_an_interrupted_run(tmp_path, monkeypatch):
 def test_stuck_post_does_not_hold_the_studio_lock(tmp_path, monkeypatch):
     """发送卡住时，别的线程不用等 PostHog 就能拿到工作室锁。外层 with lock 也一样。"""
     _project(tmp_path, monkeypatch)
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
     monkeypatch.setattr('backend.services.studio.terminal_outbox._RETRY_DELAYS', ())
     posted = []
     entered, release_send = threading.Event(), threading.Event()
@@ -203,7 +203,7 @@ def test_shutdown_does_not_wait_for_a_stuck_post(tmp_path, monkeypatch):
         done.set()
 
     _project(tmp_path, monkeypatch)
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
     monkeypatch.setattr('backend.services.studio.terminal_outbox._send_pending', slow)
     project_cancellation._shutting_down = True
     store._deferred_terminals.events = [{
@@ -240,7 +240,7 @@ class _Response:
 def test_offline_settle_replays_once_after_restart(tmp_path, monkeypatch):
     """结算时断网：调用方不等网络。重启后同一条 $insert_id 补发一次，再补发不再发。"""
     _project(tmp_path, monkeypatch)
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
     seen = []
 
     def offline(req, timeout=0):
@@ -287,7 +287,7 @@ def test_offline_settle_replays_once_after_restart(tmp_path, monkeypatch):
 def test_queued_terminal_keeps_the_settle_time(tmp_path, monkeypatch):
     """补发用结算当时的时间，发布前的事件不会被算进发布之后。"""
     _project(tmp_path, monkeypatch)
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
     posted = _capture(monkeypatch)
     _open()
 
@@ -331,7 +331,7 @@ def test_queued_terminal_keeps_the_settle_time(tmp_path, monkeypatch):
 
 def test_terminal_queue_drops_the_oldest_when_full(tmp_path, monkeypatch):
     _project(tmp_path, monkeypatch)
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
     monkeypatch.setattr(terminal_outbox, '_kick', lambda: None)
     limit = terminal_outbox._QUEUE_LIMIT
     terminal_outbox.accept([
@@ -348,7 +348,7 @@ def test_terminal_queue_drops_the_oldest_when_full(tmp_path, monkeypatch):
 
 def test_rejected_terminal_is_dropped_without_retry(tmp_path, monkeypatch):
     _project(tmp_path, monkeypatch)
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
     calls = []
 
     def rejected(req, timeout=0):
@@ -372,7 +372,7 @@ def test_rejected_terminal_is_dropped_without_retry(tmp_path, monkeypatch):
 def test_request_timeout_and_rate_limit_stay_queued(tmp_path, monkeypatch, status):
     """408 和 429 与 5xx 一样：本进程退避后仍留在队列，下次启动还能补发。"""
     _project(tmp_path, monkeypatch)
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
     sleeps = []
     real_sleep = time.sleep
 
@@ -417,7 +417,7 @@ def test_request_timeout_and_rate_limit_stay_queued(tmp_path, monkeypatch, statu
 
 def test_server_error_retries_with_backoff_then_stays_queued(tmp_path, monkeypatch):
     _project(tmp_path, monkeypatch)
-    monkeypatch.setenv('AUTOCLIP_POSTHOG_KEY', 'phc_test')
+    monkeypatch.setenv('AUTOVIDEOCLIP_POSTHOG_KEY', 'phc_test')
     sleeps = []
     real_sleep = time.sleep
 

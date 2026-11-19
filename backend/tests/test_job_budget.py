@@ -23,15 +23,15 @@ from backend.tests.test_result_retry import _manager
 
 
 def test_env_budget_overrides_the_default_and_is_still_a_timeout(monkeypatch):
-    """AUTOCLIP_CLIP_JOB_BUDGET_SEC is the knob a desktop repro uses to force the cap."""
+    """AUTOVIDEOCLIP_CLIP_JOB_BUDGET_SEC is the knob a desktop repro uses to force the cap."""
     from backend.core.job_budget import clip_job_budget_seconds
 
-    monkeypatch.setenv('AUTOCLIP_CLIP_JOB_BUDGET_SEC', '1.5')
+    monkeypatch.setenv('AUTOVIDEOCLIP_CLIP_JOB_BUDGET_SEC', '1.5')
     assert clip_job_budget_seconds() == 1.5
     for raw in ('0', '-3', 'nope', ''):
-        monkeypatch.setenv('AUTOCLIP_CLIP_JOB_BUDGET_SEC', raw)
+        monkeypatch.setenv('AUTOVIDEOCLIP_CLIP_JOB_BUDGET_SEC', raw)
         assert clip_job_budget_seconds() == float(CLIP_JOB_BUDGET_SEC)
-    monkeypatch.setenv('AUTOCLIP_CLIP_JOB_BUDGET_SEC', '0.05')
+    monkeypatch.setenv('AUTOVIDEOCLIP_CLIP_JOB_BUDGET_SEC', '0.05')
     with bound_clip_job():
         time.sleep(0.08)
         with pytest.raises(JobDurationExceeded):
@@ -113,8 +113,8 @@ def test_an_expired_budget_does_not_start_another_provider_call():
 
 
 def test_pipeline_reports_the_cap_as_a_failed_timeout(tmp_path, monkeypatch):
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(tmp_path))
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
     from backend.services.simple_pipeline_adapter import create_simple_pipeline_adapter
 
     adapter = create_simple_pipeline_adapter("p-budget", "t-budget")

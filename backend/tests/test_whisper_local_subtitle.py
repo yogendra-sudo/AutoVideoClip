@@ -29,12 +29,12 @@ class Fail(Exception):
 
 
 def test_default_backend_is_cpu_int8(monkeypatch):
-    monkeypatch.delenv("AUTOCLIP_WHISPER_DEVICE", raising=False)
+    monkeypatch.delenv("AUTOVIDEOCLIP_WHISPER_DEVICE", raising=False)
     assert resolve_local_whisper_backend() == ("cpu", "int8")
 
 
 def test_cuda_opt_in_does_not_force_int8(monkeypatch):
-    monkeypatch.setenv("AUTOCLIP_WHISPER_DEVICE", "cuda")
+    monkeypatch.setenv("AUTOVIDEOCLIP_WHISPER_DEVICE", "cuda")
     assert resolve_local_whisper_backend() == ("cuda", "float16")
     assert resolve_local_whisper_backend("auto") == ("auto", "default")
     assert resolve_local_whisper_backend("CUDA") == ("cuda", "float16")
@@ -159,9 +159,9 @@ def _install_fake_whisper(monkeypatch, factory):
     monkeypatch.setitem(sys.modules, "faster_whisper", module)
     monkeypatch.setattr(whisper_runtime, "is_installed", lambda: True)
     monkeypatch.setattr(whisper_runtime, "ensure_on_path", lambda: None)
-    monkeypatch.setattr(whisper_runtime, "get_models_dir", lambda: Path("/tmp/autoclip-whisper-models"))
+    monkeypatch.setattr(whisper_runtime, "get_models_dir", lambda: Path("/tmp/autovideoclip-whisper-models"))
     # No model on disk in these tests: the manager "downloads" a synthetic snapshot path.
-    monkeypatch.setattr(WhisperModelManager, "ensure_downloaded", lambda self, name: Path("/tmp/autoclip-whisper-models/snapshot"))
+    monkeypatch.setattr(WhisperModelManager, "ensure_downloaded", lambda self, name: Path("/tmp/autovideoclip-whisper-models/snapshot"))
 
 
 def test_missing_model_is_downloaded_by_the_manager_not_by_faster_whisper(tmp_path, monkeypatch):
@@ -211,7 +211,7 @@ def _recognizer():
 
 @pytest.mark.parametrize('cores,expected', [(64, 2), (2, 2), (1, 1), (None, 1)])
 def test_model_constructor_bounds_cpu_threads_and_worker_count(tmp_path, monkeypatch, cores, expected):
-    monkeypatch.delenv('AUTOCLIP_WHISPER_DEVICE', raising=False)
+    monkeypatch.delenv('AUTOVIDEOCLIP_WHISPER_DEVICE', raising=False)
     monkeypatch.setattr('backend.utils.speech_recognizer.os.cpu_count', lambda: cores)
     constructed = []
     class FakeModel:
@@ -230,7 +230,7 @@ def test_model_constructor_bounds_cpu_threads_and_worker_count(tmp_path, monkeyp
 
 
 def test_cpu_encode_error_becomes_readable_and_is_not_logged_with_traceback(tmp_path, monkeypatch, caplog):
-    monkeypatch.delenv("AUTOCLIP_WHISPER_DEVICE", raising=False)
+    monkeypatch.delenv("AUTOVIDEOCLIP_WHISPER_DEVICE", raising=False)
     calls = []
 
     class FakeModel:
@@ -257,7 +257,7 @@ def test_cpu_encode_error_becomes_readable_and_is_not_logged_with_traceback(tmp_
 
 
 def test_vad_fail_retries_without_filter_and_still_writes_srt(tmp_path, monkeypatch):
-    monkeypatch.delenv("AUTOCLIP_WHISPER_DEVICE", raising=False)
+    monkeypatch.delenv("AUTOVIDEOCLIP_WHISPER_DEVICE", raising=False)
     vad_flags = []
 
     class FakeModel:
@@ -312,7 +312,7 @@ def test_generate_subtitle_accepts_import_keyword_arguments(tmp_path):
 
 
 def test_blank_segments_are_not_written_as_success(tmp_path, monkeypatch):
-    monkeypatch.delenv("AUTOCLIP_WHISPER_DEVICE", raising=False)
+    monkeypatch.delenv("AUTOVIDEOCLIP_WHISPER_DEVICE", raising=False)
 
     class FakeModel:
         def __init__(self, model, device="auto", compute_type="int8", download_root=None, **kwargs):
@@ -337,7 +337,7 @@ def test_blank_segments_are_not_written_as_success(tmp_path, monkeypatch):
 
 
 def test_existing_blank_srt_is_transcribed_again(tmp_path, monkeypatch):
-    monkeypatch.delenv("AUTOCLIP_WHISPER_DEVICE", raising=False)
+    monkeypatch.delenv("AUTOVIDEOCLIP_WHISPER_DEVICE", raising=False)
     calls = []
 
     class FakeModel:
@@ -380,7 +380,7 @@ def test_existing_srt_with_cue_text_skips_whisper(tmp_path, monkeypatch):
 
 
 def test_gpu_runtime_error_retries_on_cpu(tmp_path, monkeypatch):
-    monkeypatch.setenv("AUTOCLIP_WHISPER_DEVICE", "cuda")
+    monkeypatch.setenv("AUTOVIDEOCLIP_WHISPER_DEVICE", "cuda")
     constructed = []
 
     class FakeModel:

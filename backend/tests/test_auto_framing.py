@@ -95,7 +95,7 @@ def test_packaging_of_a_batch_runs_side_by_side_once_per_content(monkeypatch):
     import time
     from backend.services import publish_export
     from backend.services.studio import packaging, store
-    monkeypatch.setenv('AUTOCLIP_LLM_CONCURRENCY', '4')
+    monkeypatch.setenv('AUTOVIDEOCLIP_LLM_CONCURRENCY', '4')
     monkeypatch.setattr(publish_export, '_load_srt_entries', lambda _pid: [])
     monkeypatch.setattr(store, 'read', lambda _pid: {'source_meta': {}})
     calls, active, peak, lock = [], [0], [0], threading.Lock()

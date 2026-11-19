@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 """
-autoclip — 命令行出片。
+autovideoclip — 命令行出片。
 
-    autoclip run video.mp4                         # 用桌面应用里配好的模型
-    autoclip run video.mp4 --provider ollama       # 本地 Ollama（默认 qwen2.5:7b，无需 key）
-    autoclip run video.mp4 --provider lmstudio --model qwen2.5-7b-instruct
-    AUTOCLIP_API_KEY=sk-... autoclip run video.mp4 --provider openai --base-url https://api.deepseek.com/v1 --model deepseek-chat
-    autoclip run video.mp4 --srt video.srt --min-score 0.6 --json
-    autoclip list / show <project_id> / providers / doctor
-    autoclip publish <project_id> --clip 2 --platform tiktok --platform youtube   # 经 Upload-Post 发到海外平台
-    autoclip mcp install opencode                  # 把 AutoClip 写进 opencode 的 MCP 配置（默认全局）
+    autovideoclip run video.mp4                         # 用桌面应用里配好的模型
+    autovideoclip run video.mp4 --provider ollama       # 本地 Ollama（默认 qwen2.5:7b，无需 key）
+    autovideoclip run video.mp4 --provider lmstudio --model qwen2.5-7b-instruct
+    AUTOVIDEOCLIP_API_KEY=sk-... autovideoclip run video.mp4 --provider openai --base-url https://api.deepseek.com/v1 --model deepseek-chat
+    autovideoclip run video.mp4 --srt video.srt --min-score 0.6 --json
+    autovideoclip list / show <project_id> / providers / doctor
+    autovideoclip publish <project_id> --clip 2 --platform tiktok --platform youtube   # 经 Upload-Post 发到海外平台
+    autovideoclip mcp install opencode                  # 把 AutoClip 写进 opencode 的 MCP 配置（默认全局）
 
 产物与桌面应用共用同一个数据目录（mac: ~/Library/Application Support/AutoClip），
-跑完在桌面应用首页就能看到。用 --data-dir 或 AUTOCLIP_DATA_DIR 可以换目录。
+跑完在桌面应用首页就能看到。用 --data-dir 或 AUTOVIDEOCLIP_DATA_DIR 可以换目录。
 
-不装包也能用：`python -m backend.cli ...`；`pip install -e .` 之后有 `autoclip` 命令。
+不装包也能用：`python -m backend.cli ...`；`pip install -e .` 之后有 `autovideoclip` 命令。
 """
 from __future__ import annotations
 
@@ -65,18 +65,18 @@ def _add_llm_args(p: argparse.ArgumentParser) -> None:
     g.add_argument("--provider", choices=PROVIDER_CHOICES, help="dashscope / openai / gemini / deepseek / seed / kimi / glm / grok / infistar / api88 / apimart，或本地预设 ollama / lmstudio")
     g.add_argument("--model", help="模型名，如 qwen-plus、gpt-4o-mini、qwen2.5:7b")
     g.add_argument("--base-url", help="OpenAI 兼容接口地址（provider=openai 时用；ollama/lmstudio 有默认值）")
-    g.add_argument("--api-key", help="已弃用。请改用环境变量 AUTOCLIP_API_KEY；仍传入时会在 stderr 打印警告")
+    g.add_argument("--api-key", help="已弃用。请改用环境变量 AUTOVIDEOCLIP_API_KEY；仍传入时会在 stderr 打印警告")
 
 
 def _llm_override(args: argparse.Namespace) -> LLMOverride:
     supplied = getattr(args, "api_key", None)
     if supplied:
-        print("警告：--api-key 已弃用，请改用环境变量 AUTOCLIP_API_KEY。", file=sys.stderr)
+        print("警告：--api-key 已弃用，请改用环境变量 AUTOVIDEOCLIP_API_KEY。", file=sys.stderr)
     return LLMOverride(
         provider=getattr(args, "provider", None),
         model=getattr(args, "model", None),
         base_url=getattr(args, "base_url", None),
-        api_key=supplied or os.getenv("AUTOCLIP_API_KEY"),
+        api_key=supplied or os.getenv("AUTOVIDEOCLIP_API_KEY"),
     )
 
 
@@ -250,7 +250,7 @@ def cmd_list(args: argparse.Namespace) -> int:
         print(json.dumps(items, ensure_ascii=False, indent=2))
         return 0
     if not items:
-        print(_dim("还没有项目。autoclip run <video> 开始。"))
+        print(_dim("还没有项目。autovideoclip run <video> 开始。"))
         return 0
     for it in items:
         print(f"{it['project_id']}  {it['status']:<9} {it['clips']:>3} 切片  {it['updated_at'][:16]}  {it['name']}")
@@ -532,7 +532,7 @@ def cmd_publish(args: argparse.Namespace) -> int:
     if args.json:
         print(json.dumps({"ok": all(r.get("ok") for r in results), "published": results}, ensure_ascii=False, indent=2))
     elif not args.wait:
-        print(_dim("查看结果：autoclip publish --status <request_id>（加 --wait 可等到终态）"), file=sys.stderr)
+        print(_dim("查看结果：autovideoclip publish --status <request_id>（加 --wait 可等到终态）"), file=sys.stderr)
     return 0 if all(r.get("ok") for r in results) else 1
 
 
@@ -547,7 +547,7 @@ def cmd_mcp(args: argparse.Namespace) -> int:
 
 def _print_opencode_next_steps() -> None:
     print(_dim("  在 opencode 里直接说：把 C:\\Videos\\talk.mp4 切片，它会调 AutoClip 的 MCP 工具"))
-    print(_dim("  模型没配好先跑 autoclip doctor；opencode 要新开会话才会加载新的 MCP"))
+    print(_dim("  模型没配好先跑 autovideoclip doctor；opencode 要新开会话才会加载新的 MCP"))
 
 
 def cmd_mcp_install(args: argparse.Namespace) -> int:
@@ -593,12 +593,12 @@ def cmd_mcp_install(args: argparse.Namespace) -> int:
 # ---------------------------------------------------------------- parser ---
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
-        prog="autoclip",
+        prog="autovideoclip",
         description="AutoClip 命令行：一条命令把长视频切成高光片段。",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__.split("\n\n", 1)[1] if __doc__ else None,
     )
-    p.add_argument("--data-dir", help="数据目录（默认与桌面应用共用；也可用 AUTOCLIP_DATA_DIR）")
+    p.add_argument("--data-dir", help="数据目录（默认与桌面应用共用；也可用 AUTOVIDEOCLIP_DATA_DIR）")
     p.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     p.add_argument("-v", "--verbose", action="store_true", help="在终端输出后端日志")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -610,7 +610,7 @@ def build_parser() -> argparse.ArgumentParser:
     q.add_argument('--srt', help='本地 SRT 字幕文件')
     q.add_argument('--instruction', default='')
     q.add_argument('--portrait-style', choices=['auto', 'interview', 'podcast'], default='auto', help='竖版版式；画幅和文字语言仍按平台')
-    q.add_argument('--template', choices=['editorial', 'street', 'news', 'cinema', 'classic'], help='剪辑风格（mcp_v2_tools 开关控制，默认打开；AUTOCLIP_FLAGS=mcp_v2_tools=off 可关闭）：editorial 杂志风 / street 街头快剪 / news 新闻 / cinema 电影 / classic 经典。结果里的 template 是实际用的风格')
+    q.add_argument('--template', choices=['editorial', 'street', 'news', 'cinema', 'classic'], help='剪辑风格（mcp_v2_tools 开关控制，默认打开；AUTOVIDEOCLIP_FLAGS=mcp_v2_tools=off 可关闭）：editorial 杂志风 / street 街头快剪 / news 新闻 / cinema 电影 / classic 经典。结果里的 template 是实际用的风格')
     q.add_argument('--browser', choices=['chrome', 'edge', 'firefox', 'safari'])
     q.add_argument('--timeout', type=float, default=7200, help='等待秒数；超时不会取消项目')
     q.add_argument('--json', action='store_true', help='只在 stdout 输出 JSON 结果')
@@ -662,7 +662,7 @@ def build_parser() -> argparse.ArgumentParser:
     mi.add_argument("--scope", choices=["global", "project"], default="global",
                     help="global=~/.config/opencode/opencode.json；project=<--dir 目录>/opencode.json")
     mi.add_argument("--dir", help="project 模式的项目目录（默认当前目录）")
-    mi.add_argument("--name", default="autoclip", help="配置里的 MCP 服务名（默认 autoclip）")
+    mi.add_argument("--name", default="autovideoclip", help="配置里的 MCP 服务名（默认 autovideoclip）")
     mi.add_argument("--print", dest="print_only", action="store_true", help="只打印配置片段，不改文件")
     mi.add_argument("--force", action="store_true", help="现有配置含注释 / 尾随逗号时，先备份再重写为纯 JSON")
     mi.add_argument("--json", action="store_true")

@@ -12,9 +12,9 @@ import { getVersion } from '@tauri-apps/api/app'
 import { posthog, captureBusinessEvent, isAnalyticsEnabled } from './posthog'
 import { runtimeProperties } from './runtime'
 
-const INSTALL_FLAG_KEY = 'autoclip.analytics.installed'
-const LAST_VERSION_KEY = 'autoclip.analytics.lastVersion'
-const SESSION_COUNT_KEY = 'autoclip.analytics.sessionCount'
+const INSTALL_FLAG_KEY = 'autovideoclip.analytics.installed'
+const LAST_VERSION_KEY = 'autovideoclip.analytics.lastVersion'
+const SESSION_COUNT_KEY = 'autovideoclip.analytics.sessionCount'
 
 async function getAppVersion(): Promise<string> {
   try {

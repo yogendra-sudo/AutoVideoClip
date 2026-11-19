@@ -16,7 +16,7 @@ Discussions 中的想法不代表开发承诺，确认后的工作才进入 Issu
 Fork 本仓库并克隆你的 Fork，添加上游：
 
 ```bash
-cd autoclip
+cd autovideoclip
 git remote add upstream https://github.com/yogendra-sudo/AutoVideoClip.git
 git fetch upstream
 git switch -c fix/your-change upstream/main
@@ -34,7 +34,7 @@ cp env.example .env
 
 以上命令适用于 macOS/Linux。Windows 桌面开发与打包按 [BUILD_GUIDE.md](BUILD_GUIDE.md) 和 [scripts/README.md](scripts/README.md) 准备工具链，不要直接套用 POSIX Web 启动脚本。
 
-Web 开发需要 Redis，准备后用 `./start_autoclip.sh`；管理命令和手动启动方式见启动指南。桌面后端由 Tauri 管理，入口是 `backend/desktop_main.py`；容器部署见 [DOCKER.md](DOCKER.md)，CLI/MCP 见 [对应指南](docs/CLI_AND_MCP.md)。
+Web 开发需要 Redis，准备后用 `./start_autovideoclip.sh`；管理命令和手动启动方式见启动指南。桌面后端由 Tauri 管理，入口是 `backend/desktop_main.py`；容器部署见 [DOCKER.md](DOCKER.md)，CLI/MCP 见 [对应指南](docs/CLI_AND_MCP.md)。
 
 ## 修改与验证
 

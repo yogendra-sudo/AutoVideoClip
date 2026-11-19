@@ -28,5 +28,5 @@ def test_frontend_suite_against_the_real_backend(suite):
             pytest.fail('node + frontend deps are installed in CI; refusing to skip')
         pytest.skip('node + frontend deps required')
     done = subprocess.run([node, '--test', f'tests/{suite}'], cwd=ROOT / 'frontend', capture_output=True, text=True, timeout=900,
-                          env={**os.environ, 'AUTOCLIP_TEST_PYTHON': sys.executable})
+                          env={**os.environ, 'AUTOVIDEOCLIP_TEST_PYTHON': sys.executable})
     assert done.returncode == 0, done.stdout[-4000:] + done.stderr[-2000:]

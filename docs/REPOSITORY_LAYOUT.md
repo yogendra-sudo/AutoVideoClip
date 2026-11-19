@@ -23,8 +23,8 @@
 | `docker-dev-entrypoint.sh` | 开发镜像入口被 Compose 内另一套命令覆盖。保留并恢复为唯一入口，修复构建时未复制源码就执行 build、`sh` 使用 `source`、Worker 不支持的 `--reload` 等问题。 |
 | `docker-start/status/stop.sh` | 原实现只支持 Compose v1，开发模式选错配置，状态与清理范围失真。改为兼容转发器，共用 `scripts/runtime/docker.sh`，只管理选定项目。 |
 | `init_database.py` | 手动维护入口仍有用途，但重复建表且提示不存在的启动脚本。保留为共享初始化入口，导入时不改变工作目录，失败返回非零值。 |
-| `status_autoclip.sh` / `stop_autoclip.sh` | 仍被启动指南使用。改为兼容转发器，验证当前 checkout 的进程归属及创建时间，不再全局 `pkill`。 |
-| `start_autoclip.sh` / `quick_start.sh` | Web 源码开发仍需要。实现移至 `scripts/runtime/start.sh`，合并启动逻辑，快速入口只负责后台模式；失败不再宣称启动成功。 |
+| `status_autovideoclip.sh` / `stop_autovideoclip.sh` | 仍被启动指南使用。改为兼容转发器，验证当前 checkout 的进程归属及创建时间，不再全局 `pkill`。 |
+| `start_autovideoclip.sh` / `quick_start.sh` | Web 源码开发仍需要。实现移至 `scripts/runtime/start.sh`，合并启动逻辑，快速入口只负责后台模式；失败不再宣称启动成功。 |
 | `CONTRIBUTING.md` / `.github/` 社区模板 | 贡献入口仍需维护。按现行 CI 修正测试命令与工具要求，补充 PR 模板；社区表单不再依赖旧版本号和过时供应商清单。 |
 | `SECURITY.md` | 原文件含占位邮箱、伪 CVE、过时支持表和未履行承诺。重写为真实维护与联系政策。 |
 

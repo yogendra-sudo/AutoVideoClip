@@ -42,9 +42,9 @@
 
 捕获边界覆盖 Studio 初筛、快速视觉推荐降级、制作、渲染、任务提交、文案改写和视觉连接测试；原生保存故障由前端上报。HTTP 请求的工程异常由后端负责，前端不重复上报同一次保存/改写请求。
 
-保留固定标签 area=studio、phase、analysis_mode、goal、error_code、runtime、app_mode、build_environment。后端保留 desktop/web 的 environment，桌面启动器显式注入 production/development 的 build_environment，其他部署可设置 `AUTOCLIP_BUILD_ENVIRONMENT`，未设置时 unknown。前端 environment 延续 production/development。
+保留固定标签 area=studio、phase、analysis_mode、goal、error_code、runtime、app_mode、build_environment。后端保留 desktop/web 的 environment，桌面启动器显式注入 production/development 的 build_environment，其他部署可设置 `AUTOVIDEOCLIP_BUILD_ENVIRONMENT`，未设置时 unknown。前端 environment 延续 production/development。
 
-1.5.7（I650–I652）起控制上报量：只有打包后的桌面正式版或验收版初始化 Sentry。后端要求 mode=desktop、release 已知，且 `AUTOCLIP_BUILD_ENVIRONMENT` 恰好是 production 或 validation；前端要求 PROD 构建、版本号已知且运行在 Tauri 里。pytest、带 `backend/tests` 的源码树、未设置构建环境、web/Docker/脚本、`tauri dev` 和浏览器标签页一律不初始化，即使环境里有 `SENTRY_DSN`。SDK 端按客户端指纹（显式 fingerprint，否则异常类型加模块/函数，不含行号和正文）限流，每个进程每小时同一指纹最多 5 条；轮询接口 `get_processing_status`、`get_ai_models` 出错每个进程只报一次。已丢弃的事件不占额度。Windows asyncio Proactor 的断连噪音直接丢弃，且调用栈里不能有 `backend` 帧：ConnectionResetError（WinError 10054，以及 Proactor 改写成该类型的 64 / 995）、ConnectionAbortedError（10053）和 BrokenPipeError（109）。同一类型出现在业务代码里，或从 Proactor 回调进入后端后抛出，照报。已发出的旧版本安装包不受影响，服务端限速另定。供应商已回答的失败（401/429/503 等 HTTP，以及 `invalid_key`、`rate_limited`、`upstream_unavailable` 这类 `upstream_error_type`）只进 PostHog，不进 Sentry。同一设备每个 UTC 日先按原样送 40 条，其后每 10 条抽 1 条，硬顶 120；被上面丢掉的供应商错误不占这份额度。前端同一规则，额度是 15 条后抽样、硬顶 40。
+1.5.7（I650–I652）起控制上报量：只有打包后的桌面正式版或验收版初始化 Sentry。后端要求 mode=desktop、release 已知，且 `AUTOVIDEOCLIP_BUILD_ENVIRONMENT` 恰好是 production 或 validation；前端要求 PROD 构建、版本号已知且运行在 Tauri 里。pytest、带 `backend/tests` 的源码树、未设置构建环境、web/Docker/脚本、`tauri dev` 和浏览器标签页一律不初始化，即使环境里有 `SENTRY_DSN`。SDK 端按客户端指纹（显式 fingerprint，否则异常类型加模块/函数，不含行号和正文）限流，每个进程每小时同一指纹最多 5 条；轮询接口 `get_processing_status`、`get_ai_models` 出错每个进程只报一次。已丢弃的事件不占额度。Windows asyncio Proactor 的断连噪音直接丢弃，且调用栈里不能有 `backend` 帧：ConnectionResetError（WinError 10054，以及 Proactor 改写成该类型的 64 / 995）、ConnectionAbortedError（10053）和 BrokenPipeError（109）。同一类型出现在业务代码里，或从 Proactor 回调进入后端后抛出，照报。已发出的旧版本安装包不受影响，服务端限速另定。供应商已回答的失败（401/429/503 等 HTTP，以及 `invalid_key`、`rate_limited`、`upstream_unavailable` 这类 `upstream_error_type`）只进 PostHog，不进 Sentry。同一设备每个 UTC 日先按原样送 40 条，其后每 10 条抽 1 条，硬顶 120；被上面丢掉的供应商错误不占这份额度。前端同一规则，额度是 15 条后抽样、硬顶 40。
 
 1.5.2 候选的告警补充修复增加后端 `pipeline_stage` 标签，只允许 INGEST、SUBTITLE、ANALYZE、HIGHLIGHT、EXPORT、DONE。内容任务返回有阶段但没有错误码的结构化失败时保留该阶段；仍按原有异常规则上报，不隐藏未知故障。大纲模型请求失败使用已有的受控失败码，无法解析的回答归为 invalid_response；不增加请求重放。快速视觉推荐的抽帧进程失败、超时或文件错误会保留 screening 告警并降级到字幕方案，不能阻止导入。此补充尚未发布，已存在的 1.5.1 安装包不会自动获得这些改动。
 
@@ -62,15 +62,15 @@ ValueError 校验、素材缺失、视觉鉴权/限流/拒绝为 warning；其�
 
 进程被结束时还在跑的 Studio 任务（初筛 / 内容制作 / 渲染）不会再继续。启动时（`backend/services/studio/restart_recovery.py`）以及首页列表、打开项目读取 `studio.json` 时，恢复逻辑把这类 generation / analysis 持久化为失败：错误码 `service_restarted`，文案「应用刚重启，这次制作已中断，请重试。」，并同步到项目索引，首页显示失败原因与「重新生成」入口（进入项目，走现有 `/studio/{id}/analyze` 或单条重试）。仍在运行的 CLI / MCP 制作进程（`generation.producer`）不受影响。`service_restarted` 是环境事件，不发送 Sentry（`UNREPORTED_STUDIO_ERROR_CODES`）。
 
-- [Studio 工程异常](https://autoclip-ts.sentry.io/issues/views/226393/)
-- [Studio 配置/素材警告](https://autoclip-ts.sentry.io/issues/views/226394/)
-- [本轮验收异常](https://autoclip-ts.sentry.io/issues/PYTHON-FASTAPI-17)
+- [Studio 工程异常](https://autovideoclip-ts.sentry.io/issues/views/226393/)
+- [Studio 配置/素材警告](https://autovideoclip-ts.sentry.io/issues/views/226394/)
+- [本轮验收异常](https://autovideoclip-ts.sentry.io/issues/PYTHON-FASTAPI-17)
 
 `before_send` 继续去掉正文、变量、请求、上下文和面包屑，保留文件名/函数/行号。每次发送重新检查崩溃报告开关。共享分析错误在一次多目标制作中只显式捕获一次；监控异常不影响主操作。
 
 ## 验收及限制
 
-使用独立 `/private/tmp` 数据目录、真实应用工厂与 Vite 页面。仅加载已有监控 DSN/公开项目 key，没有复制用户素材、模型配置或发布账号。用自制损坏 MP4 从真实首页导入：Sentry 收到 PYTHON-FASTAPI-17，栈可读为 jobs.py `_inspect` → planning.py `recommend`；area/phase/build_environment/telemetry_test 标签保留，正文脱敏。PostHog 的 validation 查询实际收到导入受理、修改方案、初筛失败/正常推荐、确认制作和制作失败事件；最终制作失败带 llm_not_configured。替换为自制纯色视频和测试字幕后，重新识别恢复到正常字幕推荐；确认制作后触发真实缺模型配置失败。最初该失败误归 RuntimeError，修复结构化错误码传递后再验，Sentry 收到 [PYTHON-FASTAPI-19](https://autoclip-ts.sentry.io/issues/PYTHON-FASTAPI-19)，warning、phase=production、error_code=llm_not_configured。中间的 PYTHON-FASTAPI-18 为测试样本，两个保存视图均排除测试标记。
+使用独立 `/private/tmp` 数据目录、真实应用工厂与 Vite 页面。仅加载已有监控 DSN/公开项目 key，没有复制用户素材、模型配置或发布账号。用自制损坏 MP4 从真实首页导入：Sentry 收到 PYTHON-FASTAPI-17，栈可读为 jobs.py `_inspect` → planning.py `recommend`；area/phase/build_environment/telemetry_test 标签保留，正文脱敏。PostHog 的 validation 查询实际收到导入受理、修改方案、初筛失败/正常推荐、确认制作和制作失败事件；最终制作失败带 llm_not_configured。替换为自制纯色视频和测试字幕后，重新识别恢复到正常字幕推荐；确认制作后触发真实缺模型配置失败。最初该失败误归 RuntimeError，修复结构化错误码传递后再验，Sentry 收到 [PYTHON-FASTAPI-19](https://autovideoclip-ts.sentry.io/issues/PYTHON-FASTAPI-19)，warning、phase=production、error_code=llm_not_configured。中间的 PYTHON-FASTAPI-18 为测试样本，两个保存视图均排除测试标记。
 
 自动化验证：全量后端 619 项通过；最后目标计数顺序调整另跑相关 58 项通过。前端 136 项通过，typecheck/lint/build 通过。构建仍有原有大 chunk 提示。
 

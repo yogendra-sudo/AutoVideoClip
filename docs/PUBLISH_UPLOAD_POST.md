@@ -7,7 +7,7 @@
 - Upload-Post 是第三方托管服务（免费档每月有额度，更多用量按套餐付费），需要自己注册、连接社交账号、生成 API Key。
 - 一次请求发多个平台；每个平台的结果（链接 / 错误）异步返回，AutoVideoClip 负责轮询汇总。
 
-入口：API（`/api/v1/publish/upload-post/...` 与 `/api/v1/publish/bilibili/...`）、CLI（`autoclip publish`，目前只发海外平台）、MCP（`publish_clip`）。
+入口：API（`/api/v1/publish/upload-post/...` 与 `/api/v1/publish/bilibili/...`）、CLI（`autovideoclip publish`，目前只发海外平台）、MCP（`publish_clip`）。
 桌面 / Docker / 脚本模式都可用。应用里在「设置 → 发布」填写 Upload-Post 密钥和 B 站 Cookie，在切片上点「发布」后直接勾选。
 
 ---
@@ -22,13 +22,13 @@
 | 方式 | 做法 |
 |---|---|
 | 环境变量（Docker / 脚本） | `.env` 里填 `UPLOAD_POST_API_KEY=…`、`UPLOAD_POST_USER=main`（`docker-compose.yml` 已透传） |
-| CLI | `autoclip publish --api-key <key> --user main --save`（会先校验 key，再写到 `<数据目录>/upload_post.json`，权限 0600） |
+| CLI | `autovideoclip publish --api-key <key> --user main --save`（会先校验 key，再写到 `<数据目录>/upload_post.json`，权限 0600） |
 | API | `PUT /api/v1/publish/upload-post/config` `{"api_key": "…", "user": "main"}`（同样先校验） |
 
 检查是否就绪、profile 连了哪些平台：
 
 ```bash
-autoclip publish --list-profiles
+autovideoclip publish --list-profiles
 # ● main          tiktok, youtube, instagram
 #   brand         linkedin
 ```
@@ -39,27 +39,27 @@ autoclip publish --list-profiles
 
 ```bash
 # 把 2 号切片发到 TikTok + YouTube Shorts（自动渲 9:16 shorts 预设，≤ 60 s），并等结果
-autoclip publish <project_id> --clip 2 --platform tiktok --platform youtube --wait
+autovideoclip publish <project_id> --clip 2 --platform tiktok --platform youtube --wait
 
 # 多个切片、指定预设与 profile、自定义标题
-autoclip publish <project_id> --clip 2 --clip 5 --platform instagram --preset douyin --user brand --title "本周最精彩的一段"
+autovideoclip publish <project_id> --clip 2 --clip 5 --platform instagram --preset douyin --user brand --title "本周最精彩的一段"
 
 # 横屏平台不裁切
-autoclip publish <project_id> --clip 3 --platform linkedin,x --preset original --description "完整访谈见主页"
+autovideoclip publish <project_id> --clip 3 --platform linkedin,x --preset original --description "完整访谈见主页"
 
 # 先私密试发：平台专属字段用 --extra key=value 透传（字段名见 Upload-Post 文档）
-autoclip publish <project_id> --clip 2 --platform tiktok --extra privacy_level=SELF_ONLY
-autoclip publish <project_id> --clip 2 --platform youtube --extra privacyStatus=unlisted
+autovideoclip publish <project_id> --clip 2 --platform tiktok --extra privacy_level=SELF_ONLY
+autovideoclip publish <project_id> --clip 2 --platform youtube --extra privacyStatus=unlisted
 
 # 定时发布
-autoclip publish <project_id> --clip 2 --platform tiktok --schedule 2026-10-01T09:00:00 --timezone Asia/Shanghai
+autovideoclip publish <project_id> --clip 2 --platform tiktok --schedule 2026-10-01T09:00:00 --timezone Asia/Shanghai
 
 # 查结果（提交时打印的 request_id）
-autoclip publish --status <request_id>
-autoclip publish --status <request_id> --wait
+autovideoclip publish --status <request_id>
+autovideoclip publish --status <request_id> --wait
 
 # 给脚本 / agent
-autoclip publish <project_id> --clip 2 --platform tiktok --wait --json
+autovideoclip publish <project_id> --clip 2 --platform tiktok --wait --json
 ```
 
 约定：
@@ -141,13 +141,13 @@ autoclip publish <project_id> --clip 2 --platform tiktok --wait --json
 | `publish_clip(project_id, clip_id, platforms, user?, preset?, title?, description?, subtitles?, title_card?, scheduled_date?, timezone?, extra?)` | 导出 + 提交，返回 `request_id` |
 | `get_publish_status(request_id, project_id?)` | 各平台结果；`final=true` 为终态 |
 
-`skills/autoclip/SKILL.md` 里有给 agent 的使用约定（先私密试发、不要一次发全部切片等）。
+`skills/autovideoclip/SKILL.md` 里有给 agent 的使用约定（先私密试发、不要一次发全部切片等）。
 
 ---
 
 ## 5. 常见问题
 
-- **401 / Invalid or expired token**：key 复制错或已在 Upload-Post 后台删除。`autoclip publish --api-key <新 key> --save` 重新保存。
+- **401 / Invalid or expired token**：key 复制错或已在 Upload-Post 后台删除。`autovideoclip publish --api-key <新 key> --save` 重新保存。
 - **没有指定 profile**：`--user` 或 `UPLOAD_POST_USER`；`--list-profiles` 看有哪些。
 - **某个平台 `skipped`**：profile 没连这个平台，到 Manage Users 里连接。
 - **TikTok 结果带 `fallback_to_inbox`**：发布成功，但因 TikTok 当日活跃用户上限进了收件箱草稿，需要在 TikTok App 里手动发布；

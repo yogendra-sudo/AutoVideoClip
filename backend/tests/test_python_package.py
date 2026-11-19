@@ -1,4 +1,4 @@
-"""PyPI metadata for `uvx autoclip-mcp` and the skill install command. No publish."""
+"""PyPI metadata for `uvx autovideoclip-mcp` and the skill install command. No publish."""
 import json
 from pathlib import Path
 import re
@@ -8,8 +8,8 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 DEV_PACKAGES = {'pytest', 'pytest-cov', 'pytest-mock'}
-INSTALL_COMMANDS = ('uvx autoclip-mcp', 'npx skills add yogendra-sudo/AutoVideoClip')
-WHEEL_GLOB = 'autoclip_mcp-*-py3-none-any.whl'
+INSTALL_COMMANDS = ('uvx autovideoclip-mcp', 'npx skills add yogendra-sudo/AutoVideoClip')
+WHEEL_GLOB = 'autovideoclip_mcp-*-py3-none-any.whl'
 
 
 def runtime_requirements(text: str) -> list[str]:
@@ -26,24 +26,24 @@ def runtime_requirements(text: str) -> list[str]:
 
 
 @pytest.mark.stdlib_only
-def test_distribution_is_autoclip_mcp_and_keeps_runtime_pins():
+def test_distribution_is_autovideoclip_mcp_and_keeps_runtime_pins():
     from scripts.bump_version import pypi_version_matches_product
 
     project = tomllib.loads((ROOT / 'pyproject.toml').read_text(encoding='utf-8'))['project']
     version = (ROOT / 'backend' / '__init__.py').read_text(encoding='utf-8')
     product = re.search(r'^__version__\s*=\s*"([^"]+)"', version, re.MULTILINE)
-    assert project['name'] == 'autoclip-mcp'
+    assert project['name'] == 'autovideoclip-mcp'
     assert product and pypi_version_matches_product(product.group(1), project['version'])
     assert f'__version__ = "{product.group(1)}"' in version
-    assert project['scripts']['autoclip'] == 'backend.cli:main'
-    assert project['scripts']['autoclip-mcp'] == 'backend.mcp_server:main'
+    assert project['scripts']['autovideoclip'] == 'backend.cli:main'
+    assert project['scripts']['autovideoclip-mcp'] == 'backend.mcp_server:main'
     dependencies = project['dependencies']
     assert dependencies == runtime_requirements((ROOT / 'requirements.txt').read_text(encoding='utf-8'))
     assert 'mcp==2.1.1' in dependencies
     assert not any(item.split('==', 1)[0].split('[', 1)[0] in DEV_PACKAGES for item in dependencies)
 
     from scripts.build_python_release import expected_wheel_name
-    assert expected_wheel_name(project['version']) == f'autoclip_mcp-{project["version"]}-py3-none-any.whl'
+    assert expected_wheel_name(project['version']) == f'autovideoclip_mcp-{project["version"]}-py3-none-any.whl'
     package_data = tomllib.loads((ROOT / 'pyproject.toml').read_text(encoding='utf-8'))['tool']['setuptools']['package-data']
     assert 'presets/*.json' in package_data['backend']
     assert 'presets' not in package_data
@@ -76,7 +76,7 @@ def test_registry_metadata_matches_the_pypi_package():
     assert package['runtimeHint'] == 'uvx'
     assert package['transport'] == {'type': 'stdio'}
     secret = package['environmentVariables'][0]
-    assert secret['name'] == 'AUTOCLIP_API_KEY' and secret['isSecret'] is True
+    assert secret['name'] == 'AUTOVIDEOCLIP_API_KEY' and secret['isSecret'] is True
 
 
 @pytest.mark.stdlib_only
@@ -91,7 +91,7 @@ def test_docs_advertise_the_one_line_install_commands():
         ROOT / 'README-RU.md',
         ROOT / 'README-FR.md',
         ROOT / 'docs' / 'CLI_AND_MCP.md',
-        ROOT / 'skills' / 'autoclip' / 'SKILL.md',
+        ROOT / 'skills' / 'autovideoclip' / 'SKILL.md',
     ]
     for path in surfaces:
         text = path.read_text(encoding='utf-8')

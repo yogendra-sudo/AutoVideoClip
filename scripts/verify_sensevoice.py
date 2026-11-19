@@ -19,16 +19,16 @@ if args.resources:
     assert sys.dont_write_bytecode, 'Use -B to preserve signed resources'
     assert Path(sys.executable).resolve().is_relative_to(resources / 'python'), 'installed Python required'
     suffix = '.exe' if sys.platform == 'win32' else ''
-    os.environ.update(AUTOCLIP_FFMPEG_PATH=str(resources / 'ffmpeg' / ('ffmpeg' + suffix)),
-                      AUTOCLIP_FFPROBE_PATH=str(resources / 'ffmpeg' / ('ffprobe' + suffix)),
+    os.environ.update(AUTOVIDEOCLIP_FFMPEG_PATH=str(resources / 'ffmpeg' / ('ffmpeg' + suffix)),
+                      AUTOVIDEOCLIP_FFPROBE_PATH=str(resources / 'ffmpeg' / ('ffprobe' + suffix)),
                       PYTHONDONTWRITEBYTECODE='1')
     os.chdir(resources)
     sys.path.insert(0, str(resources))
 else:
     sys.path.insert(0, str(checkout))
-base = Path(tempfile.mkdtemp(prefix='autoclip-sensevoice-acceptance-'))
-os.environ['AUTOCLIP_DATA_DIR'] = str(base)
-os.environ['AUTOCLIP_APP_DIR'] = str(base)
+base = Path(tempfile.mkdtemp(prefix='autovideoclip-sensevoice-acceptance-'))
+os.environ['AUTOVIDEOCLIP_DATA_DIR'] = str(base)
+os.environ['AUTOVIDEOCLIP_APP_DIR'] = str(base)
 os.environ['SENTRY_DSN'] = ''
 (base / 'privacy.json').write_text('{"analytics":false,"crash_reports":false}', encoding='utf-8')
 if args.resources:

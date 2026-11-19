@@ -34,7 +34,7 @@ jobs:
       - name: Download installer from build run
         uses: actions/download-artifact@v4
         with:
-          name: autoclip-desktop-windows-x64
+          name: autovideoclip-desktop-windows-x64
           path: new
           run-id: ${{ inputs.build_run_id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -61,9 +61,9 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'OpenCV test runtime install failed' }
           & $python -m pip wheel --no-deps --wheel-dir wheel .
           if ($LASTEXITCODE -ne 0) { throw 'CLI/MCP wheel build failed' }
-          $wheel = Get-ChildItem wheel -Filter 'autoclip_mcp-*-py3-none-any.whl' | Select-Object -First 1
-          $env:AUTOCLIP_FFMPEG_PATH = Join-Path $resources 'ffmpeg\ffmpeg.exe'
-          $env:AUTOCLIP_FFPROBE_PATH = Join-Path $resources 'ffmpeg\ffprobe.exe'
+          $wheel = Get-ChildItem wheel -Filter 'autovideoclip_mcp-*-py3-none-any.whl' | Select-Object -First 1
+          $env:AUTOVIDEOCLIP_FFMPEG_PATH = Join-Path $resources 'ffmpeg\ffmpeg.exe'
+          $env:AUTOVIDEOCLIP_FFPROBE_PATH = Join-Path $resources 'ffmpeg\ffprobe.exe'
           & $python -B scripts/verify_python_wheel.py $wheel.FullName --opencv-dir $runtime --video backend/assets/example/source.mp4 --report installed-wheel-portrait.json
           if ($LASTEXITCODE -ne 0) { throw 'Installed wheel portrait/font smoke failed' }
 

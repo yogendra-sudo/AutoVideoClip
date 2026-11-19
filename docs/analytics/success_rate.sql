@@ -1,5 +1,5 @@
 -- 1.5.7 clip success rate (v4 definition). Terminal events are sent by the backend and synced after the dashboard merges. studio_generation_finished / studio_production_finished are sent by the backend
--- settle_attempt once each after it is persisted (runtime=desktop, analytics_environment is still AUTOCLIP_BUILD_ENVIRONMENT).
+-- settle_attempt once each after it is persisted (runtime=desktop, analytics_environment is still AUTOVIDEOCLIP_BUILD_ENVIRONMENT).
 -- The frontend no longer sends these two, to avoid double counting in the denominator. Both the numerator and denominator are these two terminal events; there is no separate start event to migrate.
 -- This file builds on #416, taking the last value per (attempt_sequence, leaf, ts) and outputs unknown_flows / Figure 6. The query itself is unchanged.
 -- Definitions are in docs/analytics/TRACKING_PLAN.md §6–§7. All queries share the same base / c definition.

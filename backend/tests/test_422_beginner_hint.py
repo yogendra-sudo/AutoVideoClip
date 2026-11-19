@@ -10,8 +10,8 @@ from fastapi.testclient import TestClient
 
 @pytest.fixture
 def client(tmp_path, monkeypatch):
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(tmp_path))
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
     monkeypatch.setenv("DATABASE_URL", "sqlite:///:memory:")
     from backend.app_factory import create_app
     with TestClient(create_app(mode="web"), raise_server_exceptions=False) as c:

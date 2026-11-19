@@ -23,8 +23,8 @@ class _RedisDown:
 
 @pytest.fixture
 def server_mode(monkeypatch):
-    monkeypatch.delenv("AUTOCLIP_DESKTOP_MODE", raising=False)
-    monkeypatch.delenv("AUTOCLIP_MODE", raising=False)
+    monkeypatch.delenv("AUTOVIDEOCLIP_DESKTOP_MODE", raising=False)
+    monkeypatch.delenv("AUTOVIDEOCLIP_MODE", raising=False)
 
 
 def test_submit_pipeline_succeeds_even_if_queue_depth_probe_fails(server_mode, monkeypatch):

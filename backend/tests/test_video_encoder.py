@@ -11,13 +11,13 @@ def test_bitrate_scales_with_the_frame_and_software_keeps_crf():
 
 
 def test_forcing_software_skips_the_probe(monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_VIDEO_ENCODER', 'x264')
+    monkeypatch.setenv('AUTOVIDEOCLIP_VIDEO_ENCODER', 'x264')
     monkeypatch.setattr(v, '_works', lambda *_: (_ for _ in ()).throw(AssertionError('no probe')))
     assert v.encoder() == 'libx264'
 
 
 def test_a_failed_hardware_encode_retries_in_software_and_sticks(monkeypatch):
-    monkeypatch.delenv('AUTOCLIP_VIDEO_ENCODER', raising=False)
+    monkeypatch.delenv('AUTOVIDEOCLIP_VIDEO_ENCODER', raising=False)
     monkeypatch.setattr(v, '_chosen', None)
     monkeypatch.setattr(v, '_broken', set())
     monkeypatch.setattr(v, '_candidates', lambda: ['h264_videotoolbox'])
@@ -41,7 +41,7 @@ def test_probe_covers_nvenc_qsv_amf_and_videotoolbox_then_libx264(monkeypatch):
     monkeypatch.setattr(sys, 'platform', 'linux')
     assert v._candidates() == ['h264_nvenc', 'h264_qsv', 'h264_amf']
 
-    monkeypatch.delenv('AUTOCLIP_VIDEO_ENCODER', raising=False)
+    monkeypatch.delenv('AUTOVIDEOCLIP_VIDEO_ENCODER', raising=False)
     monkeypatch.setattr(v, '_candidates', lambda: ['h264_nvenc', 'h264_qsv', 'h264_amf'])
     monkeypatch.setattr(v, '_chosen', None)
     monkeypatch.setattr(v, '_broken', set())
@@ -89,7 +89,7 @@ def test_a_probe_oserror_is_a_miss_and_software_args_stay_veryfast(monkeypatch):
 
 
 def test_each_hardware_encoder_falls_back_to_libx264_veryfast(monkeypatch):
-    monkeypatch.delenv('AUTOCLIP_VIDEO_ENCODER', raising=False)
+    monkeypatch.delenv('AUTOVIDEOCLIP_VIDEO_ENCODER', raising=False)
     for name in ('h264_nvenc', 'h264_qsv', 'h264_amf', 'h264_videotoolbox'):
         monkeypatch.setattr(v, '_chosen', None)
         monkeypatch.setattr(v, '_broken', set())
@@ -108,7 +108,7 @@ def test_each_hardware_encoder_falls_back_to_libx264_veryfast(monkeypatch):
 
 def test_a_stalled_hardware_encoder_falls_back_and_a_bad_input_does_not_disable_it(monkeypatch):
     from backend.services import video_encoder as v
-    monkeypatch.delenv('AUTOCLIP_VIDEO_ENCODER', raising=False)
+    monkeypatch.delenv('AUTOVIDEOCLIP_VIDEO_ENCODER', raising=False)
     monkeypatch.setattr(v, '_chosen', None)
     monkeypatch.setattr(v, '_broken', set())
     monkeypatch.setattr(v, '_candidates', lambda: ['h264_videotoolbox'])

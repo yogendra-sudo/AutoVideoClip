@@ -15,8 +15,8 @@ from backend.services.studio import jobs, store
 
 @pytest.fixture
 def project(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     (store.directory('visual') / 'metadata').mkdir(parents=True)
     engine = create_engine('sqlite:///:memory:')
     Base.metadata.create_all(engine)

@@ -19,7 +19,7 @@
 ### 已验证
 
 ```text
-/Users/zhoukk/autoclip/venv/bin/pytest \
+/Users/zhoukk/autovideoclip/venv/bin/pytest \
   backend/tests/test_platform_strategy.py \
   backend/tests/test_publish_export.py \
   backend/tests/test_upload_post_publisher.py \
@@ -29,7 +29,7 @@
 ```
 
 ```text
-/Users/zhoukk/autoclip/venv/bin/ruff check \
+/Users/zhoukk/autovideoclip/venv/bin/ruff check \
   backend/services/platform_strategy.py \
   backend/tests/test_platform_strategy.py
 
@@ -68,7 +68,7 @@ Studio v2 数据契约与自动编排：导入选择平台后，自动完成理�
 ### 已验证
 
 ```text
-/Users/zhoukk/autoclip/venv/bin/pytest \
+/Users/zhoukk/autovideoclip/venv/bin/pytest \
   backend/tests/test_smart_import.py \
   backend/tests/test_studio.py \
   backend/tests/test_platform_strategy.py -q
@@ -104,7 +104,7 @@ Studio v2 数据契约与自动编排：导入选择平台后，自动完成理�
 ### 已验证
 
 ```text
-/Users/zhoukk/autoclip/venv/bin/pytest \
+/Users/zhoukk/autovideoclip/venv/bin/pytest \
   backend/tests/test_smart_import.py \
   backend/tests/test_studio.py \
   backend/tests/test_platform_strategy.py -q
@@ -164,7 +164,7 @@ backend: 731 passed, 1 skipped
 
 - 新增 `backend/services/output_branding.py`，在内容视频最终完成后追加一次 1 秒 `Made with AutoVideoClip` 片尾；不叠常驻水印，不在每个镜头重复覆盖。
 - 自动平台 variant 的 `branding.outro_enabled` 已传入 Studio render job；旧手动 Studio 导出默认保持不带片尾，避免改变历史行为。
-- `ExportRequest.brand_outro` 让 legacy/publish 导出也使用相同 finalization；输出缓存文件名包含 `autoclip-outro-v1`，带/不带片尾不会错误复用。
+- `ExportRequest.brand_outro` 让 legacy/publish 导出也使用相同 finalization；输出缓存文件名包含 `autovideoclip-outro-v1`，带/不带片尾不会错误复用。
 - 输出合成使用独立 `.branding.part.mp4` 临时文件和原子替换，避免覆盖 Studio 内容渲染的 `.part.mp4`。
 - 片尾关闭时只原子移动内容文件，不增加时长；带片尾时保留同画幅、视频与音频 stream，并增加约 1 秒。
 

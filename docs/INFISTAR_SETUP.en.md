@@ -17,7 +17,7 @@ Register through the [AutoVideoClip referral link](https://www.infistar.cc/regis
 3. Paste the key. The model list fills in with the models available to your account; pick one.
 4. Test the connection and save.
 
-CLI / MCP: `autoclip run video.mp4 --provider infistar --api-key sk-… --model <model id>`, or set `INFISTAR_API_KEY`.
+CLI / MCP: `autovideoclip run video.mp4 --provider infistar --api-key sk-… --model <model id>`, or set `INFISTAR_API_KEY`.
 
 ### Older versions: configure as an OpenAI-compatible API
 

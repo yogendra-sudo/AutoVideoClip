@@ -21,8 +21,8 @@ def main():
     args=p.parse_args();out=args.output;out.mkdir(parents=True,exist_ok=True)
     ref=Image.open(args.reference)
     shutil.copy2(args.reference,out/'design-reference.png')
-    with tempfile.TemporaryDirectory(prefix='autoclip-six-review-') as data:
-        os.environ['AUTOCLIP_DATA_DIR']=data
+    with tempfile.TemporaryDirectory(prefix='autovideoclip-six-review-') as data:
+        os.environ['AUTOVIDEOCLIP_DATA_DIR']=data
         from backend.services.studio.models import Draft,Scene
         from backend.services.studio.render import render_draft
         from backend.services.studio.store import directory

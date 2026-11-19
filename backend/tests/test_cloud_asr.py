@@ -115,7 +115,7 @@ def test_adapter_result_and_run_content_round_trip_upstream(monkeypatch, tmp_pat
 def _real_store_jobs(monkeypatch, state, tmp_path):
     """the REAL studio store (atomic write to metadata/studio.json + analysis_history summaries)."""
     from backend.services.studio import store
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path / 'data'))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path / 'data'))
     store.directory('p').mkdir(parents=True, exist_ok=True)
     state['analysis']['instance'] = store.INSTANCE  # a live run of this process (not a restart leftover)
     store.write('p', {'drafts': [], 'events': [], 'jobs': [], 'output_variants': [], **state})

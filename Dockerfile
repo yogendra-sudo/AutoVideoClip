@@ -65,7 +65,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONPATH=/app
 
 # Create a non-root user
-RUN groupadd -r autoclip && useradd -r -g autoclip autoclip
+RUN groupadd -r autovideoclip && useradd -r -g autovideoclip autovideoclip
 
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y \
@@ -93,13 +93,13 @@ COPY docker-entrypoint.sh ./
 RUN mkdir -p data/projects data/uploads data/temp data/output logs
 
 # Set permissions
-RUN chown -R autoclip:autoclip /app
+RUN chown -R autovideoclip:autovideoclip /app
 RUN chmod +x *.sh
 RUN chmod +x docker-entrypoint.sh
 RUN chmod -R 755 data logs
 
 # Switch to the non-root user
-USER autoclip
+USER autovideoclip
 
 # Expose ports
 EXPOSE 8000 3000

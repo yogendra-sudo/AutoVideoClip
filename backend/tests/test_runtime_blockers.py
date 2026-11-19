@@ -101,8 +101,8 @@ PLAIN_SECRET = "plain-secret-" + ("Z" * 48)
 
 @pytest.fixture
 def client(tmp_path, monkeypatch):
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(tmp_path))
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
     monkeypatch.setenv("DATABASE_URL", "sqlite:///:memory:")
     from backend.app_factory import create_app
     with TestClient(create_app(mode="web"), raise_server_exceptions=False) as c:
@@ -205,7 +205,7 @@ def test_d6_error_text_reads_detail_and_envelope():
 # ---------- D7: auto + text readiness ----------
 
 def test_d7_auto_text_readiness_is_optional_not_blocked(tmp_path, monkeypatch):
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(tmp_path))
     binary = tmp_path / "ffmpeg"
     binary.write_bytes(b"ffmpeg")
     monkeypatch.setattr("backend.utils.ffmpeg_utils.get_ffmpeg_path", lambda: str(binary))
@@ -467,8 +467,8 @@ def test_e5_desktop_main_server_start_redacts_uvicorn_logs(tmp_path, monkeypatch
 
 
 def test_e5_python_m_backend_main_redacts_uvicorn_logs(tmp_path, monkeypatch):
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(tmp_path))
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
     monkeypatch.setenv("DATABASE_URL", "sqlite:///:memory:")
     import runpy
     import uvicorn

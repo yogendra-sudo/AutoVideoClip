@@ -12,7 +12,7 @@ from backend.core import llm_telemetry as schema
 
 @pytest.fixture
 def unavailable_catalog(monkeypatch, tmp_path):
-    monkeypatch.setenv('AUTOCLIP_EVENT_CATALOG', str(tmp_path / 'missing.json'))
+    monkeypatch.setenv('AUTOVIDEOCLIP_EVENT_CATALOG', str(tmp_path / 'missing.json'))
     event_catalog.load_catalog.cache_clear()
     yield
     event_catalog.load_catalog.cache_clear()
@@ -22,9 +22,9 @@ def test_platform_detection_never_loads_catalog(monkeypatch):
     def forbidden():
         raise AssertionError('platform detection must not load a catalog')
     monkeypatch.setattr(event_catalog, 'load_catalog', forbidden)
-    monkeypatch.setenv('AUTOCLIP_NATIVE_OS', 'darwin')
-    monkeypatch.setenv('AUTOCLIP_NATIVE_ARCH', 'arm64')
-    monkeypatch.setenv('AUTOCLIP_BUILD_ENVIRONMENT', 'validation')
+    monkeypatch.setenv('AUTOVIDEOCLIP_NATIVE_OS', 'darwin')
+    monkeypatch.setenv('AUTOVIDEOCLIP_NATIVE_ARCH', 'arm64')
+    monkeypatch.setenv('AUTOVIDEOCLIP_BUILD_ENVIRONMENT', 'validation')
     assert event_catalog.detect_os() == 'macos'
     assert event_catalog.detect_arch() == 'aarch64'
     assert event_catalog.envelope_properties()['analytics_environment'] == 'validation'
@@ -44,7 +44,7 @@ def test_catalog_prefers_packaged_resource(tmp_path, monkeypatch):
     packaged = module.with_suffix('.json')
     packaged.write_text('{"events":{"packaged_event":{}}}')
     monkeypatch.setattr(event_catalog, '__file__', str(module))
-    monkeypatch.delenv('AUTOCLIP_EVENT_CATALOG', raising=False)
+    monkeypatch.delenv('AUTOVIDEOCLIP_EVENT_CATALOG', raising=False)
     event_catalog.load_catalog.cache_clear()
     try:
         assert event_catalog.catalog_path() == packaged
@@ -54,8 +54,8 @@ def test_catalog_prefers_packaged_resource(tmp_path, monkeypatch):
 
 
 def test_missing_catalog_does_not_break_envelope_or_validation(unavailable_catalog, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_NATIVE_OS', 'darwin')
-    monkeypatch.setenv('AUTOCLIP_NATIVE_ARCH', 'arm64')
+    monkeypatch.setenv('AUTOVIDEOCLIP_NATIVE_OS', 'darwin')
+    monkeypatch.setenv('AUTOVIDEOCLIP_NATIVE_ARCH', 'arm64')
     assert event_catalog.load_catalog() == {}
     props = event_catalog.envelope_properties()
     assert props['os'] == 'macos' and props['arch'] == 'aarch64'
@@ -66,13 +66,13 @@ def test_missing_catalog_does_not_break_envelope_or_validation(unavailable_catal
 def test_sentry_initializes_without_catalog(unavailable_catalog, monkeypatch, tmp_path, caplog):
     import sentry_sdk
     from backend.core import sentry_setup
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     monkeypatch.setenv('SENTRY_DSN', 'https://public@example.invalid/0')
     # Missing catalog must not break the packaged desktop path. This process is pytest
     # inside a checkout, so the two refusals are stubbed; the real refusals are in
     # test_sentry_volume.
-    monkeypatch.setenv('AUTOCLIP_APP_VERSION', '1.5.7')
-    monkeypatch.setenv('AUTOCLIP_BUILD_ENVIRONMENT', 'production')
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_VERSION', '1.5.7')
+    monkeypatch.setenv('AUTOVIDEOCLIP_BUILD_ENVIRONMENT', 'production')
     monkeypatch.setattr(sentry_setup, '_under_pytest', lambda: False)
     monkeypatch.setattr(sentry_setup, '_running_from_source_tree', lambda: False)
     monkeypatch.setattr(sentry_setup, '_initialized', False)
@@ -87,7 +87,7 @@ def test_sentry_initializes_without_catalog(unavailable_catalog, monkeypatch, tm
 def test_invalid_catalog_is_optional(tmp_path, monkeypatch, contents):
     path = tmp_path / 'catalog.json'
     path.write_bytes(contents.encode('utf-8', errors='surrogateescape'))
-    monkeypatch.setenv('AUTOCLIP_EVENT_CATALOG', str(path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_EVENT_CATALOG', str(path))
     event_catalog.load_catalog.cache_clear()
     try:
         assert event_catalog.load_catalog() == {}
@@ -97,7 +97,7 @@ def test_invalid_catalog_is_optional(tmp_path, monkeypatch, contents):
 
 
 def test_unreadable_catalog_is_optional(tmp_path, monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_EVENT_CATALOG', str(tmp_path / 'catalog.json'))
+    monkeypatch.setenv('AUTOVIDEOCLIP_EVENT_CATALOG', str(tmp_path / 'catalog.json'))
     def denied(*args, **kwargs):
         raise PermissionError('unreadable')
     monkeypatch.setattr(Path, 'read_text', denied)
@@ -179,10 +179,10 @@ def test_producers_are_all_registered():
 
 
 def test_emitted_line_a_events_match_catalog(monkeypatch, tmp_path):
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(tmp_path))
-    monkeypatch.setenv("AUTOCLIP_POSTHOG_KEY", "phc_test")
-    monkeypatch.setenv("AUTOCLIP_APP_VERSION", "1.5.7")
-    monkeypatch.setenv("AUTOCLIP_BUILD_ENVIRONMENT", "validation")
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(tmp_path))
+    monkeypatch.setenv("AUTOVIDEOCLIP_POSTHOG_KEY", "phc_test")
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_VERSION", "1.5.7")
+    monkeypatch.setenv("AUTOVIDEOCLIP_BUILD_ENVIRONMENT", "validation")
     monkeypatch.delenv("VITE_PUBLIC_POSTHOG_KEY", raising=False)
     (tmp_path / "privacy.json").write_text('{"analytics":true}', encoding="utf-8")
     (tmp_path / "analytics.json").write_text(
@@ -235,14 +235,14 @@ def test_os_aliases_normalize_to_canonical_names():
     ('AMD64', 'x86_64'), ('x86_64', 'x86_64'), ('x64', 'x86_64'), ('private path', 'unknown')])
 def test_envelope_normalizes_architecture(monkeypatch, machine, expected):
     import platform
-    monkeypatch.delenv('AUTOCLIP_NATIVE_ARCH', raising=False)
+    monkeypatch.delenv('AUTOVIDEOCLIP_NATIVE_ARCH', raising=False)
     monkeypatch.setattr(platform, 'machine', lambda: machine)
     assert event_catalog.envelope_properties()['arch'] == expected
 
 
 def test_native_shell_facts_override_python_runtime(monkeypatch):
-    monkeypatch.setenv('AUTOCLIP_NATIVE_ARCH', 'ARM64')
-    monkeypatch.setenv('AUTOCLIP_NATIVE_OS', 'darwin')
+    monkeypatch.setenv('AUTOVIDEOCLIP_NATIVE_ARCH', 'ARM64')
+    monkeypatch.setenv('AUTOVIDEOCLIP_NATIVE_OS', 'darwin')
     props = event_catalog.envelope_properties()
     assert props['arch'] == 'aarch64'
     assert props['os'] == 'macos'

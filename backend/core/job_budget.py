@@ -44,11 +44,11 @@ class _Budget:
         return self.seconds - (end - self.started)
 
 
-_current: ContextVar[Optional[_Budget]] = ContextVar("autoclip_clip_job_budget", default=None)
+_current: ContextVar[Optional[_Budget]] = ContextVar("autovideoclip_clip_job_budget", default=None)
 
 
 def clip_job_budget_seconds() -> float:
-    raw = os.getenv("AUTOCLIP_CLIP_JOB_BUDGET_SEC")
+    raw = os.getenv("AUTOVIDEOCLIP_CLIP_JOB_BUDGET_SEC")
     if not raw:
         return float(CLIP_JOB_BUDGET_SEC)
     try:

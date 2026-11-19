@@ -4,7 +4,7 @@ opencode（https://opencode.ai）的本地 MCP server 写在配置文件的 mcp 
 
     {
       "mcp": {
-        "autoclip": { "type": "local", "command": ["/abs/path/autoclip", "mcp"], "enabled": true }
+        "autovideoclip": { "type": "local", "command": ["/abs/path/autovideoclip", "mcp"], "enabled": true }
       }
     }
 
@@ -13,7 +13,7 @@ opencode（https://opencode.ai）的本地 MCP server 写在配置文件的 mcp 
 - 同时存在 `.json` 与 `.jsonc` 时 opencode 先读 json 再读 jsonc（后者覆盖同名键）：
   只有 jsonc 时直接写它；两份都有且 jsonc 里已有 mcp 段时拒绝写入（避免“写入成功但实际加载旧配置”）
 
-对应 CLI：`autoclip mcp install opencode`（`--scope project` 写项目配置、`--print` 只打印片段）。
+对应 CLI：`autovideoclip mcp install opencode`（`--scope project` 写项目配置、`--print` 只打印片段）。
 本模块只做配置读写与命令探测，不 import 后端重依赖，方便 CLI 与测试单独使用。
 """
 from __future__ import annotations
@@ -26,17 +26,17 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 OPENCODE_SCHEMA = "https://opencode.ai/config.json"
-DEFAULT_SERVER_NAME = "autoclip"
+DEFAULT_SERVER_NAME = "autovideoclip"
 
 
 def detect_server() -> Dict[str, Any]:
-    """探测用什么命令启动 MCP server：PATH 里的 autoclip → autoclip-mcp → python -m backend.mcp_server。"""
-    exe = shutil.which("autoclip")
+    """探测用什么命令启动 MCP server：PATH 里的 autovideoclip → autovideoclip-mcp → python -m backend.mcp_server。"""
+    exe = shutil.which("autovideoclip")
     if exe:
-        return {"command": [exe, "mcp"], "cwd": None, "environment": None, "kind": "autoclip"}
-    exe = shutil.which("autoclip-mcp")
+        return {"command": [exe, "mcp"], "cwd": None, "environment": None, "kind": "autovideoclip"}
+    exe = shutil.which("autovideoclip-mcp")
     if exe:
-        return {"command": [exe], "cwd": None, "environment": None, "kind": "autoclip-mcp"}
+        return {"command": [exe], "cwd": None, "environment": None, "kind": "autovideoclip-mcp"}
     repo_root = Path(__file__).resolve().parents[2]
     env = {"PYTHONPATH": str(repo_root)}
     cwd = str(repo_root) if (repo_root / "backend" / "mcp_server.py").is_file() else None
@@ -62,7 +62,7 @@ def opencode_config_path(scope: str = "global", project_dir: Optional[Path] = No
 
 
 def build_entry(server: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-    """opencode `mcp` 段里的 autoclip 条目（type=local）。"""
+    """opencode `mcp` 段里的 autovideoclip 条目（type=local）。"""
     server = server or detect_server()
     entry: Dict[str, Any] = {"type": "local", "command": list(server["command"]), "enabled": True}
     if server.get("cwd"):
@@ -174,7 +174,7 @@ def install_opencode(
     force: bool = False,
     discover_jsonc: bool = True,
 ) -> Dict[str, Any]:
-    """把 autoclip 写进 opencode 配置（合并写入：不动其它键，重装也保留同名条目里的自定义字段）。
+    """把 autovideoclip 写进 opencode 配置（合并写入：不动其它键，重装也保留同名条目里的自定义字段）。
 
     返回报告：ok / action / path / entry / snippet / backup / warnings / error / hint。
     action 取值 created / updated / unchanged / manual；manual = 没有写文件，
@@ -289,7 +289,7 @@ def install_opencode(
     if isinstance(existing_entry, dict) and existing_entry.get("enabled") is False:
         report["warnings"].append("原有条目 enabled=false，opencode 不会加载它；本次未改动该字段")
     if server.get("kind") == "module":
-        report["warnings"].append("PATH 里没有 autoclip 命令，已回退到 python -m backend.mcp_server（依赖 cwd / PYTHONPATH）")
+        report["warnings"].append("PATH 里没有 autovideoclip 命令，已回退到 python -m backend.mcp_server（依赖 cwd / PYTHONPATH）")
 
     report.update(ok=True, action="updated" if exists else "created", backup=str(backup) if backup else None)
     return report

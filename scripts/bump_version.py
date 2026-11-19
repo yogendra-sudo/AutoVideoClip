@@ -9,9 +9,9 @@ Update release versions and roll the changelog for weekly releases.
 Files updated:
   src-tauri/tauri.conf.json  "version"
   src-tauri/Cargo.toml       version = "..." ([package] section)
-  src-tauri/Cargo.lock       autoclip-desktop version
+  src-tauri/Cargo.lock       autovideoclip-desktop version
   pyproject.toml             version = "..." ([project] section)
-  backend/core/desktop_config.py  AUTOCLIP_APP_VERSION fallback
+  backend/core/desktop_config.py  AUTOVIDEOCLIP_APP_VERSION fallback
   backend/__init__.py        CLI / MCP __version__
   CHANGELOG.md               Current unreleased section, then a new empty unreleased section; compare links at the bottom
 
@@ -45,7 +45,7 @@ PACKAGE_INIT = ROOT / "backend" / "__init__.py"
 CHANGELOG = ROOT / "CHANGELOG.md"
 
 SEMVER = re.compile(r"^\d+\.\d+\.\d+$")
-LOCK_VERSION = re.compile(r'(^name = "autoclip-desktop"\nversion = ")[^"]+("$)', re.MULTILINE)
+LOCK_VERSION = re.compile(r'(^name = "autovideoclip-desktop"\nversion = ")[^"]+("$)', re.MULTILINE)
 PYPROJECT_KEY = "pyproject.toml"
 UNRELEASED_HEADER = "## [" + "\u672a\u53d1\u5e03" + "]"
 
@@ -82,7 +82,7 @@ def current_versions() -> dict[str, str]:
     m = re.search(r'^\[project\][^\[]*?^version\s*=\s*"([^"]+)"', _read(PYPROJECT), re.MULTILINE | re.DOTALL)
     out["pyproject.toml"] = m.group(1) if m else "?"
 
-    m = re.search(r'os\.getenv\("AUTOCLIP_APP_VERSION",\s*"([^"]+)"\)', _read(DESKTOP_CONFIG))
+    m = re.search(r'os\.getenv\("AUTOVIDEOCLIP_APP_VERSION",\s*"([^"]+)"\)', _read(DESKTOP_CONFIG))
     out["desktop_config.py"] = m.group(1) if m else "?"
     m = re.search(r'^__version__\s*=\s*"([^"]+)"', _read(PACKAGE_INIT), re.MULTILINE)
     out["backend/__init__.py"] = m.group(1) if m else "?"
@@ -107,14 +107,14 @@ def set_version(new: str) -> None:
     _write(CARGO_TOML, _sub_section(_read(CARGO_TOML), "package"))
     locked, n = LOCK_VERSION.subn(rf'\g<1>{new}\g<2>', _read(CARGO_LOCK), count=1)
     if n != 1:
-        raise SystemExit("Could not find the autoclip-desktop version in Cargo.lock")
+        raise SystemExit("Could not find the autovideoclip-desktop version in Cargo.lock")
     _write(CARGO_LOCK, locked)
     _write(PYPROJECT, _sub_section(_read(PYPROJECT), "project"))
 
     dc = _read(DESKTOP_CONFIG)
-    dc_new, n = re.subn(r'(os\.getenv\("AUTOCLIP_APP_VERSION",\s*")[^"]+(")', rf"\g<1>{new}\g<2>", dc, count=1)
+    dc_new, n = re.subn(r'(os\.getenv\("AUTOVIDEOCLIP_APP_VERSION",\s*")[^"]+(")', rf"\g<1>{new}\g<2>", dc, count=1)
     if n != 1:
-        raise SystemExit("Could not find the AUTOCLIP_APP_VERSION fallback in desktop_config.py")
+        raise SystemExit("Could not find the AUTOVIDEOCLIP_APP_VERSION fallback in desktop_config.py")
     _write(DESKTOP_CONFIG, dc_new)
     package, n = re.subn(r'(^__version__\s*=\s*")[^"]+("$)', rf"\g<1>{new}\g<2>", _read(PACKAGE_INIT), count=1, flags=re.MULTILINE)
     if n != 1:

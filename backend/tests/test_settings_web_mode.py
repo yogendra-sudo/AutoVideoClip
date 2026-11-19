@@ -17,7 +17,7 @@ from backend.core.desktop_config import DesktopPaths
 @pytest.fixture
 def web_mode(monkeypatch, tmp_path):
     for name in (
-        "AUTOCLIP_DESKTOP_MODE", "AUTOCLIP_MODE", "TAURI_PLATFORM",
+        "AUTOVIDEOCLIP_DESKTOP_MODE", "AUTOVIDEOCLIP_MODE", "TAURI_PLATFORM",
         "LLM_PROVIDER", "API_MODEL_NAME", "LLM_MODEL", "OPENAI_BASE_URL",
         "API_DASHSCOPE_API_KEY", "DASHSCOPE_API_KEY", "API_OPENAI_API_KEY", "OPENAI_API_KEY",
         "API_GEMINI_API_KEY", "GEMINI_API_KEY", "API_SILICONFLOW_API_KEY", "SILICONFLOW_API_KEY",
@@ -32,7 +32,7 @@ def web_mode(monkeypatch, tmp_path):
         data_dir=tmp_path,
         cache_dir=tmp_path / "cache",
         temp_dir=tmp_path / "temp",
-        database_url=f"sqlite:///{tmp_path / 'autoclip.db'}",
+        database_url=f"sqlite:///{tmp_path / 'autovideoclip.db'}",
     ))
 
     # LLM 管理器读同一份 settings.json，且不碰真实用户目录

@@ -12,8 +12,8 @@ EVENT = {'user': {'id': ID}, 'exception': {'values': [{'type': 'RuntimeError', '
 
 @pytest.fixture
 def scope(monkeypatch, tmp_path):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_ANONYMOUS_DEVICE_ID', ID)
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_ANONYMOUS_DEVICE_ID', ID)
     monkeypatch.setattr(sentry_setup, '_initialized', True)
     s = sentry_sdk.get_global_scope()
     previous = s._user

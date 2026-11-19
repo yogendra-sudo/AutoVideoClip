@@ -415,7 +415,7 @@ async def test_speech_service(request: TestSpeechServiceRequest):
 
 # QA switch for on-device acceptance of (download request 500 -> failed, retry, no resend).
 # Off unless this exact env var is "1" when the app starts; release builds never set it (locked by a test).
-QA_FAIL_MODEL_DOWNLOAD_ENV = "AUTOCLIP_QA_FAIL_MODEL_DOWNLOAD"
+QA_FAIL_MODEL_DOWNLOAD_ENV = "AUTOVIDEOCLIP_QA_FAIL_MODEL_DOWNLOAD"
 
 
 QA_MOCK_DOWNLOAD_DETAIL = "qa_mock_model_download_500"

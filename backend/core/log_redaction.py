@@ -58,7 +58,7 @@ class RedactingFilter(logging.Filter):
     _formatter = logging.Formatter()
 
     def filter(self, record: logging.LogRecord) -> bool:
-        if getattr(record, "_autoclip_redacted", False):
+        if getattr(record, "_autovideoclip_redacted", False):
             return True
         try:
             message = record.getMessage()
@@ -72,7 +72,7 @@ class RedactingFilter(logging.Filter):
             record.exc_text = redact_text(record.exc_text)
         if record.stack_info:
             record.stack_info = redact_text(record.stack_info)
-        record._autoclip_redacted = True
+        record._autovideoclip_redacted = True
         return True
 
 

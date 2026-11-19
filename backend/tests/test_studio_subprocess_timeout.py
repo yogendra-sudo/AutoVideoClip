@@ -21,7 +21,7 @@ def process_timeout():
 def test_real_process_timeout_retains_render_tag_and_scrubs_command(process_timeout, monkeypatch, tmp_path):
     assert sentry_setup.studio_error_code(process_timeout) == 'timeout'
     import sentry_sdk
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     (tmp_path / 'privacy.json').write_text('{"crash_reports":true}')
     monkeypatch.setattr(sentry_setup, '_initialized', True)
     captured = []
@@ -52,8 +52,8 @@ def test_unrelated_errors_are_not_reclassified_by_message(error, expected):
 
 
 def test_render_timeout_settles_preserves_completed_output_and_recovers(process_timeout, monkeypatch, tmp_path):
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
     (tmp_path / 'privacy.json').write_text('{"crash_reports":false}')
     root = store.directory('process-timeout')
     (root / 'raw').mkdir(parents=True)

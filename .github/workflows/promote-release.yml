@@ -118,7 +118,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       # Notify the website repository to update its version and download links
-      # (autoclip_intro/.github/workflows/sync-release.yml). If WEBSITE_DISPATCH_TOKEN
+      # (autovideoclip_intro/.github/workflows/sync-release.yml). If WEBSITE_DISPATCH_TOKEN
       # is not set, skip this step; the website's daily cron will catch up.
       # See scripts/website/README.md.
       - name: Notify website (repository_dispatch)
@@ -129,5 +129,5 @@ jobs:
             -H "Authorization: Bearer $WEBSITE_DISPATCH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/repos/yogendra-sudo/AutoVideoClip_intro/dispatches \
-            -d "{\"event_type\":\"autoclip-release\",\"client_payload\":{\"tag\":\"$current\"}}"
+            -d "{\"event_type\":\"autovideoclip-release\",\"client_payload\":{\"tag\":\"$current\"}}"
           echo "Notified the website to sync to $current"

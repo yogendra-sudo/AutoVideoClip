@@ -451,7 +451,7 @@ async def put_privacy(body: PrivacySettings):
     try:
         write_privacy(crash_reports=body.crash_reports)
         if body.crash_reports:
-            init_sentry(os.getenv("AUTOCLIP_MODE", "web"))
+            init_sentry(os.getenv("AUTOVIDEOCLIP_MODE", "web"))
     except RuntimeError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     return PrivacySettings(crash_reports=crash_reports_enabled())
@@ -463,8 +463,8 @@ async def check_desktop_mode_endpoint():
     return {
         "is_desktop_mode": is_desktop_mode(),
         "environment": {
-            "AUTOCLIP_DESKTOP_MODE": os.getenv("AUTOCLIP_DESKTOP_MODE"),
-            "AUTOCLIP_MODE": os.getenv("AUTOCLIP_MODE"),
+            "AUTOVIDEOCLIP_DESKTOP_MODE": os.getenv("AUTOVIDEOCLIP_DESKTOP_MODE"),
+            "AUTOVIDEOCLIP_MODE": os.getenv("AUTOVIDEOCLIP_MODE"),
             "TAURI_PLATFORM": os.getenv("TAURI_PLATFORM"),
         }
     }
@@ -841,7 +841,7 @@ async def export_settings():
         settings = await get_settings()
         
         # Create export file
-        export_file = config.paths.data_dir / "autoclip-settings-export.json"
+        export_file = config.paths.data_dir / "autovideoclip-settings-export.json"
         with open(export_file, 'w', encoding='utf-8') as f:
             json.dump(settings.dict(), f, indent=2, ensure_ascii=False)
         

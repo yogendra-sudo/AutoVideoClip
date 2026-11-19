@@ -5,28 +5,28 @@ point opencode at a video path — it will call AutoVideoClip to clip highlights
 
 | Goal | How |
 |---|---|
-| One-command setup (recommended) | `autoclip mcp install opencode` |
-| Project-only setup | `autoclip mcp install opencode --scope project --dir <dir>` |
-| Print the snippet only | `autoclip mcp install opencode --print` |
+| One-command setup (recommended) | `autovideoclip mcp install opencode` |
+| Project-only setup | `autovideoclip mcp install opencode --scope project --dir <dir>` |
+| Print the snippet only | `autovideoclip mcp install opencode --print` |
 | Rewrite a commented (JSONC) config | add `--force` (backup written first) |
 
 ## 1. Prerequisites
 
 - AutoVideoClip CLI installed (`pip install -r requirements.txt && pip install -e .`) — see the CLI / MCP guide;
   running from the repo (`python -m backend.mcp_server`) also works
-- `ffmpeg` on PATH and a working model: `autoclip doctor`
+- `ffmpeg` on PATH and a working model: `autovideoclip doctor`
 - opencode installed (`opencode --version`)
 
 ## 2. One-command setup
 
 ```bash
-autoclip mcp install opencode
+autovideoclip mcp install opencode
 # ✓ wrote ~/.config/opencode/opencode.json (Windows: %USERPROFILE%\.config\opencode\opencode.json)
 ```
 
-The command detects the launch command (`autoclip` → `autoclip-mcp` → `python -m backend.mcp_server`),
-merges `mcp.autoclip` into your config without touching other keys, and backs the old file up as
-`opencode.json.bak`. Re-running keeps your custom fields on an existing `autoclip` entry while updating
+The command detects the launch command (`autovideoclip` → `autovideoclip-mcp` → `python -m backend.mcp_server`),
+merges `mcp.autovideoclip` into your config without touching other keys, and backs the old file up as
+`opencode.json.bak`. Re-running keeps your custom fields on an existing `autovideoclip` entry while updating
 `type` / `command`. The module fallback refreshes `cwd` and prepends the current installation to `PYTHONPATH`,
 preserving other module paths, environment variables, `timeout`, and `enabled`.
 If `opencode.jsonc` exists it becomes the target; when both `opencode.json` and `opencode.jsonc` exist
@@ -50,16 +50,16 @@ a config that would not take effect. Commented (JSONC) configs are left untouche
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
-    "autoclip": {
+    "autovideoclip": {
       "type": "local",
-      "command": ["C:\\Users\\<you>\\autoclip\\venv\\Scripts\\autoclip.exe", "mcp"],
+      "command": ["C:\\Users\\<you>\\autovideoclip\\venv\\Scripts\\autovideoclip.exe", "mcp"],
       "enabled": true
     }
   }
 }
 ```
 
-- macOS / Linux: `"command": ["/path/to/autoclip/venv/bin/autoclip", "mcp"]`
+- macOS / Linux: `"command": ["/path/to/autovideoclip/venv/bin/autovideoclip", "mcp"]`
 - Running from the repo without installing:
   `"command": ["<python>", "-m", "backend.mcp_server"], "cwd": "<repo>", "environment": {"PYTHONPATH": "<repo>"}`
 
@@ -80,15 +80,15 @@ and reports clips by score, time range, and title. Output shares the same data d
 
 ## 5. Agent skill (optional)
 
-Copy `skills/autoclip/` to `~/.config/opencode/skills/autoclip/` (or `.opencode/skills/` inside a project).
+Copy `skills/autovideoclip/` to `~/.config/opencode/skills/autovideoclip/` (or `.opencode/skills/` inside a project).
 opencode also reads `~/.claude/skills/`, so Claude Code installs are picked up automatically.
 
 ## 6. Troubleshooting
 
 | Symptom | Fix |
 |---|---|
-| No `autoclip` tools in opencode | Run with `--print`, verify the target path, keep only one `opencode.json` / `.jsonc`, start a new session |
-| Tools listed but calls fail | Run `autoclip doctor` (ffmpeg / Whisper / model key) |
+| No `autovideoclip` tools in opencode | Run with `--print`, verify the target path, keep only one `opencode.json` / `.jsonc`, start a new session |
+| Tools listed but calls fail | Run `autovideoclip doctor` (ffmpeg / Whisper / model key) |
 | Zero clips | Retry with `min_score=0.5`; pure music / no dialogue has no highlights |
 | First run is slow | Local Whisper transcription downloads a model; pass an SRT to skip it |
 

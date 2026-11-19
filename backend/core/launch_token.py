@@ -8,10 +8,10 @@ from __future__ import annotations
 
 import os
 
-TOKEN_ENV = 'AUTOCLIP_SHUTDOWN_TOKEN'
+TOKEN_ENV = 'AUTOVIDEOCLIP_SHUTDOWN_TOKEN'
 # per-launch instance id chosen by the shell (not a secret) so it can leave an "intent not
 # acknowledged" record for exactly this process; popped too so child Python processes get their own.
-INSTANCE_ENV = 'AUTOCLIP_INSTANCE_ID'
+INSTANCE_ENV = 'AUTOVIDEOCLIP_INSTANCE_ID'
 _token = ''
 _instance = ''
 

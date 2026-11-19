@@ -65,7 +65,7 @@ pytest==9.1.1
 pytest-cov==7.1.0
 pytest-mock==3.15.1
 
-# MCP server（backend/mcp_server.py，`autoclip mcp`）
+# MCP server（backend/mcp_server.py，`autovideoclip mcp`）
 mcp==2.1.1
 
 # Crash reporting (no-op when DSN is not configured)

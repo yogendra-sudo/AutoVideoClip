@@ -107,5 +107,5 @@ def test_rate_limits_and_server_errors_are_retried_but_auth_errors_are_not(monke
     assert not ct._retryable(status(401)) and not ct._retryable(status(400))
     assert not ct._retryable(status(429, b'{"error":{"message":"Insufficient balance"}}'))
     for value, expected in (('0', 1), ('abc', 8), ('4', 4)):
-        monkeypatch.setenv('AUTOCLIP_ASR_CONCURRENCY', value)
+        monkeypatch.setenv('AUTOVIDEOCLIP_ASR_CONCURRENCY', value)
         assert ct._workers() == expected

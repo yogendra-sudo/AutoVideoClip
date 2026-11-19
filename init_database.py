@@ -20,7 +20,7 @@ def main():
     (root / 'data').mkdir(exist_ok=True)
     if not init_database():
         return 1
-    print('Database initialized. Start the service with ./start_autoclip.sh.')
+    print('Database initialized. Start the service with ./start_autovideoclip.sh.')
     return 0
 
 

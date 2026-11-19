@@ -3,7 +3,7 @@ from pathlib import Path
 
 here = Path(__file__).parent
 config = {}
-for line in Path('/Users/zhoukk/autoclip/.env').read_text().splitlines():
+for line in Path('/Users/zhoukk/autovideoclip/.env').read_text().splitlines():
     if '=' in line and not line.lstrip().startswith('#'):
         k, v = line.split('=', 1)
         config[k.strip()] = v.strip().strip('\"\'')

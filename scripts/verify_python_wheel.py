@@ -113,7 +113,7 @@ def main():
         if args.opencv_dir:
             paths.append(str(Path(args.opencv_dir).resolve()))
         env = dict(os.environ, PYTHONPATH=os.pathsep.join(paths),
-                   AUTOCLIP_DATA_DIR=str(folder / "data"), AUTOCLIP_APP_DIR=str(folder / "data"),
+                   AUTOVIDEOCLIP_DATA_DIR=str(folder / "data"), AUTOVIDEOCLIP_APP_DIR=str(folder / "data"),
                    DATABASE_URL="sqlite:///" + str(folder / "isolated.sqlite"), SENTRY_DSN="")
         report = folder / "report.json"
         subprocess.run([

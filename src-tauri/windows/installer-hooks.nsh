@@ -9,9 +9,9 @@
 ; Pass the install directory to PowerShell through an environment variable to avoid parsing special path characters.
 ; NSIS strings use backticks; $$ represents a literal $ in NSIS.
 
-!macro AUTOCLIP_KILL_BUNDLED_PROCESSES
-  System::Call 'Kernel32::SetEnvironmentVariable(t "AUTOCLIP_INSTDIR", t "$INSTDIR")i'
-  nsExec::ExecToLog `powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "$$root = [IO.Path]::GetFullPath($$env:AUTOCLIP_INSTDIR).TrimEnd([char]92) + [char]92; Get-CimInstance Win32_Process | Where-Object { $$_.ExecutablePath -and $$_.ExecutablePath.StartsWith($$root, [StringComparison]::OrdinalIgnoreCase) -and @('python.exe','pythonw.exe','ffmpeg.exe','ffprobe.exe') -contains $$_.Name.ToLower() } | ForEach-Object { Stop-Process -Id $$_.ProcessId -Force -ErrorAction SilentlyContinue }"`
+!macro AUTOVIDEOCLIP_KILL_BUNDLED_PROCESSES
+  System::Call 'Kernel32::SetEnvironmentVariable(t "AUTOVIDEOCLIP_INSTDIR", t "$INSTDIR")i'
+  nsExec::ExecToLog `powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "$$root = [IO.Path]::GetFullPath($$env:AUTOVIDEOCLIP_INSTDIR).TrimEnd([char]92) + [char]92; Get-CimInstance Win32_Process | Where-Object { $$_.ExecutablePath -and $$_.ExecutablePath.StartsWith($$root, [StringComparison]::OrdinalIgnoreCase) -and @('python.exe','pythonw.exe','ffmpeg.exe','ffprobe.exe') -contains $$_.Name.ToLower() } | ForEach-Object { Stop-Process -Id $$_.ProcessId -Force -ErrorAction SilentlyContinue }"`
   Pop $0
   ; Give the system time to release file handles.
   Sleep 800
@@ -29,7 +29,7 @@
 ; Only remove backend source from the install directory. User data (projects, settings, logs, Whisper runtime and models)
 ; under %APPDATA%\AutoClip is untouched. PYTHONDONTWRITEBYTECODE=1 prevents runtime-generated files here.
 ; Do not remove resources\python wholesale: it is large and may contain files locked as described in #224.
-!macro AUTOCLIP_REMOVE_OLD_BACKEND
+!macro AUTOVIDEOCLIP_REMOVE_OLD_BACKEND
   ${If} "$INSTDIR" != ""
   ${AndIf} ${FileExists} "$INSTDIR\resources\backend\*.*"
     RMDir /r "$INSTDIR\resources\backend"
@@ -38,17 +38,17 @@
 
 !macro NSIS_HOOK_PREINSTALL
   !insertmacro CheckIfAppIsRunning "$INSTDIR\${MAINBINARYNAME}.exe" "${PRODUCTNAME}"
-  !insertmacro AUTOCLIP_KILL_BUNDLED_PROCESSES
-  !insertmacro AUTOCLIP_REMOVE_OLD_BACKEND
+  !insertmacro AUTOVIDEOCLIP_KILL_BUNDLED_PROCESSES
+  !insertmacro AUTOVIDEOCLIP_REMOVE_OLD_BACKEND
 !macroend
 
 !macro NSIS_HOOK_PREUNINSTALL
   !insertmacro CheckIfAppIsRunning "$INSTDIR\${MAINBINARYNAME}.exe" "${PRODUCTNAME}"
-  !insertmacro AUTOCLIP_KILL_BUNDLED_PROCESSES
+  !insertmacro AUTOVIDEOCLIP_KILL_BUNDLED_PROCESSES
 !macroend
 
 ; Delete user data during uninstall only when requested (RC156 Win QA #15). The template's "delete app data" checkbox
-; removes only $APPDATA\com.autoclip.desktop and $LOCALAPPDATA\com.autoclip.desktop (WebView data), leaving
+; removes only $APPDATA\com.autovideoclip.desktop and $LOCALAPPDATA\com.autovideoclip.desktop (WebView data), leaving
 ; %APPDATA%\AutoClip, which contains projects, settings, and API keys. This conflicts with the privacy notice.
 ; Silent /DELETEAPPDATA does not use the template's checkbox branch. It previously removed %APPDATA%\AutoClip
 ; but left WebView data behind (RC156 Win QA #24). Remove the same three directories here; if the GUI checkbox
@@ -60,7 +60,7 @@
 ;     while the installer uses _?= in place ($EXEDIR = $INSTDIR).
 ;   - In GUI mode, honor the checkbox (unchecked by default; unchecked means keep the data).
 ;   - Silent (/S) or passive (/P) mode has no checkbox; require the explicit /DELETEAPPDATA flag.
-!macro AUTOCLIP_DELETE_USER_DATA
+!macro AUTOVIDEOCLIP_DELETE_USER_DATA
   Push $R8
   Push $R9
   StrCpy $R9 0
@@ -109,7 +109,7 @@
 ;   - Skip updates (/UPDATE) and the installer's pre-install uninstall ($EXEDIR = $INSTDIR), since a new version
 ;     is about to be installed in place. resources\python may contain files locked as described in #224; PREINSTALL
 ;     only clears resources\backend.
-!macro AUTOCLIP_REMOVE_INSTALL_LEFTOVERS
+!macro AUTOVIDEOCLIP_REMOVE_INSTALL_LEFTOVERS
   ${If} $UpdateMode <> 1
   ${AndIf} "$EXEDIR" != "$INSTDIR"
   ${AndIf} "$INSTDIR" != ""
@@ -123,10 +123,10 @@
 !macroend
 
 !macro NSIS_HOOK_POSTUNINSTALL
-  !insertmacro AUTOCLIP_DELETE_USER_DATA
-  !insertmacro AUTOCLIP_REMOVE_INSTALL_LEFTOVERS
+  !insertmacro AUTOVIDEOCLIP_DELETE_USER_DATA
+  !insertmacro AUTOVIDEOCLIP_REMOVE_INSTALL_LEFTOVERS
 !macroend
 
 ; Confirmation-page note: data is kept by default and permanently deleted only when selected (text is in windows/lang/*.nsh).
 ; This hook is included before the template defines its pages; MUI_UNPAGE_CONFIRM reads and clears this definition.
-!define MUI_UNCONFIRMPAGE_TEXT_TOP "$(autoclipUninstallNote)"
+!define MUI_UNCONFIRMPAGE_TEXT_TOP "$(autovideoclipUninstallNote)"

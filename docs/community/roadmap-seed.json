@@ -59,7 +59,7 @@
         "track": "new-issue",
         "title": "[Feature] End-to-end CLI / MCP test with a real video",
         "body": "Commands and MCP tools have unit tests, but none has processed a real video to completion. Consider a Homebrew tap and PyPI after this is verified.",
-        "acceptance": ["autoclip run reports completed for a real video", "MCP start_clip_job can poll for the same result"]
+        "acceptance": ["autovideoclip run reports completed for a real video", "MCP start_clip_job can poll for the same result"]
       },
       {
         "track": "new-issue",

@@ -178,7 +178,7 @@ def test_installed_wheel_loads_catalog_outside_the_repo(tmp_path):
         check=True,
         cwd=elsewhere,
     )
-    wheels = list(wheel_dir.glob("autoclip_mcp-*-py3-none-any.whl"))
+    wheels = list(wheel_dir.glob("autovideoclip_mcp-*-py3-none-any.whl"))
     assert wheels, list(wheel_dir.iterdir())
     with zipfile.ZipFile(wheels[0]) as archive:
         members = archive.namelist()
@@ -196,14 +196,14 @@ def test_installed_wheel_loads_catalog_outside_the_repo(tmp_path):
     env = {
         key: value
         for key, value in os.environ.items()
-        if key != "AUTOCLIP_PROVIDER_PRESETS"
+        if key != "AUTOVIDEOCLIP_PROVIDER_PRESETS"
     }
     env["PYTHONPATH"] = str(installed)
     probe = r"""
 import os
 import shutil
 from pathlib import Path
-os.environ.pop("AUTOCLIP_PROVIDER_PRESETS", None)
+os.environ.pop("AUTOVIDEOCLIP_PROVIDER_PRESETS", None)
 import backend
 from backend.core import provider_presets
 root = Path(%r).resolve()

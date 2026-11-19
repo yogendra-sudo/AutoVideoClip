@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
-# Install the automatic website sync setup into the autoclip_intro repository (one-time setup).
+# Install the automatic website sync setup into the autovideoclip_intro repository (one-time setup).
 #
-#   bash scripts/website/install.sh ../autoclip_intro
+#   bash scripts/website/install.sh ../autovideoclip_intro
 #
-# Then run `git add -A && git commit -m "build: sync release info automatically" && git push` in autoclip_intro.
+# Then run `git add -A && git commit -m "build: sync release info automatically" && git push` in autovideoclip_intro.
 # The main repository's repository_dispatch is in the "Notify website" step of .github/workflows/desktop-build.yml.
-# Add WEBSITE_DISPATCH_TOKEN under main repository Settings → Secrets (fine-grained PAT for autoclip_intro with Contents: Read and write).
+# Add WEBSITE_DISPATCH_TOKEN under main repository Settings → Secrets (fine-grained PAT for autovideoclip_intro with Contents: Read and write).
 # This is optional: the website workflow has a daily cron fallback, which may delay updates by up to one day.
 set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TARGET="${1:-}"
 if [[ -z "$TARGET" || ! -f "$TARGET/index.html" ]]; then
-  echo "Usage: bash scripts/website/install.sh <autoclip_intro repository path> (the directory must contain index.html)" >&2
+  echo "Usage: bash scripts/website/install.sh <autovideoclip_intro repository path> (the directory must contain index.html)" >&2
   exit 1
 fi
 

@@ -1,5 +1,5 @@
 /**
- * Desktop clipboard + autoclip:// watch. Reads a secret only to offer it.
+ * Desktop clipboard + autovideoclip:// watch. Reads a secret only to offer it.
  * Never logs the text. Web clipboard reads that the browser blocks are ignored.
  */
 
@@ -7,7 +7,7 @@ import { isDesktopMode } from '../../utils/desktopMode'
 import { extractApiKey, inferProviderId, parseAutoclipLink, type GuideTarget } from './keyGuide'
 import { publishOffer, type KeyOffer } from './keyGuideBus'
 
-const DISMISS_KEY = 'autoclip.keyguide.dismissed'
+const DISMISS_KEY = 'autovideoclip.keyguide.dismissed'
 let targets: GuideTarget[] = []
 let unlistenDeepLink: (() => void) | null = null
 
@@ -78,7 +78,7 @@ function offerFromText(text: string, source: KeyOffer['source']): KeyOffer | nul
 export async function scanClipboard(source: 'focus' | 'button'): Promise<'offered' | 'empty' | 'dismissed'> {
   const text = (await readClipboard()).trim()
   if (!text) return 'empty'
-  if (/^autoclip:/i.test(text)) {
+  if (/^autovideoclip:/i.test(text)) {
     const offer = offerFromText(text, 'deeplink')
     if (!offer) return 'empty'
     publishOffer(offer)

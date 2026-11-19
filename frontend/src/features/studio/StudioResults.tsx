@@ -142,7 +142,7 @@ export default function StudioResults({ project, children, onCreateCollection, o
     const started = workspace.generation?.created_at || workspace.analysis?.created_at
     const stamp = workspace.generation?.attempt_id || started || ''
     if (!provider || !(sourceMin > 0) || !started || !stamp) return
-    const storageKey = `autoclip.eta.recorded.${project.id}`
+    const storageKey = `autovideoclip.eta.recorded.${project.id}`
     try { if (sessionStorage.getItem(storageKey) === stamp) return } catch { /* ignore */ }
     const elapsed = Math.max(0, (Date.now() - Date.parse(started)) / 1000)
     if (!(elapsed > 0)) return

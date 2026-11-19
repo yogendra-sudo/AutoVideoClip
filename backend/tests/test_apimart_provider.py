@@ -39,7 +39,7 @@ from backend.services.provider_validation import validate_connection
 
 SECRET = "sk-apimart-secret-should-never-leak"
 BASE = "https://api.apimart.ai/v1"
-KEY_URL = "https://go.apimart.ai/tw-autoclip"
+KEY_URL = "https://go.apimart.ai/tw-autovideoclip"
 
 CHAT_IDS = [
     "chatgpt-4o-latest",

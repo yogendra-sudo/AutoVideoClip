@@ -17,7 +17,7 @@
       "-ss",
       "0.0",
       "-i",
-      "/tmp/autoclip-render-golden/input.mp4",
+      "/tmp/autovideoclip-render-golden/input.mp4",
       "-f",
       "lavfi",
       "-i",
@@ -49,7 +49,7 @@
       "-threads",
       "2",
       "-y",
-      "/tmp/autoclip-render-golden/studio/0.mkv"
+      "/tmp/autovideoclip-render-golden/studio/0.mkv"
     ],
     [
       "/usr/bin/nice",
@@ -67,7 +67,7 @@
       "-ss",
       "2.0",
       "-i",
-      "/tmp/autoclip-render-golden/input.mp4",
+      "/tmp/autovideoclip-render-golden/input.mp4",
       "-f",
       "lavfi",
       "-i",
@@ -99,7 +99,7 @@
       "-threads",
       "2",
       "-y",
-      "/tmp/autoclip-render-golden/studio/1.mkv"
+      "/tmp/autovideoclip-render-golden/studio/1.mkv"
     ],
     [
       "/usr/bin/ffmpeg",
@@ -110,7 +110,7 @@
       "-safe",
       "0",
       "-i",
-      "/tmp/autoclip-render-golden/studio/parts.txt",
+      "/tmp/autovideoclip-render-golden/studio/parts.txt",
       "-map",
       "0:v:0",
       "-c:v",
@@ -128,14 +128,14 @@
       "-movflags",
       "+faststart",
       "-y",
-      "/tmp/autoclip-render-golden/project/output/studio/job.part.mp4"
+      "/tmp/autovideoclip-render-golden/project/output/studio/job.part.mp4"
     ],
     [
       "/usr/bin/ffmpeg",
       "-v",
       "error",
       "-i",
-      "/tmp/autoclip-render-golden/outro-assets/outro-horizontal.mp4",
+      "/tmp/autovideoclip-render-golden/outro-assets/outro-horizontal.mp4",
       "-vf",
       "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=0x080809,fps=30/1,format=yuv420p",
       "-af",
@@ -161,7 +161,7 @@
       "-movflags",
       "+faststart",
       "-y",
-      "/tmp/autoclip-render-golden/outro-cache/776cd605e2b74924.part.mp4"
+      "/tmp/autovideoclip-render-golden/outro-cache/776cd605e2b74924.part.mp4"
     ],
     [
       "/usr/bin/ffmpeg",
@@ -172,7 +172,7 @@
       "-safe",
       "0",
       "-i",
-      "/tmp/autoclip-render-golden/outro/concat.txt",
+      "/tmp/autovideoclip-render-golden/outro/concat.txt",
       "-map",
       "0:v:0",
       "-map",
@@ -182,7 +182,7 @@
       "-movflags",
       "+faststart",
       "-y",
-      "/tmp/autoclip-render-golden/project/output/studio/job.branding.part.mp4"
+      "/tmp/autovideoclip-render-golden/project/output/studio/job.branding.part.mp4"
     ]
   ],
   "brand_outro": true,
@@ -196,7 +196,7 @@
       "-safe",
       "0",
       "-i",
-      "/tmp/autoclip-render-golden/studio/parts.txt",
+      "/tmp/autovideoclip-render-golden/studio/parts.txt",
       "-map",
       "0:v:0",
       "-c:v",
@@ -214,10 +214,10 @@
       "-movflags",
       "+faststart",
       "-y",
-      "/tmp/autoclip-render-golden/project/output/studio/job.part.mp4"
+      "/tmp/autovideoclip-render-golden/project/output/studio/job.part.mp4"
     ]
   ],
-  "concat_script": "file /tmp/autoclip-render-golden/studio/0.mkv\nduration 1.000000000\nfile /tmp/autoclip-render-golden/studio/1.mkv\nduration 1.500000000\n",
+  "concat_script": "file /tmp/autovideoclip-render-golden/studio/0.mkv\nduration 1.000000000\nfile /tmp/autovideoclip-render-golden/studio/1.mkv\nduration 1.500000000\n",
   "encoder": "libx264",
   "outro": [
     [
@@ -225,7 +225,7 @@
       "-v",
       "error",
       "-i",
-      "/tmp/autoclip-render-golden/outro-assets/outro-horizontal.mp4",
+      "/tmp/autovideoclip-render-golden/outro-assets/outro-horizontal.mp4",
       "-vf",
       "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=0x080809,fps=30/1,format=yuv420p",
       "-af",
@@ -251,7 +251,7 @@
       "-movflags",
       "+faststart",
       "-y",
-      "/tmp/autoclip-render-golden/outro-cache/776cd605e2b74924.part.mp4"
+      "/tmp/autovideoclip-render-golden/outro-cache/776cd605e2b74924.part.mp4"
     ],
     [
       "/usr/bin/ffmpeg",
@@ -262,7 +262,7 @@
       "-safe",
       "0",
       "-i",
-      "/tmp/autoclip-render-golden/outro/concat.txt",
+      "/tmp/autovideoclip-render-golden/outro/concat.txt",
       "-map",
       "0:v:0",
       "-map",
@@ -272,10 +272,10 @@
       "-movflags",
       "+faststart",
       "-y",
-      "/tmp/autoclip-render-golden/project/output/studio/job.branding.part.mp4"
+      "/tmp/autovideoclip-render-golden/project/output/studio/job.branding.part.mp4"
     ]
   ],
-  "outro_script": "file '/tmp/autoclip-render-golden/project/output/studio/job.part.mp4'\nfile '/tmp/autoclip-render-golden/outro-cache/776cd605e2b74924.mp4'\n",
+  "outro_script": "file '/tmp/autovideoclip-render-golden/project/output/studio/job.part.mp4'\nfile '/tmp/autovideoclip-render-golden/outro-cache/776cd605e2b74924.mp4'\n",
   "shots": [
     [
       "/usr/bin/nice",
@@ -293,7 +293,7 @@
       "-ss",
       "0.0",
       "-i",
-      "/tmp/autoclip-render-golden/input.mp4",
+      "/tmp/autovideoclip-render-golden/input.mp4",
       "-f",
       "lavfi",
       "-i",
@@ -325,7 +325,7 @@
       "-threads",
       "2",
       "-y",
-      "/tmp/autoclip-render-golden/studio/0.mkv"
+      "/tmp/autovideoclip-render-golden/studio/0.mkv"
     ],
     [
       "/usr/bin/nice",
@@ -343,7 +343,7 @@
       "-ss",
       "2.0",
       "-i",
-      "/tmp/autoclip-render-golden/input.mp4",
+      "/tmp/autovideoclip-render-golden/input.mp4",
       "-f",
       "lavfi",
       "-i",
@@ -375,7 +375,7 @@
       "-threads",
       "2",
       "-y",
-      "/tmp/autoclip-render-golden/studio/1.mkv"
+      "/tmp/autovideoclip-render-golden/studio/1.mkv"
     ]
   ]
 }

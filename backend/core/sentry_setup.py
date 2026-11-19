@@ -175,7 +175,7 @@ _initialized = False
 
 
 def _privacy_path() -> Optional[Path]:
-    raw = os.getenv("AUTOCLIP_APP_DIR") or os.getenv("AUTOCLIP_DATA_DIR")
+    raw = os.getenv("AUTOVIDEOCLIP_APP_DIR") or os.getenv("AUTOVIDEOCLIP_DATA_DIR")
     if raw:
         return Path(raw).expanduser() / PRIVACY_FILE
     from backend.core.path_utils import get_data_directory
@@ -205,7 +205,7 @@ def write_privacy(*, crash_reports: Optional[bool] = None, analytics: Optional[b
     existing file keeps collection OFF unless this call sets analytics explicitly."""
     path = _privacy_path()
     if path is None:
-        raise RuntimeError("未设置 AUTOCLIP_APP_DIR / AUTOCLIP_DATA_DIR，写不了隐私开关")
+        raise RuntimeError("未设置 AUTOVIDEOCLIP_APP_DIR / AUTOVIDEOCLIP_DATA_DIR，写不了隐私开关")
     with _privacy_lock:
         current: dict[str, Any] = {}
         if path.exists():
@@ -708,12 +708,12 @@ def _packaged_desktop_reporting(mode: str) -> bool:
     """True only for a packaged desktop production or validation build.
 
     pytest and a source checkout return False even when SENTRY_DSN, mode and
-    AUTOCLIP_BUILD_ENVIRONMENT are all set to look like a release.
+    AUTOVIDEOCLIP_BUILD_ENVIRONMENT are all set to look like a release.
     """
     if _under_pytest() or _running_from_source_tree():
         return False
-    release = (os.getenv("AUTOCLIP_APP_VERSION") or os.getenv("SENTRY_RELEASE") or "").strip()
-    build_environment = (os.getenv("AUTOCLIP_BUILD_ENVIRONMENT") or "").strip()
+    release = (os.getenv("AUTOVIDEOCLIP_APP_VERSION") or os.getenv("SENTRY_RELEASE") or "").strip()
+    build_environment = (os.getenv("AUTOVIDEOCLIP_BUILD_ENVIRONMENT") or "").strip()
     if mode != "desktop" or release.lower() in {"", "unknown"}:
         return False
     return build_environment in _REPORTING_BUILD_ENVIRONMENTS
@@ -731,8 +731,8 @@ def init_sentry(mode: str = "web") -> bool:
     if not _packaged_desktop_reporting(mode):
         logger.info("非桌面正式版，跳过 Sentry")
         return False
-    release = (os.getenv("AUTOCLIP_APP_VERSION") or os.getenv("SENTRY_RELEASE") or "").strip()
-    build_environment = (os.getenv("AUTOCLIP_BUILD_ENVIRONMENT") or "").strip()
+    release = (os.getenv("AUTOVIDEOCLIP_APP_VERSION") or os.getenv("SENTRY_RELEASE") or "").strip()
+    build_environment = (os.getenv("AUTOVIDEOCLIP_BUILD_ENVIRONMENT") or "").strip()
     if not crash_reports_enabled():
         logger.info("崩溃报告已关闭，跳过 Sentry")
         return False
@@ -746,7 +746,7 @@ def init_sentry(mode: str = "web") -> bool:
 
     sentry_sdk.init(
         dsn=dsn,
-        release=f"autoclip-backend@{release}",
+        release=f"autovideoclip-backend@{release}",
         environment=mode,
         send_default_pii=False,
         traces_sample_rate=0.0,

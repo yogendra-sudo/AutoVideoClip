@@ -52,7 +52,7 @@ def test_content_boundary_retains_uncoded_pipeline_stage(monkeypatch):
 def test_pipeline_stage_survives_capture_and_scrubbing_without_private_values(monkeypatch, tmp_path):
     import sentry_sdk
     from backend.core import sentry_setup
-    monkeypatch.setenv('AUTOCLIP_APP_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_APP_DIR', str(tmp_path))
     monkeypatch.setattr(sentry_setup, '_initialized', True)
     captured = []
     def capture(error):

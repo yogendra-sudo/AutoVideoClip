@@ -5,7 +5,7 @@
 视觉分析与视觉初筛自动不启用，只用字幕。旧版独立视觉接口（mode=custom）仍然兼容。
 
 兼容旧数据：已有 vision-settings.json 但没有 mode 字段的，视为 custom；
-没保存过、但 .env 里配了 AUTOCLIP_VISION_BASE_URL 的（Docker），也按 custom 用环境变量。
+没保存过、但 .env 里配了 AUTOVIDEOCLIP_VISION_BASE_URL 的（Docker），也按 custom 用环境变量。
 
 能不能看图不靠猜：「测试图片理解」通过后记下 base_url + 模型，配置变了就回到未验证。
 付费视觉调用仍由 analysis_preferences 的显式同意控制，这里只提供端点。
@@ -76,11 +76,11 @@ def _environment():
     from dotenv import dotenv_values
     from backend.core.path_utils import get_project_root
     env = {**dotenv_values(get_project_root() / '.env'), **os.environ}
-    base = env.get('AUTOCLIP_VISION_BASE_URL') or env.get('SEEDANCE_BASE_URL', '')
+    base = env.get('AUTOVIDEOCLIP_VISION_BASE_URL') or env.get('SEEDANCE_BASE_URL', '')
     if not base:
         return None
-    return {'mode': 'custom', 'base_url': base, 'api_key': env.get('AUTOCLIP_VISION_API_KEY') or env.get('SEEDANCE_API_KEY', ''),
-            'model': env.get('AUTOCLIP_VISION_MODEL', 'doubao-seed-2-1-pro-260915'), 'timeout': 180, 'source': 'environment'}
+    return {'mode': 'custom', 'base_url': base, 'api_key': env.get('AUTOVIDEOCLIP_VISION_API_KEY') or env.get('SEEDANCE_API_KEY', ''),
+            'model': env.get('AUTOVIDEOCLIP_VISION_MODEL', 'doubao-seed-2-1-pro-260915'), 'timeout': 180, 'source': 'environment'}
 
 
 def text_model_endpoint():

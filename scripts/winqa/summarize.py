@@ -57,7 +57,7 @@ celery = lc.get('celery_processes')
 row(f'Launch {cand_v}', lc.get('ok'), f"mode={lc.get('mode')} port file {lc.get('port_file_seconds')}s health {lc.get('healthy_seconds')}s exe FileVersion {lc.get('exe_file_version')}")
 cel_logs = [l for l in (ck.get('log_celery_lines') or []) if 'Celery' in l]
 row('No Celery process in candidate process tree', (celery == [] and lc.get('ok')) if celery is not None else None,
-    f"Candidate process tree: autoclip-desktop.exe + WebView2 + one python (-m backend.desktop_main); {len(celery or [])} command lines contain celery;"
+    f"Candidate process tree: autovideoclip-desktop.exe + WebView2 + one python (-m backend.desktop_main); {len(celery or [])} command lines contain celery;"
     f" the only Celery log line is from previous version {prev_v}: {re.sub(r'^.*?(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d).*?(✅.*)$', r'\1 \2', cel_logs[-1])[:80] if cel_logs else 'none'}")
 for key, label in [('reported_version_matches', f"Backend-reported version = {cand_v} (actual: {ck.get('app_version')})"), ('backend_health_200', '/health 200'),
                    ('settings_endpoint_200', '/api/v1/settings/ 200'), ('upgrade_kept_privacy_off', 'Privacy setting remains off after upgrade'),

@@ -1,6 +1,6 @@
 import { defaultImportOptions, type ImportOptions } from './types'
 
-const KEY = 'autoclip.import.preferences.v1'
+const KEY = 'autovideoclip.import.preferences.v1'
 const GOALS = ['auto', 'content', 'highlight', 'promo']
 const LANGUAGES = ['source', 'zh', 'en', 'ja']
 const ASPECTS = ['original', 'portrait', 'landscape']

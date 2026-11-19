@@ -271,7 +271,7 @@ def _github_json(url: str, token: str, *, binary: bool = False) -> Any:
         'Authorization': f'Bearer {token}',
         'Accept': 'application/vnd.github+json',
         'X-GitHub-Api-Version': '2022-11-28',
-        'User-Agent': 'autoclip-provider-e2e',
+        'User-Agent': 'autovideoclip-provider-e2e',
     })
     with urlopen(request, timeout=30) as response:
         data = response.read()
@@ -387,7 +387,7 @@ def open_budget_issue(env: dict[str, str], budget: dict[str, Any]) -> dict[str, 
             'Authorization': f'Bearer {token}',
             'Accept': 'application/vnd.github+json',
             'X-GitHub-Api-Version': '2022-11-28',
-            'User-Agent': 'autoclip-provider-e2e',
+            'User-Agent': 'autovideoclip-provider-e2e',
             'Content-Type': 'application/json',
         },
         method='POST',

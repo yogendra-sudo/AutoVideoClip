@@ -84,7 +84,7 @@ def run(group: str, report_path: Path, python: str) -> int:
     dirty = bool(subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT, text=True).strip())
     report = {'schema_version': 1, 'commit': commit, 'tracked_changes': dirty,
               'group': group, 'status': 'running', 'checks': []}
-    with tempfile.TemporaryDirectory(prefix='autoclip-quality-') as temp:
+    with tempfile.TemporaryDirectory(prefix='autovideoclip-quality-') as temp:
         data = Path(temp) / 'data'
         data.mkdir()
         (data / 'privacy.json').write_text('{"analytics":false,"crash_reports":false}', encoding='utf-8')
@@ -102,11 +102,11 @@ def run(group: str, report_path: Path, python: str) -> int:
             env[provider + '_API_KEY'] = ''
             env['API_' + provider + '_API_KEY'] = ''
         # Never reset or write a developer's real database/settings, or report synthetic failures.
-        env.update(AUTOCLIP_DATA_DIR=str(data), AUTOCLIP_APP_DIR=str(data),
+        env.update(AUTOVIDEOCLIP_DATA_DIR=str(data), AUTOVIDEOCLIP_APP_DIR=str(data),
                    DATABASE_URL='sqlite:///' + str(Path(temp) / 'test.sqlite').replace('\\', '/'),
                    SENTRY_DSN='', VITE_PUBLIC_SENTRY_DSN='', VITE_PUBLIC_POSTHOG_KEY='',
                    SENTRY_UPLOAD_SOURCEMAPS='false', PYTHONDONTWRITEBYTECODE='1',
-                   AUTOCLIP_LIVE_NETWORK_TESTS='0',
+                   AUTOVIDEOCLIP_LIVE_NETWORK_TESTS='0',
                    REDIS_URL='redis://127.0.0.1:1/0', LOG_FILE=str(Path(temp) / 'tests.log'),
                    DASHSCOPE_API_KEY='test_api_key')
         failed = False

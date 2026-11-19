@@ -25,7 +25,7 @@ RUNNERS = (
 def effective_mode(features: dict | None) -> str:
     """off, or shadow. `block` is accepted and recorded as shadow."""
     data = features if isinstance(features, dict) else {}
-    if data.get('autoclip_safe_mode') is True:
+    if data.get('autovideoclip_safe_mode') is True:
         return 'off'
     value = data.get('qa_gate_blocking', DEFAULTS['qa_gate_blocking'])
     if value == 'blocking':

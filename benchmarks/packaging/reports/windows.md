@@ -39,8 +39,8 @@ PR head `9640e4f9` 的脚本在腾讯云 Windows 验收机跑完：2 秒短烟�
 
 | 修复 | 结果 |
 |---|---|
-| pip 国内镜像回退 | **PASS**。日志：`包装组件 pip 从 pypi 失败（pypi: 退出码 1），改用 mirror` → `安装完成`。未卡住，事前未设 PIP_INDEX_URL / pip.ini / AUTOCLIP_PIP_INDEX。 |
-| ffmpeg 路径查找 | **PASS**。未设 AUTOCLIP_FFMPEG_PATH/FFPROBE，解析到 `...\AutoVideoClip Desktop\resources\ffmpeg\ffmpeg.exe`。 |
+| pip 国内镜像回退 | **PASS**。日志：`包装组件 pip 从 pypi 失败（pypi: 退出码 1），改用 mirror` → `安装完成`。未卡住，事前未设 PIP_INDEX_URL / pip.ini / AUTOVIDEOCLIP_PIP_INDEX。 |
+| ffmpeg 路径查找 | **PASS**。未设 AUTOVIDEOCLIP_FFMPEG_PATH/FFPROBE，解析到 `...\AutoVideoClip Desktop\resources\ffmpeg\ffmpeg.exe`。 |
 
 ### 组合·单平台（70s editorial，msedge）
 

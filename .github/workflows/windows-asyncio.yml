@@ -72,14 +72,14 @@ jobs:
       - run: python -m pip install -r requirements.txt -r requirements-test.txt
       - name: Real media inference, SenseVoice recovery and Windows state replacement
         env:
-          AUTOCLIP_DATA_DIR: ${{ runner.temp }}/autoclip-media-regression
-          AUTOCLIP_APP_DIR: ${{ runner.temp }}/autoclip-media-regression
+          AUTOVIDEOCLIP_DATA_DIR: ${{ runner.temp }}/autovideoclip-media-regression
+          AUTOVIDEOCLIP_APP_DIR: ${{ runner.temp }}/autovideoclip-media-regression
           SENTRY_DSN: ""
         run: python -m pytest backend/tests/test_framing_concurrency.py backend/tests/test_sensevoice.py backend/tests/test_studio_store_recovery.py backend/tests/test_studio_persistent_write_failure.py scripts/windows_tests/test_studio_store.py backend/tests/test_orphan_reaper.py -q
       - name: Store lock across processes (msvcrt.locking, #391 / R27 I414 I419 I425)
         env:
-          AUTOCLIP_DATA_DIR: ${{ runner.temp }}/autoclip-store-lock
-          AUTOCLIP_APP_DIR: ${{ runner.temp }}/autoclip-store-lock
+          AUTOVIDEOCLIP_DATA_DIR: ${{ runner.temp }}/autovideoclip-store-lock
+          AUTOVIDEOCLIP_APP_DIR: ${{ runner.temp }}/autovideoclip-store-lock
           SENTRY_DSN: ""
         # Selected by marker, never by round-numbered file names.
         run: python -m pytest backend/tests/test_store_lock.py -m store_lock -q
@@ -88,22 +88,22 @@ jobs:
         timeout-minutes: 8
       - name: Quote-card edges and shot-mode transitions on Windows
         env:
-          AUTOCLIP_DATA_DIR: ${{ runner.temp }}/autoclip-window-render-regression
-          AUTOCLIP_APP_DIR: ${{ runner.temp }}/autoclip-window-render-regression
+          AUTOVIDEOCLIP_DATA_DIR: ${{ runner.temp }}/autovideoclip-window-render-regression
+          AUTOVIDEOCLIP_APP_DIR: ${{ runner.temp }}/autovideoclip-window-render-regression
           SENTRY_DSN: ""
         run: python -m pytest backend/tests/test_packaging_render.py -k preserves_slide_edges -q
       - name: Concat paths with spaces, CJK and apostrophes
         env:
-          AUTOCLIP_DATA_DIR: ${{ runner.temp }}/autoclip-concat-paths
-          AUTOCLIP_APP_DIR: ${{ runner.temp }}/autoclip-concat-paths
-          AUTOCLIP_VIDEO_ENCODER: libx264
+          AUTOVIDEOCLIP_DATA_DIR: ${{ runner.temp }}/autovideoclip-concat-paths
+          AUTOVIDEOCLIP_APP_DIR: ${{ runner.temp }}/autovideoclip-concat-paths
+          AUTOVIDEOCLIP_VIDEO_ENCODER: libx264
           SENTRY_DSN: ""
         run: python -m pytest backend/tests/test_render_concat_paths.py -q
       - name: Packaged Python QA spawn and 60s portrait benchmark
         shell: pwsh
         env:
-          AUTOCLIP_DATA_DIR: ${{ runner.temp }}/autoclip-qa-spawn
-          AUTOCLIP_APP_DIR: ${{ runner.temp }}/autoclip-qa-spawn
+          AUTOVIDEOCLIP_DATA_DIR: ${{ runner.temp }}/autovideoclip-qa-spawn
+          AUTOVIDEOCLIP_APP_DIR: ${{ runner.temp }}/autovideoclip-qa-spawn
           SENTRY_DSN: ""
         run: |
           python -m pytest scripts/windows_tests/test_studio_qa_windows.py -q -s
@@ -124,8 +124,8 @@ jobs:
         run: python -m pip install -r requirements.txt
       - name: cancel_job kills the parent and grandchild with taskkill /T
         env:
-          AUTOCLIP_DATA_DIR: ${{ runner.temp }}/autoclip-cancel-tree
-          AUTOCLIP_APP_DIR: ${{ runner.temp }}/autoclip-cancel-tree
+          AUTOVIDEOCLIP_DATA_DIR: ${{ runner.temp }}/autovideoclip-cancel-tree
+          AUTOVIDEOCLIP_APP_DIR: ${{ runner.temp }}/autovideoclip-cancel-tree
           SENTRY_DSN: ""
         run: python -m pytest backend/tests/test_mcp_jobs.py::test_cancel_kills_the_process_group_and_clears_temporary_files -q -s
 

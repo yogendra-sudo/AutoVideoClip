@@ -15,14 +15,14 @@
 
 ## 1.5 一键出片（推荐）
 
-CLI / MCP 与桌面使用同一安装包里的版本。先核对 `autoclip --version`；MCP 可调用 `get_version`。两边都读已安装的包，文档不写死版本号。
+CLI / MCP 与桌面使用同一安装包里的版本。先核对 `autovideoclip --version`；MCP 可调用 `get_version`。两边都读已安装的包，文档不写死版本号。
 本轮验收及同事测试步骤见 [1.5 验收与测试包](RELEASE_1_5.md)。
 
 ```bash
 # 使用桌面已经保存的 AI 模型配置；本地文件和 HTTPS 的 B站 / YouTube 链接均可。
-autoclip produce talk.mp4 --srt talk.srt --platform douyin --platform youtube_shorts --json
-autoclip produce talk.mp4 --platform douyin --portrait-style podcast --json
-autoclip outputs PROJECT_ID --export-kits
+autovideoclip produce talk.mp4 --srt talk.srt --platform douyin --platform youtube_shorts --json
+autovideoclip produce talk.mp4 --platform douyin --portrait-style podcast --json
+autovideoclip outputs PROJECT_ID --export-kits
 ```
 
 `produce` 等待制作及自动封面任务完成，返回各版本的 `video_path`、`cover_path`、`post`、`kit_path`。
@@ -48,11 +48,11 @@ MCP 使用 `start_quick_output`（立即返回 ID）和 `get_quick_output_status
 `reels`、`shorts` 是别名；`youtube_long` 当前只生成至少 180 秒的完整片段，较短素材请先选 Shorts 或 B站。
 
 模型、AI 封面和自动片尾共用桌面设置。制作时保持一个入口运行；新 CLI / MCP demo 建议用独立数据目录，
-通过 `autoclip --data-dir /path/to/demo-data produce ...` 或 MCP 环境变量 `AUTOCLIP_DATA_DIR` 指定。
+通过 `autovideoclip --data-dir /path/to/demo-data produce ...` 或 MCP 环境变量 `AUTOVIDEOCLIP_DATA_DIR` 指定。
 独立目录需要自己的模型配置，不会读取另一个数据目录的密钥；新入口不使用旧 `run --provider` 的临时覆盖。
 旧 `run` / `clip_video` / `start_clip_job` 继续提供原始切片与合集。这几个 MCP 工具在工具列表里标为 deprecated。
 
-`produce` 的 `--template` 和 `start_quick_output` 的 `template` 都在 `mcp_v2_tools` 打开后才接受：`editorial`（杂志风）、`street`（街头快剪）、`news`（新闻）、`cinema`（电影）、`classic`（经典）。不支持的值返回 `invalid_input`。开关关闭时传了风格返回 `disabled`，不传则仍按经典制作。返回结果里的 `template` 是实际用的风格，`requested_template` 是请求值。`pkg_templates_v1` 关闭时，即使请求了杂志风、街头快剪、新闻或电影，`template` 也是 `classic`。以返回结果里的风格为准。MCP 在 `mcp_v2_tools` 打开时额外提供 `list_styles` 和 `cancel_job`。该开关默认打开，`AUTOCLIP_FLAGS=mcp_v2_tools=off` 可以关掉，关掉后工具列表里看不到这两个工具。
+`produce` 的 `--template` 和 `start_quick_output` 的 `template` 都在 `mcp_v2_tools` 打开后才接受：`editorial`（杂志风）、`street`（街头快剪）、`news`（新闻）、`cinema`（电影）、`classic`（经典）。不支持的值返回 `invalid_input`。开关关闭时传了风格返回 `disabled`，不传则仍按经典制作。返回结果里的 `template` 是实际用的风格，`requested_template` 是请求值。`pkg_templates_v1` 关闭时，即使请求了杂志风、街头快剪、新闻或电影，`template` 也是 `classic`。以返回结果里的风格为准。MCP 在 `mcp_v2_tools` 打开时额外提供 `list_styles` 和 `cancel_job`。该开关默认打开，`AUTOVIDEOCLIP_FLAGS=mcp_v2_tools=off` 可以关掉，关掉后工具列表里看不到这两个工具。
 
 **默认风格：桌面导入页和 CLI / MCP 不一样，这是有意的。**
 
@@ -66,27 +66,27 @@ CLI 和 MCP 多半由脚本或助手调用，默认经典可以让同样的调�
 
 任务状态一律带 `progress`、`stage`、`eta`、`poll_after_sec`。按 `poll_after_sec` 再查。没有任务记录时状态是 `unknown`，工作进程已经不在时是 `interrupted`，不会因为项目目录还在就报 `completed`。状态写在数据目录的 `mcp-jobs/`。`cancel_job` 会停掉这条任务的 ffmpeg 和它的子进程，清掉临时文件，已完成的成片保留，状态写成 `cancelled`。
 
-MCP 不再接收 `api_key` 参数。模型密钥用环境变量 `AUTOCLIP_API_KEY`，或桌面应用里已经保存的配置。
+MCP 不再接收 `api_key` 参数。模型密钥用环境变量 `AUTOVIDEOCLIP_API_KEY`，或桌面应用里已经保存的配置。
 
 ## 1. 安装
 
 一行安装：
 
 ```bash
-uvx autoclip-mcp
+uvx autovideoclip-mcp
 npx skills add yogendra-sudo/AutoVideoClip
 ```
 
-PyPI 发行名是 `autoclip-mcp`。`uvx autoclip-mcp` 会安装这个包并运行 MCP 入口，包里的 CLI 命令仍是 `autoclip`。wheel 文件名是 `autoclip_mcp-<version>-py3-none-any.whl`。已发布的 ZIP 里用 `autoclip_mcp-*-py3-none-any.whl`。
+PyPI 发行名是 `autovideoclip-mcp`。`uvx autovideoclip-mcp` 会安装这个包并运行 MCP 入口，包里的 CLI 命令仍是 `autovideoclip`。wheel 文件名是 `autovideoclip_mcp-<version>-py3-none-any.whl`。已发布的 ZIP 里用 `autovideoclip_mcp-*-py3-none-any.whl`。
 
 从源码安装仍可用。在已克隆的仓库根目录执行：
 
 ```bash
-git clone https://github.com/yogendra-sudo/AutoVideoClip.git && cd autoclip
+git clone https://github.com/yogendra-sudo/AutoVideoClip.git && cd autovideoclip
 python3 -m venv venv && source venv/bin/activate
 python -m pip install -r requirements.txt
 python -m pip install --no-deps .
-autoclip --version
+autovideoclip --version
 ```
 
 不装包也能用：`python -m backend.cli ...`（在仓库根目录）。
@@ -97,7 +97,7 @@ autoclip --version
 先体检：
 
 ```bash
-autoclip doctor
+autovideoclip doctor
 # 数据目录 ~/Library/Application Support/AutoVideoClip · Python 3.11.9
 # ✓ ffmpeg   /opt/homebrew/bin/ffmpeg
 # ✓ whisper  faster-whisper 已安装
@@ -109,34 +109,34 @@ autoclip doctor
 ## 2. CLI
 
 ```bash
-autoclip run talk.mp4                                  # 用桌面应用设置页里配好的模型
-autoclip run talk.mp4 --provider ollama                # 本地 Ollama（默认 qwen2.5:7b，无需 key）
-autoclip run talk.mp4 --provider lmstudio --model qwen2.5-7b-instruct
-# 模型密钥只放在环境变量 AUTOCLIP_API_KEY 里（先在 shell 里设置），不要写进命令
-autoclip run talk.mp4 --provider openai --base-url https://api.deepseek.com/v1 --model deepseek-chat
-autoclip run talk.mp4 --srt talk.srt --category knowledge --min-score 0.6
-autoclip run talk.mp4 --json                           # 给脚本 / agent：stdout 只有一个 JSON
+autovideoclip run talk.mp4                                  # 用桌面应用设置页里配好的模型
+autovideoclip run talk.mp4 --provider ollama                # 本地 Ollama（默认 qwen2.5:7b，无需 key）
+autovideoclip run talk.mp4 --provider lmstudio --model qwen2.5-7b-instruct
+# 模型密钥只放在环境变量 AUTOVIDEOCLIP_API_KEY 里（先在 shell 里设置），不要写进命令
+autovideoclip run talk.mp4 --provider openai --base-url https://api.deepseek.com/v1 --model deepseek-chat
+autovideoclip run talk.mp4 --srt talk.srt --category knowledge --min-score 0.6
+autovideoclip run talk.mp4 --json                           # 给脚本 / agent：stdout 只有一个 JSON
 
-autoclip list                                          # 最近项目
-autoclip show <project_id>                             # 切片、合集、文件路径
-autoclip providers                                     # 提供商与本地预设，标出当前用的
-autoclip doctor --provider ollama                      # 按指定 provider 体检
-autoclip mcp                                           # 以 MCP server 运行（见下）
-autoclip export <project_id> --preset douyin           # 渲成 9:16 + 字幕 + 标题卡
-autoclip export <project_id> --clip 2 --clip 5 --preset shorts --no-title
-autoclip publish <project_id> --clip 2 --platform tiktok --platform youtube --wait   # 经 Upload-Post 发到海外平台
-autoclip publish --list-profiles                        # 已配置的 Upload-Post profile 与已连接平台
+autovideoclip list                                          # 最近项目
+autovideoclip show <project_id>                             # 切片、合集、文件路径
+autovideoclip providers                                     # 提供商与本地预设，标出当前用的
+autovideoclip doctor --provider ollama                      # 按指定 provider 体检
+autovideoclip mcp                                           # 以 MCP server 运行（见下）
+autovideoclip export <project_id> --preset douyin           # 渲成 9:16 + 字幕 + 标题卡
+autovideoclip export <project_id> --clip 2 --clip 5 --preset shorts --no-title
+autovideoclip publish <project_id> --clip 2 --platform tiktok --platform youtube --wait   # 经 Upload-Post 发到海外平台
+autovideoclip publish --list-profiles                        # 已配置的 Upload-Post profile 与已连接平台
 ```
 
 约定：
 - 进度、说明走 **stderr**；**stdout** 只放 `project_id`（或 `--json` 时的 JSON），方便管道。
 - 退出码：`0` 成功 · `1` 流水线失败 · `2` 参数 / 环境错误。
-- 模型密钥推荐用环境变量 `AUTOCLIP_API_KEY`，或桌面应用里已经保存的配置。`--api-key` 仍可临时传入，会在 stderr 打印弃用警告。`autoclip publish --api-key` 是 Upload-Post 的密钥，与 `AUTOCLIP_API_KEY` 无关。
+- 模型密钥推荐用环境变量 `AUTOVIDEOCLIP_API_KEY`，或桌面应用里已经保存的配置。`--api-key` 仍可临时传入，会在 stderr 打印弃用警告。`autovideoclip publish --api-key` 是 Upload-Post 的密钥，与 `AUTOVIDEOCLIP_API_KEY` 无关。
 - `--provider` 等模型参数不改用户的正式设置，只在数据目录写一份 `cli-settings.json`。
 - 视频默认**硬链接**进项目目录（不占双份空间），跨盘时自动复制；`--copy` 强制复制。
 - `--no-db` 不写 SQLite（桌面应用里就看不到这个项目）。
 - 数据目录：默认与桌面应用一致（mac `~/Library/Application Support/AutoVideoClip`、Windows `%APPDATA%\AutoVideoClip`、Linux `~/.local/share/AutoVideoClip`），
-  `--data-dir` 或 `AUTOCLIP_DATA_DIR` 可换。日志在 `<数据目录>/logs/cli.log`，`-v` 同时打到终端。
+  `--data-dir` 或 `AUTOVIDEOCLIP_DATA_DIR` 可换。日志在 `<数据目录>/logs/cli.log`，`-v` 同时打到终端。
 - `--min-score` 覆盖 step3 的阈值（0–1，默认 0.7）；**切片为 0 先试 0.5**。
 
 `--json` 输出（节选）：
@@ -164,25 +164,25 @@ autoclip publish --list-profiles                        # 已配置的 Upload-Po
 
 stdio 传输，依赖 `mcp` Python SDK（`requirements.txt` 已锁定；兼容 1.x `FastMCP` 与 2.x `MCPServer`）。
 
-用 `uvx` 启动（推荐）：`uvx autoclip-mcp` 不带参数就直接启动 stdio MCP server，不需要其他参数，一般写进客户端配置、由客户端启动。第一次运行会下载依赖，可能要几十秒。模型密钥用环境变量 `AUTOCLIP_API_KEY` 传给 server，不要写进 args。
+用 `uvx` 启动（推荐）：`uvx autovideoclip-mcp` 不带参数就直接启动 stdio MCP server，不需要其他参数，一般写进客户端配置、由客户端启动。第一次运行会下载依赖，可能要几十秒。模型密钥用环境变量 `AUTOVIDEOCLIP_API_KEY` 传给 server，不要写进 args。
 
 **Claude Code**：
 
 ```bash
-claude mcp add-json autoclip '{"command":"uvx","args":["autoclip-mcp"],"env":{"AUTOCLIP_API_KEY":"${AUTOCLIP_API_KEY}"}}'
+claude mcp add-json autovideoclip '{"command":"uvx","args":["autovideoclip-mcp"],"env":{"AUTOVIDEOCLIP_API_KEY":"${AUTOVIDEOCLIP_API_KEY}"}}'
 ```
 
-单引号让 `${AUTOCLIP_API_KEY}` 原样写进配置，Claude Code 启动 server 时再从环境变量展开，配置文件和 shell 历史里都没有明文密钥。不要用 `--env AUTOCLIP_API_KEY=$AUTOCLIP_API_KEY`：shell 会先展开，把密钥明文写进 `~/.claude.json`。也可以不设这个变量，直接在桌面应用的设置里填模型密钥。
+单引号让 `${AUTOVIDEOCLIP_API_KEY}` 原样写进配置，Claude Code 启动 server 时再从环境变量展开，配置文件和 shell 历史里都没有明文密钥。不要用 `--env AUTOVIDEOCLIP_API_KEY=$AUTOVIDEOCLIP_API_KEY`：shell 会先展开，把密钥明文写进 `~/.claude.json`。也可以不设这个变量，直接在桌面应用的设置里填模型密钥。
 
 **Cursor**（`~/.cursor/mcp.json`，或项目里的 `.cursor/mcp.json`）：
 
 ```json
 {
   "mcpServers": {
-    "autoclip": {
+    "autovideoclip": {
       "command": "uvx",
-      "args": ["autoclip-mcp"],
-      "env": { "AUTOCLIP_API_KEY": "${env:AUTOCLIP_API_KEY}" }
+      "args": ["autovideoclip-mcp"],
+      "env": { "AUTOVIDEOCLIP_API_KEY": "${env:AUTOVIDEOCLIP_API_KEY}" }
     }
   }
 }
@@ -191,15 +191,15 @@ claude mcp add-json autoclip '{"command":"uvx","args":["autoclip-mcp"],"env":{"A
 **Codex**（`~/.codex/config.toml`）：
 
 ```toml
-[mcp_servers.autoclip]
+[mcp_servers.autovideoclip]
 command = "uvx"
-args = ["autoclip-mcp"]
-env_vars = ["AUTOCLIP_API_KEY"]   # 从当前环境转发，不在配置文件里写明文密钥
+args = ["autovideoclip-mcp"]
+env_vars = ["AUTOVIDEOCLIP_API_KEY"]   # 从当前环境转发，不在配置文件里写明文密钥
 startup_timeout_sec = 120         # 默认 10 秒，第一次 uvx 下载依赖不够用
 tool_timeout_sec = 3600           # 默认 60 秒；clip_video 要几分钟，或改用 start_clip_job + get_job_status
 ```
 
-模型密钥也可以在桌面应用的设置里填；已经用桌面应用保存过模型配置时，可以不传 `AUTOCLIP_API_KEY`。
+模型密钥也可以在桌面应用的设置里填；已经用桌面应用保存过模型配置时，可以不传 `AUTOVIDEOCLIP_API_KEY`。
 
 从源码安装时：
 
@@ -208,7 +208,7 @@ tool_timeout_sec = 3600           # 默认 60 秒；clip_video 要几分钟，�
 ```json
 {
   "mcpServers": {
-    "autoclip": { "command": "/path/to/autoclip/venv/bin/autoclip", "args": ["mcp"] }
+    "autovideoclip": { "command": "/path/to/autovideoclip/venv/bin/autovideoclip", "args": ["mcp"] }
   }
 }
 ```
@@ -216,23 +216,23 @@ tool_timeout_sec = 3600           # 默认 60 秒；clip_video 要几分钟，�
 **Claude Code**：
 
 ```bash
-claude mcp add autoclip -- /path/to/autoclip/venv/bin/autoclip mcp
+claude mcp add autovideoclip -- /path/to/autovideoclip/venv/bin/autovideoclip mcp
 ```
 
-没装包时把 `command` 换成 `/path/to/autoclip/venv/bin/python`，`args` 为 `["-m", "backend.mcp_server"]`，
-并加 `"env": {"PYTHONPATH": "/path/to/autoclip"}`。
+没装包时把 `command` 换成 `/path/to/autovideoclip/venv/bin/python`，`args` 为 `["-m", "backend.mcp_server"]`，
+并加 `"env": {"PYTHONPATH": "/path/to/autovideoclip"}`。
 
 **OpenCode**（`~/.config/opencode/opencode.json`，或项目里的 `opencode.json`；带注释的 `.jsonc` 也支持）：
 
 ```json
 {
   "mcp": {
-    "autoclip": { "type": "local", "command": ["/path/to/autoclip/venv/bin/autoclip", "mcp"], "enabled": true }
+    "autovideoclip": { "type": "local", "command": ["/path/to/autovideoclip/venv/bin/autovideoclip", "mcp"], "enabled": true }
   }
 }
 ```
 
-也可以让 AutoVideoClip 自己写：`autoclip mcp install opencode`（`--scope project --dir .` 写项目配置、`--print` 只打印片段、
+也可以让 AutoVideoClip 自己写：`autovideoclip mcp install opencode`（`--scope project --dir .` 写项目配置、`--print` 只打印片段、
 `--force` 在现有配置带注释时先备份再重写）。重装会保留同名条目里的 `environment` / `timeout` 等自定义字段；存在
 `opencode.jsonc` 时优先写它，两份配置冲突会在写入前直接拒绝。接入后在 opencode 里给一个视频路径即可出片，详见 `docs/OPENCODE.md`。
 
@@ -256,16 +256,16 @@ claude mcp add autoclip -- /path/to/autoclip/venv/bin/autoclip mcp
 - 全局 LLM 配置是进程级的，任务用 `threading.Lock` 串行；`start_clip_job` 连发会排队。
 - 任务状态在内存里；server 重启后 `get_job_status` 会退回从磁盘读项目结果。
 
-**Agent skill**：`skills/autoclip/SKILL.md` 教 agent 何时用哪个工具、参数怎么选、结果怎么呈现、切片为 0 怎么办。
-复制到 `~/.cursor/skills/autoclip/`、`~/.claude/skills/autoclip/` 或 `~/.config/opencode/skills/autoclip/` 即生效。
+**Agent skill**：`skills/autovideoclip/SKILL.md` 教 agent 何时用哪个工具、参数怎么选、结果怎么呈现、切片为 0 怎么办。
+复制到 `~/.cursor/skills/autovideoclip/`、`~/.claude/skills/autovideoclip/` 或 `~/.config/opencode/skills/autovideoclip/` 即生效。
 
 ### MCPB（Smithery 本地 stdio）
 
-MCPB（MCP Bundle）是带 `manifest.json` 的 ZIP，扩展名 `.mcpb`。Official MCP Registry 上的 `io.github.yogendra-sudo/AutoVideoClip-mcp` 仍走 PyPI 和 `uvx autoclip-mcp`。Smithery 的本地 stdio 列表要另外上传一个 `.mcpb`。
+MCPB（MCP Bundle）是带 `manifest.json` 的 ZIP，扩展名 `.mcpb`。Official MCP Registry 上的 `io.github.yogendra-sudo/AutoVideoClip-mcp` 仍走 PyPI 和 `uvx autovideoclip-mcp`。Smithery 的本地 stdio 列表要另外上传一个 `.mcpb`。
 
-`mcpb/` 是薄封装，不把 `backend/` 打进包。`mcpb/pyproject.toml` 依赖已发布的 `autoclip-mcp`（当前 pin 与仓库根 `pyproject.toml` 的版本一致），`mcpb/src/server.py` 只转调 `backend.mcp_server:main`。宿主用 UV 安装这个 PyPI 包。安装后的 server 需要 PATH 里有 `uv`、`ffmpeg`、`ffprobe`。Python 3.10+ 由 UV 准备。
+`mcpb/` 是薄封装，不把 `backend/` 打进包。`mcpb/pyproject.toml` 依赖已发布的 `autovideoclip-mcp`（当前 pin 与仓库根 `pyproject.toml` 的版本一致），`mcpb/src/server.py` 只转调 `backend.mcp_server:main`。宿主用 UV 安装这个 PyPI 包。安装后的 server 需要 PATH 里有 `uv`、`ffmpeg`、`ffprobe`。Python 3.10+ 由 UV 准备。
 
-可选的模型密钥在清单 `user_config.api_key` 里，类型是敏感字符串，不是必填，映射到环境变量 `AUTOCLIP_API_KEY`。桌面应用已经保存过密钥时留空。空白或尚未替换的 `${user_config...}` 会在入口丢掉，不会覆盖桌面设置。
+可选的模型密钥在清单 `user_config.api_key` 里，类型是敏感字符串，不是必填，映射到环境变量 `AUTOVIDEOCLIP_API_KEY`。桌面应用已经保存过密钥时留空。空白或尚未替换的 `${user_config...}` 会在入口丢掉，不会覆盖桌面设置。
 
 清单里 `server.type` 写成 `python`，是因为当前 Smithery CLI 认不出 MCPB 0.4 的 `uv` 类型，发布时会报 `Could not determine bundle runtime from manifest`。启动命令仍然是 `uv run --directory <包目录> src/server.py`，依赖从 PyPI 安装。清单不写 `tools`：Smithery 会把 MCPB 那种只有名字和说明的工具条目当成完整工具列表，而那种条目没有 `inputSchema`，发布会被拒绝。工具以 server 运行时列出的为准。
 
@@ -285,13 +285,13 @@ python scripts/pack_mcpb.py --validate-only
 
 ```bash
 npx --yes @anthropic-ai/mcpb@2.1.2 validate mcpb
-npx --yes @anthropic-ai/mcpb@2.1.2 pack mcpb dist/autoclip-mcp.mcpb
+npx --yes @anthropic-ai/mcpb@2.1.2 pack mcpb dist/autovideoclip-mcp.mcpb
 ```
 
 发布到 Smithery 要维护者自己的登录。仓库脚本不会执行这一步，也不保存 API key。`-n` 用 Smithery 上实际的 namespace/server；与 Official MCP Registry 同名时是：
 
 ```bash
-smithery mcp publish ./dist/autoclip-mcp.mcpb -n io.github.yogendra-sudo/AutoVideoClip-mcp
+smithery mcp publish ./dist/autovideoclip-mcp.mcpb -n io.github.yogendra-sudo/AutoVideoClip-mcp
 ```
 
 Smithery 日后若接受 `server.type: uv`，只改清单里的类型即可，启动命令和 PyPI 依赖不用改。不要为此去抬 PyPI 版本。
@@ -341,5 +341,5 @@ cd backend && python -m pytest tests/test_local_presets.py tests/test_cli.py -q
 真跑一次（需要 Ollama 或云端 key）：
 
 ```bash
-autoclip run /path/to/talk.mp4 --provider ollama --min-score 0.5 --json
+autovideoclip run /path/to/talk.mp4 --provider ollama --min-score 0.5 --json
 ```

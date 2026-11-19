@@ -4,7 +4,7 @@ A Studio render used to be one libx264 encode per clip on the CPU; with 30+ clip
 was most of the run and all of the fan noise. VideoToolbox (macOS) and NVENC / QSV / AMF (Windows,
 Linux) encode the same 1080×1920 clip several times faster with almost no CPU. Each candidate is
 proven once with a tiny test encode; a failed real encode marks it broken and the caller retries
-with libx264. `AUTOCLIP_VIDEO_ENCODER=x264` forces software encoding.
+with libx264. `AUTOVIDEOCLIP_VIDEO_ENCODER=x264` forces software encoding.
 """
 from __future__ import annotations
 
@@ -40,7 +40,7 @@ def _works(ffmpeg: str, encoder: str) -> bool:
 def encoder() -> str:
     """The encoder to use now (probed once per process)."""
     global _chosen
-    if os.getenv('AUTOCLIP_VIDEO_ENCODER', '').strip().lower() in ('x264', 'libx264', 'software'):
+    if os.getenv('AUTOVIDEOCLIP_VIDEO_ENCODER', '').strip().lower() in ('x264', 'libx264', 'software'):
         return SOFTWARE
     with _lock:
         if _chosen is None or _chosen in _broken:

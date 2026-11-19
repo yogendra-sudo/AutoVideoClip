@@ -2,8 +2,8 @@
 
 import qualityRaw from '@provider-quality'
 
-export const ETA_HISTORY_KEY = 'autoclip.eta.history.v1'
-export const ETA_INITIAL_KEY = 'autoclip.eta.initial.v1'
+export const ETA_HISTORY_KEY = 'autovideoclip.eta.history.v1'
+export const ETA_INITIAL_KEY = 'autovideoclip.eta.initial.v1'
 const HISTORY_KEEP = 20
 
 export type EtaSample = { provider: string; source_min: number; elapsed_sec: number }

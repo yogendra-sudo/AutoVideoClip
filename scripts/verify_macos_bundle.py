@@ -35,12 +35,12 @@ resources = args.resources.resolve(strict=True)
 if not Path(sys.executable).resolve().is_relative_to(resources / 'python'):
     parser.error('Use the Python executable inside this bundle, not a development virtualenv.')
 args.output_parent.mkdir(parents=True, exist_ok=True)
-root = Path(tempfile.mkdtemp(prefix='autoclip-bundle-smoke-', dir=args.output_parent)).resolve()
+root = Path(tempfile.mkdtemp(prefix='autovideoclip-bundle-smoke-', dir=args.output_parent)).resolve()
 print('Isolated evidence directory:', root, flush=True)
 for required in ['backend/desktop_main.py', 'backend/core/event_catalog.json', 'backend/core/failure_messages.json', 'backend/assets/fonts/NotoSansSC-Medium.ttf', 'ffmpeg/ffmpeg', 'ffmpeg/ffprobe']:
     if not (resources / required).is_file():
         parser.error('Missing bundled runtime file: ' + required)
-os.environ.update(AUTOCLIP_DATA_DIR=str(root/'data'),AUTOCLIP_APP_DIR=str(root/'data'),AUTOCLIP_DESKTOP_MODE='true',AUTOCLIP_MODE='desktop',DATABASE_URL='sqlite:///'+str(root/'isolated.sqlite'),SENTRY_DSN='',AUTOCLIP_FFMPEG_PATH=str(resources/'ffmpeg/ffmpeg'),AUTOCLIP_FFPROBE_PATH=str(resources/'ffmpeg/ffprobe'))
+os.environ.update(AUTOVIDEOCLIP_DATA_DIR=str(root/'data'),AUTOVIDEOCLIP_APP_DIR=str(root/'data'),AUTOVIDEOCLIP_DESKTOP_MODE='true',AUTOVIDEOCLIP_MODE='desktop',DATABASE_URL='sqlite:///'+str(root/'isolated.sqlite'),SENTRY_DSN='',AUTOVIDEOCLIP_FFMPEG_PATH=str(resources/'ffmpeg/ffmpeg'),AUTOVIDEOCLIP_FFPROBE_PATH=str(resources/'ffmpeg/ffprobe'))
 (root/'data').mkdir(exist_ok=True);(root/'data/privacy.json').write_text('{"crash_reports":false}')
 os.chdir(resources);sys.path.insert(0,str(resources))
 import backend
@@ -88,12 +88,12 @@ runpy.run_module('backend.desktop_main', run_name='__main__')
 assert_binary_contains_posthog_key(macos_desktop_binary(resources), os.environ.get('VITE_PUBLIC_POSTHOG_KEY', ''))
 child_env = apply_release_launcher_env(dict(
     os.environ, SENTRY_DSN='https://public@example.invalid/0',
-    AUTOCLIP_EVENT_CATALOG='', AUTOCLIP_PARENT_PID='',
-    AUTOCLIP_POSTHOG_KEY='', VITE_PUBLIC_POSTHOG_KEY=''), resources)
+    AUTOVIDEOCLIP_EVENT_CATALOG='', AUTOVIDEOCLIP_PARENT_PID='',
+    AUTOVIDEOCLIP_POSTHOG_KEY='', VITE_PUBLIC_POSTHOG_KEY=''), resources)
 print('Sentry launch contract:',
-      {key: child_env[key] for key in ('AUTOCLIP_APP_VERSION', 'AUTOCLIP_BUILD_ENVIRONMENT')},
+      {key: child_env[key] for key in ('AUTOVIDEOCLIP_APP_VERSION', 'AUTOVIDEOCLIP_BUILD_ENVIRONMENT')},
       flush=True)
-os.environ['AUTOCLIP_BUILD_ENVIRONMENT'] = child_env['AUTOCLIP_BUILD_ENVIRONMENT']
+os.environ['AUTOVIDEOCLIP_BUILD_ENVIRONMENT'] = child_env['AUTOVIDEOCLIP_BUILD_ENVIRONMENT']
 assert_packaged_telemetry_identity()
 backend_log = root/'backend-smoke.log'
 log_handle = backend_log.open('w')

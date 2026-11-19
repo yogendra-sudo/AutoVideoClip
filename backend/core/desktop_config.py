@@ -80,8 +80,8 @@ class DesktopConfig:
         self._siliconflow_api_key = os.getenv("API_SILICONFLOW_API_KEY", "")
         self._jimeng_access_key = os.getenv("API_JIMENG_ACCESS_KEY", "")
         self._jimeng_secret_key = os.getenv("API_JIMENG_SECRET_KEY", "")
-        self._max_memory_usage = int(os.getenv("AUTOCLIP_MAX_MEMORY_USAGE", "2048"))
-        self._log_retention_days = int(os.getenv("AUTOCLIP_LOG_RETENTION_DAYS", "7"))
+        self._max_memory_usage = int(os.getenv("AUTOVIDEOCLIP_MAX_MEMORY_USAGE", "2048"))
+        self._log_retention_days = int(os.getenv("AUTOVIDEOCLIP_LOG_RETENTION_DAYS", "7"))
 
     def _build_paths(self) -> DesktopPaths:
         data_dir = path_utils.get_data_directory()
@@ -91,7 +91,7 @@ class DesktopConfig:
             data_dir=data_dir,
             cache_dir=cache_dir,
             temp_dir=temp_dir,
-            database_url=f"sqlite:///{data_dir / 'autoclip.db'}",
+            database_url=f"sqlite:///{data_dir / 'autovideoclip.db'}",
         )
 
     def set_data_dir(self, new_data_dir: Path, migrate_from_old: bool = True):
@@ -111,12 +111,12 @@ class DesktopConfig:
                     shutil.copy2(item, target)
             migrated = True
 
-        os.environ["AUTOCLIP_DATA_DIR"] = str(new_data_dir)
+        os.environ["AUTOVIDEOCLIP_DATA_DIR"] = str(new_data_dir)
         self.paths = DesktopPaths(
             data_dir=new_data_dir,
             cache_dir=new_data_dir / "cache",
             temp_dir=new_data_dir / "temp",
-            database_url=f"sqlite:///{new_data_dir / 'autoclip.db'}",
+            database_url=f"sqlite:///{new_data_dir / 'autovideoclip.db'}",
         )
         self.paths.cache_dir.mkdir(parents=True, exist_ok=True)
         self.paths.temp_dir.mkdir(parents=True, exist_ok=True)
@@ -157,7 +157,7 @@ class DesktopConfig:
     @property
     def app_version(self) -> str:
         # 桌面壳（Rust）启动后端时注入 CARGO_PKG_VERSION；直接跑源码时回退到当前版本号
-        return os.getenv("AUTOCLIP_APP_VERSION", "1.5.8")
+        return os.getenv("AUTOVIDEOCLIP_APP_VERSION", "1.5.8")
 
     @property
     def debug_mode(self) -> bool:
@@ -169,19 +169,19 @@ class DesktopConfig:
 
     @property
     def host(self) -> str:
-        return os.getenv("AUTOCLIP_HOST", "127.0.0.1")
+        return os.getenv("AUTOVIDEOCLIP_HOST", "127.0.0.1")
 
     @host.setter
     def host(self, value: str) -> None:
-        os.environ["AUTOCLIP_HOST"] = value
+        os.environ["AUTOVIDEOCLIP_HOST"] = value
 
     @property
     def port(self) -> int:
-        return int(os.getenv("AUTOCLIP_PORT", "8000"))
+        return int(os.getenv("AUTOVIDEOCLIP_PORT", "8000"))
 
     @port.setter
     def port(self, value: int) -> None:
-        os.environ["AUTOCLIP_PORT"] = str(value)
+        os.environ["AUTOVIDEOCLIP_PORT"] = str(value)
 
     @property
     def log_level(self) -> str:
@@ -193,7 +193,7 @@ class DesktopConfig:
 
     @property
     def celery_worker_concurrency(self) -> int:
-        return int(os.getenv("AUTOCLIP_CELERY_WORKER_CONCURRENCY", "1"))
+        return int(os.getenv("AUTOVIDEOCLIP_CELERY_WORKER_CONCURRENCY", "1"))
 
     @property
     def max_memory_usage(self) -> int:

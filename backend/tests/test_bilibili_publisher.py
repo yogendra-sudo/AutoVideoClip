@@ -15,8 +15,8 @@ COOKIE = "SESSDATA=sess; bili_jct=jct; DedeUserID=42"
 @pytest.fixture
 def data_dir(tmp_path, monkeypatch):
     d = tmp_path / "data"
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(d))
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(d))
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(d))
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(d))
     monkeypatch.setenv("DATABASE_URL", f"sqlite:///{d / 'test.db'}")
     monkeypatch.delenv("BILIBILI_COOKIE", raising=False)
     d.mkdir()

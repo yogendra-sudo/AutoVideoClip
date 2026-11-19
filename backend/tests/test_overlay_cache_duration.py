@@ -42,9 +42,9 @@ def _painted(packaging, duration, template):
 def test_captions_off_overlay_cache_keeps_each_clips_duration(tmp_path, monkeypatch, template):
     if subprocess.run(['ffmpeg', '-version'], capture_output=True, check=False).returncode != 0:
         pytest.skip('ffmpeg unavailable')
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_FLAGS', '')
-    monkeypatch.setenv('AUTOCLIP_TEMPLATE_BUDGET_SEC', '90')
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_FLAGS', '')
+    monkeypatch.setenv('AUTOVIDEOCLIP_TEMPLATE_BUDGET_SEC', '90')
     blob = _png(tmp_path)
     short_pack = _off('短片标题', '第一条字幕')
     long_pack = _off('更长成片的标题', '另一条字幕')
@@ -102,9 +102,9 @@ def test_editor_reexport_captions_off_does_not_cut_the_longer_clip(tmp_path, mon
     """The editor route renders through the same overlay cache as automatic production."""
     if subprocess.run(['ffmpeg', '-version'], capture_output=True, check=False).returncode != 0:
         pytest.skip('ffmpeg unavailable')
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_FLAGS', '')
-    monkeypatch.setenv('AUTOCLIP_TEMPLATE_BUDGET_SEC', '90')
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_FLAGS', '')
+    monkeypatch.setenv('AUTOVIDEOCLIP_TEMPLATE_BUDGET_SEC', '90')
     root = store.directory('p1')
     raw = root / 'raw'
     raw.mkdir(parents=True)
@@ -163,9 +163,9 @@ def test_editor_reexport_captions_off_does_not_cut_the_longer_clip(tmp_path, mon
 def test_a_fresh_overlay_shorter_than_the_clip_is_discarded(tmp_path, monkeypatch):
     if subprocess.run(['ffmpeg', '-version'], capture_output=True, check=False).returncode != 0:
         pytest.skip('ffmpeg unavailable')
-    monkeypatch.setenv('AUTOCLIP_DATA_DIR', str(tmp_path))
-    monkeypatch.setenv('AUTOCLIP_FLAGS', '')
-    monkeypatch.setenv('AUTOCLIP_TEMPLATE_BUDGET_SEC', '90')
+    monkeypatch.setenv('AUTOVIDEOCLIP_DATA_DIR', str(tmp_path))
+    monkeypatch.setenv('AUTOVIDEOCLIP_FLAGS', '')
+    monkeypatch.setenv('AUTOVIDEOCLIP_TEMPLATE_BUDGET_SEC', '90')
     blob = _png(tmp_path)
     real = html.encode_ffv1
 

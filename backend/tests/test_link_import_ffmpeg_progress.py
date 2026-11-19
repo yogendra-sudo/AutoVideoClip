@@ -7,12 +7,12 @@ from backend.utils import ffmpeg_utils
 def test_ytdlp_ffmpeg_options_uses_bundled_binary(tmp_path, monkeypatch):
     binary = tmp_path / "ffmpeg.exe"
     binary.write_bytes(b"")
-    monkeypatch.setenv("AUTOCLIP_FFMPEG_PATH", str(binary))
+    monkeypatch.setenv("AUTOVIDEOCLIP_FFMPEG_PATH", str(binary))
     assert ffmpeg_utils.ytdlp_ffmpeg_options()["ffmpeg_location"] == str(binary)
 
 
 def test_ytdlp_options_enable_every_js_runtime_found(monkeypatch):
-    monkeypatch.delenv("AUTOCLIP_FFMPEG_PATH", raising=False)
+    monkeypatch.delenv("AUTOVIDEOCLIP_FFMPEG_PATH", raising=False)
     monkeypatch.delenv("FFMPEG_PATH", raising=False)
     monkeypatch.setattr(ffmpeg_utils, "bundled_candidates", lambda *_args, **_kwargs: [])
     monkeypatch.setattr(ffmpeg_utils, "_report_missing", lambda _name: None)
@@ -31,7 +31,7 @@ def test_ytdlp_js_runtimes_are_valid_for_yt_dlp(monkeypatch):
 
 
 def test_ytdlp_ffmpeg_options_empty_when_unresolved(monkeypatch):
-    monkeypatch.delenv("AUTOCLIP_FFMPEG_PATH", raising=False)
+    monkeypatch.delenv("AUTOVIDEOCLIP_FFMPEG_PATH", raising=False)
     monkeypatch.delenv("FFMPEG_PATH", raising=False)
     monkeypatch.setattr(ffmpeg_utils, "bundled_candidates", lambda *_args, **_kwargs: [])
     monkeypatch.setattr(ffmpeg_utils, "_report_missing", lambda _name: None)

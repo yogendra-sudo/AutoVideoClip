@@ -74,13 +74,13 @@ _RESOURCE_NAME = "provider_presets.json"
 
 
 def _env_presets_path() -> Optional[Path]:
-    env = (os.environ.get("AUTOCLIP_PROVIDER_PRESETS") or "").strip()
+    env = (os.environ.get("AUTOVIDEOCLIP_PROVIDER_PRESETS") or "").strip()
     if not env:
         return None
     path = Path(env).expanduser()
     if path.is_file():
         return path
-    raise FileNotFoundError(f"AUTOCLIP_PROVIDER_PRESETS not found: {path}")
+    raise FileNotFoundError(f"AUTOVIDEOCLIP_PROVIDER_PRESETS not found: {path}")
 
 
 def _resource_presets_path() -> Optional[Path]:

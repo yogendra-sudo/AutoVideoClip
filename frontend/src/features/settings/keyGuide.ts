@@ -75,7 +75,7 @@ export function looksLikeApiKey(value: string): boolean {
   const key = value.trim()
   if (key.length < 20 || key.length > 200) return false
   if (/\s/.test(key)) return false
-  if (/^https?:/i.test(key) || /^autoclip:/i.test(key)) return false
+  if (/^https?:/i.test(key) || /^autovideoclip:/i.test(key)) return false
   if (PATH_SEPARATOR.test(key) || FILENAME_EXTENSION.test(key)) return false
   if (prefixProviderId(key)) return true
   if (GENERIC_SK.test(key)) return true
@@ -89,7 +89,7 @@ export function looksLikeApiKey(value: string): boolean {
 export function extractApiKey(raw: string): string | null {
   const text = (raw || '').trim()
   if (!text || text.length > 4000) return null
-  if (/^autoclip:/i.test(text)) return null
+  if (/^autovideoclip:/i.test(text)) return null
   if (/^https?:\/\//i.test(text)) return null
   const labeled = text.match(LABELED)
   if (labeled && looksLikeApiKey(labeled[1])) return labeled[1]
@@ -172,14 +172,14 @@ const QUERY_URLS = ['base_url', 'url', 'server', 'address']
 /** New API substitutes `{key}` and `{address}` before opening the URL. */
 export function parseAutoclipLink(raw: string): { key: string; baseUrl: string; providerId: string | null } | null {
   const text = (raw || '').trim()
-  if (!/^autoclip:/i.test(text)) return null
+  if (!/^autovideoclip:/i.test(text)) return null
   let parsed: URL
   try {
     parsed = new URL(text)
   } catch {
     return null
   }
-  if (parsed.protocol !== 'autoclip:') return null
+  if (parsed.protocol !== 'autovideoclip:') return null
   if (parsed.username || parsed.password) return null
   const params = parsed.searchParams
   const key = QUERY_KEYS.map(name => params.get(name) || '').map(value => value.trim()).find(Boolean) || ''

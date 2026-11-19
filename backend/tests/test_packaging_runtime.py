@@ -25,8 +25,8 @@ def isolate_runtime(tmp_path, monkeypatch):
     # These tests cover the on-demand installer; a dev/CI venv may already have playwright (W157-F7 bundles it).
     monkeypatch.setattr(runtime, "bundled_package_present", lambda: False)
     for key in (
-        "PLAYWRIGHT_DOWNLOAD_HOST", "AUTOCLIP_PLAYWRIGHT_DOWNLOAD_HOST", "AUTOCLIP_PLAYWRIGHT_MIRROR",
-        "AUTOCLIP_PLAYWRIGHT_DOWNLOAD_SOURCE", "AUTOCLIP_PIP_INDEX", "PIP_INDEX_URL", "PLAYWRIGHT_BROWSERS_PATH",
+        "PLAYWRIGHT_DOWNLOAD_HOST", "AUTOVIDEOCLIP_PLAYWRIGHT_DOWNLOAD_HOST", "AUTOVIDEOCLIP_PLAYWRIGHT_MIRROR",
+        "AUTOVIDEOCLIP_PLAYWRIGHT_DOWNLOAD_SOURCE", "AUTOVIDEOCLIP_PIP_INDEX", "PIP_INDEX_URL", "PLAYWRIGHT_BROWSERS_PATH",
     ):
         monkeypatch.delenv(key, raising=False)
     runtime._runtime_import_error = ""
@@ -65,8 +65,8 @@ def test_explicit_download_host_wins_over_the_pip_mirror(monkeypatch):
     assert runtime.download_host() == "https://mirror.example/playwright"
 
 
-def test_autoclip_download_host_is_used_when_playwright_host_is_unset(monkeypatch):
-    monkeypatch.setenv("AUTOCLIP_PLAYWRIGHT_DOWNLOAD_HOST", "https://mirror.example/pw")
+def test_autovideoclip_download_host_is_used_when_playwright_host_is_unset(monkeypatch):
+    monkeypatch.setenv("AUTOVIDEOCLIP_PLAYWRIGHT_DOWNLOAD_HOST", "https://mirror.example/pw")
     runtime.ensure_environment()
     assert os.environ["PLAYWRIGHT_DOWNLOAD_HOST"] == "https://mirror.example/pw"
 
@@ -87,7 +87,7 @@ def test_public_pypi_does_not_pin_a_china_mirror(monkeypatch):
 
 def test_mirror_switch_off_keeps_the_official_browser_cdn(monkeypatch):
     monkeypatch.setenv("PIP_INDEX_URL", "https://mirrors.aliyun.com/pypi/simple")
-    monkeypatch.setenv("AUTOCLIP_PLAYWRIGHT_MIRROR", "0")
+    monkeypatch.setenv("AUTOVIDEOCLIP_PLAYWRIGHT_MIRROR", "0")
     assert runtime.download_host() is None
     assert runtime.browser_download_plan() == [("official", None)]
 
@@ -338,7 +338,7 @@ def test_auto_pip_timeout_falls_back_to_the_china_mirror(monkeypatch):
 
 
 def test_pypi_mode_does_not_fall_back_after_a_timeout(monkeypatch):
-    monkeypatch.setenv("AUTOCLIP_PIP_INDEX", "pypi")
+    monkeypatch.setenv("AUTOVIDEOCLIP_PIP_INDEX", "pypi")
     seen = []
     monkeypatch.setattr(
         runtime, "_stream",
@@ -353,7 +353,7 @@ def test_pypi_mode_does_not_fall_back_after_a_timeout(monkeypatch):
 
 
 def test_mirror_mode_skips_the_official_index(monkeypatch):
-    monkeypatch.setenv("AUTOCLIP_PIP_INDEX", "tuna")
+    monkeypatch.setenv("AUTOVIDEOCLIP_PIP_INDEX", "tuna")
     seen = []
     monkeypatch.setattr(
         runtime, "_stream",
@@ -403,7 +403,7 @@ def test_browser_download_timeout_falls_back_to_npmmirror(monkeypatch):
 
 
 def test_explicit_playwright_host_is_not_retried(monkeypatch):
-    monkeypatch.setenv("AUTOCLIP_PLAYWRIGHT_DOWNLOAD_HOST", "https://mirror.example/pw")
+    monkeypatch.setenv("AUTOVIDEOCLIP_PLAYWRIGHT_DOWNLOAD_HOST", "https://mirror.example/pw")
     seen = []
 
     def stream(_command, env, _progress, timeout=None, stall_timeout=None):
@@ -422,7 +422,7 @@ def test_explicit_playwright_host_is_not_retried(monkeypatch):
 
 
 def test_playwright_download_source_mirror_uses_npmmirror_only(monkeypatch):
-    monkeypatch.setenv("AUTOCLIP_PLAYWRIGHT_DOWNLOAD_SOURCE", "npmmirror")
+    monkeypatch.setenv("AUTOVIDEOCLIP_PLAYWRIGHT_DOWNLOAD_SOURCE", "npmmirror")
     assert runtime.playwright_download_mode() == "mirror"
     assert runtime.browser_download_plan() == [("mirror", runtime.CN_DOWNLOAD_HOST)]
     assert runtime.download_host() == runtime.CN_DOWNLOAD_HOST

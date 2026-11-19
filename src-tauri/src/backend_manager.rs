@@ -99,24 +99,24 @@ impl BackendManager {
             .current_dir(&launch.working_dir)
             .stdout(Stdio::piped())
             .stderr(Stdio::piped())
-            .env("AUTOCLIP_DESKTOP_MODE", "true")
-            .env("AUTOCLIP_MODE", "desktop")
+            .env("AUTOVIDEOCLIP_DESKTOP_MODE", "true")
+            .env("AUTOVIDEOCLIP_MODE", "desktop")
             .env(
-                "AUTOCLIP_BUILD_ENVIRONMENT",
+                "AUTOVIDEOCLIP_BUILD_ENVIRONMENT",
                 if cfg!(debug_assertions) { "development" } else { "production" },
             )
             // Keep signed bundle resources immutable, including Python startup imports.
             .env("PYTHONDONTWRITEBYTECODE", "1")
             // Single source of truth for the version the backend reports in /settings.
-            .env("AUTOCLIP_APP_VERSION", env!("CARGO_PKG_VERSION"))
+            .env("AUTOVIDEOCLIP_APP_VERSION", env!("CARGO_PKG_VERSION"))
             // The backend exits when this process is gone, even after kill -9 or a crash
             // (macOS has no Job Object; on Windows the job already covers it).
-            .env("AUTOCLIP_PARENT_PID", std::process::id().to_string());
+            .env("AUTOVIDEOCLIP_PARENT_PID", std::process::id().to_string());
         let token = new_local_token()?;
-        cmd.env("AUTOCLIP_SHUTDOWN_TOKEN", &token); // env only: never argv, never logged
+        cmd.env("AUTOVIDEOCLIP_SHUTDOWN_TOKEN", &token); // env only: never argv, never logged
         *self.local_token.lock().unwrap() = token;
         let instance_id = new_instance_id()?;
-        cmd.env("AUTOCLIP_INSTANCE_ID", &instance_id);
+        cmd.env("AUTOVIDEOCLIP_INSTANCE_ID", &instance_id);
         *self.instance_id.lock().unwrap() = instance_id;
 
         // Forward SENTRY_DSN to the Python backend when configured at build time.
@@ -127,7 +127,7 @@ impl BackendManager {
         // never include the key in argv or logs.
         if let Some(key) = option_env!("VITE_PUBLIC_POSTHOG_KEY") {
             if !key.is_empty() {
-                cmd.env("AUTOCLIP_POSTHOG_KEY", key);
+                cmd.env("AUTOVIDEOCLIP_POSTHOG_KEY", key);
             }
         }
 
@@ -140,14 +140,14 @@ impl BackendManager {
             .join("ffmpeg")
             .join(Self::exe_name("ffmpeg"));
         if ffmpeg_bin.is_file() {
-            cmd.env("AUTOCLIP_FFMPEG_PATH", &ffmpeg_bin);
+            cmd.env("AUTOVIDEOCLIP_FFMPEG_PATH", &ffmpeg_bin);
         }
         let ffprobe_bin = launch
             .working_dir
             .join("ffmpeg")
             .join(Self::exe_name("ffprobe"));
         if ffprobe_bin.is_file() {
-            cmd.env("AUTOCLIP_FFPROBE_PATH", &ffprobe_bin);
+            cmd.env("AUTOVIDEOCLIP_FFPROBE_PATH", &ffprobe_bin);
         }
 
         // The backend prints emoji/Chinese to stdout; with a piped stdout on
@@ -314,7 +314,7 @@ impl BackendManager {
                 for backend_binary in [
                     backend_work_dir.join(Self::backend_binary_name()),
                     backend_work_dir
-                        .join("autoclip-backend")
+                        .join("autovideoclip-backend")
                         .join(Self::backend_binary_name()),
                 ] {
                     if backend_binary.is_file() {
@@ -449,9 +449,9 @@ impl BackendManager {
 
     fn backend_binary_name() -> &'static str {
         if cfg!(target_os = "windows") {
-            "autoclip-backend.exe"
+            "autovideoclip-backend.exe"
         } else {
-            "autoclip-backend"
+            "autovideoclip-backend"
         }
     }
 
@@ -800,7 +800,7 @@ pub(crate) fn crash_restart_delay(restarts_already: u8) -> Duration {
     Duration::from_secs(1_u64 << u32::from(restarts_already.min(2)))
 }
 
-pub(crate) const SHUTDOWN_MARKER_DIR_ENV: &str = "AUTOCLIP_SHUTDOWN_MARKER_DIR";
+pub(crate) const SHUTDOWN_MARKER_DIR_ENV: &str = "AUTOVIDEOCLIP_SHUTDOWN_MARKER_DIR";
 
 /// R21 #196: the single shutdown-record dir for this launch (shell and backend both use it).
 pub(crate) fn shutdown_marker_dir(app_dir: &std::path::Path) -> std::path::PathBuf {
@@ -1016,7 +1016,7 @@ mod shutdown_intent_tests {
     #[test]
     fn shell_writes_unacked_into_the_dir_it_hands_the_backend() {
         // R21 #196: one resolved dir, passed to the backend in env and used by stop() for `unacked`.
-        assert_eq!(SHUTDOWN_MARKER_DIR_ENV, "AUTOCLIP_SHUTDOWN_MARKER_DIR");
+        assert_eq!(SHUTDOWN_MARKER_DIR_ENV, "AUTOVIDEOCLIP_SHUTDOWN_MARKER_DIR");
         let src = include_str!("backend_manager.rs");
         let start = &src[src.find("pub fn start").unwrap()..src.find("pub fn stop_with_intent").unwrap()];
         assert!(start.contains("cmd.env(SHUTDOWN_MARKER_DIR_ENV, dir)"));

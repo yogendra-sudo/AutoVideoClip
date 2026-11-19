@@ -322,7 +322,7 @@ def export_clip(req: ExportRequest) -> Dict[str, Any]:
     if req.subtitles and not studio:
         slug += '_captions-v2'
     if req.brand_outro:
-        slug += "_autoclip-outro-v1"
+        slug += "_autovideoclip-outro-v1"
     out_path = out_dir / f"{slug}.mp4"
     meta_path = out_dir / f"{slug}.json"
 

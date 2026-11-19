@@ -17,8 +17,8 @@ from backend.pipeline.failures import PipelineFailure
 @pytest.fixture
 def http_manager(monkeypatch):
     monkeypatch.setattr("time.sleep", lambda _seconds: None)
-    monkeypatch.setenv("AUTOCLIP_LLM_CONCURRENCY", "2")
-    monkeypatch.delenv("AUTOCLIP_LLM_CACHE_DIR", raising=False)
+    monkeypatch.setenv("AUTOVIDEOCLIP_LLM_CONCURRENCY", "2")
+    monkeypatch.delenv("AUTOVIDEOCLIP_LLM_CACHE_DIR", raising=False)
     concurrency.reset_limiter()
     clients = []
 
@@ -106,7 +106,7 @@ def test_timeline_can_recover_within_budget_and_new_run_resets_it(
 ):
     from backend.tests.test_recent_feedback import cue
 
-    monkeypatch.setenv("AUTOCLIP_LLM_CONCURRENCY", str(workers))
+    monkeypatch.setenv("AUTOVIDEOCLIP_LLM_CONCURRENCY", str(workers))
     hits = Counter()
 
     def handler(request):
@@ -189,7 +189,7 @@ def test_each_outline_chunk_can_recover_in_third_round(tmp_path, monkeypatch, ht
 def test_timeline_outer_repair_rounds_share_http_budget(tmp_path, monkeypatch, http_manager, workers):
     from backend.tests.test_recent_feedback import cue, prepared_extractor
 
-    monkeypatch.setenv("AUTOCLIP_LLM_CONCURRENCY", str(workers))
+    monkeypatch.setenv("AUTOVIDEOCLIP_LLM_CONCURRENCY", str(workers))
     hits = Counter()
 
     def handler(request):

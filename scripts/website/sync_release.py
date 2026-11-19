@@ -35,7 +35,7 @@ ASSETS = {
 
 def fetch_release(tag: str | None) -> dict:
     url = f"https://api.github.com/repos/{REPO}/releases/" + (f"tags/{tag}" if tag else "latest")
-    req = urllib.request.Request(url, headers={"Accept": "application/vnd.github+json", "User-Agent": "autoclip-intro-sync"})
+    req = urllib.request.Request(url, headers={"Accept": "application/vnd.github+json", "User-Agent": "autovideoclip-intro-sync"})
     token = os.getenv("GITHUB_TOKEN")
     if token:
         req.add_header("Authorization", f"Bearer {token}")

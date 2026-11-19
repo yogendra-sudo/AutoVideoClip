@@ -25,13 +25,13 @@ export default defineConfig(({ mode, command }) => {
     plugins: [
       react(),
       ...(uploadSourceMaps ? [sentryVitePlugin({
-        org: sentryEnv.SENTRY_ORG || 'autoclip-ts',
-        project: sentryEnv.SENTRY_PROJECT || 'autoclip-frontend',
+        org: sentryEnv.SENTRY_ORG || 'autovideoclip-ts',
+        project: sentryEnv.SENTRY_PROJECT || 'autovideoclip-frontend',
         authToken,
         telemetry: false,
         release: {
           // Must match src/desktop/sentry.ts exactly.
-          name: `autoclip-frontend@${appVersion}`,
+          name: `autovideoclip-frontend@${appVersion}`,
           inject: false,
         },
         sourcemaps: {

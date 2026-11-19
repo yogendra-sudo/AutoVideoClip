@@ -19,9 +19,9 @@ record arm64 or x86_64, then the same command.
 Windows (Tencent Cloud acceptance machine, run by AutoClip PM): the same command from a
 checkout of this branch. Do not treat a missing local number as a result.
 `--install-runtime` tries the official PyPI index, then the Tsinghua mirror if that index
-goes silent (`AUTOCLIP_PIP_INDEX=auto|pypi|mirror`, `PIP_INDEX_URL` pins one index).
-The browser download does the same (`AUTOCLIP_PLAYWRIGHT_DOWNLOAD_SOURCE`); a system
-Edge or Chrome skips that download. ffmpeg is resolved from AUTOCLIP_FFMPEG_PATH, then
+goes silent (`AUTOVIDEOCLIP_PIP_INDEX=auto|pypi|mirror`, `PIP_INDEX_URL` pins one index).
+The browser download does the same (`AUTOVIDEOCLIP_PLAYWRIGHT_DOWNLOAD_SOURCE`); a system
+Edge or Chrome skips that download. ffmpeg is resolved from AUTOVIDEOCLIP_FFMPEG_PATH, then
 resources/ffmpeg next to the portable Python, then PATH.
 """
 from __future__ import annotations
@@ -720,7 +720,7 @@ def main(argv: list[str] | None = None) -> int:
         if status["status"] != "installed":
             _write(args.out, {"schema": 1, "status": "error", "error": status.get("message") or "install failed", "label": args.label})
             return 1
-    work = Path(tempfile.mkdtemp(prefix="autoclip-packaging-bench-"))
+    work = Path(tempfile.mkdtemp(prefix="autovideoclip-packaging-bench-"))
     try:
         payload = asyncio.run(measure(args, work))
     except Exception as exc:  # noqa: BLE001 - the report has to exist even when the probe fails

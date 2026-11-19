@@ -21,7 +21,7 @@ def _remove_cwd(monkeypatch, tmp_path: Path) -> None:
 
 def test_resolve_project_directory_uses_data_dir_when_cwd_is_gone(tmp_path, monkeypatch):
     data_dir = tmp_path / "desktop-data"
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(data_dir))
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(data_dir))
     _remove_cwd(monkeypatch, tmp_path)
 
     with pytest.raises(FileNotFoundError):
@@ -36,9 +36,9 @@ def test_resolve_project_directory_uses_data_dir_when_cwd_is_gone(tmp_path, monk
 
 def test_desktop_mode_uses_app_dir_without_explicit_data_dir(tmp_path, monkeypatch):
     app_dir = tmp_path / "Application Support" / "AutoClip"
-    monkeypatch.delenv("AUTOCLIP_DATA_DIR", raising=False)
-    monkeypatch.setenv("AUTOCLIP_DESKTOP_MODE", "1")
-    monkeypatch.setenv("AUTOCLIP_APP_DIR", str(app_dir))
+    monkeypatch.delenv("AUTOVIDEOCLIP_DATA_DIR", raising=False)
+    monkeypatch.setenv("AUTOVIDEOCLIP_DESKTOP_MODE", "1")
+    monkeypatch.setenv("AUTOVIDEOCLIP_APP_DIR", str(app_dir))
     _remove_cwd(monkeypatch, tmp_path)
 
     manager = ProjectConfigManager("clip-9")
@@ -59,9 +59,9 @@ def test_web_mode_stays_under_configured_data_dir_not_cwd(tmp_path, monkeypatch)
     data_dir = tmp_path / "docker-data"
     work = tmp_path / "somewhere-else"
     work.mkdir()
-    monkeypatch.setenv("AUTOCLIP_DATA_DIR", str(data_dir))
-    monkeypatch.delenv("AUTOCLIP_DESKTOP_MODE", raising=False)
-    monkeypatch.delenv("AUTOCLIP_MODE", raising=False)
+    monkeypatch.setenv("AUTOVIDEOCLIP_DATA_DIR", str(data_dir))
+    monkeypatch.delenv("AUTOVIDEOCLIP_DESKTOP_MODE", raising=False)
+    monkeypatch.delenv("AUTOVIDEOCLIP_MODE", raising=False)
     monkeypatch.chdir(work)
 
     project_dir = resolve_project_directory("web-project")

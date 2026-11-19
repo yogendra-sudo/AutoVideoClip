@@ -27,8 +27,8 @@ def main():
     parser.add_argument('--reference', type=Path, help='Optional original design board')
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix='autoclip-title-review-') as data:
-        os.environ['AUTOCLIP_DATA_DIR'] = data
+    with tempfile.TemporaryDirectory(prefix='autovideoclip-title-review-') as data:
+        os.environ['AUTOVIDEOCLIP_DATA_DIR'] = data
         from backend.services.studio.models import Draft, Scene
         from backend.services.studio.render import render_draft
         from backend.services.studio.store import directory
