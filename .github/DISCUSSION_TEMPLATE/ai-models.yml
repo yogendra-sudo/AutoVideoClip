@@ -1,0 +1,32 @@
+title: "Model support request:"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Tell us which model or provider you need and how you plan to use it: analysis, vision, covers, or transcription. See the [model guide](https://github.com/zhouxiaoka/autoclip/blob/main/docs/AI_MODEL_CONFIGURATION.md) and Settings for current support and configuration. Local transcription includes Whisper and SenseVoice.
+        If the model is missing from the list but can be entered through a compatible API, say so in your post to avoid duplicate requests.
+  - type: input
+    id: model
+    attributes:
+      label: Model or provider
+      placeholder: "Provider and exact model; for local transcription, include the model name"
+    validations:
+      required: true
+  - type: dropdown
+    id: gap
+    attributes:
+      label: What is missing?
+      options:
+        - It is not available in Settings
+        - The compatible API can be configured, but quality or errors are a problem
+        - Need guidance on free local models
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: Additional details
+      description: Redact errors first; remove API keys, cookies, and private media. Use the Bug Report template for reproducible issues.
+    validations:
+      required: false

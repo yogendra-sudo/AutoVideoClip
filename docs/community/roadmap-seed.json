@@ -1,0 +1,100 @@
+{
+  "project": "AutoClip Roadmap",
+  "note": "Reconciled against the released v1.3.1 / v1.3.0 entries in CHANGELOG. Mention shipped work only in the Project description; do not create issues retroactively. For unchecked v1.3 items in HANDOFF.md, the changelog takes precedence.",
+  "columns": {
+    "exploring": [
+      {
+        "track": "new-issue",
+        "title": "[Feature] 1080p60 export",
+        "body": "External PR #82 bundled 1080p60, an all-English interface, and migration scripts; it was not merged. If reconsidered, evaluate export specifications separately and do not reopen that PR.",
+        "acceptance": ["Define an explicit export specification instead of changing the interface language as a side effect"]
+      },
+      {
+        "track": "new-issue",
+        "title": "[Feature] Speaker-centered crop and cover images",
+        "body": "Vertical publishing exports already support blurred backgrounds, cropping, burned-in subtitles, and title cards. Speaker-centered framing and cover images are not implemented, and no community discussion has moved them into the committed scope.",
+        "acceptance": ["Establish a use case before deciding whether to move this out of Exploring"]
+      }
+    ],
+    "researching": [
+      {
+        "track": "existing-issue",
+        "issue": 67,
+        "title": "[Feature] Pluggable ASR backends",
+        "body": "Issue #67. Define the ASRBackend protocol first, with faster-whisper as the default implementation. Integrate specific providers such as SenseVoice after the protocol is complete; do not couple provider code before the interface is defined."
+      },
+      {
+        "track": "new-issue",
+        "title": "[Feature] Clip quality comparison",
+        "body": "Duration profiles and score fallbacks are already on main. We still need comparisons using one real five-minute video and one real 60-minute video, with results added to backend/eval/cases.",
+        "acceptance": ["Add comparison results for both real videos to the evaluation cases"]
+      },
+      {
+        "track": "new-issue",
+        "title": "[Feature] Pluggable Step 3 scoring backends",
+        "body": "Following the direction in #75: define the protocol before evaluating providers. Do not integrate TwelveLabs or other scoring services until the interface is finalized.",
+        "acceptance": ["Define the protocol in code while keeping the current scoring as the default implementation"]
+      }
+    ],
+    "planned": [
+      {
+        "track": "new-issue",
+        "title": "[Feature] Validate the Windows installer on a physical machine",
+        "body": "The Windows installer has been available in Releases since v1.2.1, but as of v1.3.1 there is still no record of processing a video on a clean Windows installation.",
+        "acceptance": ["On a clean Windows installation, launch the app, save a provider, and process one local video"]
+      },
+      {
+        "track": "new-issue",
+        "title": "[Feature] Apple notarization and Windows code signing",
+        "body": "As of v1.3.1, the app can check for and install updates, but installers are still ad-hoc signed. Apple Developer ID notarization and Windows code signing are not yet set up, so macOS still requires opening the app via the context menu and Windows may show a SmartScreen warning. Signing keys for update bundles are not yet a release prerequisite.",
+        "acceptance": ["macOS no longer requires opening via the context menu", "Windows installation no longer warns about an unknown publisher"]
+      },
+      {
+        "track": "new-issue",
+        "title": "[Feature] Redesign the home page and project cards using the design system",
+        "body": "Settings and detail pages have been migrated according to DESIGN.md, and the eight-language interface shipped in v1.3.1. The home-page import panel, project cards, collection dialog, and Bilibili login dialog still use Ant Design defaults.",
+        "acceptance": ["Use primitives from frontend/src/ui for home-page imports and project cards", "Remove gradients and clashing colors prohibited by DESIGN.md"]
+      },
+      {
+        "track": "new-issue",
+        "title": "[Feature] End-to-end CLI / MCP test with a real video",
+        "body": "Commands and MCP tools have unit tests, but none has processed a real video to completion. Consider a Homebrew tap and PyPI after this is verified.",
+        "acceptance": ["autoclip run reports completed for a real video", "MCP start_clip_job can poll for the same result"]
+      },
+      {
+        "track": "new-issue",
+        "title": "[Feature] Intel Mac installer",
+        "body": "Windows x64 shipped with v1.2.1. There is no Intel Mac installer yet. A Linux desktop package is outside the scope of this item.",
+        "acceptance": ["Publish an Intel Mac installer in Releases"]
+      },
+      {
+        "track": "new-issue",
+        "title": "[Feature] Connect chunk size and collection count settings to the pipeline",
+        "body": "Settings can already save chunk_size and max_clips_per_collection. min_score is connected to step3, but step1 / step5 do not yet read these two settings.",
+        "acceptance": ["The next processing run uses the updated chunk size and collection count"]
+      },
+      {
+        "track": "new-issue",
+        "title": "[Feature] Human review of three vertical presets",
+        "body": "9:16 exports for Douyin, Shorts, and Bilibili shipped in v1.3.0. This item tracks reviewing one finished clip from each of the three presets; it does not duplicate the export feature.",
+        "acceptance": ["A person has reviewed one finished clip from each preset for subtitles and title cards"]
+      }
+    ],
+    "building": [],
+    "testing": [],
+    "shipped": [
+      {
+        "track": "readme",
+        "title": "v1.3.1: Eight-language interface, crash reporting, and in-app update checks"
+      },
+      {
+        "track": "readme",
+        "title": "v1.3.0: Failure-stage messages, Qwen international service, Docker settings page, vertical exports, CLI / MCP"
+      },
+      {
+        "track": "readme",
+        "title": "v1.2.1: Docker builds, worker queue processing, and Windows installer"
+      }
+    ]
+  }
+}

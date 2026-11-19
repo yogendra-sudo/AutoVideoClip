@@ -1,0 +1,116 @@
+# Experience sharing video outline extract Prompt
+
+# Enter Format
+You will receive a JSON input:
+
+Other Organiser
+"text":
+?
+
+- A clip of the video transliteration of the P6 field;
+- The content has been manually readied to ensure consistency in the basic semantics;
+- Please use input only as a source of information and do not engage in any external expansion, common sense reasoning or logical additions.
+
+# Core mission: practical value and operationality
+Your task is to cover in full** all the important experiences and techniques contained in the input text, while maintaining the moderate refinement** and avoiding excessive refinement. The objective is to extract **8-15 core topics**, each corresponding to video content **3-8 minutes**.
+
+# The extraction principle
+
+1. Practical value priority principle
+-** Operational priority**: priority is given to extracting experience sharing with clear operational steps and practical skills
+-** Problem resolution orientation**: focus on experiences that can address specific problems and meet real needs
+-** Avoiding talk**: Skipping purely theoretical discussions, focusing on replicable, practical experiences
+
+2. Principle of empirical integrity
+-** Methodological system**: ensure that each experience is shared with a complete methodological system (background-method-impact-care)
+-** Enriched details**: focus on a description of experience with specific details, operational points
+-** Results validation**: Experience sharing that highlights practical results, success stories
+
+3. The user applicability principle
+- ** The threshold is reasonable**: priority is given to extracting elements of experience appropriate to the level of capacity of the target audience
+-** Clear scene**: focus on experience with clearly applied scenarios, conditions of use
+-** Replicability**: highlighting an empirical approach that is universally applicable and easy to replicate
+
+## 4. Value-level principle
+-** Core skills**: Prioritization of critical skills, core methodology experience sharing
+- ** advance techniques**: high-level skills focused on efficiency and impact optimization
+-**Guide on pit avoidance**: lessons learned to highlight error prevention and risk avoidance
+
+# Collapse and Split
+
+# # Merge conditions (the following should be combined into one topic):
+- Different aspects or levels of the same skills or methods
+- Interconnected operational steps or processes
+- Different solutions or techniques to the same problem
+- Different applications in similar settings.
+
+# # Disaggregation conditions (the following should be divided into different topics):
+- Experience in different skill areas or applications
+- A clear distinction between basic and advanced skills
+- Different types of problem resolution
+- Separation of theoretical learning from practical application
+
+# Output format
+
+Please output strictly in the following format, without adding other descriptive text:
+
+# Outline:
+1. **P1**
+- P-2.
+- P-3.
+- ...and...
+
+2. **P4**
+- P-5.
+- ...and...
+
+# Output Example
+
+# Outline:
+1. ** Efficient learning methods and techniques in combat**
+- Specific operational steps and timing of tomato work
+- Feynman's applied techniques in different disciplines
+- The method and practice of building memory palaces. Points
+- Application of the SMART principles developed by the learning programme
+
+2. **Communication skills and practical experience in the workplace**
+- Preparation process and presentation skills for statements at meetings
+- Format and attention for mail communications
+- Communication strategy for cross-sectoral collaboration and conflict management
+- Top-management reporting techniques and timing
+
+3. ** Construction of a personal time management system**
+- Steps and tool selection for GTD workflows
+- Scheduling priorities and time allocation
+- Specific ways of overcoming delays and psychological adjustments
+- Border-setting and implementation strategy for work-life balance
+
+# Special consideration for experience sharing
+
+## 1. Operational step type experience:
+- Ensuring the integrity and logical sequence of steps
+- Contain key operational points and attention
+- Provide specific time nodes and expected results
+
+## 2. Tactical methodological experience:
+- Clear application of techniques and conditions of use
+- Include specific operational details and practical points
+- Providing impact assessment and recommendations for improvement
+
+## 3. Problem resolution experience:
+- The process of identifying and analysing problems clearly
+- Include the selection basis for the solution and the implementation steps
+- Provide methods for effectiveness validation and subsequent optimization
+
+## 4. The lessons of pit avoidance:
+- Identification of wrong identifiers and prevention methods
+- Include remedies after an error has occurred
+- Responses to similar situations
+
+# Attention
+
+1. **Practical inspection**: ensure that the topics drawn are of clear practical value and operationality
+2. **Integrity assurance**: focus on elements that contain complete methodological systems and operational details
+3. **Applicability considerations**: priority is given to extracting elements of experience appropriate to the level of capacity of the target audience
+4. **Replicability validation**: ensuring universal applicability and replicability of the empirical approach
+5. ** Value level**: different levels of basic skills, progression skills and professional experience

@@ -1,0 +1,138 @@
+# Entertainment and variety-show timestamp localization prompt
+
+For every topic in an entertainment video, locate its exact `start_time` and `end_time`.
+
+## Core principles
+1. **Complete entertainment:** Preserve a complete entertaining experience; do not ruin jokes or memorable moments.
+2. **Natural pacing:** Follow the content's natural rhythm for a smooth and enjoyable viewing experience.
+3. **Preserve the payoff:** Keep humor, guest chemistry, and the entertainment atmosphere intact.
+
+## Determine `start_time`
+Choose the natural start of the clip:
+1. Topic introduction: the host or guest begins a new subject.
+2. Game start: the rules are explained and the game officially begins.
+3. Interaction start: a new exchange between guests begins.
+4. Performance start: the performance or demonstration begins.
+5. Scene transition: the segment or atmosphere clearly changes.
+
+Retain necessary setup and atmosphere, the full setup of a joke, natural interaction, and the rhythm of the entertainment.
+
+## Determine `end_time`
+Choose the natural end:
+1. The discussion ends before moving to another topic.
+2. A game concludes and its result is revealed or summarized.
+3. A complete round of interaction or conversation ends.
+4. A performance or demonstration finishes.
+5. The joke has fully landed.
+
+Retain reactions after a joke, natural endings to interactions, emotional resolution, and audience or guest reactions.
+
+## Errors to avoid
+- Cutting off during a joke's payoff.
+- Ending a game at a critical moment.
+- Cutting off a guest's emotional expression.
+- Interrupting the most engaging part of an interaction.
+- Omitting audience reactions or the live atmosphere.
+- Disrupting the natural pace.
+
+## Duration guidance
+- Standard duration: **3–8 minutes**.
+- Light entertainment: 3–5 minutes for everyday humor or simple interaction.
+- Substantive entertainment: 5–7 minutes for thoughtful humor or complex games.
+- Strong performances: 6–8 minutes for talent showcases or important interviews.
+- Adjustments: a compelling, complex game may extend to 10 minutes; a single joke or short exchange may be 2–3 minutes; an important in-depth interview may extend to 12 minutes.
+
+## Preserve complete units
+1. A joke's setup, payoff, and reaction.
+2. A game's rules, play, and result.
+3. The full conversation and interaction among guests.
+4. The performance and audience response.
+5. The complete emotional arc of a moving or warm moment.
+
+## Input format
+You will receive a JSON object containing an outline and SRT text:
+```json
+{
+  "outline": [
+    {
+      "title": "Hilarious moments from a variety-show game",
+      "subtopics": [
+        "Funny misunderstandings while the rules are explained",
+        "The celebrities' charming reactions to failed challenges",
+        "Teammates' coordination and mistakes",
+        "An unexpected reversal in the outcome"
+      ]
+    }
+  ],
+  "srt_content": "Complete SRT subtitle text"
+}
+```
+
+## Output format
+Return a JSON array and rename fields:
+- `title` → `outline`
+- `subtopics` → `content`
+- Add `start_time` and `end_time`.
+
+```json
+[
+  {
+    "outline": "Hilarious moments from a variety-show game",
+    "content": [
+      "Funny misunderstandings while the rules are explained",
+      "The celebrities' charming reactions to failed challenges",
+      "Teammates' coordination and mistakes",
+      "An unexpected reversal in the outcome"
+    ],
+    "start_time": "00:05:23,450",
+    "end_time": "00:11:45,230"
+  }
+]
+```
+
+### Timestamp format
+Use `HH:MM:SS,mmm` (hours:minutes:seconds,milliseconds). Milliseconds must contain exactly three digits.
+
+## Timing examples
+
+### Game segment
+```text
+Timeline:
+00:05:20 - Host: "Next, let's play a game."
+00:05:23 - Host: "Here are the rules..."
+00:11:42 - Guest: "That was hilarious!"
+00:11:45 - Host: "All right, that's the end of this game."
+00:11:48 - Host: "Next, we'll..."
+
+Result:
+start_time: "00:05:23,000" (the rules are explained)
+end_time: "00:11:45,000" (the game officially ends)
+```
+
+### Interview segment
+```text
+Timeline:
+00:15:30 - Host: "Let's talk about your new work."
+00:15:33 - Guest: "Sure, this time..."
+00:22:15 - Guest: "...which is why I think it matters."
+00:22:18 - Host: "Well said. Let's move to another topic."
+
+Result:
+start_time: "00:15:33,000" (the guest begins responding)
+end_time: "00:22:15,000" (the discussion ends)
+```
+
+## Further checks
+- Do not cut off the funniest, most suspenseful, emotional, or engaging moment.
+- Do not omit necessary setup, results, audience reactions, or the natural flow of the segment.
+- For variety shows, preserve fair and complete games, personality, atmosphere, pacing, and natural transitions.
+- For interviews, preserve depth, authenticity, story, and flow while balancing entertainment with information.
+- For performances, preserve the complete act, the performer's distinctive qualities, and audience response.
+- For reality shows, preserve story, relationships, and emotional changes while balancing authenticity and drama.
+
+## Notes
+- Output strict JSON only, with no explanation.
+- Use millisecond-precision `HH:MM:SS,mmm` timestamps.
+- Apply `title` → `outline` and `subtopics` → `content` exactly.
+- Preserve entertainment value, smooth pacing, humor, interaction, and positive presentation.
+- Consider platform viewing conventions and copyright, especially for music and video.

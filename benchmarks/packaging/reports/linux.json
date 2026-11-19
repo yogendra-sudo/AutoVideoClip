@@ -1,0 +1,244 @@
+{
+  "schema": 1,
+  "status": "measured",
+  "label": "linux",
+  "created": "2026-10-10T02:19:03Z",
+  "host": {
+    "system": "Linux",
+    "machine": "x86_64",
+    "platform": "Linux-6.12.94+-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "cpu_count": 4,
+    "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+  },
+  "browser": {
+    "launch": {
+      "headless": true,
+      "args": [
+        "--disable-dev-shm-usage",
+        "--disable-extensions"
+      ],
+      "channel": "chrome"
+    },
+    "version": "148.0.7778.96",
+    "sandbox_retry": {
+      "no_sandbox": false,
+      "retried_without_sandbox": false
+    }
+  },
+  "fixture": {
+    "template": "editorial",
+    "duration_s": 70.0,
+    "fps": 30,
+    "frames": 2100,
+    "unique_states": 214,
+    "capture_size": [
+      720,
+      1280
+    ],
+    "output_size": [
+      1080,
+      1920
+    ]
+  },
+  "captures": {
+    "serial_all_720": {
+      "seconds": 71.79497405899997,
+      "frames_shot": 2100,
+      "output_frames": 2100,
+      "shoot_s": 71.52590083100017,
+      "pages": 1,
+      "width": 720,
+      "height": 1280,
+      "skip_unchanged": false,
+      "browser_version": "148.0.7778.96"
+    },
+    "changed_720": {
+      "seconds": 7.87010368700021,
+      "frames_shot": 214,
+      "output_frames": 2100,
+      "shoot_s": 7.56310055799986,
+      "pages": 1,
+      "width": 720,
+      "height": 1280,
+      "skip_unchanged": true,
+      "browser_version": "148.0.7778.96"
+    },
+    "parallel_all_720": {
+      "seconds": 55.54845584999998,
+      "frames_shot": 2100,
+      "output_frames": 2100,
+      "shoot_s": 55.262789538000106,
+      "pages": 2,
+      "width": 720,
+      "height": 1280,
+      "skip_unchanged": false,
+      "browser_version": "148.0.7778.96"
+    },
+    "parallel_changed_720": {
+      "seconds": 6.042822765999972,
+      "frames_shot": 214,
+      "output_frames": 2100,
+      "shoot_s": 5.715335762999985,
+      "pages": 2,
+      "width": 720,
+      "height": 1280,
+      "skip_unchanged": true,
+      "browser_version": "148.0.7778.96"
+    },
+    "serial_all_1080": {
+      "seconds": 109.69967882900005,
+      "frames_shot": 2100,
+      "output_frames": 2100,
+      "shoot_s": 109.40068778199998,
+      "pages": 1,
+      "width": 1080,
+      "height": 1920,
+      "skip_unchanged": false,
+      "browser_version": "148.0.7778.96"
+    }
+  },
+  "encodes": {
+    "two_pass": {
+      "seconds": 50.921393900999874,
+      "encoder": "libx264",
+      "passes": 2,
+      "preset": "medium",
+      "bitrate": 8087040
+    },
+    "one_pass": {
+      "seconds": 20.80151246599985,
+      "encoder": "libx264",
+      "attempts": [
+        "libx264"
+      ],
+      "passes": 1,
+      "probe_encoder": "libx264"
+    }
+  },
+  "rows": [
+    {
+      "name": "Baseline · single clip: 720p full-frame, one page, two-pass x264",
+      "capture_s": 71.795,
+      "encode_s": 50.921,
+      "total_s": 122.716,
+      "frames": 2100,
+      "capture_runs": 1,
+      "encode_runs": 1,
+      "vs_baseline": 1.0
+    },
+    {
+      "name": "Optimization 1 · no cross-platform reuse (control)",
+      "capture_s": 143.59,
+      "encode_s": 101.843,
+      "total_s": 245.433,
+      "frames": 4200,
+      "capture_runs": 2,
+      "encode_runs": 2,
+      "vs_baseline": 2.0
+    },
+    {
+      "name": "Optimization 1 · reuse overlays across platforms",
+      "capture_s": 71.795,
+      "encode_s": 101.843,
+      "total_s": 173.638,
+      "frames": 2100,
+      "capture_runs": 1,
+      "encode_runs": 2,
+      "vs_baseline": 1.415
+    },
+    {
+      "name": "Optimization 2 · capture changed frames only (single clip, two-pass encoding)",
+      "capture_s": 7.87,
+      "encode_s": 50.921,
+      "total_s": 58.791,
+      "frames": 214,
+      "capture_runs": 1,
+      "encode_runs": 1,
+      "vs_baseline": 0.479
+    },
+    {
+      "name": "Optimization 3 · 1080p full-frame, one page (control, two-pass encoding)",
+      "capture_s": 109.7,
+      "encode_s": 50.921,
+      "total_s": 160.621,
+      "frames": 2100,
+      "capture_runs": 1,
+      "encode_runs": 1,
+      "vs_baseline": 1.309
+    },
+    {
+      "name": "Optimization 3 · 720p full-frame + 2 parallel pages (single clip, two-pass encoding)",
+      "capture_s": 55.548,
+      "encode_s": 50.921,
+      "total_s": 106.47,
+      "frames": 2100,
+      "capture_runs": 1,
+      "encode_runs": 1,
+      "vs_baseline": 0.868
+    },
+    {
+      "name": "Optimization 4 · one-pass h264_args (single clip, full-frame capture)",
+      "capture_s": 71.795,
+      "encode_s": 20.802,
+      "total_s": 92.596,
+      "frames": 2100,
+      "capture_runs": 1,
+      "encode_runs": 1,
+      "vs_baseline": 0.755
+    },
+    {
+      "name": "Combined · single clip: changed-frame capture + 2 parallel pages + one-pass encoding",
+      "capture_s": 6.043,
+      "encode_s": 20.802,
+      "total_s": 26.844,
+      "frames": 214,
+      "capture_runs": 1,
+      "encode_runs": 1,
+      "vs_baseline": 0.219
+    },
+    {
+      "name": "Combined · two platforms: reuse + parallel changed-frame capture + one-pass encoding",
+      "capture_s": 6.043,
+      "encode_s": 41.603,
+      "total_s": 47.646,
+      "frames": 214,
+      "capture_runs": 1,
+      "encode_runs": 2,
+      "vs_baseline": 0.388
+    }
+  ],
+  "markdown": "| Scenario | Capture time | Encoding time | Total time | Frames captured | Relative to single-clip baseline |\n|---|---:|---:|---:|---:|---:|\n| Baseline · single clip: 720p full-frame, one page, two-pass x264 | 71.8s (1:12) | 50.9s (0:51) | 122.7s (2:03) | 2100 | 1.00× |\n| Optimization 1 · no cross-platform reuse (control) | 143.6s (2:24) | 101.8s (1:42) | 245.4s (4:05) | 4200 | 2.00× |\n| Optimization 1 · reuse overlays across platforms | 71.8s (1:12) | 101.8s (1:42) | 173.6s (2:54) | 2100 | 1.42× |\n| Optimization 2 · capture changed frames only (single clip, two-pass encoding) | 7.9s (0:08) | 50.9s (0:51) | 58.8s (0:59) | 214 | 0.48× |\n| Optimization 3 · 1080p full-frame, one page (control, two-pass encoding) | 109.7s (1:50) | 50.9s (0:51) | 160.6s (2:41) | 2100 | 1.31× |\n| Optimization 3 · 720p full-frame + 2 parallel pages (single clip, two-pass encoding) | 55.5s (0:56) | 50.9s (0:51) | 106.5s (1:46) | 2100 | 0.87× |\n| Optimization 4 · one-pass h264_args (single clip, full-frame capture) | 71.8s (1:12) | 20.8s (0:21) | 92.6s (1:33) | 2100 | 0.76× |\n| Combined · single clip: changed-frame capture + 2 parallel pages + one-pass encoding | 6.0s (0:06) | 20.8s (0:21) | 26.8s (0:27) | 214 | 0.22× |\n| Combined · two platforms: reuse + parallel changed-frame capture + one-pass encoding | 6.0s (0:06) | 41.6s (0:42) | 47.6s (0:48) | 214 | 0.39× |",
+  "unmeasured_platforms": [
+    {
+      "platform": "macOS",
+      "status": "not measured",
+      "owner": "cursor-agent-worker-114e0e00e2",
+      "machine": "Charlie MacBook Pro",
+      "note": "Run uname -m first to confirm arm64 or x86_64, then run this script on that machine."
+    },
+    {
+      "platform": "Windows",
+      "status": "not measured",
+      "owner": "AutoClip PM",
+      "machine": "Tencent Cloud Windows acceptance machine",
+      "note": "The script can be rerun as-is. This task was not executed on Windows."
+    }
+  ],
+  "notes": [
+    "Capture time includes browser cold start, renderFrame, and PNG screenshots. The full-frame approach does not write all 2,100 images to disk; the changed-frame approach writes unique frames to a temporary directory for encoding.",
+    "The second capture or encoding pass in two-platform rows scales the same measurement: both 9:16 outputs contain the same Chinese-language content. Reuse reduces capture passes from two to one, while encoding is still counted once per output.",
+    "Baseline encoding uses two-pass libx264 medium, with a bitrate matching the product video_encoder pixel budget. One-pass encoding calls h264_args(); if hardware encoding is unavailable, it falls back to libx264 veryfast crf 20.",
+    "720p captures are upscaled to 1080x1920 during encoding. The 1080p row compares capture only; encoding still uses 720p changed frames to avoid mixing pixel configurations in the encoding comparison.",
+    "The planned 5–5.5 minutes also includes base video rendering and quality checks. This table measures only overlay capture and this encoding pass, so it should not be treated as end-to-end processing time."
+  ],
+  "docker": {
+    "status": "measured",
+    "image": "mcr.microsoft.com/playwright/python:v1.55.0-noble",
+    "report": "benchmarks/packaging/reports/linux-docker.json",
+    "browser": "chromium-headless-shell",
+    "browser_version": "140.0.7339.16",
+    "no_sandbox": true,
+    "note": "The container runs as root, so launch arguments include --no-sandbox. It uses the image-provided headless shell, not the host Chrome installation."
+  }
+}

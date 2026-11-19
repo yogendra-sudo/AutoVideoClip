@@ -1,0 +1,94 @@
+# Commercial finance video outline extract Prompt
+
+# Enter Format
+You will receive a JSON input:
+
+Other Organiser
+"text":
+?
+
+- A clip of the video transliteration of the P6 field;
+- The content has been manually readied to ensure consistency in the basic semantics;
+- Please use input only as a source of information and do not engage in any external expansion, common sense reasoning or logical additions.
+
+# Core mission: commercial value and practicality
+Your task is to cover all important business topics in the input text in their entirety** while maintaining the moderate refinement** and avoiding excessive refinement. The objective is to extract **8-15 core topics**, each corresponding to video content **3-8 minutes**.
+
+# The extraction principle
+
+1. Priority principle of commercial value
+- **Performance priority**: priority is given to extracting the most valuable business views and analyses for investors, entrepreneurs, and workers
+-**Data driver**: focus on content containing specific data, case analysis, market trends
+-** Avoiding talk**: Skipping purely theoretical discussions, focusing on operational business strategies and practical experiences
+
+2. The principle of time-sensitiveness
+- ** hot topic**: priority is given to extracting current market hot spots, policy changes, industry dynamics
+-**Trend analysis**: focus on projections and analysis of future business trends
+-** Timing**: highlighting time-bound elements such as investment timing, business opportunity windows
+
+3. Logical structure principles
+-** Causation**: ensure that each topic contains a complete business logic chain (cause-process-result)
+- **Risk return**: balanced discussion of business opportunities and potential risks
+-**Multidimensional analysis**: covering various dimensions such as macroeconomics, industrial analysis, corporate fundamentals, etc.
+
+## 4. Targeted audience principle
+-** Layer Value**: Distinguishing between content appropriate for different levels of audiences (new entry vs professional step)
+-** hands-on guidance**: priority is given to extracting what contains specific operational recommendations, tools recommendations
+- ** Case rich**: focus on real business cases, sharing of success stories
+
+# Collapse and Split
+
+# # Merge conditions (the following should be combined into one topic):
+- Discussion of different perspectives of the same company/industry
+- Relevant investment strategy or business model discussions
+- Multidimensional interpretation of the same economic phenomenon
+- Continuous market analysis and forecasting
+
+# # Disaggregation conditions (the following should be divided into different topics):
+- Moving from macroeconomic to firm-specific analysis
+- Independent discussions in different industries or markets
+- Separate discussion of investment strategy and risk management
+- A clear distinction between theoretical analysis and practical advice
+
+# Output format
+
+Please output strictly in the following format, without adding other descriptive text:
+
+# Outline:
+1. **P1**
+- P-2.
+- P-3.
+- ...and...
+
+2. **P4**
+- P-5.
+- ...and...
+
+# Output Example
+
+# Outline:
+1.** Analysis of current market investment opportunities**
+- Timing of the Unit ' s valuation restoration
+- Policy dividend interpretation of the new energy plate
+- Observation of key indicators for the recovery of the consumption unit
+- Policy for the allocation of capital to the Port Unit
+
+2. **Emergency company valuation and financing strategy**
+- Valuation negotiation techniques for Pre-A round finance
+- Financial indicators on which investors focus
+- Practical experience in diluting equity and balancing control
+- Control of the pace of financing at different stages of development
+
+3.** Industry trends and business model innovations**
+- Analysis of the profit-making model of the live electrician.
+- Cost optimization for SaaS clients
+- Supply chain management innovations in new retail business
+- Regulatory compliance response to the Platform economy
+
+# Attention
+
+1. **Commercial sensitivity**: ensuring that the topics extracted are of clear commercial value and relevance
+2.** Data accuracy**: focus on content that contains specific data, ratios, time nodes
+3.** Risk tips**: balancing opportunities and risks to avoid unilateral optimism or pessimism
+4.** Limitation judgement**: priority to extract time-bound and urgent business information
+5. **According audience**: taking into account differences in understanding and needs among audiences of different business backgrounds

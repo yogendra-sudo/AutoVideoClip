@@ -1,0 +1,88 @@
+# Content-explainer timestamp localization prompt
+
+Locate the exact **start** and **end** timestamps for each topic in a batch within the corresponding **single SRT subtitle block**.
+
+## Core principles: complete explanations, clear logic, accurate information
+1. Timestamps must match complete explanatory units and content segments.
+2. Cover the full logical chain of the explanation so the analysis remains complete.
+3. Prefer natural boundaries at plot transitions, topic shifts, or breaks between commentary sections.
+
+## Determine `start_time` and `end_time`
+
+### `start_time`
+- Use the start time of the **first substantive sentence** for the topic.
+- Ignore unrelated transitions, background music, or opening/closing credits before it.
+- Prefer the point where the topic is clearly introduced or the explanation begins.
+- If important background, source-work footage, or setup is needed, move the start earlier to include it.
+
+### `end_time` (most important)
+- Use the end timestamp of the **last sentence** that contains the topic's core explanation.
+- Keep plot explanation, analysis, evaluation, and technique instruction complete; do not create gaps in the explanation.
+- Prefer a summary, concluding evaluation, or topic transition as the endpoint.
+- Include important supplemental information, easter eggs, or source-work footage at the end of the topic.
+- If the discussion continues to the end of the supplied SRT block, use the end of its last relevant subtitle.
+- **Never** blindly use the end of the entire SRT block.
+
+### Duration guidance
+- **Target:** 3–8 minutes per explainer topic.
+- **Complex explanation:** may extend to 10 minutes for in-depth analysis or a complex plot.
+- **Simple introduction:** may be 2–3 minutes for basic background or a simple concept.
+- **Important content:** a core plot explanation or major analysis may extend to 12 minutes.
+
+### Special handling
+- Keep complete plot explanations with a beginning, development, and conclusion together.
+- Preserve important analysis and reasoning in full.
+- Keep source-work footage synchronized with its explanation.
+- Do not separate a technique demonstration from its theoretical explanation.
+
+## Input format
+You will receive a JSON object containing:
+- `outline`: a JSON array of **multiple** explainer topics.
+- `srt_text`: the **single** associated SRT block, formatted as `index\nstart --> end\ntext\n\n`.
+
+## Output format
+- Add `start_time` and `end_time` to **each** topic, preserving the input outline's structure.
+- **Important:** rename `title` to `outline` and `subtopics` to `content`.
+- Return a JSON array containing **all** processed topics.
+- Use `HH:MM:SS,mmm` timestamps.
+
+**Strict JSON requirements:**
+1. Output starts with `[` and ends with `]`; add no explanation, heading, or Markdown fence.
+2. Use ASCII double quotes `"`, never typographic or single quotes.
+3. Match braces and brackets; separate objects with commas, with no trailing comma.
+4. Escape quotes inside strings as `\"`.
+5. Add no comments, extra text, or control characters.
+6. Output must parse as valid JSON.
+
+## Example of correct timestamping
+- **Plot explanation:** from "Next, let's look at this key scene..." through "That is the central meaning of this scene."
+- **Character analysis:** from "Let's analyze this character..." through "That is the character's deeper meaning."
+- **Technique instruction:** from the technique introduction through the demonstration and explanation of its result.
+- **Background:** from the context introduction through the summary connecting it to the main theme.
+
+## Errors to avoid
+- Cutting off a key point in plot analysis.
+- Separating technique instruction from its demonstration.
+- Cutting off an in-depth character interpretation.
+- Omitting important additional information or source-work footage.
+
+## Considerations by explainer type
+- **Film and television:** Keep plot explanations complete and logical; retain key character and relationship analysis, related footage, and accurate technical analysis.
+- **Games:** Synchronize gameplay with commentary; include complete walkthrough steps and demonstrations, game background and world-building, and an authentic account of the experience.
+- **Creative works:** Include the full analysis and reasoning; connect theory with examples; preserve historical and cultural context, judgments, and interpretation of meaning.
+- **Popular science:** Keep explanations systematic and logical; include complete experiments and principles; be accurate and accessible; retain useful applications and extensions.
+
+## Timing strategies by explanation type
+- **Plot-led:** background → development → climax/turn → ending interpretation. Preserve the full plot explanation and all important analysis.
+- **Technique-led:** basic → advanced → higher-level applications → practical demonstration. Keep it systematic, useful, and reproducible.
+- **Analysis-led:** surface observation → deeper cause → impact → evaluation. Preserve reasoning, conclusions, objectivity, and persuasive support.
+- **Knowledge-led:** basic concept → core principle → application → further implications. Keep knowledge accurate, systematic, understandable, and useful.
+
+## Notes
+1. Preserve a complete explanatory structure and logical chain for every segment.
+2. Include all important facts and technical details.
+3. Keep the explanation's logic and analysis intact.
+4. Consider viewer comprehension and pacing.
+5. Preserve the full educational and entertainment value.
+6. Respect the original work while locating timestamps.
+7. Respect copyright and avoid excessive use of source-work footage.

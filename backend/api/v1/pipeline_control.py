@@ -1,0 +1,269 @@
+"""
+Pipeline control API
+Provides manual start, stop, and pipeline status query features
+"""
+
+from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
+from sqlalchemy.orm import Session
+from typing import Dict, Any, List
+from ...core.database import get_db
+from ...models.project import Project, ProjectStatus
+from ...models.task import Task, TaskStatus
+from ...services.auto_pipeline_service import auto_pipeline_service
+from ...services.progress_update_service import progress_update_service
+import asyncio
+from datetime import datetime
+import logging
+
+logger = logging.getLogger(__name__)
+
+router = APIRouter()
+
+@router.post("/start/{project_id}")
+async def start_pipeline(
+    project_id: str, 
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db)
+):
+    """Manually start a project pipeline"""
+    try:
+        # Check whether the project exists
+        project = db.query(Project).filter(Project.id == project_id).first()
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+        
+        # Check project status
+        if project.status == ProjectStatus.PROCESSING:
+            return {"status": "skipped", "message": "Project is already processing"}
+        
+        if project.status == ProjectStatus.COMPLETED:
+            return {"status": "skipped", "message": "Project is complete"}
+        
+        # Check for running tasks
+        running_task = db.query(Task).filter(
+            Task.project_id == project_id,
+            Task.status.in_([TaskStatus.PENDING, TaskStatus.RUNNING])
+        ).first()
+        
+        if running_task and running_task.status == TaskStatus.RUNNING:
+            return {"status": "skipped", "message": "Project already has a running task"}
+        
+        # Start the pipeline in the background
+        background_tasks.add_task(
+            auto_pipeline_service.auto_start_pipeline,
+            project_id
+        )
+        
+        return {
+            "status": "started",
+            "message": "Pipeline start task submitted",
+            "project_id": project_id
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to start pipeline: {str(e)}")
+
+@router.post("/stop/{project_id}")
+async def stop_pipeline(project_id: str, db: Session = Depends(get_db)):
+    """Stop a project pipeline"""
+    try:
+        # Check whether the project exists
+        project = db.query(Project).filter(Project.id == project_id).first()
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+        
+        # Find running tasks
+        running_tasks = db.query(Task).filter(
+            Task.project_id == project_id,
+            Task.status.in_([TaskStatus.PENDING, TaskStatus.RUNNING])
+        ).all()
+        
+        if not running_tasks:
+            return {"status": "skipped", "message": "No running tasks"}
+        
+        # Stop all running tasks
+        stopped_count = 0
+        for task in running_tasks:
+            task.status = TaskStatus.CANCELLED
+            task.updated_at = datetime.utcnow()
+            
+            # Notify task stop via the progress update service
+            try:
+                await progress_update_service.complete_task(
+                    task_id=task.id,
+                    error="Task stopped manually"
+                )
+            except Exception as e:
+                logger.warning(f"Failed to notify task stop: {e}")
+            
+            stopped_count += 1
+        
+        # Update project status
+        project.status = ProjectStatus.PENDING
+        project.updated_at = datetime.utcnow()
+        
+        db.commit()
+        
+        return {
+            "status": "stopped",
+            "message": f"Stopped {stopped_count} tasks",
+            "project_id": project_id,
+            "stopped_tasks": stopped_count
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to stop pipeline: {str(e)}")
+
+@router.post("/restart/{project_id}")
+async def restart_pipeline(
+    project_id: str, 
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db)
+):
+    """Restart a project pipeline"""
+    try:
+        # First stop the existing pipeline
+        stop_result = await stop_pipeline(project_id, db)
+        
+        # Wait briefly to ensure the stop completes
+        import time
+        time.sleep(2)
+        
+        # Restart the pipeline
+        start_result = await start_pipeline(project_id, background_tasks, db)
+        
+        return {
+            "status": "restarted",
+            "message": "Pipeline restarted",
+            "project_id": project_id,
+            "stop_result": stop_result,
+            "start_result": start_result
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to restart pipeline: {str(e)}")
+
+@router.get("/status/{project_id}")
+async def get_pipeline_status(project_id: str, db: Session = Depends(get_db)):
+    """Get a project's pipeline status"""
+    try:
+        # Check whether the project exists
+        project = db.query(Project).filter(Project.id == project_id).first()
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+        
+        # Get project tasks
+        tasks = db.query(Task).filter(Task.project_id == project_id).all()
+        
+        # Get real-time progress info
+        task_statuses = []
+        for task in tasks:
+            realtime_progress = progress_update_service.get_task_progress(task.id)
+            
+            task_info = {
+                'id': task.id,
+                'name': task.name,
+                'status': task.status,
+                'progress': task.progress,
+                'current_step': task.current_step,
+                'created_at': task.created_at.isoformat() if task.created_at else None,
+                'started_at': task.started_at.isoformat() if task.started_at else None,
+                'completed_at': task.completed_at.isoformat() if task.completed_at else None,
+                'updated_at': task.updated_at.isoformat() if task.updated_at else None
+            }
+            
+            if realtime_progress:
+                task_info.update({
+                    'realtime_progress': realtime_progress['progress'],
+                    'realtime_step': realtime_progress['current_step'],
+                    'step_details': realtime_progress.get('step_details')
+                })
+            
+            task_statuses.append(task_info)
+        
+        return {
+            'project_id': project_id,
+            'project_status': project.status,
+            'tasks': task_statuses,
+            'total_tasks': len(tasks),
+            'running_tasks': len([t for t in tasks if t.status in [TaskStatus.PENDING, TaskStatus.RUNNING]]),
+            'completed_tasks': len([t for t in tasks if t.status == TaskStatus.COMPLETED]),
+            'failed_tasks': len([t for t in tasks if t.status == TaskStatus.FAILED])
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get pipeline status: {str(e)}")
+
+@router.get("/overview")
+async def get_pipeline_overview(db: Session = Depends(get_db)):
+    """Get an overview of all pipelines"""
+    try:
+        # Get all projects
+        projects = db.query(Project).all()
+        
+        overview = {
+            'total_projects': len(projects),
+            'processing_projects': 0,
+            'completed_projects': 0,
+            'failed_projects': 0,
+            'pending_projects': 0,
+            'project_details': []
+        }
+        
+        for project in projects:
+            # Get task statistics for the project
+            tasks = db.query(Task).filter(Task.project_id == project.id).all()
+            
+            project_info = {
+                'id': project.id,
+                'name': project.name,
+                'status': project.status,
+                'total_tasks': len(tasks),
+                'running_tasks': len([t for t in tasks if t.status in [TaskStatus.PENDING, TaskStatus.RUNNING]]),
+                'completed_tasks': len([t for t in tasks if t.status == TaskStatus.COMPLETED]),
+                'failed_tasks': len([t for t in tasks if t.status == TaskStatus.FAILED])
+            }
+            
+            overview['project_details'].append(project_info)
+            
+            # Count project status
+            if project.status == ProjectStatus.PROCESSING:
+                overview['processing_projects'] += 1
+            elif project.status == ProjectStatus.COMPLETED:
+                overview['completed_projects'] += 1
+            elif project.status == ProjectStatus.FAILED:
+                overview['failed_projects'] += 1
+            elif project.status == ProjectStatus.PENDING:
+                overview['pending_projects'] += 1
+        
+        # Get the automation service status
+        auto_service_status = auto_pipeline_service.get_processing_status()
+        overview['auto_service'] = auto_service_status
+        
+        return overview
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get pipeline overview: {str(e)}")
+
+@router.post("/auto-start-all")
+async def auto_start_all_pending_pipelines(background_tasks: BackgroundTasks):
+    """Automatically start all pending pipelines"""
+    try:
+        # Start all pending projects in the background
+        background_tasks.add_task(
+            auto_pipeline_service.auto_start_all_pending_pipelines
+        )
+        
+        return {
+            "status": "started",
+            "message": "Task to auto-start all pending pipelines submitted"
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to auto-start: {str(e)}")

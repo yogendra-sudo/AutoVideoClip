@@ -1,0 +1,21 @@
+title: "I use AutoClip for:"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe your content type and actual workflow. Share finished clips in Show and Tell and feature requests in Ideas.
+  - type: textarea
+    id: scenario
+    attributes:
+      label: What are you making?
+      description: Include the content type, typical duration, and where you publish it.
+      placeholder: "Gameplay / podcast / course / short drama… about 40 minutes each, published to Bilibili and Douyin."
+    validations:
+      required: true
+  - type: textarea
+    id: gap
+    attributes:
+      label: Which steps are still manual?
+      placeholder: "I mark highlights on the timeline myself and redo the subtitle styling each time."
+    validations:
+      required: false

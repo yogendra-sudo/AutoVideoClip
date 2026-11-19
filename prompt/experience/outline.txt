@@ -1,0 +1,79 @@
+# Practical-experience video outline prompt
+
+## Input format
+You will receive a JSON object:
+{
+  "text": "{video transcript excerpt}"
+}
+
+- `text` is a human-edited transcript excerpt with coherent basic meaning.
+- Use only the input. Do not add outside information, common-knowledge inferences, or assumptions.
+
+## Core task: practical value and usability
+Cover **all important experiences and techniques** while staying concise and avoiding excessive detail. Extract **8–15 core topics**, each covering **3–8 minutes** of video.
+
+## Topic extraction principles
+
+### 1. Prioritize practical value
+- Prefer experiences with clear steps and useful techniques.
+- Focus on experience that solves a concrete problem or meets a real need.
+- Skip purely theoretical discussion; focus on replicable, actionable experience.
+
+### 2. Preserve complete methods
+- Include a method's full system: context, method, result, and caveats.
+- Prioritize concrete details and operational tips.
+- Highlight experience supported by actual results or successful cases.
+
+### 3. Consider audience fit
+- Prefer material suited to the target audience's skill level.
+- Identify clear application scenarios and prerequisites.
+- Highlight broadly applicable, replicable methods.
+
+### 4. Represent levels of value
+- Prioritize core skills and methods.
+- Include advanced techniques that improve efficiency or results.
+- Highlight lessons that prevent mistakes and reduce risk.
+
+## Merge and split rules
+- **Merge:** different aspects or levels of the same skill; related steps in one workflow; solutions to the same problem; experiences in similar scenarios.
+- **Split:** different skill areas or scenarios; clearly distinct basic and advanced skills; solutions to different problems; separate theory and practice.
+
+## Output format
+Use exactly this format and add no descriptive text:
+### Outline:
+1. **[Main topic]**
+   - [Subtopic emphasizing practical use]
+   - [Subtopic]
+2. **[Main topic]**
+   - [Subtopic]
+
+## Example
+### Outline:
+1. **Practical methods for more effective learning**
+   - Steps and timing for the Pomodoro technique.
+   - Ways to apply the Feynman technique in different subjects.
+   - Building a memory palace and using it in practice.
+   - Applying SMART principles to a study plan.
+2. **Workplace communication skills**
+   - Preparing for and speaking in meetings.
+   - Email conventions and common pitfalls.
+   - Cross-team communication and conflict resolution.
+   - Reporting to managers and choosing the right timing.
+3. **Building a personal time-management system**
+   - Setting up a GTD workflow and choosing tools.
+   - Prioritizing tasks and allocating time.
+   - Practical ways to overcome procrastination.
+   - Setting and maintaining work-life boundaries.
+
+## Special considerations by experience type
+- **Step-by-step methods:** preserve every step in logical order, key details, caveats, timing, and expected results.
+- **Techniques:** explain where and when to use them, practical details, evaluation, and improvement.
+- **Problem solving:** show how to identify and analyze a problem, choose and implement a solution, verify results, and optimize.
+- **Pitfall avoidance:** explain warning signs, prevention, recovery after mistakes, and how to handle similar situations.
+
+## Notes
+1. Every topic must have clear practical value and actionable steps.
+2. Prefer complete methods with operational detail.
+3. Consider the target audience's skill level.
+4. Verify that methods are broadly useful and replicable.
+5. Distinguish foundational skills, advanced techniques, and professional experience.

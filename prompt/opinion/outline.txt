@@ -1,0 +1,62 @@
+# Opinion and commentary video outline prompt
+
+## Input format
+You will receive a JSON object:
+{
+  "text": "{video transcript excerpt}"
+}
+
+- `text` is a human-edited transcript excerpt with coherent basic meaning.
+- Use only the input. Do not add outside information, common-knowledge inferences, or assumptions.
+
+## Core task: depth of opinion and value of critical thinking
+Cover **all important opinions and arguments** while remaining concise and avoiding excessive detail. Extract **8–15 core topics**, each covering **3–8 minutes** of video.
+
+## Topic extraction principles
+- **Value of the opinion:** Prefer distinctive perspectives, original opinions, and thoughtful analysis. Include debatable opinions that invite discussion, and preserve the complete argument (claim, evidence, conclusion).
+- **Depth of reasoning:** Prefer multiple perspectives and comparisons; highlight critical thinking and rational analysis; retain explicit positions and standards of judgment.
+- **Social relevance:** Prefer opinions related to current social phenomena or events, broadly meaningful discussions, and material that can broaden the audience's perspective.
+- **Completeness:** Every topic should state a clear position, provide a complete argument (facts, logic, and relevant emotion), and reach a clear conclusion or value judgment.
+
+## Merge and split rules
+- **Merge:** different aspects of the same social phenomenon; connected argument chains; opinions within the same value system; multiple analyses of one issue.
+- **Split:** a fundamental change in position; a shift to another subject area; a shift from rational analysis to emotional expression; a significant change in standards of judgment.
+
+## Output format
+Use exactly this format and add no descriptive text:
+### Outline:
+1. **[Main topic]**
+   - [Subtopic highlighting a distinctive, thought-provoking opinion]
+   - [Subtopic]
+2. **[Main topic]**
+   - [Subtopic]
+
+## Example
+### Outline:
+1. **How young adults' values are changing**
+   - The shift from material pursuits to personal fulfillment.
+   - Balancing individual interests with collective responsibility.
+   - Combining traditional culture with modern ideas.
+   - Conflicts between social expectations and personal choices.
+2. **Critiquing online filter bubbles**
+   - How recommendation algorithms shape thinking.
+   - The tension between information overload and deep thought.
+   - Why and how to seek diverse perspectives.
+   - The importance of sound judgment amid an abundance of information.
+3. **Education equity and social mobility**
+   - Root causes of unequal access to educational resources.
+   - Whether the idea that education changes one's prospects applies today.
+   - How diverse definitions of success challenge traditional views of education.
+   - Responses to the risk of entrenched social classes.
+
+## Special considerations
+- **Controversial opinions:** Present the full argument impartially, include different positions, and preserve the original context and tone.
+- **Value judgments:** Distinguish facts from judgments; retain the stated position and its supporting criteria.
+- **Social criticism:** Keep criticism constructive and reasoned, include analysis and possible responses, and omit empty venting.
+
+## Notes
+1. Preserve each opinion's central position and complete argument.
+2. Prioritize material with depth and potential to prompt reflection.
+3. Focus on distinctive, insightful perspectives on social phenomena.
+4. Keep the logical chain clear.
+5. Remain neutral while extracting opinions; do not judge their merits.

@@ -1,0 +1,25 @@
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Maintainers use this category to announce releases, known issues, and changes in direction.
+        Post ideas in Ideas and usage questions in Q&A.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: "Released version vX.Y.Z; identify unreleased source changes"
+    validations:
+      required: true
+  - type: textarea
+    id: shipped
+    attributes:
+      label: What will users notice?
+    validations:
+      required: true
+  - type: textarea
+    id: known
+    attributes:
+      label: Known issues
+    validations:
+      required: false

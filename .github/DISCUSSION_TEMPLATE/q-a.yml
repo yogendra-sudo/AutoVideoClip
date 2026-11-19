@@ -1,0 +1,26 @@
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ask usage questions here. If the app will not open, progress is stuck, or no clips are produced—and you can provide the version and platform—use the [Bug Report](https://github.com/zhouxiaoka/autoclip/issues/new/choose) template.
+        Check [known issues](https://github.com/zhouxiaoka/autoclip/issues/96) before posting.
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+      placeholder: "Ollama is running locally, but Settings still shows no models."
+    validations:
+      required: true
+  - type: textarea
+    id: tried
+    attributes:
+      label: What have you tried?
+    validations:
+      required: false
+  - type: input
+    id: env
+    attributes:
+      label: Version / platform / model
+      placeholder: "Installed version or commit SHA · platform · relevant provider and model"
+    validations:
+      required: false

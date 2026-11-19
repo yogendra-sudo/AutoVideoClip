@@ -1,0 +1,196 @@
+{
+  "editorial": [
+    {
+      "t": 0,
+      "hash": "||||-1|1.000",
+      "rects": [],
+      "sub": "",
+      "topic": ""
+    },
+    {
+      "t": 0.5,
+      "hash": "|<span class=\"p now\" style=\"--u:100%\">Okay</span>|||-1|1.000",
+      "rects": [
+        {
+          "slot": "subtitle",
+          "x": 60,
+          "y": 1565,
+          "w": 960,
+          "h": 61
+        }
+      ],
+      "sub": "<span class=\"p now\" style=\"--u:100%\">Okay</span>",
+      "topic": ""
+    },
+    {
+      "t": 1,
+      "hash": "|<span class=\"p now\" style=\"--u:100%\">Investor</span>|||0|1.000",
+      "rects": [
+        {
+          "slot": "subtitle",
+          "x": 60,
+          "y": 1565,
+          "w": 960,
+          "h": 61
+        }
+      ],
+      "sub": "<span class=\"p now\" style=\"--u:100%\">Investor</span>",
+      "topic": ""
+    },
+    {
+      "t": 1.6,
+      "hash": "|<span class=\"p now\" style=\"--u:25%\">Like</span>||Flight Instructor|3|1.040",
+      "rects": [
+        {
+          "slot": "subtitle",
+          "x": 60,
+          "y": 1565,
+          "w": 960,
+          "h": 61
+        },
+        {
+          "slot": "gloss",
+          "x": 60,
+          "y": 980,
+          "w": 420,
+          "h": 72
+        }
+      ],
+      "sub": "<span class=\"p now\" style=\"--u:25%\">Like</span>",
+      "topic": ""
+    },
+    {
+      "t": 2.4,
+      "hash": "|||Flight Instructor|-1|1.000",
+      "rects": [
+        {
+          "slot": "gloss",
+          "x": 60,
+          "y": 980,
+          "w": 420,
+          "h": 72
+        }
+      ],
+      "sub": "",
+      "topic": ""
+    }
+  ],
+  "street": [
+    {
+      "t": 0,
+      "hash": "You||||1.180||",
+      "rects": [
+        {
+          "slot": "subtitle",
+          "x": 30,
+          "y": 1318,
+          "w": 1020,
+          "h": 168
+        }
+      ],
+      "sub": "You",
+      "topic": ""
+    },
+    {
+      "t": 0.5,
+      "hash": "How||||1.000|14seconds|",
+      "rects": [
+        {
+          "slot": "subtitle",
+          "x": 30,
+          "y": 1318,
+          "w": 1020,
+          "h": 168
+        },
+        {
+          "slot": "number",
+          "x": 40,
+          "y": 80,
+          "w": 360,
+          "h": 84
+        }
+      ],
+      "sub": "How",
+      "topic": ""
+    },
+    {
+      "t": 1,
+      "hash": "See||||1.000|42seconds|",
+      "rects": [
+        {
+          "slot": "subtitle",
+          "x": 30,
+          "y": 1318,
+          "w": 1020,
+          "h": 168
+        },
+        {
+          "slot": "number",
+          "x": 40,
+          "y": 80,
+          "w": 360,
+          "h": 84
+        },
+        {
+          "slot": "sticker",
+          "x": 480,
+          "y": 360,
+          "w": 120,
+          "h": 72
+        },
+        {
+          "slot": "sticker",
+          "x": 500,
+          "y": 460,
+          "w": 120,
+          "h": 72
+        }
+      ],
+      "sub": "See",
+      "topic": ""
+    },
+    {
+      "t": 1.6,
+      "hash": "This||||1.000|70seconds|",
+      "rects": [
+        {
+          "slot": "subtitle",
+          "x": 30,
+          "y": 1318,
+          "w": 1020,
+          "h": 168
+        },
+        {
+          "slot": "number",
+          "x": 40,
+          "y": 80,
+          "w": 360,
+          "h": 84
+        },
+        {
+          "slot": "sticker",
+          "x": 480,
+          "y": 360,
+          "w": 120,
+          "h": 72
+        },
+        {
+          "slot": "sticker",
+          "x": 40,
+          "y": 40,
+          "w": 120,
+          "h": 72
+        }
+      ],
+      "sub": "This",
+      "topic": ""
+    },
+    {
+      "t": 2.4,
+      "hash": "||||||",
+      "rects": [],
+      "sub": "",
+      "topic": ""
+    }
+  ]
+}

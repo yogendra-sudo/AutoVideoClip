@@ -1,0 +1,161 @@
+# Log files
+logs/
+*.log
+backend.log
+celery.log
+frontend/frontend.log
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# Virtual environments
+venv/
+env/
+.venv/
+venv_*/
+
+# Video and media files
+*.mp4
+*.mkv
+*.avi
+*.mov
+*.wmv
+*.flv
+*.webm
+*.m4v
+*.3gp
+# Bundled example project source video (17 MB, backend/services/example_project.py)
+!backend/assets/example/source.mp4
+# Bundled outro animation (backend/services/output_branding.py; source in design/outro-v5)
+!backend/assets/outro/*.mp4
+# Silent preview for editing-style cards (2.5 seconds, no audio track)
+!frontend/src/assets/editing-style/*.mp4
+!frontend/src/assets/editing-style/*.webm
+# Acceptance screenshots and interaction recording for the import-page editing style selector
+!docs/images/editing-style-picker/*.mp4
+*.mp3
+*.wav
+*.flac
+*.aac
+*.ogg
+*.wma
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Model files
+*.pt
+*.ckpt
+*.pth
+*.h5
+*.pkl
+*.joblib
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+data/autoclip.db
+data/progress.db
+data/*.json
+data/*.port
+
+# Project data directory (contains user-uploaded videos and generated files)
+data/projects/
+data/uploads/
+data/temp/
+data/output/
+data/backups/
+data/cache/
+data/shutdown_markers/
+backend/data/
+
+# Frontend dependencies and build artifacts
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Rust / Tauri build artifacts
+target/
+src-tauri/target/
+src-tauri/gen/
+src-tauri/.updater-private-key
+src-tauri/.updater-public-key
+
+# Python / packaging artifacts
+build/
+dist/
+*.mcpb
+releases/
+*.toc
+*.pkg
+*.dmg
+backend/autoclip-backend.spec
+src-tauri/resources/backend/
+src-tauri/resources/ffmpeg/
+src-tauri/resources/python/
+src-tauri/resources/ffmpeg-unified/
+src-tauri/resources/requirements.txt
+src-tauri/resources/autoclip-backend/
+
+# System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment variable files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.backup
+.env.*.backup
+.env.sentry-build-plugin
+
+# Local archives and backups (keep locally, do not commit)
+cleanup_backup/
+archive_local/
+local_backups/
+
+# Process ID files
+*.pid
+*.pid.json
+*.pid.tmp
+
+# Redis data files
+dump.rdb
+control/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+.gstack/
+
+# Python packaging artifacts
+*.egg-info/

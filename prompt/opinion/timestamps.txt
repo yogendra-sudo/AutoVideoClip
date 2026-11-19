@@ -1,0 +1,72 @@
+# Opinion and commentary video timestamp prompt
+
+## Core principles: complete opinions, clear logic, depth of reasoning
+1. Timestamps must cover the complete expression and argument for each opinion.
+2. Each range must include every argument step so the reasoning remains complete.
+3. Prefer natural boundaries between opinions, argument sections, or emotional passages.
+
+## Choosing `start_time` and `end_time`
+
+### `start_time`
+- Use the start of the **first substantive statement** expressing the opinion.
+- Ignore unrelated transitions, emotional preamble, or background before that statement.
+- Prefer the point where the position becomes clear and the argument begins.
+- For opinion content, include important emotional context or value-position statements by moving the start earlier when needed.
+
+### `end_time` (most important)
+- Use the end timestamp of the **last sentence containing the core argument**.
+- Include the opinion, its supporting reasons, and its value judgment; do not break the logic.
+- Prefer a concluding statement, value judgment, or transition to another opinion.
+- Include important concluding emotion or emphasis on values.
+- If the argument continues through the end of the supplied SRT block, use the end timestamp of its last relevant subtitle.
+- **Do not** automatically use the end of the entire text block.
+
+### Duration
+- Target **3–8 minutes** per opinion clip.
+- Complex analysis of social issues may extend to 10 minutes.
+- A concise opinion may be 2–3 minutes.
+- A controversial discussion may extend to 12 minutes.
+
+### Special handling
+- Preserve the complete chain of multi-layered reasoning.
+- Keep opposing comparisons and multiple perspectives together.
+- Do not separate a position from its value judgment.
+- Include important emotional conclusions or emphasis.
+
+## Input format
+You will receive a JSON object containing:
+- `outline`: a JSON array with **multiple** opinion topics to process.
+- `srt_text`: one SRT text block for those topics, in the format `index\nstart --> end\ntext\n\n`.
+
+## Output format
+- Add `start_time` and `end_time` to **every** topic object, preserving the input outline's structure.
+- Rename the input `title` field to `outline` and `subtopics` to `content`.
+- Return one JSON array containing all processed topics.
+- Use timestamps in `HH:MM:SS,mmm` format.
+
+**Strict JSON requirements:**
+1. Output must begin with `[` and end with `]`. Do not add explanations, headings, or Markdown fences.
+2. Use standard double quotes (`"`), never curly quotation marks or single quotes.
+3. Match all braces and brackets; separate objects with commas and omit a comma after the final object.
+4. Escape quotation marks inside strings as `\"`.
+5. Include no comments, extra text, or control characters.
+6. Ensure the output is valid JSON parseable by a standard JSON parser.
+
+## Timestamp examples
+- **Values discussion:** Start with the first substantive statement of the position; end with its stated conclusion.
+- **Social criticism:** Cover the description and analysis of the phenomenon through the proposed response.
+- **Critical analysis:** Include the full reasoning from the alternate perspective through the conclusion.
+
+Avoid cutting off multi-step reasoning, separating a position from its argument, truncating a key emotional statement, or omitting a value judgment or summary.
+
+## Additional considerations
+- **Controversial opinions:** Include the full position and argument, analysis from different angles, and the basis for value judgments.
+- **Deep analysis:** Preserve all reasoning steps, multiple perspectives, and logical continuity.
+- **Emotional expression:** Retain important emotional context and value positions while balancing them with rational analysis.
+- **Social criticism:** Include the full analysis and proposed response; preserve a clear, constructive, reasoned position.
+
+## Notes
+1. Include the complete opinion and argument.
+2. Do not omit important analysis or value judgments.
+3. Preserve logical continuity and balance reason with emotion.
+4. Stay neutral when selecting timestamps; do not judge the opinion.

@@ -1,0 +1,73 @@
+# Business and finance timestamp localization prompt
+
+For each business topic in a batch, locate its exact timestamps in the corresponding **single SRT subtitle block**.
+
+## Core principles: precise, complete, clear business logic
+1. Timestamps must match discussion of the business topic.
+2. Cover every key argument so the business logic is complete.
+3. Prefer natural boundaries between business views, cases, and logical sections.
+
+## Determine `start_time` and `end_time`
+
+### `start_time`
+- Use the start of the **first substantive view** about the business topic.
+- Ignore unrelated greetings, disclaimers, and transitions before it.
+- Prefer a natural business-logic boundary where the topic is clearly introduced.
+- If essential background or data is presented first, move the start earlier to include it.
+
+### `end_time` (most important)
+- Use the end timestamp of the **last sentence** covering the topic's core discussion.
+- Preserve the complete analysis, investment advice, and risk warnings; do not break its logic.
+- Prefer a summary, concluding recommendation, or topic transition.
+- Include important risk warnings or disclaimers at the end of the topic.
+- If the discussion continues to the end of the supplied SRT block, use the end of the last relevant subtitle.
+- **Never** blindly use the end of the entire block.
+
+### Duration guidance
+- Target 3–8 minutes per business topic.
+- Complex, multi-angle analysis may extend to 10 minutes.
+- Market updates and policy explanations may be 2–3 minutes.
+- In-depth industry or company analysis may extend to 12 minutes.
+
+### Special handling
+- Preserve data-dense financial or market passages in full.
+- Keep a complete business case together.
+- Keep investment strategies and risk warnings together.
+- Preserve policy explanations and their impact analysis as a whole.
+
+## Input format
+You will receive a JSON object containing:
+- `outline`: a JSON array of **multiple** business topics.
+- `srt_text`: the **single** related SRT block, formatted as `index\nstart --> end\ntext\n\n`.
+
+## Output format
+- Add `start_time` and `end_time` to each topic, preserving the outline structure.
+- Rename input `title` to `outline` and `subtopics` to `content`.
+- Return a JSON array containing all processed topics.
+- Use `HH:MM:SS,mmm` timestamps.
+
+**Strict JSON output:**
+1. Start with `[` and end with `]`; add no explanation, heading, or Markdown fence.
+2. Use ASCII double quotes `"`, never typographic or single quotes.
+3. Match all braces and brackets; use commas between objects and no trailing comma.
+4. Escape quotes inside strings as `\"`.
+5. Add no comments, extra text, or control characters.
+6. Ensure the result is valid JSON.
+
+## Business timing examples
+- **Investment strategy:** from "I think the current market..." through "That is my investment recommendation."
+- **Company analysis:** from "Let's look at this company..." through "That is the overall assessment."
+- **Industry trend:** from "The trend in this industry..." through "The outlook from here."
+
+## Errors to avoid
+- Cutting through a financial-data explanation.
+- Separating investment advice from its risk warning.
+- Ending in the middle of a key argument in a case study.
+- Omitting important market context.
+
+## Notes
+1. Preserve complete business-analysis logic for each segment.
+2. Include all relevant financial and market data.
+3. Present investment advice together with risk warnings.
+4. Keep market updates concise and allow enough time for in-depth analysis.
+5. Consider the needs of viewers with different investment experience.

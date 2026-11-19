@@ -1,0 +1,49 @@
+# Automatically sync website version numbers, download links, and installer sizes with the main repository's Release. Any of these triggers can run it:
+#   1. repository_dispatch  — Sent after a successful release in the main repository's desktop-build.yml (requires WEBSITE_DISPATCH_TOKEN there)
+#   2. schedule             — Daily fallback, so the site does not stay out of date if no token is configured
+#   3. workflow_dispatch    — Manual run; a tag can be specified
+# Changes are committed directly to main; GitHub Pages updates in about a minute.
+name: Sync release info
+
+on:
+  repository_dispatch:
+    types: [autoclip-release]
+  schedule:
+    - cron: "17 3 * * *"   # Daily at 03:17 UTC (11:17 China Standard Time)
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag, for example v1.3.0; leave empty to use latest"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-release
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync index.html to the release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.event.client_payload.tag || inputs.tag || '' }}
+        run: python3 scripts/sync_release.py $TAG
+
+      - name: Commit and push if changed
+        run: |
+          if git diff --quiet; then
+            echo "Website is already up to date"; exit 0
+          fi
+          VER=$(grep -oE 'releases/download/v[0-9]+\.[0-9]+\.[0-9]+/' index.html | head -1 | grep -oE 'v[0-9.]+')
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "chore: sync download links to AutoClip $VER"
+          git push

@@ -1,0 +1,81 @@
+# Automatically manage the issue inbox:
+# 1. Reply to new issues with expected response times and status links.
+# 2. Mark needs-info issues stale after 14 days without a response, then close after 7 more days.
+# 3. Mark other issues stale after 60 inactive days, then close after 14 more days.
+#    Issues labeled feature or pinned are never closed automatically.
+name: Issue hygiene
+
+on:
+  issues:
+    types: [opened]
+  schedule:
+    - cron: "0 2 * * *"   # Daily at 10:00 China Standard Time
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  welcome:
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = (context.payload.issue.labels || []).map((label) => label.name || label)
+            if (labels.includes('from-app')) return
+            const body = [
+              'Thanks for your feedback. This open-source project is maintained in our spare time. Issues are usually triaged together **within one week** rather than answered immediately one by one.',
+              '',
+              '- Current status and known issues: #96',
+              '- Issues are for reproducible bugs and feature requests accepted by maintainers for the roadmap. Share ideas, use cases, and model requests in [Discussions](https://github.com/zhouxiaoka/autoclip/discussions).',
+              '- Bugs missing **version / platform / model** are labeled `needs-info`. Without an update for 14 days, they are marked stale and automatically closed after 7 more days without a reply. A maintainer will review any new information before reopening.',
+              '',
+              '_Issues are for reproducible bugs and accepted roadmap items. Ideas belong in Discussions. Bugs missing version / platform / model get `needs-info`, are marked stale after 14 days without a reply, then close after 7 more days._'
+            ].join('\n');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body,
+            });
+
+  stale-needs-info:
+    if: github.event_name != 'issues'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          only-labels: needs-info
+          days-before-issue-stale: 14
+          days-before-issue-close: 7
+          days-before-pr-stale: -1
+          days-before-pr-close: -1
+          stale-issue-label: stale
+          stale-issue-message: "More information is needed to reproduce this issue (version / platform / model / logs). It will close automatically if details are not added within 7 days. A maintainer will review any update before reopening."
+          close-issue-message: "Closed because the requested reproduction details were not provided. Reply here with the information, and a maintainer can review whether to reopen."
+          remove-stale-when-updated: true
+          operations-per-run: 100
+
+  stale-general:
+    if: github.event_name != 'issues'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          exempt-issue-labels: pinned,feature,needs-info
+          exempt-all-milestones: true
+          days-before-issue-stale: 60
+          days-before-issue-close: 14
+          days-before-pr-stale: 45
+          days-before-pr-close: 14
+          stale-issue-label: stale
+          stale-pr-label: stale
+          stale-issue-message: "There has been no activity for 60 days, so this issue is marked stale. Reply if it is still relevant; otherwise, it will close automatically in 14 days."
+          stale-pr-message: "There has been no activity for 45 days, so this pull request is marked stale. Reply if work is continuing; otherwise, it will close automatically in 14 days."
+          close-issue-message: "Closed automatically due to inactivity. If the issue still applies, feel free to reopen it or create a new one."
+          close-pr-message: "Closed automatically due to inactivity."
+          remove-stale-when-updated: true
+          operations-per-run: 100

@@ -1,0 +1,28 @@
+You are an expert in video content planning, and please use the title and summary of the video clip below as a thematic cluster and produce a set of recommendations for each set of content.
+
+Requests as follows:
+1. Each set shall contain at least two slices and a maximum of five slices;
+2. The following thematic keywords shall be given due consideration in clustering:
+- Investment management: investment, financial management, equity, funds, stock-sharing, profit-making, income-generation, rise and fall, de-assembly, diaspora, stock-A, North Bank, etc.
+- Professional growth: working life, work, skills, study, Japanese, secretarial, reverse, education, etc.
+- Social observation: social phenomena, web images, waste classification, platform mechanisms, broadcasting industry, etc.
+- Cultural differences: culture, differences, Europe and America, Japan, Korea, diet, language, fox stink, etc.
+- Live interaction: live, interactive, screens, fans, captains, reward, barley, etc.
+- Emotional relations: relationships, emotions, socialization, communication, relationships, psychology, etc.
+- Healthy living: health, sports, running, eating, milk, lifestyle, etc.
+- Creative platforms: creation, platform, station B, little red books, photography, content operation, etc.
+
+3. Each cluster consists of:
+- Combination of titles (10 words to accurately reflect the theme)
+- Joint brief (not more than 50 words, indicating combined value and point of view)
+- List of slice headings included (in order of subject relevance)
+
+4. The cluster principle:
+- Prioritize the relevance of the subject and ensure a high degree of consistency in the subject matter of the slice in the same set
+- Prioritize high-scoring slices, taking into account content quality and scoring
+- Avoiding forced classification of slices of different subjects
+- If a subject has more slices, it can create multiple subdivided collections
+
+Please output in JSON format. Fields are called Collaction title, Collaction Summary, klips.
+
+Here is a list of video slices:

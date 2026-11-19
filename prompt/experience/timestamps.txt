@@ -1,0 +1,73 @@
+# Practical-experience video timestamp prompt
+
+## Core principles: complete experience, clear steps, practical value
+1. Timestamps must cover a complete experience or method explanation.
+2. Each range must include every key step so the procedure remains coherent.
+3. Prefer natural boundaries between methods, techniques, or experience topics.
+
+## Choosing `start_time` and `end_time`
+
+### `start_time`
+- Use the start time of the **first substantive sentence** introducing the experience.
+- Ignore unrelated transitions, personal chatter, or background before that sentence.
+- Prefer the point where the topic is clearly introduced and the method begins.
+- If important context or a problem description is needed, move the start earlier.
+
+### `end_time` (most important)
+- Use the end timestamp of the **last sentence containing the core experience**.
+- Include the method, its steps, and important caveats; do not break the process.
+- Prefer a summary, explanation of results, or transition to another experience.
+- Include important practical tips or caveats at the end.
+- If discussion continues through the end of the supplied SRT block, use the end timestamp of its last relevant subtitle.
+- **Do not** automatically use the end of the entire text block.
+
+### Duration
+- Target **3–8 minutes** per experience topic.
+- A complex, multi-step method may extend to 10 minutes.
+- A concise technique may be 2–3 minutes.
+- A complete method system or workflow may extend to 12 minutes.
+
+### Special handling
+- Keep all steps of a multi-step method together.
+- Keep important practical cases and demonstrations together.
+- Do not separate a core technique from its caveats.
+- Include both the problem and its solution.
+
+## Input format
+You will receive a JSON object containing:
+- `outline`: a JSON array with **multiple** experience topics to process.
+- `srt_text`: one SRT text block for those topics, in the format `index\nstart --> end\ntext\n\n`.
+
+## Output format
+- Add `start_time` and `end_time` to **every** topic object, preserving the input outline's structure.
+- Rename the input `title` field to `outline` and `subtopics` to `content`.
+- Return one JSON array containing all processed topics.
+- Use timestamps in `HH:MM:SS,mmm` format.
+
+**Strict JSON requirements:**
+1. Output must begin with `[` and end with `]`. Do not add explanations, headings, or Markdown fences.
+2. Use standard double quotes (`"`), never curly quotation marks or single quotes.
+3. Match all braces and brackets; separate objects with commas and omit a comma after the final object.
+4. Escape quotation marks inside strings as `\"`.
+5. Include no comments, extra text, or control characters.
+6. Ensure the output is valid JSON parseable by a standard JSON parser.
+
+## Timestamp examples
+- **Method:** Start with the first substantive explanation; end after the complete procedure.
+- **Technique:** Include its introduction, practical advice, and key caveats.
+- **Problem solving:** Cover the problem through the proposed solution.
+
+Avoid cutting off a procedure midway, separating practical tips from the method, interrupting a key example, or omitting important caveats or expected results.
+
+## Additional considerations
+- **Methods:** Include all steps, important operational details, caveats, expected results, and ways to verify them.
+- **Techniques:** Preserve the complete, practical technique, its application conditions, and clear instructions.
+- **Problem solving:** Cover problem identification and the proposed solution; keep the reasoning coherent and include verification.
+- **Lessons learned:** Include the reflection, success factors, lessons from failure, and how the experience can be applied.
+
+## Notes
+1. Include the complete method and practical tips.
+2. Preserve useful techniques and caveats.
+3. Keep the line of reasoning coherent.
+4. Make operational steps clear and complete.
+5. Remain objective; do not judge the experience while selecting timestamps.

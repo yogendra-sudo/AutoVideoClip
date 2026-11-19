@@ -1,0 +1,82 @@
+# Speech and stand-up video timestamp prompt
+
+## Core principles: complete expression, emotional continuity, preserve the effect
+1. Timestamps must cover a complete expressive unit or passage.
+2. Each range must preserve the beginning, development, and conclusion of an emotional arc.
+3. Prefer natural boundaries at topic or emotional transitions and changes in delivery.
+
+## Choosing `start_time` and `end_time`
+
+### `start_time`
+- Use the start time of the **first substantive sentence** in the topic.
+- Ignore unrelated transitions, pauses, or background music before the topic.
+- Prefer the point where the topic is clearly introduced or the relevant expression begins.
+- For speeches and stand-up, include important setup, introductions, or atmosphere by moving the start earlier when needed.
+
+### `end_time` (most important)
+- Use the end timestamp of the **last sentence containing the topic's core expression**.
+- Include the complete argument, story, or joke; do not cut across an expressive unit.
+- Prefer a summary, the conclusion after an emotional high point, or a topic transition.
+- Include important audience response, laughter, or applause at the end of the topic.
+- If the topic continues through the end of the supplied SRT block, use the end timestamp of its last relevant subtitle.
+- **Do not** automatically use the end of the entire text block.
+
+### Duration
+- Target **3–8 minutes** per topic.
+- A thoughtful or complex speech may extend to 10 minutes.
+- A complete standalone joke may be 2–3 minutes.
+- A central speech or important argument may extend to 12 minutes.
+
+### Special handling
+- Keep a full joke (setup, development, punchline) together.
+- Preserve important emotional build-up and atmosphere.
+- Keep audience interaction, questions, and live response together.
+- Include the complete statement, argument, and conclusion of a central viewpoint.
+
+## Input format
+You will receive a JSON object containing:
+- `outline`: a JSON array with **multiple** speech topics to process.
+- `srt_text`: one SRT text block for those topics, in the format `index\nstart --> end\ntext\n\n`.
+
+## Output format
+- Add `start_time` and `end_time` to **every** topic object, preserving the input outline's structure.
+- Rename the input `title` field to `outline` and `subtopics` to `content`.
+- Return one JSON array containing all processed topics.
+- Use timestamps in `HH:MM:SS,mmm` format.
+
+**Strict JSON requirements:**
+1. Output must begin with `[` and end with `]`. Do not add explanations, headings, or Markdown fences.
+2. Use standard double quotes (`"`), never curly quotation marks or single quotes.
+3. Match all braces and brackets; separate objects with commas and omit a comma after the final object.
+4. Escape quotation marks inside strings as `\"`.
+5. Include no comments, extra text, or control characters.
+6. Ensure the output is valid JSON parseable by a standard JSON parser.
+
+## Timestamp examples
+- **Speech:** Start with the first substantive statement; end after its conclusion.
+- **Stand-up:** Include the setup through the punchline and audience response.
+- **Story:** Include the introduction, full story, conclusion, and reflection.
+- **Live interaction:** Include the prompt to the audience through the response and summary.
+
+Avoid cutting at the punchline, separating an opinion from its argument, truncating an emotional high point, or omitting important audience response or live effects.
+
+## Additional considerations
+- **Speeches:** Include the full argument, meaningful emotional expression, audience response, and complete insight.
+- **Stand-up:** Preserve the joke's setup, development, punchline, humor, and audience laughter.
+- **Interviews:** Include the complete question and answer; keep the exchange natural and preserve substantive discussion and differing views.
+- **Live performance:** Preserve spontaneous performance, real-time audience interaction, performance technique, and atmosphere.
+
+## Strategies by content type
+- **Keynote:** Include the central point, supporting arguments, and conclusion; preserve emotional and educational value.
+- **Stand-up:** Locate complete joke units or linked jokes; retain audience response and entertainment value.
+- **Interview:** Include the question, discussion, and summary; preserve natural flow, exchange of views, and information.
+- **Experience sharing:** Include context, events, and reflection; preserve the story and its lessons.
+
+## Notes
+1. Preserve the full expressive structure of each clip.
+2. Include important emotion and atmosphere.
+3. Retain laughter, applause, and audience response when they contribute to the moment.
+4. Preserve valuable interaction and participation.
+5. Include complete insight and educational value in speeches.
+6. Preserve the full comedic effect in stand-up.
+7. Keep the result natural and true to the live content; do not over-edit.

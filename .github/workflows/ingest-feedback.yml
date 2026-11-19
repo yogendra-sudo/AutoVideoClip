@@ -1,0 +1,58 @@
+# Forward in-app feedback from PostHog to GitHub.
+# Bugs → Issues (bug, needs-triage, from-app)
+# Ideas → Discussions / Ideas
+# Other feedback → Discussions / Q&A
+# Do not run on pull requests, so previews cannot write test messages to the repository.
+name: Ingest app feedback
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Print the posts that would be created without creating them
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  issues: write
+  discussions: write
+
+concurrency:
+  group: ingest-app-feedback
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Require PostHog read access
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+        run: |
+          if [ -z "$POSTHOG_PERSONAL_API_KEY" ]; then
+            echo "Missing secret POSTHOG_PERSONAL_API_KEY. In-app feedback cannot be sent to GitHub."
+            exit 1
+          fi
+
+      - name: Ingest
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          POSTHOG_PROJECT_ID: ${{ secrets.POSTHOG_PROJECT_ID }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          args=()
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            args+=(--dry-run)
+          fi
+          python3 scripts/ingest_app_feedback.py "${args[@]}"

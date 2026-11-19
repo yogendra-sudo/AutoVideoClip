@@ -1,0 +1,70 @@
+name: 🐛 Bug report
+description: A feature does not work, returns an error, or crashes
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Version, platform and model are required for us to reproduce.
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - macOS desktop app (Apple Silicon)
+        - Windows desktop app (x64)
+        - Docker
+        - From source
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: AutoClip version
+      description: Enter the installed version, or include the commit SHA for source builds
+      placeholder: "vX.Y.Z; include the commit SHA for source builds"
+    validations:
+      required: true
+
+  - type: input
+    id: model
+    attributes:
+      label: Relevant models
+      description: Include the provider and model. For transcription issues, include the Whisper or SenseVoice model. Say if not configured or not applicable.
+      placeholder: "Analysis: provider + model; transcription: Whisper / SenseVoice / not applicable"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: source
+    attributes:
+      label: Video source
+      options:
+        - Bilibili link
+        - YouTube
+        - Local file
+        - Not applicable
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Steps to reproduce, expected result, and actual result
+      placeholder: |
+        1. Paste a link: https://…
+        2. Click "Start"
+        3. Progress stays at "Analyzing 63%" / error: xxx
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: |
+        Desktop logs: macOS `~/Library/Application Support/AutoClip/logs`; Windows `%APPDATA%\AutoClip\logs`. Include relevant logs from before and after the failure. Remove API keys, cookies, email addresses, private paths, and media content. Docker/source users should note how they run the app and where the logs came from. Contact us privately about security issues as described in SECURITY.md.
+      render: text

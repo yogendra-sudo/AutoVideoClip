@@ -1,0 +1,46 @@
+import catalog from '@event-catalog'
+
+export const STUDIO_ERROR_CODES: readonly string[] = catalog.enums.studio_error_code
+export const USER_CAUSE_ERROR_CODES: readonly string[] = catalog.attribution.user_cause.error_codes
+export const USER_CAUSE_UPSTREAM_TYPES: readonly string[] = catalog.attribution.user_cause.upstream_types
+export const USER_MESSAGES: Record<string, string> = {
+  authentication: 'The API key is invalid or expired. Update it in Settings, then try again.',
+  llm_not_configured: 'No AI model is configured. Add a provider and API key in Settings.',
+  llm_auth_invalid: 'The API key is invalid or expired. Update it in Settings, then try again.',
+  invalid_key: 'The API key is invalid or expired. Update it in Settings, then try again.',
+  permission_denied: "This token can't use that model. In the provider console, enable the model or switch groups.",
+  insufficient_quota: 'Your balance or token quota is used up. Top up or replace the token, then try again.',
+  model_not_found: 'The selected model was not found. Check the model ID or choose another model.',
+  bad_endpoint: 'The provider endpoint is invalid. Check the address in Settings.',
+  rate_limited: 'The model service is receiving too many requests. Wait a moment and try again.',
+  upstream_unavailable: 'The model service is temporarily unavailable. Please try again later.',
+  timeout: 'The model service timed out. Try again later.',
+  connection: 'Could not connect to the model service. Check your connection and try again.',
+  provider_error: 'Unrecognized model-service error. Check configuration and try again.',
+  invalid_response: 'The model returned an unusable response. Try again later.',
+  output_truncated: 'The model response was incomplete. Try again or choose another model.',
+  refused: 'The model declined the request. Adjust the content and try again.',
+  unknown: 'An unexpected error occurred. Try again later.',
+  unexpected: 'An unexpected error occurred. Try again later.',
+  network: 'Network connection failed. Check your connection and try again.',
+  validation: 'The input is invalid. Review it and try again.',
+  missing_resource: 'A required resource could not be found. Check that it is still available.',
+  multiple: 'More than one problem occurred.',
+  whisper_not_installed: 'The local transcription component is not installed. Install it in Settings → Default models → Speech to subtitles.',
+  whisper_install_failed: 'The local transcription component could not be installed. Check your connection and available disk space, then retry.',
+  transcription_empty: 'No speech was detected. Check that the video contains audio.',
+  subtitle_setup: 'Subtitle processing is not ready. Try again later.',
+  timeline_empty: 'No usable clips were found. Try a longer video or provide more complete subtitles.',
+  source_blocked: 'This video cannot be accessed right now. It may be private, age- or region-restricted, or require sign-in. Try a public video or choose a signed-in browser.',
+  file_locked: 'The source file is in use by another application. Close that application and try again.',
+  source_not_found: 'The source file could not be found. Check that it still exists and try again.',
+  source_unsupported: 'This link is not a downloadable video page.',
+  source_too_short: 'The video is too short to create a complete clip. Try a longer video.',
+  no_complete_version: 'No complete version was generated for the selected platform.',
+  source_no_audio: 'The video has no audio track and cannot be transcribed.',
+  source_unreadable: 'The source video could not be read. Try another file or convert it to MP4 and import it again.',
+  service_restarted: 'The app restarted before production finished. Try again.',
+  frame_extract_failed: 'Local video processing failed. Check that the source is valid and that enough disk space is available, then retry.',
+  store_lock_timeout: 'Project data on this computer is in use by another AutoClip process. Please try again shortly; your source media is kept.',
+}
+export const ERROR_CODE = new RegExp(`^(?:http_[45][0-9]{2}|${STUDIO_ERROR_CODES.join('|')})$`)

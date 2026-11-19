@@ -1,0 +1,13 @@
+{
+  "organization": "autoclip-ts",
+  "dashboard_id": "10252510",
+  "title": "AutoClip | Export reliability and failure diagnosis",
+  "period": "7d",
+  "widgets": [
+    {"id":"2249816","title":"Engineering error trends (excluding acceptance runs)","display":"line","fields":["count()"],"conditions":"(level:error OR level:fatal) !telemetry_test:true !build_environment:development !environment:development"},
+    {"id":"2249817","title":"Studio failure stages (including configuration warnings)","display":"line","fields":["phase","count()"],"conditions":"area:studio !telemetry_test:true !build_environment:development !environment:development","sort":"-count()"},
+    {"id":"2249818","title":"Engineering errors by release (find regressions)","display":"line","fields":["release","count()"],"conditions":"(level:error OR level:fatal) !telemetry_test:true !build_environment:development !environment:development","sort":"-count()"},
+    {"id":"2249819","title":"Frequent issues","display":"table","fields":["issue","count()"],"conditions":"(level:error OR level:fatal) !telemetry_test:true !build_environment:development !environment:development","sort":"-count()"}
+  ],
+  "notes": "Excludes explicitly marked development and telemetry_test; unknown environments remain visible. Error counts are not failed jobs or affected users."
+}

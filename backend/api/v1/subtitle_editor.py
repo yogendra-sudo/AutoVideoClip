@@ -1,0 +1,388 @@
+import logging
+from pathlib import Path
+from typing import List, Dict, Optional
+from fastapi import APIRouter, HTTPException, Depends, UploadFile, File
+from fastapi.responses import FileResponse
+from pydantic import BaseModel
+
+from ...utils.subtitle_processor import SubtitleProcessor
+from ...utils.video_editor import VideoEditor
+from ...core.path_utils import get_data_directory, get_projects_directory
+from ...core.database import get_db
+from ...services.project_service import ProjectService
+from sqlalchemy.orm import Session
+
+logger = logging.getLogger(__name__)
+router = APIRouter()
+
+# Request and response models
+class SubtitleEditRequest(BaseModel):
+    project_id: str
+    clip_id: str
+    deleted_segments: List[str]
+
+class SubtitleEditResponse(BaseModel):
+    success: bool
+    message: str
+    edited_video_path: Optional[str] = None
+    deleted_duration: Optional[float] = None
+    final_duration: Optional[float] = None
+
+class SubtitleDataResponse(BaseModel):
+    segments: List[Dict]
+    total_duration: float
+    word_count: int
+    segment_count: int
+
+class EditPreviewRequest(BaseModel):
+    project_id: str
+    clip_id: str
+    deleted_segments: List[str]
+
+# Dependency injection functions
+def get_subtitle_processor() -> SubtitleProcessor:
+    return SubtitleProcessor()
+
+def get_video_editor() -> VideoEditor:
+    # The subtitle editor uses global paths as fallback (does not affect the main pipeline)
+    from ...core.shared_config import CLIPS_DIR, COLLECTIONS_DIR
+    return VideoEditor(clips_dir=str(CLIPS_DIR), collections_dir=str(COLLECTIONS_DIR))
+
+def get_project_service(db: Session = Depends(get_db)) -> ProjectService:
+    """Dependency to get project service."""
+    return ProjectService(db)
+
+@router.get("/{project_id}/clips/{clip_id}/subtitles")
+async def get_clip_subtitles(
+    project_id: str,
+    clip_id: str,
+    subtitle_processor: SubtitleProcessor = Depends(get_subtitle_processor),
+    project_service: ProjectService = Depends(get_project_service)
+):
+    """Get word-level subtitle data for a clip"""
+    try:
+        # Get project info
+        project = project_service.get(project_id)
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+        
+        # Get clip info
+        from ...models.clip import Clip
+        clip = project_service.db.query(Clip).filter(Clip.id == clip_id, Clip.project_id == project_id).first()
+        if not clip:
+            raise HTTPException(status_code=404, detail="Clip not found")
+        
+        # Locate the original SRT file
+        projects_dir = get_projects_directory()
+        project_dir = projects_dir / project_id
+        srt_file = project_dir / "raw" / "input.srt"
+        
+        if not srt_file.exists():
+            raise HTTPException(status_code=404, detail="Subtitle file not found")
+        
+        # Parse subtitle data
+        subtitle_data = subtitle_processor.parse_srt_to_word_level(srt_file)
+        
+        # Filter to the time range belonging to this clip
+        # If start_time and end_time are integers (seconds), use them directly
+        if isinstance(clip.start_time, int):
+            clip_start = clip.start_time
+        else:
+            clip_start = subtitle_processor._srt_time_to_seconds(
+                subtitle_processor._seconds_to_srt_time_object(clip.start_time)
+            )
+        
+        if isinstance(clip.end_time, int):
+            clip_end = clip.end_time
+        else:
+            clip_end = subtitle_processor._srt_time_to_seconds(
+                subtitle_processor._seconds_to_srt_time_object(clip.end_time)
+            )
+        
+        # Filter subtitle segments
+        clip_subtitles = [
+            seg for seg in subtitle_data 
+            if seg['startTime'] >= clip_start and seg['endTime'] <= clip_end
+        ]
+        
+        # Adjust timestamps to be relative to the clip
+        for seg in clip_subtitles:
+            seg['startTime'] -= clip_start
+            seg['endTime'] -= clip_start
+            for word in seg['words']:
+                word['startTime'] -= clip_start
+                word['endTime'] -= clip_start
+        
+        # Get statistics
+        stats = subtitle_processor.get_subtitle_statistics(clip_subtitles)
+        
+        return SubtitleDataResponse(
+            segments=clip_subtitles,
+            total_duration=stats['totalDuration'],
+            word_count=stats['wordCount'],
+            segment_count=stats['segmentCount']
+        )
+        
+    except Exception as e:
+        import traceback
+        logger.error(f"Failed to get subtitle data: {e}")
+        logger.error(f"Error details: {traceback.format_exc()}")
+        raise HTTPException(status_code=500, detail=f"Failed to get subtitle data: {str(e)}")
+
+@router.post("/{project_id}/clips/{clip_id}/edit")
+async def edit_clip_by_subtitles(
+    project_id: str,
+    clip_id: str,
+    request: SubtitleEditRequest,
+    subtitle_processor: SubtitleProcessor = Depends(get_subtitle_processor),
+    video_editor: VideoEditor = Depends(get_video_editor),
+    project_service: ProjectService = Depends(get_project_service)
+):
+    """Edit a video clip based on subtitle deletion"""
+    try:
+        # Get project info
+        project = project_service.get(project_id)
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+        
+        # Get clip info
+        from ...models.clip import Clip
+        clip = project_service.db.query(Clip).filter(Clip.id == clip_id, Clip.project_id == project_id).first()
+        if not clip:
+            raise HTTPException(status_code=404, detail="Clip not found")
+        
+        # Get original video and subtitle file paths
+        projects_dir = get_projects_directory()
+        project_dir = projects_dir / project_id
+        
+        # Locate the original video file
+        video_files = list(project_dir.glob("raw/*.mp4"))
+        if not video_files:
+            raise HTTPException(status_code=404, detail="Original video file not found")
+        original_video = video_files[0]
+        
+        # Locate the subtitle file
+        srt_file = project_dir / "raw" / "input.srt"
+        if not srt_file.exists():
+            raise HTTPException(status_code=404, detail="Subtitle file not found")
+        
+        # Parse subtitle data
+        subtitle_data = subtitle_processor.parse_srt_to_word_level(srt_file)
+        
+        # Filter to the time range belonging to this clip
+        # If start_time and end_time are integers (seconds), use them directly
+        if isinstance(clip.start_time, int):
+            clip_start = clip.start_time
+        else:
+            clip_start = subtitle_processor._srt_time_to_seconds(
+                subtitle_processor._seconds_to_srt_time_object(clip.start_time)
+            )
+        
+        if isinstance(clip.end_time, int):
+            clip_end = clip.end_time
+        else:
+            clip_end = subtitle_processor._srt_time_to_seconds(
+                subtitle_processor._seconds_to_srt_time_object(clip.end_time)
+            )
+        
+        clip_subtitles = [
+            seg for seg in subtitle_data 
+            if seg['startTime'] >= clip_start and seg['endTime'] <= clip_end
+        ]
+        
+        # Validate edit operations
+        validation = video_editor.validate_edit_operations(
+            clip_subtitles, request.deleted_segments
+        )
+        
+        if not validation['valid']:
+            raise HTTPException(status_code=400, detail=validation['error'])
+        
+        # Create output directory
+        output_dir = project_dir / "edited_clips"
+        output_dir.mkdir(exist_ok=True)
+        
+        # Generate edited video filename
+        edited_video_name = f"{clip_id}_edited.mp4"
+        edited_video_path = output_dir / edited_video_name
+        
+        # Perform video editing
+        edit_result = video_editor.edit_video_by_subtitle_deletion(
+            original_video,
+            clip_subtitles,
+            request.deleted_segments,
+            edited_video_path
+        )
+        
+        if not edit_result['success']:
+            raise HTTPException(status_code=500, detail=f"Video edit failed: {edit_result['error']}")
+        
+        # Export edited subtitle file
+        edited_srt_path = output_dir / f"{clip_id}_edited.srt"
+        subtitle_processor.export_edited_srt(
+            clip_subtitles,
+            request.deleted_segments,
+            edited_srt_path
+        )
+        
+        return SubtitleEditResponse(
+            success=True,
+            message="Video edited successfully",
+            edited_video_path=str(edited_video_path),
+            deleted_duration=edit_result['totalDeletedDuration'],
+            final_duration=edit_result['finalDuration']
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to edit video clip: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to edit video clip: {str(e)}")
+
+@router.get("/{project_id}/clips/{clip_id}/edited-video")
+async def get_edited_video(
+    project_id: str,
+    clip_id: str,
+    project_service: ProjectService = Depends(get_project_service)
+):
+    """Get the edited video file"""
+    try:
+        # Check whether the project exists
+        project = await project_service.get_project(project_id)
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+        
+        # Locate the edited video file
+        projects_dir = get_projects_directory()
+        edited_video_path = projects_dir / project_id / "edited_clips" / f"{clip_id}_edited.mp4"
+        
+        if not edited_video_path.exists():
+            raise HTTPException(status_code=404, detail="Edited video file not found")
+        
+        # Return the video file
+        return FileResponse(
+            path=str(edited_video_path),
+            media_type="video/mp4",
+            filename=f"{clip_id}_edited.mp4"
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to get edited video: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to get edited video: {str(e)}")
+
+@router.post("/{project_id}/clips/{clip_id}/preview")
+async def create_edit_preview(
+    project_id: str,
+    clip_id: str,
+    request: EditPreviewRequest,
+    subtitle_processor: SubtitleProcessor = Depends(get_subtitle_processor),
+    video_editor: VideoEditor = Depends(get_video_editor),
+    project_service: ProjectService = Depends(get_project_service)
+):
+    """Create edit preview clips"""
+    try:
+        # Get project info
+        project = project_service.get(project_id)
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+        
+        # Get clip info
+        from ...models.clip import Clip
+        clip = project_service.db.query(Clip).filter(Clip.id == clip_id, Clip.project_id == project_id).first()
+        if not clip:
+            raise HTTPException(status_code=404, detail="Clip not found")
+        
+        # Get original video and subtitle file paths
+        projects_dir = get_projects_directory()
+        project_dir = projects_dir / project_id
+        
+        video_files = list(project_dir.glob("raw/*.mp4"))
+        if not video_files:
+            raise HTTPException(status_code=404, detail="Original video file not found")
+        original_video = video_files[0]
+        
+        srt_file = project_dir / "raw" / "input.srt"
+        if not srt_file.exists():
+            raise HTTPException(status_code=404, detail="Subtitle file not found")
+        
+        # Parse subtitle data
+        subtitle_data = subtitle_processor.parse_srt_to_word_level(srt_file)
+        
+        # Filter to the time range belonging to this clip
+        # If start_time and end_time are integers (seconds), use them directly
+        if isinstance(clip.start_time, int):
+            clip_start = clip.start_time
+        else:
+            clip_start = subtitle_processor._srt_time_to_seconds(
+                subtitle_processor._seconds_to_srt_time_object(clip.start_time)
+            )
+        
+        if isinstance(clip.end_time, int):
+            clip_end = clip.end_time
+        else:
+            clip_end = subtitle_processor._srt_time_to_seconds(
+                subtitle_processor._seconds_to_srt_time_object(clip.end_time)
+            )
+        
+        clip_subtitles = [
+            seg for seg in subtitle_data 
+            if seg['startTime'] >= clip_start and seg['endTime'] <= clip_end
+        ]
+        
+        # Create preview directory
+        preview_dir = project_dir / "edit_previews" / clip_id
+        preview_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Create preview clips
+        preview_files = video_editor.create_preview_clips(
+            original_video,
+            clip_subtitles,
+            request.deleted_segments,
+            preview_dir
+        )
+        
+        return {
+            "success": True,
+            "preview_files": [str(f) for f in preview_files],
+            "count": len(preview_files)
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to create edit preview: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to create edit preview: {str(e)}")
+
+@router.get("/{project_id}/clips/{clip_id}/preview/{segment_id}")
+async def get_preview_segment(
+    project_id: str,
+    clip_id: str,
+    segment_id: str,
+    project_service: ProjectService = Depends(get_project_service)
+):
+    """Get preview segment file"""
+    try:
+        # Check whether the project exists
+        project = project_service.get(project_id)
+        if not project:
+            raise HTTPException(status_code=404, detail="Project not found")
+        
+        # Locate the preview file
+        projects_dir = get_projects_directory()
+        preview_file = projects_dir / project_id / "edit_previews" / clip_id / f"preview_{segment_id}.mp4"
+        
+        if not preview_file.exists():
+            raise HTTPException(status_code=404, detail="Preview file not found")
+        
+        # Return the preview file
+        return FileResponse(
+            path=str(preview_file),
+            media_type="video/mp4",
+            filename=f"preview_{segment_id}.mp4"
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to get preview file: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to get preview file: {str(e)}")

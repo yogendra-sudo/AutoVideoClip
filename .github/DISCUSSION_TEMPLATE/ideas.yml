@@ -1,0 +1,27 @@
+title: "Feature idea:"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share ideas that have not yet been accepted for implementation. Accepted work gets an issue and enters the public roadmap.
+        Report reproducible problems using the [Bug Report](https://github.com/zhouxiaoka/autoclip/issues/new/choose) template instead.
+        Ideas are not commitments. Reproducible bugs belong in an issue.
+  - type: textarea
+    id: wish
+    attributes:
+      label: What would you like AutoClip to do?
+      description: Describe what you are doing, where you get stuck, and what you hope to achieve. No solution design is needed.
+      placeholder: "I process five two-hour livestream recordings each week, and right now I have to…"
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Where do you mainly use AutoClip?
+      options:
+        - macOS desktop app
+        - Windows desktop app
+        - Docker / source
+        - I have not started using it yet
+    validations:
+      required: false
